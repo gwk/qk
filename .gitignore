@@ -1,0 +1,14 @@
+# Xcode
+xcuserdata
+profile
+project.xcworkspace
+
+# finder
+.DS_Store
+
+# python
+__pycache__
+
+# qk
+_bld
+_misc

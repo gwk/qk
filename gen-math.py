@@ -26,21 +26,32 @@ def L(f, *items):
 def jc(a): return ', '.join(a)
 def js(a): return ' '.join(a)
 
+def jcf(f, a): return jc([fmt(f, i) for i in a])
+def jcft(f, a): return jc([fmt(f, *t) for t in a])
+
 def gen(d, t):
   comps = all_comps[:d]
   comps_a = ['a.' + c for c in comps]
   comps_b = ['b.' + c for c in comps]
   comps_ab = [Pair(a, b) for a, b in zip(comps_a, comps_b)]
   vt = fmt('V$$', d, t)
-  vars = jc(comps)
-  init_pars = jc(fmt('_ $: $', comp, t) for comp in comps)
-  init_expr = ''
-  L('struct $ {', vt)
-  L('  var $: $', vars, t)
-  L('  init($) { $', init_pars, init_expr)
+  vt_prev = fmt('V$$', d - 1, t)
+
+  L('struct $: Printable {', vt)
+  L('  var $: $', jc(comps), t)
+  
+  L('  init($) {', jc(fmt('_ $: $', comp, t) for comp in comps))
   for c in comps:
     L('    self.$ = $', c, c)
   L('  }')
+  
+  if d > 2:
+    L('  init(_ v: $, _ s: $) {', vt_prev, t)
+    for i, c in enumerate(comps):
+      L('    self.$ = $', c, fmt('v.$', c) if i < d - 1 else 's')
+    L('  }')
+  
+  L('  var description: String { return "$($)" }', vt, jc([r'\({})'.format(c) for c in comps]))
   L('}\n')
 
   for op in ops:

@@ -6,6 +6,7 @@ import Foundation
 struct Tri {
   var a, b, c: U16
   init(_ a: U16, _ b: U16, _ c: U16) {
+    assert(a < b && a < c)
     self.a = a
     self.b = b
     self.c = c
@@ -37,19 +38,6 @@ struct Adj {
     }
   }
 }
-
-typealias Vertex = V3
-/*
-V Vertex
-N Normal
-C Color
-T Texcoord
-P VertexCrease
-E EdgeCrease
-W BoneWeights
-I BoneIndices
-*/
-
 
 func EulerEdgeCount(vertexCount: Int, faceCount: Int) -> Int {
   return vertexCount + faceCount - 2

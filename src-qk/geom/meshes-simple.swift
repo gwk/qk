@@ -35,10 +35,6 @@ func tetrahedron() -> Mesh {
     V3( r, -r,  r), // cube 5.
     V3( r,  r, -r), // cube 6.
   ]
-  m.n = m.p
-  for p in m.p {
-    m.c.append(V4(p, 1))
-  }
   m.tri = [
     Tri(0, 1, 3),
     Tri(0, 2, 1),
@@ -71,10 +67,6 @@ func cube() -> Mesh {
     V3(+r,  r, -r),
     V3(+r,  r,  r),
   ]
-  m.n = m.p
-  for p in m.p {
-    m.c.append(V4(p, 1))
-  }
   m.seg = [
     Seg(0, 1),
     Seg(0, 2),
@@ -117,10 +109,6 @@ func octohedron() -> Mesh {
     V3( 0,  1,  0),
     V3( 1,  0,  0),
   ]
-  m.n = m.p
-  for p in m.p {
-    m.c.append(V4(p, 1))
-  }
   m.tri = [
     Tri(0, 1, 3),
     Tri(0, 2, 1),
@@ -179,10 +167,6 @@ func dodecahedron() -> Mesh {
     V3(+m, -n,  0),
     V3(+m,  n,  0),
   ]
-  mesh.n = mesh.p
-  for p in mesh.p {
-    mesh.c.append(V4(p, 1))
-  }
   mesh.seg = [
     Seg(0, 1),
     Seg(0, 2),
@@ -279,7 +263,6 @@ func icosahedron() -> Mesh {
     V3(+m, -n,  0),
     V3(+m,  n,  0),
   ]
-  mesh.n = mesh.p
   mesh.tri = [
     Tri(0, 1, 2),
     Tri(0, 2, 4),

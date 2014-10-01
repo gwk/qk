@@ -50,6 +50,20 @@ class Mesh {
   var tri: [Tri] = []
   var adj: [Adj] = []
   
+  func addNormFromPos() {
+    assert(n.isEmpty)
+    for pos in p {
+      n.append(pos.norm);
+    }
+  }
+  
+  func addColFromPos() {
+    assert(c.isEmpty)
+    for pos in p {
+      c.append(V4(pos.clampToUnit, 1))
+    }
+  }
+  
   func geometry() -> SCNGeometry {
     
     let len = p.count

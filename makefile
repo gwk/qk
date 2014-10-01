@@ -6,7 +6,7 @@
 # $^: The names of all the prerequisites, with spaces between them. 
 
 math: src-qk/math/math-generated.swift
-	swiftc -parse src-qk/qk-types.swift $^
+	xcrun -sdk macosx swiftc -parse src-qk/qk-types.swift src-qk/math/math.swift $^
 
 src-qk/math/math-generated.swift: gen-math.py
 	./$^ > $@

@@ -9,6 +9,9 @@ struct V2F32: Printable {
     self.y = y
   }
   var description: String { return "V2F32(\(x), \(y))" }
+  var len: F32 { return sqrrt(sqr(x) + sqr(y)) }
+  var norm: V2F32 { return self / self.len }
+  var clampToUnit: V2F32 { return V2F32(clamp(x, 0, 1), clamp(y, 0, 1)) }
 }
 
 func +(a: V2F32, b: V2F32) -> V2F32 { return V2F32(a.x + b.x, a.y + b.y) }
@@ -28,6 +31,9 @@ struct V2F64: Printable {
     self.y = y
   }
   var description: String { return "V2F64(\(x), \(y))" }
+  var len: F64 { return sqrrt(sqr(x) + sqr(y)) }
+  var norm: V2F64 { return self / self.len }
+  var clampToUnit: V2F64 { return V2F64(clamp(x, 0, 1), clamp(y, 0, 1)) }
 }
 
 func +(a: V2F64, b: V2F64) -> V2F64 { return V2F64(a.x + b.x, a.y + b.y) }
@@ -53,6 +59,9 @@ struct V3F32: Printable {
     self.z = s
   }
   var description: String { return "V3F32(\(x), \(y), \(z))" }
+  var len: F32 { return sqrrt(sqr(x) + sqr(y) + sqr(z)) }
+  var norm: V3F32 { return self / self.len }
+  var clampToUnit: V3F32 { return V3F32(clamp(x, 0, 1), clamp(y, 0, 1), clamp(z, 0, 1)) }
 }
 
 func +(a: V3F32, b: V3F32) -> V3F32 { return V3F32(a.x + b.x, a.y + b.y, a.z + b.z) }
@@ -78,6 +87,9 @@ struct V3F64: Printable {
     self.z = s
   }
   var description: String { return "V3F64(\(x), \(y), \(z))" }
+  var len: F64 { return sqrrt(sqr(x) + sqr(y) + sqr(z)) }
+  var norm: V3F64 { return self / self.len }
+  var clampToUnit: V3F64 { return V3F64(clamp(x, 0, 1), clamp(y, 0, 1), clamp(z, 0, 1)) }
 }
 
 func +(a: V3F64, b: V3F64) -> V3F64 { return V3F64(a.x + b.x, a.y + b.y, a.z + b.z) }
@@ -105,6 +117,9 @@ struct V4F32: Printable {
     self.w = s
   }
   var description: String { return "V4F32(\(x), \(y), \(z), \(w))" }
+  var len: F32 { return sqrrt(sqr(x) + sqr(y) + sqr(z) + sqr(w)) }
+  var norm: V4F32 { return self / self.len }
+  var clampToUnit: V4F32 { return V4F32(clamp(x, 0, 1), clamp(y, 0, 1), clamp(z, 0, 1), clamp(w, 0, 1)) }
 }
 
 func +(a: V4F32, b: V4F32) -> V4F32 { return V4F32(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w) }
@@ -132,6 +147,9 @@ struct V4F64: Printable {
     self.w = s
   }
   var description: String { return "V4F64(\(x), \(y), \(z), \(w))" }
+  var len: F64 { return sqrrt(sqr(x) + sqr(y) + sqr(z) + sqr(w)) }
+  var norm: V4F64 { return self / self.len }
+  var clampToUnit: V4F64 { return V4F64(clamp(x, 0, 1), clamp(y, 0, 1), clamp(z, 0, 1), clamp(w, 0, 1)) }
 }
 
 func +(a: V4F64, b: V4F64) -> V4F64 { return V4F64(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w) }

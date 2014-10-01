@@ -72,7 +72,7 @@ class Mesh {
     //if !bw.isEmpty  { assert(bw.count == len); obw = stride; stride += sizeof(V4) }
     //if !bi.isEmpty  { assert(bi.count == len); obi = stride; stride += sizeof(BoneIndices) }
     
-    let d = NSMutableData(capacity: len * stride)
+    let d = NSMutableData(capacity: len * stride)!
     
     for i in 0..<len {
       d.append(p[i])

@@ -97,25 +97,28 @@ class Mesh {
       dataOffset: op,
       dataStride: stride))
 
-    sources.append(SCNGeometrySource(
-      data: d,
-      semantic: SCNGeometrySourceSemanticNormal,
-      vectorCount: len,
-      floatComponents: true,
-      componentsPerVector: 3,
-      bytesPerComponent: sizeof(F32),
-      dataOffset: on,
-      dataStride: stride))
-
-    sources.append(SCNGeometrySource(
-      data: d,
-      semantic: SCNGeometrySourceSemanticColor,
-      vectorCount: len,
-      floatComponents: true,
-      componentsPerVector: 4,
-      bytesPerComponent: sizeof(F32),
-      dataOffset: oc,
-      dataStride: stride))
+    if !n.isEmpty {
+      sources.append(SCNGeometrySource(
+        data: d,
+        semantic: SCNGeometrySourceSemanticNormal,
+        vectorCount: len,
+        floatComponents: true,
+        componentsPerVector: 3,
+        bytesPerComponent: sizeof(F32),
+        dataOffset: on,
+        dataStride: stride))
+    }
+    if !c.isEmpty {
+      sources.append(SCNGeometrySource(
+        data: d,
+        semantic: SCNGeometrySourceSemanticColor,
+        vectorCount: len,
+        floatComponents: true,
+        componentsPerVector: 4,
+        bytesPerComponent: sizeof(F32),
+        dataOffset: oc,
+        dataStride: stride))
+    }
     
     var elements: [SCNGeometryElement] = []
     elements.append(SCNGeometryElement(

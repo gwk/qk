@@ -5,27 +5,6 @@ import Foundation
 import SceneKit
 
 
-func tri() -> Mesh {
-  let r: F32 = sqrt(1.0 / 3.0) // radius of insphere.
-  let m = Mesh()
-  m.p = [
-    V3(-r, -r, -r),
-    V3(-r,  r,  r),
-    V3( r,  r, -r),
-  ]
-  m.seg = [
-    Seg(0, 1),
-    Seg(0, 2),
-    Seg(1, 2),
-  ]
-  m.tri = [
-    Tri(0, 1, 2),
-    Tri(0, 2, 1),
-  ]
-  return m;
-}
-
-
 func tetrahedron() -> Mesh {
   let r: F32 = sqrt(1.0 / 3.0); // radius of insphere.
   let m = Mesh()

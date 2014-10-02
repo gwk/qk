@@ -35,6 +35,13 @@ extension NSMutableData {
 }
 
 
+enum GeomKind {
+  case Point
+  case Seg
+  case Tri
+}
+
+
 class Mesh {
   
   var p: [V3] = [] // position.
@@ -46,6 +53,7 @@ class Mesh {
   //var bw: [V4] = [] // boneWeights.
   //var bi: [BoneIndices] = [] // boneIndices.
   
+  var pnt: [U16] = []
   var seg: [Seg] = []
   var tri: [Tri] = []
   var adj: [Adj] = []
@@ -64,7 +72,28 @@ class Mesh {
     }
   }
   
-  func geometry() -> SCNGeometry {
+  func addAllPoints() {
+    for i in 0..<p.count {
+      pnt.append(U16(i))
+    }
+  }
+  
+  func addAllSegs() {
+    for i in 0..<p.count {
+      for j in (i + 1)..<p.count {
+        seg.append(Seg(U16(i), U16(j)))
+      }
+    }
+  }
+  
+  func addSeg(a: V3, b: V3) {
+    let i = U16(p.count)
+    p.append(a)
+    p.append(b)
+    seg.append(Seg(i, i + 1))
+  }
+  
+  func geometry(kind: GeomKind = GeomKind.Tri) -> SCNGeometry {
     
     let len = p.count
 
@@ -135,13 +164,48 @@ class Mesh {
     }
     
     var elements: [SCNGeometryElement] = []
-    elements.append(SCNGeometryElement(
-      data: NSData(bytes: tri, length: tri.count * sizeof(Tri)),
-      primitiveType: SCNGeometryPrimitiveType.Triangles,
-      primitiveCount: tri.count,
-      bytesPerIndex: sizeof(U16)))
-    
+    switch kind {
+      case GeomKind.Point:
+        elements.append(SCNGeometryElement(
+          data: NSData(bytes: pnt, length: pnt.count * sizeof(U16)),
+          primitiveType: SCNGeometryPrimitiveType.Point,
+          primitiveCount: pnt.count,
+          bytesPerIndex: sizeof(U16)))
+      case GeomKind.Seg:
+        elements.append(SCNGeometryElement(
+          data: NSData(bytes: seg, length: seg.count * sizeof(Seg)),
+          primitiveType: SCNGeometryPrimitiveType.Line,
+          primitiveCount: seg.count,
+          bytesPerIndex: sizeof(U16)))
+      case GeomKind.Tri:
+        elements.append(SCNGeometryElement(
+          data: NSData(bytes: tri, length: tri.count * sizeof(Tri)),
+          primitiveType: SCNGeometryPrimitiveType.Triangles,
+          primitiveCount: tri.count,
+          bytesPerIndex: sizeof(U16)))
+    }
     return SCNGeometry(sources:sources, elements:elements)
+  }
+  
+  
+  func triangle() -> Mesh {
+    let r: F32 = sqrt(1.0 / 3.0) // radius of insphere.
+    let m = Mesh()
+    m.p = [
+      V3(-r, -r, -r),
+      V3(-r,  r,  r),
+      V3( r,  r, -r),
+    ]
+    m.seg = [
+      Seg(0, 1),
+      Seg(0, 2),
+      Seg(1, 2),
+    ]
+    m.tri = [
+      Tri(0, 1, 2),
+      Tri(0, 2, 1),
+    ]
+    return m;
   }
 }
 

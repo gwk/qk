@@ -1,6 +1,11 @@
 // © 2014 George King.
 // Permission to use this file is granted in license-qk.txt.
 
-import AppKit
 
-typealias CRView = NSView
+#if os(OSX)
+  import AppKit
+  typealias CRView = NSView
+  #else
+  import UIKit
+  typealias CRView = UIView
+#endif

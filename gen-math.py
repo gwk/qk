@@ -8,29 +8,29 @@ from itertools import zip_longest
 Pair = namedtuple('Pair', ['a', 'b'])
 
 dims = [2, 3, 4]
-all_comps = ['x', 'y', 'z', 'w']
+all_v_comps = ['x', 'y', 'z', 'w']
 types = ['F32', 'F64']
 ops = ['+', '-', '*', '/']
 
 def fmt(f, *items):
   res = []
   chunks = f.split('$')
-  for c, i in zip_longest(chunks, items, fillvalue=''):
-    res.append(c)
-    res.append(str(i))
+  for chunk, item in zip_longest(chunks, items, fillvalue=''):
+    res.append(chunk)
+    res.append(str(item))
   return ''.join(res)
 
 def L(f, *items):
   print(fmt(f, *items))
 
-def jc(a): return ', '.join(a)
-def js(a): return ' '.join(a)
+def jc(a): return ', '.join(a) # join with comma.
+def js(a): return ' '.join(a) # join with space.
 
 def jcf(f, a): return jc([fmt(f, i) for i in a])
 def jcft(f, a): return jc([fmt(f, *t) for t in a])
 
-def gen(d, t):
-  comps = all_comps[:d]
+def gen_vec(d, t):
+  comps = all_v_comps[:d]
   comps_a = ['a.' + c for c in comps]
   comps_b = ['b.' + c for c in comps]
   comps_ab = [Pair(a, b) for a, b in zip(comps_a, comps_b)]
@@ -65,6 +65,66 @@ def gen(d, t):
     L('func $(a: $, s: $) -> $ { return $($) }', op, vt, t, vt, vt, cons_comps_s)
   L('\n')
 
+
+def gen_mat(d, t):
+  v_comps = all_v_comps[:d]
+  v_comps_a = ['a.' + c for c in v_comps]
+  v_comps_b = ['b.' + c for c in v_comps]
+  v_comps_ab = [Pair(a, b) for a, b in zip(v_comps_a, v_comps_b)]
+  vt = fmt('V$$', d, t)
+
+  comps = [fmt('m$$', i, j) for i in range(d) for j in range(d)]
+  comps_cols = [[fmt('m$$', j, i) for i in range(d)] for j in range(d)]
+  comps_rows = [[fmt('m$$', i, j) for i in range(d)] for j in range(d)]
+  comps_a = ['a.' + c for c in comps]
+  comps_b = ['b.' + c for c in comps]
+  comps_ab = [Pair(a, b) for a, b in zip(comps_a, comps_b)]
+  mt = fmt('M$$', d, t)
+  
+  L('struct $: Printable {', mt)
+  L('  var $: $', jc(comps), t)
+  
+  L('  init($) {', jc(fmt('_ $: $', comp, t) for comp in comps))
+  for c in comps:
+    L('    self.$ = $', c, c)
+  L('  }')
+  
+  L('  init($) {', jc(fmt('_ c$: $', i, vt) for i in range(d)))
+  L('    self.init($)', jc(fmt('c$.$', i, v_comp) for i in range(d) for v_comp in v_comps))
+  L('  }')
+  #if d > 2:
+  #  L('  init(_ v: $, _ s: $) {', vt_prev, t)
+  #  for i, c in enumerate(comps):
+  #    L('    self.$ = $', c, fmt('v.$', c) if i < d - 1 else 's')
+  #  L('  }')
+  
+  L('  var description: String { return "$($)" }', mt, jc(['\\({})'.format(c) for c in comps]))
+
+  for i in range(d):
+    L('  var c$: $ { return $($) }', i, vt, vt, jc(comps_cols[i]))
+  for i in range(d):
+    L('  var r$: $ { return $($) }', i, vt, vt, jc(comps_rows[i]))
+
+  L('}\n')
+
+  L('let $Zero = $($)', mt, mt, jc('0' for c in comps))
+  L('let $Identity = $($)', mt, mt, jc(str(int(i == j)) for j in range(d) for i in range(d)))
+  L('')
+
+  # component-wise operations.
+  for op in ['+', '-']:
+    cons_comps_m = jc(fmt('$ $ $', a, op, b) for a, b in comps_ab)
+    L('func $(a: $, b: $) -> $ { return $($) }', op, mt, mt, mt, mt, cons_comps_m)
+  for op in ['*', '/']:
+    cons_comps_s = jc(fmt('$ $ s', a, op) for a in comps_a)
+    L('func $(a: $, s: $) -> $ { return $($) }', op, mt, t, mt, mt, cons_comps_s)
+  L('\n')
+
+  scale_pars = jc(fmt('$: $', v_comp, t) for v_comp in v_comps)
+  scale_args = jc((c if c == d else '0') for c in v_comps for d in v_comps)
+  L('func $Scale($) -> $ { return $($) }', mt, scale_pars, mt, mt, scale_args)
+
+
 L('''\
 // © 2014 George King.
 // Permission to use this file is granted in license-qk.txt.
@@ -73,4 +133,8 @@ L('''\
 
 for d in dims:
   for t in types:
-    gen(d, t)
+    gen_vec(d, t)
+
+for d in dims:
+  for t in types:
+    gen_mat(d, t)

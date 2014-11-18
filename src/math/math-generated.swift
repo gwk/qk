@@ -162,3 +162,217 @@ func *(a: V4F64, s: F64) -> V4F64 { return V4F64(a.x * s, a.y * s, a.z * s, a.w 
 func /(a: V4F64, s: F64) -> V4F64 { return V4F64(a.x / s, a.y / s, a.z / s, a.w / s) }
 
 
+struct M2F32: Printable {
+  var m00, m01, m10, m11: F32
+  init(_ m00: F32, _ m01: F32, _ m10: F32, _ m11: F32) {
+    self.m00 = m00
+    self.m01 = m01
+    self.m10 = m10
+    self.m11 = m11
+  }
+  init(_ c0: V2F32, _ c1: V2F32) {
+    self.init(c0.x, c0.y, c1.x, c1.y)
+  }
+  var description: String { return "M2F32(\(m00), \(m01), \(m10), \(m11))" }
+  var c0: V2F32 { return V2F32(m00, m01) }
+  var c1: V2F32 { return V2F32(m10, m11) }
+  var r0: V2F32 { return V2F32(m00, m10) }
+  var r1: V2F32 { return V2F32(m01, m11) }
+}
+
+let M2F32Zero = M2F32(0, 0, 0, 0)
+let M2F32Identity = M2F32(1, 0, 0, 1)
+
+func +(a: M2F32, b: M2F32) -> M2F32 { return M2F32(a.m00 + b.m00, a.m01 + b.m01, a.m10 + b.m10, a.m11 + b.m11) }
+func -(a: M2F32, b: M2F32) -> M2F32 { return M2F32(a.m00 - b.m00, a.m01 - b.m01, a.m10 - b.m10, a.m11 - b.m11) }
+func *(a: M2F32, s: F32) -> M2F32 { return M2F32(a.m00 * s, a.m01 * s, a.m10 * s, a.m11 * s) }
+func /(a: M2F32, s: F32) -> M2F32 { return M2F32(a.m00 / s, a.m01 / s, a.m10 / s, a.m11 / s) }
+
+
+func M2F32Scale(x: F32, y: F32) -> M2F32 { return M2F32(x, 0, 0, y) }
+struct M2F64: Printable {
+  var m00, m01, m10, m11: F64
+  init(_ m00: F64, _ m01: F64, _ m10: F64, _ m11: F64) {
+    self.m00 = m00
+    self.m01 = m01
+    self.m10 = m10
+    self.m11 = m11
+  }
+  init(_ c0: V2F64, _ c1: V2F64) {
+    self.init(c0.x, c0.y, c1.x, c1.y)
+  }
+  var description: String { return "M2F64(\(m00), \(m01), \(m10), \(m11))" }
+  var c0: V2F64 { return V2F64(m00, m01) }
+  var c1: V2F64 { return V2F64(m10, m11) }
+  var r0: V2F64 { return V2F64(m00, m10) }
+  var r1: V2F64 { return V2F64(m01, m11) }
+}
+
+let M2F64Zero = M2F64(0, 0, 0, 0)
+let M2F64Identity = M2F64(1, 0, 0, 1)
+
+func +(a: M2F64, b: M2F64) -> M2F64 { return M2F64(a.m00 + b.m00, a.m01 + b.m01, a.m10 + b.m10, a.m11 + b.m11) }
+func -(a: M2F64, b: M2F64) -> M2F64 { return M2F64(a.m00 - b.m00, a.m01 - b.m01, a.m10 - b.m10, a.m11 - b.m11) }
+func *(a: M2F64, s: F64) -> M2F64 { return M2F64(a.m00 * s, a.m01 * s, a.m10 * s, a.m11 * s) }
+func /(a: M2F64, s: F64) -> M2F64 { return M2F64(a.m00 / s, a.m01 / s, a.m10 / s, a.m11 / s) }
+
+
+func M2F64Scale(x: F64, y: F64) -> M2F64 { return M2F64(x, 0, 0, y) }
+struct M3F32: Printable {
+  var m00, m01, m02, m10, m11, m12, m20, m21, m22: F32
+  init(_ m00: F32, _ m01: F32, _ m02: F32, _ m10: F32, _ m11: F32, _ m12: F32, _ m20: F32, _ m21: F32, _ m22: F32) {
+    self.m00 = m00
+    self.m01 = m01
+    self.m02 = m02
+    self.m10 = m10
+    self.m11 = m11
+    self.m12 = m12
+    self.m20 = m20
+    self.m21 = m21
+    self.m22 = m22
+  }
+  init(_ c0: V3F32, _ c1: V3F32, _ c2: V3F32) {
+    self.init(c0.x, c0.y, c0.z, c1.x, c1.y, c1.z, c2.x, c2.y, c2.z)
+  }
+  var description: String { return "M3F32(\(m00), \(m01), \(m02), \(m10), \(m11), \(m12), \(m20), \(m21), \(m22))" }
+  var c0: V3F32 { return V3F32(m00, m01, m02) }
+  var c1: V3F32 { return V3F32(m10, m11, m12) }
+  var c2: V3F32 { return V3F32(m20, m21, m22) }
+  var r0: V3F32 { return V3F32(m00, m10, m20) }
+  var r1: V3F32 { return V3F32(m01, m11, m21) }
+  var r2: V3F32 { return V3F32(m02, m12, m22) }
+}
+
+let M3F32Zero = M3F32(0, 0, 0, 0, 0, 0, 0, 0, 0)
+let M3F32Identity = M3F32(1, 0, 0, 0, 1, 0, 0, 0, 1)
+
+func +(a: M3F32, b: M3F32) -> M3F32 { return M3F32(a.m00 + b.m00, a.m01 + b.m01, a.m02 + b.m02, a.m10 + b.m10, a.m11 + b.m11, a.m12 + b.m12, a.m20 + b.m20, a.m21 + b.m21, a.m22 + b.m22) }
+func -(a: M3F32, b: M3F32) -> M3F32 { return M3F32(a.m00 - b.m00, a.m01 - b.m01, a.m02 - b.m02, a.m10 - b.m10, a.m11 - b.m11, a.m12 - b.m12, a.m20 - b.m20, a.m21 - b.m21, a.m22 - b.m22) }
+func *(a: M3F32, s: F32) -> M3F32 { return M3F32(a.m00 * s, a.m01 * s, a.m02 * s, a.m10 * s, a.m11 * s, a.m12 * s, a.m20 * s, a.m21 * s, a.m22 * s) }
+func /(a: M3F32, s: F32) -> M3F32 { return M3F32(a.m00 / s, a.m01 / s, a.m02 / s, a.m10 / s, a.m11 / s, a.m12 / s, a.m20 / s, a.m21 / s, a.m22 / s) }
+
+
+func M3F32Scale(x: F32, y: F32, z: F32) -> M3F32 { return M3F32(x, 0, 0, 0, y, 0, 0, 0, z) }
+struct M3F64: Printable {
+  var m00, m01, m02, m10, m11, m12, m20, m21, m22: F64
+  init(_ m00: F64, _ m01: F64, _ m02: F64, _ m10: F64, _ m11: F64, _ m12: F64, _ m20: F64, _ m21: F64, _ m22: F64) {
+    self.m00 = m00
+    self.m01 = m01
+    self.m02 = m02
+    self.m10 = m10
+    self.m11 = m11
+    self.m12 = m12
+    self.m20 = m20
+    self.m21 = m21
+    self.m22 = m22
+  }
+  init(_ c0: V3F64, _ c1: V3F64, _ c2: V3F64) {
+    self.init(c0.x, c0.y, c0.z, c1.x, c1.y, c1.z, c2.x, c2.y, c2.z)
+  }
+  var description: String { return "M3F64(\(m00), \(m01), \(m02), \(m10), \(m11), \(m12), \(m20), \(m21), \(m22))" }
+  var c0: V3F64 { return V3F64(m00, m01, m02) }
+  var c1: V3F64 { return V3F64(m10, m11, m12) }
+  var c2: V3F64 { return V3F64(m20, m21, m22) }
+  var r0: V3F64 { return V3F64(m00, m10, m20) }
+  var r1: V3F64 { return V3F64(m01, m11, m21) }
+  var r2: V3F64 { return V3F64(m02, m12, m22) }
+}
+
+let M3F64Zero = M3F64(0, 0, 0, 0, 0, 0, 0, 0, 0)
+let M3F64Identity = M3F64(1, 0, 0, 0, 1, 0, 0, 0, 1)
+
+func +(a: M3F64, b: M3F64) -> M3F64 { return M3F64(a.m00 + b.m00, a.m01 + b.m01, a.m02 + b.m02, a.m10 + b.m10, a.m11 + b.m11, a.m12 + b.m12, a.m20 + b.m20, a.m21 + b.m21, a.m22 + b.m22) }
+func -(a: M3F64, b: M3F64) -> M3F64 { return M3F64(a.m00 - b.m00, a.m01 - b.m01, a.m02 - b.m02, a.m10 - b.m10, a.m11 - b.m11, a.m12 - b.m12, a.m20 - b.m20, a.m21 - b.m21, a.m22 - b.m22) }
+func *(a: M3F64, s: F64) -> M3F64 { return M3F64(a.m00 * s, a.m01 * s, a.m02 * s, a.m10 * s, a.m11 * s, a.m12 * s, a.m20 * s, a.m21 * s, a.m22 * s) }
+func /(a: M3F64, s: F64) -> M3F64 { return M3F64(a.m00 / s, a.m01 / s, a.m02 / s, a.m10 / s, a.m11 / s, a.m12 / s, a.m20 / s, a.m21 / s, a.m22 / s) }
+
+
+func M3F64Scale(x: F64, y: F64, z: F64) -> M3F64 { return M3F64(x, 0, 0, 0, y, 0, 0, 0, z) }
+struct M4F32: Printable {
+  var m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33: F32
+  init(_ m00: F32, _ m01: F32, _ m02: F32, _ m03: F32, _ m10: F32, _ m11: F32, _ m12: F32, _ m13: F32, _ m20: F32, _ m21: F32, _ m22: F32, _ m23: F32, _ m30: F32, _ m31: F32, _ m32: F32, _ m33: F32) {
+    self.m00 = m00
+    self.m01 = m01
+    self.m02 = m02
+    self.m03 = m03
+    self.m10 = m10
+    self.m11 = m11
+    self.m12 = m12
+    self.m13 = m13
+    self.m20 = m20
+    self.m21 = m21
+    self.m22 = m22
+    self.m23 = m23
+    self.m30 = m30
+    self.m31 = m31
+    self.m32 = m32
+    self.m33 = m33
+  }
+  init(_ c0: V4F32, _ c1: V4F32, _ c2: V4F32, _ c3: V4F32) {
+    self.init(c0.x, c0.y, c0.z, c0.w, c1.x, c1.y, c1.z, c1.w, c2.x, c2.y, c2.z, c2.w, c3.x, c3.y, c3.z, c3.w)
+  }
+  var description: String { return "M4F32(\(m00), \(m01), \(m02), \(m03), \(m10), \(m11), \(m12), \(m13), \(m20), \(m21), \(m22), \(m23), \(m30), \(m31), \(m32), \(m33))" }
+  var c0: V4F32 { return V4F32(m00, m01, m02, m03) }
+  var c1: V4F32 { return V4F32(m10, m11, m12, m13) }
+  var c2: V4F32 { return V4F32(m20, m21, m22, m23) }
+  var c3: V4F32 { return V4F32(m30, m31, m32, m33) }
+  var r0: V4F32 { return V4F32(m00, m10, m20, m30) }
+  var r1: V4F32 { return V4F32(m01, m11, m21, m31) }
+  var r2: V4F32 { return V4F32(m02, m12, m22, m32) }
+  var r3: V4F32 { return V4F32(m03, m13, m23, m33) }
+}
+
+let M4F32Zero = M4F32(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+let M4F32Identity = M4F32(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
+
+func +(a: M4F32, b: M4F32) -> M4F32 { return M4F32(a.m00 + b.m00, a.m01 + b.m01, a.m02 + b.m02, a.m03 + b.m03, a.m10 + b.m10, a.m11 + b.m11, a.m12 + b.m12, a.m13 + b.m13, a.m20 + b.m20, a.m21 + b.m21, a.m22 + b.m22, a.m23 + b.m23, a.m30 + b.m30, a.m31 + b.m31, a.m32 + b.m32, a.m33 + b.m33) }
+func -(a: M4F32, b: M4F32) -> M4F32 { return M4F32(a.m00 - b.m00, a.m01 - b.m01, a.m02 - b.m02, a.m03 - b.m03, a.m10 - b.m10, a.m11 - b.m11, a.m12 - b.m12, a.m13 - b.m13, a.m20 - b.m20, a.m21 - b.m21, a.m22 - b.m22, a.m23 - b.m23, a.m30 - b.m30, a.m31 - b.m31, a.m32 - b.m32, a.m33 - b.m33) }
+func *(a: M4F32, s: F32) -> M4F32 { return M4F32(a.m00 * s, a.m01 * s, a.m02 * s, a.m03 * s, a.m10 * s, a.m11 * s, a.m12 * s, a.m13 * s, a.m20 * s, a.m21 * s, a.m22 * s, a.m23 * s, a.m30 * s, a.m31 * s, a.m32 * s, a.m33 * s) }
+func /(a: M4F32, s: F32) -> M4F32 { return M4F32(a.m00 / s, a.m01 / s, a.m02 / s, a.m03 / s, a.m10 / s, a.m11 / s, a.m12 / s, a.m13 / s, a.m20 / s, a.m21 / s, a.m22 / s, a.m23 / s, a.m30 / s, a.m31 / s, a.m32 / s, a.m33 / s) }
+
+
+func M4F32Scale(x: F32, y: F32, z: F32, w: F32) -> M4F32 { return M4F32(x, 0, 0, 0, 0, y, 0, 0, 0, 0, z, 0, 0, 0, 0, w) }
+struct M4F64: Printable {
+  var m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33: F64
+  init(_ m00: F64, _ m01: F64, _ m02: F64, _ m03: F64, _ m10: F64, _ m11: F64, _ m12: F64, _ m13: F64, _ m20: F64, _ m21: F64, _ m22: F64, _ m23: F64, _ m30: F64, _ m31: F64, _ m32: F64, _ m33: F64) {
+    self.m00 = m00
+    self.m01 = m01
+    self.m02 = m02
+    self.m03 = m03
+    self.m10 = m10
+    self.m11 = m11
+    self.m12 = m12
+    self.m13 = m13
+    self.m20 = m20
+    self.m21 = m21
+    self.m22 = m22
+    self.m23 = m23
+    self.m30 = m30
+    self.m31 = m31
+    self.m32 = m32
+    self.m33 = m33
+  }
+  init(_ c0: V4F64, _ c1: V4F64, _ c2: V4F64, _ c3: V4F64) {
+    self.init(c0.x, c0.y, c0.z, c0.w, c1.x, c1.y, c1.z, c1.w, c2.x, c2.y, c2.z, c2.w, c3.x, c3.y, c3.z, c3.w)
+  }
+  var description: String { return "M4F64(\(m00), \(m01), \(m02), \(m03), \(m10), \(m11), \(m12), \(m13), \(m20), \(m21), \(m22), \(m23), \(m30), \(m31), \(m32), \(m33))" }
+  var c0: V4F64 { return V4F64(m00, m01, m02, m03) }
+  var c1: V4F64 { return V4F64(m10, m11, m12, m13) }
+  var c2: V4F64 { return V4F64(m20, m21, m22, m23) }
+  var c3: V4F64 { return V4F64(m30, m31, m32, m33) }
+  var r0: V4F64 { return V4F64(m00, m10, m20, m30) }
+  var r1: V4F64 { return V4F64(m01, m11, m21, m31) }
+  var r2: V4F64 { return V4F64(m02, m12, m22, m32) }
+  var r3: V4F64 { return V4F64(m03, m13, m23, m33) }
+}
+
+let M4F64Zero = M4F64(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+let M4F64Identity = M4F64(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
+
+func +(a: M4F64, b: M4F64) -> M4F64 { return M4F64(a.m00 + b.m00, a.m01 + b.m01, a.m02 + b.m02, a.m03 + b.m03, a.m10 + b.m10, a.m11 + b.m11, a.m12 + b.m12, a.m13 + b.m13, a.m20 + b.m20, a.m21 + b.m21, a.m22 + b.m22, a.m23 + b.m23, a.m30 + b.m30, a.m31 + b.m31, a.m32 + b.m32, a.m33 + b.m33) }
+func -(a: M4F64, b: M4F64) -> M4F64 { return M4F64(a.m00 - b.m00, a.m01 - b.m01, a.m02 - b.m02, a.m03 - b.m03, a.m10 - b.m10, a.m11 - b.m11, a.m12 - b.m12, a.m13 - b.m13, a.m20 - b.m20, a.m21 - b.m21, a.m22 - b.m22, a.m23 - b.m23, a.m30 - b.m30, a.m31 - b.m31, a.m32 - b.m32, a.m33 - b.m33) }
+func *(a: M4F64, s: F64) -> M4F64 { return M4F64(a.m00 * s, a.m01 * s, a.m02 * s, a.m03 * s, a.m10 * s, a.m11 * s, a.m12 * s, a.m13 * s, a.m20 * s, a.m21 * s, a.m22 * s, a.m23 * s, a.m30 * s, a.m31 * s, a.m32 * s, a.m33 * s) }
+func /(a: M4F64, s: F64) -> M4F64 { return M4F64(a.m00 / s, a.m01 / s, a.m02 / s, a.m03 / s, a.m10 / s, a.m11 / s, a.m12 / s, a.m13 / s, a.m20 / s, a.m21 / s, a.m22 / s, a.m23 / s, a.m30 / s, a.m31 / s, a.m32 / s, a.m33 / s) }
+
+
+func M4F64Scale(x: F64, y: F64, z: F64, w: F64) -> M4F64 { return M4F64(x, 0, 0, 0, 0, y, 0, 0, 0, 0, z, 0, 0, 0, 0, w) }

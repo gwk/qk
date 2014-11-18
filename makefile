@@ -5,11 +5,17 @@
 # $<: The name of the first prerequisite.
 # $^: The names of all the prerequisites, with spaces between them. 
 
-math: src-qk/math/math-generated.swift
-	xcrun -sdk macosx swiftc -parse src-qk/qk-types.swift src-qk/math/math.swift $^
+default: all
 
-src-qk/math/math-generated.swift: gen-math.py
+src/math/math-generated.swift: gen-math.py
 	./$^ > $@
 
+.PHONY: default all math
+
+all: math
+
+math: src/math/math-generated.swift
+	xcrun -sdk macosx swiftc -parse src/*.swift src/math/*.swift
+
 clean:
-	rm src-qk/math/math-generated.swift
+	rm src/math/math-generated.swift

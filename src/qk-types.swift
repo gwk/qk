@@ -1,6 +1,8 @@
 // © 2014 George King.
 // Permission to use this file is granted in license-qk.txt.
 
+typealias Uns = Uint
+
 typealias I8 = Int8
 typealias I16 = Int16
 typealias I32 = Int32

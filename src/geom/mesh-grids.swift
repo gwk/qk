@@ -12,5 +12,3 @@ func gridCage(divisions: Int) -> Mesh {
   }
   return m
 }
-
-

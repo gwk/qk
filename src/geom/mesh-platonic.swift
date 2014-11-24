@@ -32,7 +32,6 @@ func tetrahedron() -> Mesh {
   return m
 }
 
-
 func cube() -> Mesh {
   let r: F32 = sqrt(1.0 / 3.0); // radius of insphere.
   let m = Mesh()
@@ -77,7 +76,6 @@ func cube() -> Mesh {
   return m
 }
 
-
 func octohedron() -> Mesh {
   let m = Mesh()
   m.p = [
@@ -114,7 +112,6 @@ func octohedron() -> Mesh {
   ]
   return m
 }
-
 
 func dodecahedron() -> Mesh {
   let r: F32 = sqrt(1.0 / 3.0) // radius of cube insphere.
@@ -219,7 +216,6 @@ func dodecahedron() -> Mesh {
   return mesh
 }
 
-
 func icosahedron() -> Mesh {
   let phi: F32 = (1 + sqrt(5)) * 0.5 // golden ratio.
   // each vertex is also the vertex of an axis-aligned golden rectangle.
@@ -298,4 +294,3 @@ func icosahedron() -> Mesh {
   ]
   return mesh
 }
-

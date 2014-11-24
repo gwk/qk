@@ -3,6 +3,7 @@
 
 import Foundation
 
+
 enum EventKind {
   case KD
   case KU
@@ -11,7 +12,8 @@ enum EventKind {
 
 class QKResponder: CRResponder {
   //var handlers: [EventKind -> (CREvent, CRView) -> ()] = []
-  
+
+  #if os(OSX)
   override func keyDown(e: CREvent) {
     println("QKResponder keyDown: \(e)")
   }
@@ -31,5 +33,5 @@ class QKResponder: CRResponder {
   override func mouseUp(e: CREvent) {
     println("QKResponder mouseUp: \(e)")
   }
-  
+  #endif
 }

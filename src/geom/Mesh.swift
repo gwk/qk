@@ -34,13 +34,11 @@ extension NSMutableData {
   }
 }
 
-
 enum GeomKind {
   case Point
   case Seg
   case Tri
 }
-
 
 class Mesh {
   
@@ -184,9 +182,8 @@ class Mesh {
           primitiveCount: tri.count,
           bytesPerIndex: sizeof(U16)))
     }
-    return SCNGeometry(sources:sources, elements:elements)
+    return SCNGeometry(sources: sources, elements: elements)
   }
-  
   
   func triangle() -> Mesh {
     let r: F32 = sqrt(1.0 / 3.0) // radius of insphere.
@@ -208,5 +205,3 @@ class Mesh {
     return m;
   }
 }
-
-

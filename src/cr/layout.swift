@@ -4,23 +4,23 @@
 #if os(OSX)
   import AppKit
   typealias LOP = NSLayoutPriority
-  let LOPReq = NSLayoutPriorityRequired
+  //let LOPReq = NSLayoutPriorityRequired // TODO: swift currently omits the 'static' storage type, causing linker error.
+  let LOPReq = LOP(1000)
+  let LOPHigh = LOP(750)
+  let LOPDragThatCanResizeWindow = LOP(510)
+  let LOPWindowSizeStayPut = LOP(500)
+  let LOPDragThatCannotResizeWindow = LOP(490)
+  let LOPLow = LOP(250)
+  let LOPFit = LOP(50)
   #else
   import UIKit
   typealias LOP = UILayoutPriority
   //let LOPReq = UILayoutPriorityRequired // TODO: swift currently omits the 'static' storage type, causing linker error.
-  let LOPReq  = UILayoutPriority(1000)
-  let LOPHigh = UILayoutPriority(750)
-  let LOPLow  = UILayoutPriority(250)
-  let LOPFit  = UILayoutPriority(50)
+  let LOPReq = LOP(1000)
+  let LOPHigh = LOP(750)
+  let LOPLow = LOP(250)
+  let LOPFit = LOP(50)
 #endif
-
-/*
-let UILayoutPriorityRequired: UILayoutPriority // A required constraint.  Do not exceed this.
-let UILayoutPriorityDefaultHigh: UILayoutPriority // This is the priority level with which a button resists compressing its content.
-let UILayoutPriorityDefaultLow: UILayoutPriority // This is the priority level at which a button hugs its contents horizontally.
-let UILayoutPriorityFittingSizeLevel: UILayoutPriority // When you send -[UIView systemLayoutSizeFittingSize:], the size fitting most closely to the target size (the argument) is computed.  UILayoutPriorityFittingSizeLevel is the priority level with which the view wants to conform to the target size in that computation.  It's quite low.  It is generally not appropriate to make a constraint at exactly this priority.  You want to be higher or lower.
-*/
 
 
 struct QKLayoutOperand {
@@ -51,8 +51,20 @@ extension CRView {
   var base: QKLayoutOperand { return layoutOperand(.Baseline) }
   
   var usesARMask: Bool {
-    get { return translatesAutoresizingMaskIntoConstraints() }
-    set { setTranslatesAutoresizingMaskIntoConstraints(newValue) }
+    get {
+      #if os(OSX)
+        return translatesAutoresizingMaskIntoConstraints
+        #else
+        return translatesAutoresizingMaskIntoConstraints()
+      #endif
+      }
+    set {
+      #if os(OSX)
+        translatesAutoresizingMaskIntoConstraints = newValue
+        #else
+      setTranslatesAutoresizingMaskIntoConstraints(newValue)
+      #endif
+    }
   }
 }
 
@@ -69,7 +81,7 @@ extension NSLayoutConstraint: QKLayoutConstraining {
   
   convenience init(_ rel: NSLayoutRelation, _ l: QKLayoutOperand, _ r: QKLayoutOperand? = nil, _ m: Flt = 1.0, _ c: Flt = 0.0,
     _ p: LOP = LOPReq) {
-      var rv: UIView? = nil
+      var rv: CRView? = nil
       var ra = NSLayoutAttribute.NotAnAttribute
       if let ur = r {
         rv = ur.v

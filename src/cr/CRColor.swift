@@ -36,36 +36,56 @@ extension CRColor {
 
   var a: Flt {
     var l: Flt = 0, a: Flt = 0
-    let ok = self.getWhite(&l, alpha: &a)
-    assert(ok)
+    #if os(OSX)
+      self.getWhite(&l, alpha: &a)
+      #else
+      let ok = self.getWhite(&l, alpha: &a)
+      assert(ok)
+    #endif
     return a
   }
   
   var l: Flt {
     var l: Flt = 0, a: Flt = 0
-    let ok = self.getWhite(&l, alpha: &a)
-    assert(ok)
+    #if os(OSX)
+      self.getWhite(&l, alpha: &a)
+      #else
+      let ok = self.getWhite(&l, alpha: &a)
+      assert(ok)
+    #endif
     return l
   }
   
   var r: Flt {
     var r: Flt = 0, g: Flt = 0, b: Flt = 0, a: Flt = 0
-    let ok = self.getRed(&r, green: &g, blue: &b, alpha: &a)
-    assert(ok)
+    #if os(OSX)
+      self.getRed(&r, green: &g, blue: &b, alpha: &a)
+      #else
+      let ok = self.getRed(&r, green: &g, blue: &b, alpha: &a)
+      assert(ok)
+    #endif
     return r
   }
   
   var g: Flt {
     var r: Flt = 0, g: Flt = 0, b: Flt = 0, a: Flt = 0
-    let ok = self.getRed(&r, green: &g, blue: &b, alpha: &a)
-    assert(ok)
+    #if os(OSX)
+      self.getRed(&r, green: &g, blue: &b, alpha: &a)
+      #else
+      let ok = self.getRed(&r, green: &g, blue: &b, alpha: &a)
+      assert(ok)
+    #endif
     return g
   }
   
   var b: Flt {
     var r: Flt = 0, g: Flt = 0, b: Flt = 0, a: Flt = 0
-    let ok = self.getRed(&r, green: &g, blue: &b, alpha: &a)
-    assert(ok)
+    #if os(OSX)
+      self.getRed(&r, green: &g, blue: &b, alpha: &a)
+      #else
+      let ok = self.getRed(&r, green: &g, blue: &b, alpha: &a)
+      assert(ok)
+    #endif
     return b
   }
   

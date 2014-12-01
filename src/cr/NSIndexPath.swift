@@ -7,4 +7,7 @@ import Foundation
 extension NSIndexPath {
 
   convenience init(s: Int, r: Int) { self.init(indexes: [s, r], length: 2) }
+  
+  convenience init(r: Int) { self.init(indexes: [0, r], length: 2) }
+  
 }

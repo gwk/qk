@@ -3,12 +3,36 @@
 
 import CoreGraphics
 
-extension CGPoint {
+
+typealias Flt = CGFloat
+typealias V2 = CGPoint
+
+func sqr(a: Flt) -> Flt { return a * a }
+func sqrrt(a: Flt) -> Flt { return sqrt(a) }
+
+
+extension CGPoint: Printable {
   
   init(_ x: Flt, _ y: Flt) { self.init(x: x, y: y) }
   
   static let zero = CGPoint.zeroPoint
+
+  public var description: String { return "V2(\(x), \(y))" }
+  var v32: V2F32 { return V2F32(F32(x), F32(y)); }
+  var len: Flt { return sqrrt(sqr(x) + sqr(y)) }
+  var norm: V2 { return self / self.len }
+  var clampToUnit: V2 { return V2(clamp(x, 0, 1), clamp(y, 0, 1)) }
 }
+
+func +(a: V2, b: V2) -> V2 { return V2(a.x + b.x, a.y + b.y) }
+func -(a: V2, b: V2) -> V2 { return V2(a.x - b.x, a.y - b.y) }
+func *(a: V2, b: V2) -> V2 { return V2(a.x * b.x, a.y * b.y) }
+func /(a: V2, b: V2) -> V2 { return V2(a.x / b.x, a.y / b.y) }
+func +(a: V2, s: Flt) -> V2 { return V2(a.x + s, a.y + s) }
+func -(a: V2, s: Flt) -> V2 { return V2(a.x - s, a.y - s) }
+func *(a: V2, s: Flt) -> V2 { return V2(a.x * s, a.y * s) }
+func /(a: V2, s: Flt) -> V2 { return V2(a.x / s, a.y / s) }
+
 
 extension CGSize {
 
@@ -25,7 +49,10 @@ extension CGSize {
     get { return height }
     set(h) { height = h }
   }
+  
+  var v: V2 { return V2(w, h); }
 }
+
 
 extension CGRect {
   

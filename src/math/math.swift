@@ -4,7 +4,6 @@
 import Foundation
 
 
-typealias V2 = V2F32
 typealias V3 = V3F32
 typealias V4 = V4F32
 

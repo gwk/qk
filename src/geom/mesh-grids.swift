@@ -6,7 +6,7 @@ func gridCage(divisions: Int) -> Mesh {
   let m = Mesh()
   let steps = divisions + 1
   for i in 0...steps {
-    let t = F32(i) / F32(steps)
+    let t: Flt = Flt(Flt(i).native / Flt(steps).native) // hack around swiftc 1.1 typecheck bug.
     m.p.append(V3(t, t, t))
     
   }

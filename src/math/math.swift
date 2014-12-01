@@ -4,9 +4,7 @@
 import Foundation
 
 
-typealias V3 = V3F32
-typealias V4 = V4F32
-
+//func sqr<T: FloatingPointType>(a: T) -> T { return a * a }
 func sqr(a: F32) -> F32 { return a * a }
 func sqr(a: F64) -> F64 { return a * a }
 

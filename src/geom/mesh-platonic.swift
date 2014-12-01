@@ -6,7 +6,7 @@ import SceneKit
 
 
 func tetrahedron() -> Mesh {
-  let r: F32 = sqrt(1.0 / 3.0); // radius of insphere.
+  let r: Flt = sqrt(1.0 / 3.0); // radius of insphere.
   let m = Mesh()
   m.p = [
     V3(-r, -r, -r), // cube 0.
@@ -28,12 +28,11 @@ func tetrahedron() -> Mesh {
     Adj(1, 3),
     Adj(2, 3),
   ]
-  println(m.p)
   return m
 }
 
 func cube() -> Mesh {
-  let r: F32 = sqrt(1.0 / 3.0); // radius of insphere.
+  let r: Flt = sqrt(1.0 / 3.0); // radius of insphere.
   let m = Mesh()
   m.p = [
     V3(-r, -r, -r),
@@ -114,12 +113,12 @@ func octahedron() -> Mesh {
 }
 
 func dodecahedron() -> Mesh {
-  let r: F32 = sqrt(1.0 / 3.0) // radius of cube insphere.
-  let phi: F32 = (1 + sqrt(5)) * 0.5 // golden ratio.
+  let r: Flt = sqrt(1.0 / 3.0) // radius of cube insphere.
+  let phi: Flt = (1 + sqrt(5)) * 0.5 // golden ratio.
   // two types of vertices: cubic and axis-aligned rect.
   // rect major and minor are (phi, 1 / phi) for unit cube; must normalize by x.
-  let m: F32 = r * phi // major.
-  let n: F32 = r / phi // minor.
+  let m: Flt = r * phi // major.
+  let n: Flt = r / phi // minor.
   let mesh = Mesh()
   mesh.p = [
     V3(-m, -n,  0),
@@ -217,12 +216,12 @@ func dodecahedron() -> Mesh {
 }
 
 func icosahedron() -> Mesh {
-  let phi: F32 = (1 + sqrt(5)) * 0.5 // golden ratio.
+  let phi: Flt = (1 + sqrt(5)) * 0.5 // golden ratio.
   // each vertex is also the vertex of an axis-aligned golden rectangle.
   // compute the radius and normalize major and minor lengths.
-  let r: F32 = sqrt(phi * phi + 1)
-  let m: F32 = phi / r // major.
-  let n: F32 = 1.0 / r // minor.
+  let r: Flt = sqrt(phi * phi + 1)
+  let m: Flt = phi / r // major.
+  let n: Flt = 1.0 / r // minor.
   let mesh = Mesh()
   mesh.p = [
     V3(-m, -n,  0),

@@ -3,18 +3,22 @@
 
 import Foundation
 
-struct Tri {
+struct Tri: Printable {
   var a, b, c: U16
+  
   init(_ a: U16, _ b: U16, _ c: U16) {
     assert(a < b && a < c)
     self.a = a
     self.b = b
     self.c = c
   }
+  
+  var description: String { return "Tri(\(a), \(b), \(c))" }
 }
 
-struct Seg {
+struct Seg: Printable {
   var a, b: U16
+
   init(_ a: U16, _ b: U16) {
     if (a < b) {
       self.a = a
@@ -24,6 +28,8 @@ struct Seg {
       self.b = a
     }
   }
+  
+  var description: String { return "Seg(\(a), \(b))" }
 }
 
 struct Adj {

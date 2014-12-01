@@ -7,6 +7,10 @@ import Foundation
 enum EventKind {
   case KD
   case KU
+  case FC
+  case MD
+  case MU
+  case MM
 }
 
 

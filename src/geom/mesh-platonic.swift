@@ -76,7 +76,7 @@ func cube() -> Mesh {
   return m
 }
 
-func octohedron() -> Mesh {
+func octahedron() -> Mesh {
   let m = Mesh()
   m.p = [
     V3(-1, -0,  0),

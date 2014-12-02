@@ -5,6 +5,8 @@ import UIKit
 
 
 extension UIViewController {
-    
+  
+  var nav: UINavigationController { return navigationController! }
+  
 }
 

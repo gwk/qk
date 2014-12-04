@@ -51,7 +51,7 @@ class Mesh {
   //var bw: [V4] = [] // boneWeights.
   //var bi: [BoneIndices] = [] // boneIndices.
   
-  var pnt: [U16] = []
+  var point: [U16] = []
   var seg: [Seg] = []
   var tri: [Tri] = []
   var adj: [Adj] = []
@@ -79,7 +79,7 @@ class Mesh {
   
   func addAllPoints() {
     for i in 0..<p.count {
-      pnt.append(U16(i))
+      point.append(U16(i))
     }
   }
   
@@ -91,11 +91,16 @@ class Mesh {
     }
   }
   
-  func addSeg(a: V3, b: V3) {
+  func addSeg(a: V3, _ b: V3) {
     let i = U16(p.count)
-    p.append(a)
-    p.append(b)
+    p.extend([a, b])
     seg.append(Seg(i, i + 1))
+  }
+  
+  func addQuad(a: V3, _ b: V3, _ c: V3, _ d: V3) {
+    let i = U16(p.count)
+    p.extend([a, b, c, d])
+    tri.extend([Tri(i, i + 1, i + 2), Tri(i, i + 2, i + 3)])
   }
   
   func geometry(kind: GeomKind = .Tri) -> SCNGeometry {
@@ -173,9 +178,9 @@ class Mesh {
     switch kind {
       case GeomKind.Point:
         elements.append(SCNGeometryElement(
-          data: NSData(bytes: pnt, length: pnt.count * sizeof(U16)),
+          data: NSData(bytes: point, length: point.count * sizeof(U16)),
           primitiveType: SCNGeometryPrimitiveType.Point,
-          primitiveCount: pnt.count,
+          primitiveCount: point.count,
           bytesPerIndex: sizeof(U16)))
       case GeomKind.Seg:
         elements.append(SCNGeometryElement(

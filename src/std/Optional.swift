@@ -4,7 +4,7 @@
 
 extension Optional {
 
-  func alt(alt: @autoclosure () -> T) -> T {
+  func or(alt: @autoclosure () -> T) -> T {
     if let val = self {
       return val
     } else {

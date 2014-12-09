@@ -97,5 +97,5 @@ extension CGRect {
   }
 }
 
-let CGRect256 = CGRect(0, 0, 256, 256)
+let frameInit = CGRect(0, 0, 256, 256) // large, weird size to make it obvious when we forget to specify layout constraints.
 

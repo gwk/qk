@@ -1,11 +1,72 @@
 // © 2014 George King.
 // Permission to use this file is granted in license-qk.txt.
 
-
 import Foundation
 
-extension String {
 
+let symbolChars = [Character]("_0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzABCDEFG")
+let symbolCharsSet = symbolChars.mapToDict() { ($0, true) }
+
+
+extension String {
+  
+  func contains(c: Character) -> Bool {
+    for e in self {
+      if e == c {
+        return true
+      }
+    }
+    return false
+  }
+  
+  func mapChars(transform: (Character) -> Character) -> String {
+    var s = ""
+    for c in self {
+      s.append(transform(c))
+    }
+    return s
+  }
+  
+  func mapChars(transform: (Character) -> String) -> String {
+    var s = ""
+    for c in self {
+      s.extend(transform(c))
+    }
+    return s
+  }
+  
+  var asSym: String {
+    for c0 in self { // do not actually iterate; just get first element.
+      if c0.isDigit {
+        return "_" + mapChars() { symbolCharsSet.contains($0) ? $0 : "_" }
+      } else {
+        return mapChars() { symbolCharsSet.contains($0) ? $0 : "_" }
+      }
+    }
+    return "" // empty case.
+  }
+  
+  var isSym: Bool {
+    if isEmpty {
+      return false
+    }
+    var first = true
+    for c in self {
+      if first {
+        if c.isDigit {
+          return false
+        }
+        first = false
+      }
+      if !symbolCharsSet.contains(c) {
+        return false
+      }
+    }
+    return true
+  }
+  
+  // lines.
+  
   init(lines: [String]) {
     self = "\n".join(lines)
   }
@@ -35,5 +96,6 @@ extension String {
   }
   
   var numberedLines: [String] { return numberedLinesFrom(1) }
+  
 }
 

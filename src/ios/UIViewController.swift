@@ -9,7 +9,7 @@ extension UIViewController {
   var nav: UINavigationController? { return navigationController }
   
   func present(c: UIViewController, animated: Bool = true, completion: Action? = nil) {
-    (nav as UIViewController?).alt(self).presentViewController(c, animated: animated, completion: completion)
+    (nav as UIViewController?).or(self).presentViewController(c, animated: animated, completion: completion)
   }
   
   func presentNavRoot(root: UIViewController, animated: Bool = true, completion: Action? = nil) {

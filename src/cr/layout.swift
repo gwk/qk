@@ -88,7 +88,7 @@ protocol QKLayoutConstraining {
   // allows for constraints and format strings to be specified in the same variadic call;
   // this is syntactically convenient, and also allows for simultaneous activation of all constraints,
   // which is more performant, according to the comments around NSLayoutConstraint.activateConstraints.
-  func constraintArray(views: [String: CRView], metrics: [String: NSNumber], opts: NSLayoutFormatOptions) -> [NSLayoutConstraint];
+  func constraintArray(views: [CRView], metrics: [String: NSNumber], opts: NSLayoutFormatOptions) -> [NSLayoutConstraint];
 }
 
 
@@ -111,7 +111,7 @@ extension NSLayoutConstraint: QKLayoutConstraining {
   var rv: CRView? { return secondItem as CRView? }
   var ra: NSLayoutAttribute { return secondAttribute }
   
-  func constraintArray(views: [String: CRView], metrics: [String: NSNumber], opts: NSLayoutFormatOptions) -> [NSLayoutConstraint] {
+  func constraintArray(views: [CRView], metrics: [String: NSNumber], opts: NSLayoutFormatOptions) -> [NSLayoutConstraint] {
     return [self] // ignore all the format-related arguments.
   }
 }
@@ -119,8 +119,9 @@ extension NSLayoutConstraint: QKLayoutConstraining {
 
 extension String: QKLayoutConstraining {
   
-  func constraintArray(views: [String: CRView], metrics: [String: NSNumber], opts: NSLayoutFormatOptions) -> [NSLayoutConstraint] {
-    return NSLayoutConstraint.constraintsWithVisualFormat(self, options: opts, metrics: metrics, views: views) as [NSLayoutConstraint]
+  func constraintArray(views: [CRView], metrics: [String: NSNumber], opts: NSLayoutFormatOptions) -> [NSLayoutConstraint] {
+    let viewDict = views.mapToDict() { ($0.name, $0) }
+    return NSLayoutConstraint.constraintsWithVisualFormat(self, options: opts, metrics: metrics, views: viewDict) as [NSLayoutConstraint]
   }
 }
 
@@ -131,8 +132,8 @@ func eq(l: QKLayoutOperand, _ r: QKLayoutOperand? = nil, m: Flt = 1.0, c: Flt = 
 
 // TODO: lt, gt, le, ge.
 
-func constrain(views: [String: CRView], #metrics: [String: NSNumber], #opts: NSLayoutFormatOptions, #constraints: [QKLayoutConstraining]) {
-  for v in views.values {
+func constrain(views: [CRView], #metrics: [String: NSNumber], #opts: NSLayoutFormatOptions, #constraints: [QKLayoutConstraining]) {
+  for v in views {
     v.usesARMask = false
   }
   var allConstraints: [NSLayoutConstraint] = []
@@ -143,19 +144,19 @@ func constrain(views: [String: CRView], #metrics: [String: NSNumber], #opts: NSL
 }
 
 
-func constrain(views: [String: CRView], #metrics: [String: NSNumber], #opts: NSLayoutFormatOptions, constraints: QKLayoutConstraining...) {
+func constrain(views: [CRView], #metrics: [String: NSNumber], #opts: NSLayoutFormatOptions, constraints: QKLayoutConstraining...) {
   constrain(views, metrics: metrics, opts: opts, constraints: constraints)
 }
 
-func constrain(views: [String: CRView], #metrics: [String: NSNumber], constraints: QKLayoutConstraining...) {
+func constrain(views: [CRView], #metrics: [String: NSNumber], constraints: QKLayoutConstraining...) {
   constrain(views, metrics: metrics, opts: NSLayoutFormatOptions(0), constraints: constraints)
 }
 
-func constrain(views: [String: CRView], #opts: NSLayoutFormatOptions, constraints: QKLayoutConstraining...) {
+func constrain(views: [CRView], #opts: NSLayoutFormatOptions, constraints: QKLayoutConstraining...) {
   constrain(views, metrics: [:], opts: opts, constraints: constraints)
 }
 
-func constrain(views: [String: CRView], constraints: QKLayoutConstraining...) {
+func constrain(views: [CRView], constraints: QKLayoutConstraining...) {
   constrain(views, metrics: [:], opts: NSLayoutFormatOptions(0), constraints: constraints)
 }
 

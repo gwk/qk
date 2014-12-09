@@ -96,3 +96,6 @@ extension CGRect {
     set(h) { s = CGSize(s.w, h) }
   }
 }
+
+let CGRect256 = CGRect(0, 0, 256, 256)
+

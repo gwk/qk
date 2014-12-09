@@ -69,6 +69,21 @@ extension CRView {
 }
 
 
+#if os(iOS)
+extension UIViewController {
+  var tg: UIView {
+    let a: AnyObject = topLayoutGuide
+    return a as UIView // this cast works in ios 8, not guaranteed to work in the future.
+
+  }
+  var bg: UIView {
+    let a: AnyObject = bottomLayoutGuide
+    return a as UIView // this cast works in ios 8, not guaranteed to work in the future.
+  }
+}
+#endif
+
+
 protocol QKLayoutConstraining {
   // allows for constraints and format strings to be specified in the same variadic call;
   // this is syntactically convenient, and also allows for simultaneous activation of all constraints,
@@ -79,13 +94,13 @@ protocol QKLayoutConstraining {
 
 extension NSLayoutConstraint: QKLayoutConstraining {
   
-  convenience init(_ rel: NSLayoutRelation, _ l: QKLayoutOperand, _ r: QKLayoutOperand? = nil, _ m: Flt = 1.0, _ c: Flt = 0.0,
+  convenience init(_ rel: NSLayoutRelation, _ l: QKLayoutOperand, _ or: QKLayoutOperand? = nil, _ m: Flt = 1.0, _ c: Flt = 0.0,
     _ p: LOP = LOPReq) {
       var rv: CRView? = nil
       var ra = NSLayoutAttribute.NotAnAttribute
-      if let ur = r {
-        rv = ur.v
-        ra = ur.a
+      if let r = or {
+        rv = r.v
+        ra = r.a
       }
       self.init(item: l.v, attribute: l.a, relatedBy: rel, toItem: rv, attribute: ra, multiplier: m,  constant: c)
       priority = p
@@ -114,6 +129,7 @@ func eq(l: QKLayoutOperand, _ r: QKLayoutOperand? = nil, m: Flt = 1.0, c: Flt = 
   return NSLayoutConstraint(.Equal, l, r, m, c, p)
 }
 
+// TODO: lt, gt, le, ge.
 
 func constrain(views: [String: CRView], #metrics: [String: NSNumber], #opts: NSLayoutFormatOptions, #constraints: [QKLayoutConstraining]) {
   for v in views.values {

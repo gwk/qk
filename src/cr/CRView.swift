@@ -13,5 +13,6 @@
 extension CRView {
   
   convenience init(size: CGSize) { self.init(frame: CGRect(size)) }
-   
+  
 }
+

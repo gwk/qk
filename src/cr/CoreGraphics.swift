@@ -7,8 +7,14 @@ import CoreGraphics
 typealias Flt = CGFloat
 typealias V2 = CGPoint
 
-func sqr(a: Flt) -> Flt { return a * a }
-func sqrrt(a: Flt) -> Flt { return sqrt(a) }
+
+extension Flt {
+  var sqr: Flt { return self * self }
+  var sqrt: Flt { return Flt(native.sqrt) }
+  var ceil: Flt { return Flt(native.ceil) }
+  var floor: Flt { return Flt(native.floor) }
+  var round: Flt { return Flt(native.round) }
+}
 
 
 extension CGPoint: Printable {
@@ -19,7 +25,7 @@ extension CGPoint: Printable {
 
   public var description: String { return "V2(\(x), \(y))" }
   var v32: V2F32 { return V2F32(F32(x), F32(y)); }
-  var len: Flt { return sqrrt(sqr(x) + sqr(y)) }
+  var len: Flt { return (x.sqr + y.sqr).sqrt }
   var norm: V2 { return self / self.len }
   var clampToUnit: V2 { return V2(clamp(x, 0, 1), clamp(y, 0, 1)) }
 }

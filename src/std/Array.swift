@@ -27,4 +27,13 @@ extension Array {
     }
     return d
   }
+  
+  func mapEnumToDict<K, V>(transform: (Int, T) -> (K, V)) -> [K:V] {
+    var d = [K:V]()
+    for (i, e) in enumerate(self) {
+      let (k, v) = transform(i, e)
+      d[k] = v
+    }
+    return d
+  }
 }

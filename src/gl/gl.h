@@ -5,6 +5,15 @@
 
 typedef GLuint GLHandle;
 
+#if TARGET_OS_IPHONE
+typedef EAGLContext* GLContext;
+#else
+typedef CGLContextObj GLContext;
+#endif
+
+
+void glContextEnable(GLContext ctx);
+
 void glDeleteTexture(GLHandle texture);
 
 void glShaderSource1(GLHandle shader, const char* source, int len);

@@ -9,7 +9,7 @@ let symbolCharsSet = symbolChars.mapToDict() { ($0, true) }
 
 
 extension String {
-  
+
   func contains(c: Character) -> Bool {
     for e in self {
       if e == c {

@@ -23,6 +23,7 @@ extension Int {
     var pad_len = width - (a.count + (neg ? 1 : 0))
     while pad_len > 0 {
       a.append(pad)
+      pad_len--
     }
     if neg {
       a.append("-")

@@ -53,7 +53,7 @@ def gen_vec(d, t):
     L('  }')
   
   L('  var description: String { return "$($)" }', vt, jc([r'\({})'.format(c) for c in comps]))
-  L('  var len: $ { return sqrrt($) }', t, ' + '.join(fmt('sqr($)', c) for c in comps))
+  L('  var len: $ { return ($).sqrt }', t, ' + '.join(fmt('$.sqr', c) for c in comps))
   L('  var norm: $ { return self / self.len }', vt)
   L('  var clampToUnit: $ { return $($) }', vt, vt, jcf('clamp($, 0, 1)', comps))
   L('}\n')

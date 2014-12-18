@@ -22,7 +22,7 @@ extension V3: Printable {
   }
   
   public var description: String { return "V3(\(x), \(y), \(z))" }
-  var len: Flt { return sqrrt(sqr(x) + sqr(y) + sqr(z)) }
+  var len: Flt { return (x.sqr + y.sqr + z.sqr).sqrt }
   var norm: V3 { return self / self.len }
   var clampToUnit: V3 { return V3(clamp(x, 0, 1), clamp(y, 0, 1), clamp(z, 0, 1)) }
   var v32: V3F32 { return V3F32(F32(x), F32(y), F32(z)); }
@@ -56,7 +56,7 @@ extension V4: Printable {
   }
   
   public var description: String { return "V4(\(x), \(y), \(z), \(w))" }
-  var len: Flt { return sqrrt(sqr(x) + sqr(y) + sqr(z) + sqr(w)) }
+  var len: Flt { return (x.sqr + y.sqr + z.sqr + w.sqr).sqrt }
   var norm: V4 { return self / self.len }
   var clampToUnit: V4 { return V4(clamp(x, 0, 1), clamp(y, 0, 1), clamp(z, 0, 1), clamp(w, 0, 1)) }
   var v32: V4F32 { return V4F32(F32(x), F32(y), F32(z), F32(w)); }

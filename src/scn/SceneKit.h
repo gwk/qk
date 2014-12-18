@@ -3,5 +3,4 @@
 
 #import <SceneKit/SceneKit.h>
 
-
 void SCNSceneRenderer_activateContext(id<SCNSceneRenderer> renderer);

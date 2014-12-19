@@ -10,6 +10,9 @@
 #endif
 
 
+#if os(OSX)
+  // TODO: use NSAccessibilityIdentifierAttribute?
+  
 var _viewTagNames: [String] = [""]
 var _viewNameTags: [String:Int] = ["":0]
 
@@ -26,7 +29,7 @@ func regViewNameTag(n: String) -> Int {
     return c
   }
 }
-
+#endif
 
 extension CRView {
   
@@ -38,14 +41,19 @@ extension CRView {
   }
   
   var name: String {
-    get { return _viewTagNames[tag] }
+    get {
+      #if os(OSX)
+        return _viewTagNames[tag]
+        #else
+        return accessibilityIdentifier
+      #endif
+    }
     set {
       assert(newValue.isSym)
-      tag = regViewNameTag(newValue)
       #if os(OSX)
-      // TODO: accessibilityIdentifier?
+        tag = regViewNameTag(newValue)
       #else
-        accLabel = newValue // for now, unconditionally update the value.
+        accessibilityIdentifier = newValue
       #endif
     }
   }

@@ -27,10 +27,7 @@ func GLView_setup() {
     "}"
     ])
 
-  GLView_dflt_prog = GLProgram(
-    shaders: [GLView_dflt_vert, GLView_dflt_frag],
-    uniforms: ["screenScale", "o", "s", "col"],
-    attrs: ["unit_pos"])
+  GLView_dflt_prog = GLProgram(GLView_dflt_vert, GLView_dflt_frag)
 }
 
 

@@ -15,12 +15,14 @@ let GLShader_prefix = String(lines:
 
 
 
-class GLShader {
+class GLShader: Printable {
   let handle: GLHandle
   let type: GLenum
   let name: String
   let source: String
-
+  
+  var description: String { return "GLShader(\(handle): \(name))" }
+  
   deinit {
     glDeleteShader(handle)
     glAssert()

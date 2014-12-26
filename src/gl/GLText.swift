@@ -210,7 +210,7 @@ class GLTextAtlas {
     self.fontName = fontName
     self.textWidths = [Int](takeWhile(HPOTGen()) { $0 <= 32 })
     self.chars = chars
-    self.pages = textWidths.mapToDict() { return ($0, GLTextPage(fontName: fontName, advance: $0, chars: chars)) }
+    self.pages = mapToDict(textWidths) { return ($0, GLTextPage(fontName: fontName, advance: $0, chars: chars)) }
   }
 }
 

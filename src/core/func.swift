@@ -2,6 +2,25 @@
 // Permission to use this file is granted in license-qk.txt.
 
 
+func mapToDict<S: SequenceType, K, V>(seq: S, transform: (S.Generator.Element) -> (K, V)) -> [K:V] {
+  var d = [K:V]()
+  for e in seq {
+    let (k, v) = transform(e)
+    d[k] = v
+  }
+  return d
+}
+
+func mapEnumToDict<S: SequenceType, K, V>(seq: S, transform: (Int, S.Generator.Element) -> (K, V)) -> [K:V] {
+  var d = [K:V]()
+  for (i, e) in enumerate(seq) {
+    let (k, v) = transform(i, e)
+    d[k] = v
+  }
+  return d
+}
+
+
 func take<G: GeneratorType>(var gen: G, var n: Int) -> [G.Element] {
   var a: [G.Element] = []
   while n > 0 {

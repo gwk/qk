@@ -57,6 +57,7 @@ extension CGSize {
   }
   
   var v: V2 { return V2(w, h); }
+  var v32: V2F32 { return V2F32(F32(w), F32(h)); }
 }
 
 

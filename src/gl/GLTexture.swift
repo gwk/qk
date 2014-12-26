@@ -60,7 +60,7 @@ class GLTexture {
   }
     
   func setMinFilter(filter: GLenum) {
-    bindToTarget() // does texture need to be bound when this is called?
+    bind() // does texture need to be bound when this is called?
     assert(
       filter == GLenum(GL_NEAREST) ||
       filter == GLenum(GL_LINEAR) ||
@@ -74,7 +74,7 @@ class GLTexture {
   }
   
   func setMagFilter(filter: GLenum) {
-    bindToTarget() // does texture need to be bound when this is called?
+    bind() // does texture need to be bound when this is called?
     assert(filter == GLenum(GL_NEAREST) || filter == GLenum(GL_LINEAR),
       "bad texture filter parameter: \(filter)")
     glTexParameteri(target, GLenum(GL_TEXTURE_MAG_FILTER), GLint(filter))
@@ -89,7 +89,7 @@ class GLTexture {
   }
   
   func setWrap(wrap: GLenum, axis: GLenum) {
-    bindToTarget() // does texture need to be bound when this is called?
+    bind() // does texture need to be bound when this is called?
     assert(wrap == GLenum(GL_CLAMP_TO_EDGE) || wrap == GLenum(GL_MIRRORED_REPEAT) || wrap == GLenum(GL_REPEAT),
       "bad texture wrap parameter: \(wrap)")
     glTexParameteri(target, axis, GLint(wrap))
@@ -103,15 +103,15 @@ class GLTexture {
     setWrap(wrap, axis: GLenum(GL_TEXTURE_WRAP_T))
   }
   
-  func bindToTarget() {
-    //glEnable(_target); qkgl_assert(); // necessary in OpenGL? invalid in ES2.
+  func bind() {
+    //glEnable(_target); qkgl_assert(); // TODO: necessary in OpenGL? invalid in ES2.
     glBindTexture(target, handle)
     glAssert()
   }
   
-  func unbindFromTarget() {
+  func unbind() {
     // TODO: should this be a class function?
-    //glEnable(_target); qkgl_assert(); // necessary in OpenGL? invalid in ES2.
+    //glEnable(_target); qkgl_assert(); // TODO: necessary in OpenGL? invalid in ES2.
     glBindTexture(target, 0)
     glAssert()
   }

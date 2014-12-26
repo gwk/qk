@@ -55,7 +55,7 @@ class GLShader {
     glCompileShader(handle)
     glAssert()
     check(getPar(GLenum(GL_COMPILE_STATUS)) == GL_TRUE,
-      "shader compile failed: \(name)\n\(infoLog)\nsource:\n\(source.numberedLines)\n")
+      "shader compile failed: \(name)\n\(infoLog)source:\n\(String(lines: source.numberedLines))\n")
   }
   
   class func res(res: [String]) -> GLShader {

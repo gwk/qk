@@ -21,15 +21,14 @@ extension Int {
       i /= base
     }
     var pad_len = width - (a.count + (neg ? 1 : 0))
+    if neg {
+      a.append("-")
+    }
     while pad_len > 0 {
       a.append(pad)
       pad_len--
     }
-    if neg {
-      a.append("-")
-    }
-    a.reverse()
-    return String(a)
+    return String(a.reverse())
   }
 
   func d(width: Int) -> String { return self.repr(base: 10, width: width) }

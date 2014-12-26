@@ -38,13 +38,21 @@ def gen_vec(d, t):
   vt = fmt('V$$', d, t)
   vt_prev = fmt('V$$', d - 1, t)
 
-  L('struct $: Printable {', vt)
+  L('struct $: Printable, Equatable {', vt)
   L('  var $: $', jc(comps), t)
   
-  L('  init($) {', jc(fmt('_ $: $', comp, t) for comp in comps))
+  L('  init($) {', jc(fmt('_ $: $ = 0', comp, t) for comp in comps))
   for c in comps:
     L('    self.$ = $', c, c)
   L('  }')
+  
+  for di in range(d, 5):
+    for ti in types:
+      vi = fmt('V$$', di, ti)
+      L('  init(_ v: $) {', vi)
+      for c in comps:
+        L('    self.$ = $(v.$)', c, t, c)
+      L('  }')
   
   if d > 2:
     L('  init(_ v: $, _ s: $) {', vt_prev, t)
@@ -64,8 +72,12 @@ def gen_vec(d, t):
   for op in ops:
     cons_comps_s = jc(fmt('$ $ s', a, op) for a in comps_a)
     L('func $(a: $, s: $) -> $ { return $($) }', op, vt, t, vt, vt, cons_comps_s)
-  L('\n')
 
+  L('')
+  L('func ==(a: $, b: $) -> Bool {', vt, vt)
+  L('  return $', ' && '.join(fmt('a.$ == b.$', c, c) for c in comps))
+  L('}')
+  L('\n')
 
 def gen_mat(d, t):
   v_comps = all_v_comps[:d]

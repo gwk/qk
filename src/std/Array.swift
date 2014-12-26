@@ -14,7 +14,7 @@ extension Array {
   func mapEnum<U>(transform: (Int, T) -> U) -> [U] {
     var a = [U](capacity:self.count)
     for (i, e) in enumerate(self) {
-      a[i] = transform(i, e)
+      a.append(transform(i, e))
     }
     return a
   }

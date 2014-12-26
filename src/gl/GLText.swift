@@ -2,47 +2,15 @@
 // Permission to use this file is granted in license-qk.txt.
 
 
-struct TextVert {
-  var pos: V2F32
-  var tex: V2F32
-}
-
-struct TextQuad {
-  var a: TextVert
-  var b: TextVert
-  var c: TextVert
-  var d: TextVert
-}
-
-struct Rect: Equatable {
-  var lt: V2 = V2() // left, top.
-  var rb: V2 = V2() // right, bottom.
-}
-
-func ==(a: Rect, b: Rect) -> Bool { return a.lt == b.lt && a.rb == b.rb }
-
-
-class GLTextView {
-  var _frame: Rect = Rect()
+class GLTextView: GLView {
   var _text: String = ""
   var _textSize: Int = 16
   var _kern: Flt = 0
-  var quads: [TextVert] = []
   var atlas: GLTextAtlas
-  var tex: GLTexture? = nil
 
   init(atlas: GLTextAtlas) {
     self.atlas = atlas
-  }
-  
-  var frame: Rect {
-    get { return _frame }
-    set {
-      if _frame != newValue {
-        _frame = newValue
-        quads.removeAll() // could be smarter.
-      }
-    }
+    super.init(program: nil, tex: nil)
   }
   
   var text: String {
@@ -50,7 +18,7 @@ class GLTextView {
     set {
       if _text != newValue {
         _text = newValue
-        quads.removeAll()
+        needsLayout = true
       }
     }
   }
@@ -60,7 +28,7 @@ class GLTextView {
     set {
       if _textSize != newValue {
         _textSize = newValue
-        quads.removeAll()
+        needsLayout = true
       }
     }
   }
@@ -70,11 +38,14 @@ class GLTextView {
     set {
       if _kern == newValue { return }
       _kern = newValue
-      quads.removeAll()
+      needsLayout = true
     }
   }
   
-  func render() {
+  override func layout() {
+  }
+  
+  override func render(screenScale: V2F32, offset: V2F32) {
     // bind program
     // bind origin
     // gen quads up to size
@@ -138,7 +109,7 @@ struct GLTextPage {
     self.fontName = fontName
     self.advance = advance
     self.chars = chars
-    let font = CRFont(name: "Source Code Pro", size: Flt(advance * 2))!
+    let font = CRFont(name: fontName, size: Flt(advance * 2))!
     //let glyphRect = font.boundingRectForFont
     // generate strings and glyph info prior to allocating canvas.
     var attrStrings: [NSAttributedString] = []
@@ -153,13 +124,11 @@ struct GLTextPage {
     var lines: [CTLine] = []
     var glyphRects: [GLGlyphRect] = []
     var gh = 0 // for now, rows are uniform height.
-    for i in 0..<chars.count {
-      let c = chars.val(i)
+    for (i, c) in enumerate(chars.vals) {
       let attrString = NSAttributedString(string: String(c), attributes: attrs)
       let line = CTLineCreateWithAttributedString(attrString)
       lines.append(line)
       let b = CGRectIntegral(CTLineGetImageBounds(line, ctx0))
-      //println("c: \(c); b:\(b)")
       glyphRects.append(GLGlyphRect(gx: Int(-b.x), gy: Int(-b.y), w: Int(b.w), h: Int(b.h)))
       gh = max(gh, Int(b.h))
     }
@@ -174,9 +143,9 @@ struct GLTextPage {
     var ty = 0
     for r in glyphRects {
       assert(r.w < wMax)
-      println("r: \(r)")
+      //println("r: \(r)")
       if tx + r.w > wMax { // spill to next line.
-        println("spill")
+        //println("spill")
         tx = 0
         ty += gh
         rows++
@@ -195,38 +164,36 @@ struct GLTextPage {
     for i in 0..<chars.count {
       let l = lines[i]
       let g = glyphs[i]
-      println("g: \(g)")
+      //println("g: \(g)")
       let textMat = CGAffineTransformMakeTranslation(Flt(g.tx + g.gx), Flt(g.ty + g.gy))
-      //CGContextSaveGState(ctx)
       CGContextSetTextMatrix(ctx, textMat)
       CTLineDraw(l, ctx)
-      //CGContextRestoreGState(ctx)
     }
     // allocate texture.
     tex = GLTexture()
     let dataU8 = UnsafePointer<U8>(CGBitmapContextGetData(ctx))
     let bytes = Array<U8>(UnsafeBufferPointer<U8>(start: dataU8, count: w * h))
-    println("\nadvance: \(advance); w:\(w) h:\(h)")
-    println("asc: \(font.ascender); desc: \(font.descender); lead: \(font.leading)")
-    let string = String(chars.vals)
-    println("chars: '\(string)'")
-    for j in 0..<h {
-      var s = ""
-      for i in 0..<min(w, 64) {
-        var v = Int(bytes[j * w + i])
-        var si = (v == 0) ? "__" : v.h0(2)
-        s.extend(si)
+    #if false
+      println("\nadvance: \(advance); w:\(w) h:\(h)")
+      println("asc: \(font.ascender); desc: \(font.descender); lead: \(font.leading)")
+      let string = String(chars.vals)
+      println("chars: '\(string)'")
+      for j in 0..<h {
+        var s = ""
+        for i in 0..<min(w, 64) {
+          var v = Int(bytes[j * w + i])
+          var si = (v == 0) ? "__" : v.h0(2)
+          s.extend(si)
+        }
+        println(s)
       }
-      println(s)
-    }
-    println()
-    
+      println()
+    #endif
     tex.update(w, h,
       format: GLenum(GL_RED),
       dataFormat: GLenum(GL_RED),
       dataType: GLenum(GL_UNSIGNED_BYTE),
       data: CGBitmapContextGetData(ctx))
-
   }
 }
 

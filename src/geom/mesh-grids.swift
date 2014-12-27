@@ -16,12 +16,13 @@ func gridCage(divisions: Int, barRatio: Flt = 1 / 16) -> Mesh {
       V3(-1, l, -1),
       V3( 1, l, -1),
       V3( 1, h, -1),
-      V3(-1, l, -1));
+      V3(-1, h, -1));
     m.addQuad( // front x.
       V3(-1, l,  1),
       V3(-1, h,  1),
       V3( 1, h,  1),
-      V3(-1, l,  1));
+      V3( 1, l,  1));
+    
     m.addQuad( // bottom x.
       V3(-1, -1,  l),
       V3(-1, -1,  h),
@@ -32,7 +33,7 @@ func gridCage(divisions: Int, barRatio: Flt = 1 / 16) -> Mesh {
       V3( 1,  1,  l),
       V3( 1,  1,  h),
       V3(-1,  1,  h));
-
+    
     m.addQuad( // back y.
       V3( l, -1, -1),
       V3( h, -1, -1),
@@ -74,7 +75,6 @@ func gridCage(divisions: Int, barRatio: Flt = 1 / 16) -> Mesh {
       V3( h,  1,  -1),
       V3( h,  1,  1),
       V3( l,  1,  1));
-
   }
   return m
 }

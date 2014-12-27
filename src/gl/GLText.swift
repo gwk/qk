@@ -45,7 +45,7 @@ class GLTextView: GLView {
   override func layout() {
   }
   
-  override func render(screenScale: V2F32, offset: V2F32) {
+  override func render(scaleFactor: Flt, screenSize: V2F32, offset: V2F32) {
     // bind program
     // bind origin
     // gen quads up to size

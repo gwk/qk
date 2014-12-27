@@ -9,34 +9,30 @@ var GLView_dflt_prog: GLProgram! = nil
 func GLView_setup() {
   
   let GLView_dflt_vert = GLShader(type: GLenum(GL_VERTEX_SHADER), name: "GLView_dflt_vert", sources: [
-    "uniform mediump vec2 screenScale;", // (s.x, -s.y) / 2.
-    "uniform mediump vec2 o;",
-    "uniform mediump vec2 s;",
-    "attribute vec2 unit_pos;",
-    "varying vec4 corners;", // TODO: noperspective?
+    "attribute vec2 glPos;",
+    "attribute vec2 cornerPos;",
+    "varying vec2 cornerPosF;", // TODO: noperspective qualifier?
     "void main(void) {",
-    "  vec2 screen_pos = (vec2(-.5, -.5) + o + s * unit_pos) / screenScale - vec2(1, -1);",
-    "  gl_Position = vec4(screen_pos, 0., 1.);",
-    "  corners = vec4(s * unit_pos, s * (vec2(1, 1) - unit_pos));",
-    //"  gl_FrontColor = col;",
+    "  gl_Position = vec4(glPos, 0.0, 1.0);",
+    "  cornerPosF = cornerPos;",
+    //"  gl_FrontColor = color;",
     "}"
     ])
 
   let GLView_dflt_frag = GLShader(type: GLenum(GL_FRAGMENT_SHADER), name: "GLView_dflt_frag", sources: [
-    "uniform mediump vec4 col;",
+    "uniform mediump vec4 color;",
     "uniform mediump float cornerRad;",
-    "varying vec4 corners;",
+    "varying vec2 cornerPosF;",
     
-    "float cPar(vec2 c) {", // corner parameter.
-    "  // the 0.75 fudge factor balances between a full circle not looking clipped, and smaller corners not looking inset.",
-    "  return max(c.x + c.y - (cornerRad), 0.75 + cornerRad - distance(c, vec2(cornerRad, cornerRad)));",
-    "}",
+    //"float cPar(vec2 c) {", // corner parameter.
+    //"}",
     "void main(void) {",
-    "  float cp = min(",
-    "    min(cPar(corners.xy), cPar(corners.xw)),",
-    "    min(cPar(corners.zy), cPar(corners.zw)));",
-    "  float cornerAlpha = clamp(cp, 0.0, 1.0);",
-    "  gl_FragColor = vec4(col.xyz, col.w * cornerAlpha);",
+    "  vec2 c = cornerPosF;",
+    "  float cornerPar = max(",
+    "    c.x + c.y - cornerRad,",
+    "    0.5 + cornerRad - distance(c, vec2(cornerRad, cornerRad)));",
+    "  float cornerAlpha = clamp(cornerPar, 0.0, 1.0);",
+    "  gl_FragColor = vec4(color.rgb, color.a * cornerAlpha);",
     //"  gl_FragColor = gl_Color;",
     "}"
     ])
@@ -60,7 +56,7 @@ class GLView {
   var o: V2F32 = V2F32()
   var _s: V2F32 = V2F32()
   var pan: V2F32 = V2F32()
-  var col: V4F32 = V4F32(1, 1, 1, 1)
+  var color: V4F32 = V4F32()
   var needsLayout: Bool = true
   
   init(_ name: String, program: GLProgram? = nil, tex: GLTexture? = nil) {
@@ -87,26 +83,41 @@ class GLView {
     }
   }
   
-  func render(screenScale: V2F32, offset: V2F32) {
+  func render(scaleFactor: Flt, screenSize: V2F32, offset: V2F32) {
     updateLayout()
+    let vo = offset + o
+    let sf = F32(scaleFactor)
+    let glScale: F32 = 2 * sf // factor of 2 is due to glSpace range of (-1, 1).
+    typealias Vertex = (V2F32, V2F32)
+    func v(x: F32, y: F32) -> Vertex { // transform from unitViewSpace to glSpace.
+      return (
+        V2F32( // glPos.
+          ( glScale * (vo.x + (x * s.x)) / screenSize.x) - 1,
+          (-glScale * (vo.y + (y * s.y)) / screenSize.y) + 1),
+        V2F32( // cornerPos; units are in device pixels, and denote the distance from the corner.
+          sf * s.x * (0.5 - abs(x - 0.5)),
+          sf * s.y * (0.5 - abs(y - 0.5))))
+    }
+    // triangle fan starting from center, then upper left corner, left midpoint, and around counterclockwise.
+    // this gives us triangles with exactly one point at the corner, simplifying the corner rounding fragment shader.
+    let vertices = [v(0.5, 0.5), v(0, 0), v(0, 0.5), v(0, 1), v(0.5, 1), v(1, 1), v(1, 0.5), v(1, 0), v(0.5, 0), v(0, 0)]
+    let stride = sizeof(Vertex)
     program.use()
-    program.bindUniform("screenScale", v2: screenScale)
-    program.bindUniform("o", v2: offset + o)
-    program.bindUniform("s", v2: s)
-    program.bindUniform("col", v4: col)
-    program.bindUniform("cornerRad", f: cornerRad)
-    let vertices = [V2F32(0, 0), V2F32(0, 1), V2F32(1, 0), V2F32(1, 1)]
-    program.bindAttr("unit_pos", stride: 0, V2F32: vertices, offset: 0)
-    glDrawArrays(GLenum(GL_TRIANGLE_STRIP), 0, 4)
+    program.bindUniform("color", v4: color)
+    program.bindUniform("cornerRad", f: cornerRad * sf)
+    program.bindAttr("glPos", stride: stride, V2F32: vertices, offset: 0)
+    program.bindAttr("cornerPos", stride: stride, V2F32: vertices, offset: sizeof(V2F32))
+    glDrawArrays(GLenum(GL_TRIANGLE_FAN), 0, 10)
     glAssert()
-    //println("scr:\(screenScale) o:\(offset + o) s:\(s) col:\(col)\nvert: \(vertices)")
   }
   
-  func renderTree(screenScale: V2F32, offset: V2F32) {
-    render(screenScale, offset: offset)
+  func renderTree(scaleFactor: Flt, screenSize: V2F32, offset: V2F32) {
+    if color.w > 0 {
+      render(scaleFactor, screenSize: screenSize, offset: offset)
+    }
     let subOffset = offset + pan
     for sv: GLView in subs {
-      sv.renderTree(screenScale, offset: subOffset)
+      sv.renderTree(scaleFactor, screenSize: screenSize, offset: subOffset)
     }
   }
 }

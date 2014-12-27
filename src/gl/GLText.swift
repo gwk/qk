@@ -8,9 +8,9 @@ class GLTextView: GLView {
   var _kern: Flt = 0
   var atlas: GLTextAtlas
 
-  init(atlas: GLTextAtlas) {
+  init(_ name: String, atlas: GLTextAtlas) {
     self.atlas = atlas
-    super.init(program: nil, tex: nil)
+    super.init(name, program: nil, tex: nil)
   }
   
   var text: String {

@@ -52,16 +52,19 @@ func GLView_setup() {
 
 
 class GLView {
+  let name: String
   var program: GLProgram
   var cornerRad: F32 = 0
   var subs: [GLView] = []
   
   var o: V2F32 = V2F32()
   var _s: V2F32 = V2F32()
+  var pan: V2F32 = V2F32()
   var col: V4F32 = V4F32(1, 1, 1, 1)
   var needsLayout: Bool = true
   
-  init(program: GLProgram? = nil, tex: GLTexture? = nil) {
+  init(_ name: String, program: GLProgram? = nil, tex: GLTexture? = nil) {
+    self.name = name
     self.program = program.or(GLView_dflt_prog)
   }
   
@@ -99,4 +102,11 @@ class GLView {
     //println("scr:\(screenScale) o:\(offset + o) s:\(s) col:\(col)\nvert: \(vertices)")
   }
   
+  func renderTree(screenScale: V2F32, offset: V2F32) {
+    render(screenScale, offset: offset)
+    let subOffset = offset + pan
+    for sv: GLView in subs {
+      sv.renderTree(screenScale, offset: subOffset)
+    }
+  }
 }

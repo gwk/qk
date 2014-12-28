@@ -77,6 +77,7 @@ struct GLGlyphRect: Printable {
 
 
 func _createContext(w: Int, h: Int) -> CGContext {
+  assert(w > 0 && h > 0)
   let cs: CGColorSpaceRef = CGColorSpaceCreateDeviceGray()
   let info = CGBitmapInfo(CGImageAlphaInfo.None.rawValue | CGBitmapInfo.ByteOrderDefault.rawValue)
   return CGBitmapContextCreate(nil, // manage data internally.

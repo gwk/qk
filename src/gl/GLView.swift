@@ -23,9 +23,6 @@ func GLView_setup() {
     "uniform mediump vec4 color;",
     "uniform mediump float cornerRad;",
     "varying vec2 cornerPosF;",
-    
-    //"float cPar(vec2 c) {", // corner parameter.
-    //"}",
     "void main(void) {",
     "  vec2 c = cornerPosF;",
     "  float cornerPar = max(",
@@ -36,12 +33,6 @@ func GLView_setup() {
     //"  gl_FragColor = gl_Color;",
     "}"
     ])
-
-  // angle corners.
-  //"  float cornerDist = min(",
-  //"    min(corners.x + corners.y, corners.x + corners.w),",
-  //"    min(corners.z + corners.y, corners.z + corners.w));",
-  //"  float cornerAlpha = clamp(cornerDist - cornerRad, 0.0, 1.0);",
 
   GLView_dflt_prog = GLProgram(GLView_dflt_vert, GLView_dflt_frag)
 }

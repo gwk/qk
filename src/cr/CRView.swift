@@ -22,7 +22,7 @@ extension CRView {
   var name: String {
     get {
       #if os(OSX)
-        fatalError("not implemented")
+        return accessibilityIdentifier()
         #else
         return accessibilityIdentifier
       #endif
@@ -30,7 +30,7 @@ extension CRView {
     set {
       assert(newValue.isSym)
       #if os(OSX)
-        fatalError("not implemented")
+        setAccessibilityIdentifier(newValue)
       #else
         accessibilityIdentifier = newValue
       #endif

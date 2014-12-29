@@ -4,7 +4,7 @@
 #if os(OSX)
   import AppKit
   typealias LOP = NSLayoutPriority
-  //let LOPReq = NSLayoutPriorityRequired // TODO: swift currently omits the 'static' storage type, causing linker error.
+  //let LOPReq = NSLayoutPriorityRequired // TODO: swift 1.1 omits the 'static' storage type, causing linker error.
   let LOPReq = LOP(1000)
   let LOPHigh = LOP(750)
   let LOPDragThatCanResizeWindow = LOP(510)
@@ -15,7 +15,7 @@
   #else
   import UIKit
   typealias LOP = UILayoutPriority
-  //let LOPReq = UILayoutPriorityRequired // TODO: swift currently omits the 'static' storage type, causing linker error.
+  //let LOPReq = UILayoutPriorityRequired // TODO: swift 1.1 omits the 'static' storage type, causing linker error.
   let LOPReq = LOP(1000)
   let LOPHigh = LOP(750)
   let LOPLow = LOP(250)
@@ -25,30 +25,43 @@
 
 struct QKLayoutOperand {
   let v: CRView
-  let a: NSLayoutAttribute
+  let a0: NSLayoutAttribute
+  let a1: NSLayoutAttribute
 }
 
 
 extension CRView {
   
-  func layoutOperand(attr: NSLayoutAttribute) -> QKLayoutOperand {
-    return QKLayoutOperand(v: self, a: attr)
+  func _loOper(a0: NSLayoutAttribute, _ a1: NSLayoutAttribute = .NotAnAttribute) -> QKLayoutOperand {
+    return QKLayoutOperand(v: self, a0: a0, a1: a1)
   }
   
-  var l: QKLayoutOperand { return layoutOperand(.Left) }
-  var r: QKLayoutOperand { return layoutOperand(.Right) }
-  var t: QKLayoutOperand { return layoutOperand(.Top) }
-  var b: QKLayoutOperand { return layoutOperand(.Bottom) }
+  var l: QKLayoutOperand { return _loOper(.Left) }
+  var r: QKLayoutOperand { return _loOper(.Right) }
+  var t: QKLayoutOperand { return _loOper(.Top) }
+  var b: QKLayoutOperand { return _loOper(.Bottom) }
   
-  var ld: QKLayoutOperand { return layoutOperand(.Leading) }
-  var tr: QKLayoutOperand { return layoutOperand(.Trailing) }
+  var cx: QKLayoutOperand { return _loOper(.CenterX) }
+  var cy: QKLayoutOperand { return _loOper(.CenterY) }
   
-  var w: QKLayoutOperand { return layoutOperand(.Width) }
-  var h: QKLayoutOperand { return layoutOperand(.Height) }
-  var cx: QKLayoutOperand { return layoutOperand(.CenterX) }
-  var cy: QKLayoutOperand { return layoutOperand(.CenterY) }
+  var lt: QKLayoutOperand { return _loOper(.Left, .Top) }
+  var lc: QKLayoutOperand { return _loOper(.Left, .CenterY) }
+  var lb: QKLayoutOperand { return _loOper(.Left, .Bottom) }
+  var ct: QKLayoutOperand { return _loOper(.CenterX, .Top) }
+  var c: QKLayoutOperand { return _loOper(.CenterX, .CenterY) }
+  var cb: QKLayoutOperand { return _loOper(.CenterX, .Bottom) }
+  var rt: QKLayoutOperand { return _loOper(.Right, .Top) }
+  var rc: QKLayoutOperand { return _loOper(.Right, .CenterY) }
+  var rb: QKLayoutOperand { return _loOper(.Right, .Bottom) }
   
-  var base: QKLayoutOperand { return layoutOperand(.Baseline) }
+  var lead: QKLayoutOperand { return _loOper(.Leading) }
+  var trail: QKLayoutOperand { return _loOper(.Trailing) }
+  
+  var w: QKLayoutOperand { return _loOper(.Width) }
+  var h: QKLayoutOperand { return _loOper(.Height) }
+  var s: QKLayoutOperand { return _loOper(.Width, .Height) }
+  
+  var base: QKLayoutOperand { return _loOper(.Baseline) }
   
   var usesARMask: Bool {
     get {
@@ -88,30 +101,34 @@ protocol QKLayoutConstraining {
   // allows for constraints and format strings to be specified in the same variadic call;
   // this is syntactically convenient, and also allows for simultaneous activation of all constraints,
   // which is more performant, according to the comments around NSLayoutConstraint.activateConstraints.
-  func constraintArray(views: [CRView], metrics: [String: NSNumber], opts: NSLayoutFormatOptions) -> [NSLayoutConstraint];
+  func constraintArray(views: [CRView], metrics: [String: NSNumber], opts: NSLayoutFormatOptions) -> [NSLayoutConstraint]
 }
 
 
 extension NSLayoutConstraint: QKLayoutConstraining {
-  
-  convenience init(_ rel: NSLayoutRelation, _ l: QKLayoutOperand, _ or: QKLayoutOperand? = nil, _ m: Flt = 1.0, _ c: Flt = 0.0,
-    _ p: LOP = LOPReq) {
-      var rv: CRView? = nil
-      var ra = NSLayoutAttribute.NotAnAttribute
-      if let r = or {
-        rv = r.v
-        ra = r.a
-      }
-      self.init(item: l.v, attribute: l.a, relatedBy: rel, toItem: rv, attribute: ra, multiplier: m,  constant: c)
-      priority = p
-  }
   
   var lv: CRView { return firstItem as CRView }
   var la: NSLayoutAttribute { return firstAttribute }
   var rv: CRView? { return secondItem as CRView? }
   var ra: NSLayoutAttribute { return secondAttribute }
   
+  convenience init(_ rel: NSLayoutRelation, _ l: QKLayoutOperand, _ r: QKLayoutOperand?, _ m: Flt, _ c: Flt, _ p: LOP, useA1: Bool) {
+    // convenience constructor for QKLayoutRel; create a constraint from either a0 or a1 af a pair of operands.
+    let la = useA1 ? l.a1 : l.a0
+    assert(la != .NotAnAttribute)
+    var rv: CRView? = nil
+    var ra = NSLayoutAttribute.NotAnAttribute
+    if let _r = r {
+      rv = _r.v
+      ra = useA1 ? _r.a1 : _r.a0
+      assert(ra != .NotAnAttribute)
+    }
+    self.init(item: l.v, attribute: la, relatedBy: rel, toItem: rv, attribute: ra, multiplier: m,  constant: c)
+    priority = p
+  }
+  
   func constraintArray(views: [CRView], metrics: [String: NSNumber], opts: NSLayoutFormatOptions) -> [NSLayoutConstraint] {
+    // this is only useful for passing a manually constructed constraint as an argument to constrain().
     return [self] // ignore all the format-related arguments.
   }
 }
@@ -126,8 +143,29 @@ extension String: QKLayoutConstraining {
 }
 
 
-func eq(l: QKLayoutOperand, _ r: QKLayoutOperand? = nil, m: Flt = 1.0, c: Flt = 1.0, p: LOP = LOPReq) -> NSLayoutConstraint {
-  return NSLayoutConstraint(.Equal, l, r, m, c, p)
+struct QKLayoutRel: QKLayoutConstraining {
+  let rel: NSLayoutRelation
+  let l: QKLayoutOperand
+  let r: QKLayoutOperand? = nil
+  let m: Flt = 1
+  let c: Flt = 0
+  let p: LOP = LOPReq
+  
+  func constraintArray(views: [CRView], metrics: [String: NSNumber], opts: NSLayoutFormatOptions) -> [NSLayoutConstraint] {
+    // ignores all the format-related arguments and constructs one or two constraints from the operands.
+    let c0 = NSLayoutConstraint(rel, l, r, m, c, p, useA1: false)
+    if l.a1 != .NotAnAttribute {
+      let c1 = NSLayoutConstraint(rel, l, r, m, c, p, useA1: true)
+      return [c0, c1]
+    } else {
+      return [c0]
+    }
+  }
+
+}
+
+func eq(l: QKLayoutOperand, _ r: QKLayoutOperand? = nil, m: Flt = 1, c: Flt = 0, p: LOP = LOPReq) -> QKLayoutRel {
+  return QKLayoutRel(rel: .Equal, l: l, r: r, m: m, c: c, p: p)
 }
 
 // TODO: lt, gt, le, ge.
@@ -158,5 +196,9 @@ func constrain(views: [CRView], #opts: NSLayoutFormatOptions, constraints: QKLay
 
 func constrain(views: [CRView], constraints: QKLayoutConstraining...) {
   constrain(views, metrics: [:], opts: NSLayoutFormatOptions(0), constraints: constraints)
+}
+
+func constrain(constraints: QKLayoutConstraining...) {
+  constrain([], metrics: [:], opts: NSLayoutFormatOptions(0), constraints: constraints)
 }
 

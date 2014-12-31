@@ -198,7 +198,3 @@ func constrain(views: [CRView], constraints: QKLayoutConstraining...) {
   constrain(views, metrics: [:], opts: NSLayoutFormatOptions(0), constraints: constraints)
 }
 
-func constrain(constraints: QKLayoutConstraining...) {
-  constrain([], metrics: [:], opts: NSLayoutFormatOptions(0), constraints: constraints)
-}
-

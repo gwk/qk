@@ -8,7 +8,7 @@ typealias Flt = CGFloat
 typealias V2 = CGPoint
 
 
-extension Flt {
+extension Flt: ArithmeticType {
   var sqr: Flt { return self * self }
   var sqrt: Flt { return Flt(native.sqrt) }
   var ceil: Flt { return Flt(native.ceil) }

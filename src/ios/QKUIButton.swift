@@ -10,18 +10,30 @@ class QKUIButton : UIButton {
   var touchUp: Action?
   var touchCancel: Action?
   
-  required init(coder: NSCoder) { fatalError("NSCoding not supported") }
+  // MARK: - UIView
+  
+  required init(coder: NSCoder) {
+    // WARNING: archived instances do not preserve any action closures, so we expect them to be set up after decode.
+    super.init(coder: coder)
+    addActions()
+  }
   
   override init(frame: CGRect) {
     super.init(frame: frameInit)
-    addTarget(self, action: "handleTouchDown", forControlEvents: .TouchDown)
-    addTarget(self, action: "handleTouchUp", forControlEvents: .TouchUpInside)
-    addTarget(self, action: "handleTouchCancel", forControlEvents: .TouchCancel)
+    addActions()
   }
   
   convenience init(n: String) {
     self.init(frame: frameInit)
     name = n
+  }
+  
+  // MARK: - QKUIButton
+  
+  func addActions() {
+    addTarget(self, action: "handleTouchDown", forControlEvents: .TouchDown)
+    addTarget(self, action: "handleTouchUp", forControlEvents: .TouchUpInside)
+    addTarget(self, action: "handleTouchCancel", forControlEvents: .TouchCancel)
   }
   
   func handleTouchDown() {

@@ -66,45 +66,37 @@ func prod<S: SequenceType where S.Generator.Element: ArithmeticType>(s: S) {
 }
 
 
-struct POTGen: GeneratorType {
-  typealias Element = Int
-  var val: Int
-  
-  mutating func next() -> Int? {
-    let v = val
-    val *= 2
-    return v
-  }
-  
-  init(val: Int = 1) {
-    self.val = val
+struct POTSeq: SequenceType {
+  let start: Int = 1
+  func generate() -> GeneratorOf<Int> {
+    var val: Int = start
+    return GeneratorOf<Int> {
+      let v = val
+      val *= 2
+      return v
+    }
   }
 }
 
-
-struct HPOTGen: GeneratorType {
-  typealias Element = Int
-  var val: Int
-  var pot: Bool
-  
-  mutating func next() -> Int? {
-    let v = val
-    if v < 4 {
-      val += 1
+struct HPOTSeq: SequenceType {
+  let start: Int = 1
+  func generate() -> GeneratorOf<Int> {
+    var val: Int = start
+    var pot: Bool = true
+    return GeneratorOf<Int> {
+      let v = val
+      if v < 4 {
+        val += 1
+        return v
+      }
+      else if pot {
+        val = (val * 3) / 2
+      } else {
+        val = (val * 4) / 3
+      }
+      pot = !pot
       return v
     }
-    else if pot {
-      val = (val * 3) / 2
-    } else {
-      val = (val * 4) / 3
-    }
-    pot = !pot
-    return v
-  }
-  
-  init(val: Int = 1) {
-    self.val = val
-    self.pot = true
   }
 }
 

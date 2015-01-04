@@ -7,6 +7,7 @@ let GLShader_prefix = ""
   #else
     // ignore GLSL ES precision specifiers.
 let GLShader_prefix = String(lines:
+  // "#version 150 core", SCNView does not support this?
   "#define lowp",
   "#define mediump",
   "#define highp",

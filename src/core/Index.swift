@@ -21,7 +21,7 @@ class Index<T: Hashable> {
   
   func val(i: Int) -> T { return vals[i] }
   
-  func index(val: T) -> Int { return indexes[val]! }
+  func index(val: T) -> Int? { return indexes[val] }
   
   func reg(val: T) -> Int {
     let oi = indexes[val]

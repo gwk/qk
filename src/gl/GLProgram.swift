@@ -8,12 +8,13 @@ enum GLInputType: GLenum, Printable {
   case V3 = 0x8B51 // GL_FLOAT_VEC3
   case V4 = 0x8B52 // GL_FLOAT_VEC4
   case I = 0x1404 // GL_INT
+  case S2 = 0x8B5E // GL_SAMPLER_2D
   //GL_INT_VEC2
   //GL_INT_VEC3
   //GL_INT_VEC4
   //GL_BOOL, GL_BOOL_VEC2, GL_BOOL_VEC3, GL_BOOL_VEC4
   //GL_FLOAT_MAT2, GL_FLOAT_MAT3, GL_FLOAT_MAT4
-  //GL_SAMPLER_2D, GL_SAMPLER_CUBE
+  //GL_SAMPLER_CUBE
   
   var description: String {
     switch self {
@@ -22,6 +23,7 @@ enum GLInputType: GLenum, Printable {
     case V3: return "V3"
     case V4: return "V4"
     case I: return "I"
+    case S2: return "S2"
     }
   }
   
@@ -29,6 +31,7 @@ enum GLInputType: GLenum, Printable {
     switch self {
     case F, V2, V3, V4: return GLenum(GL_FLOAT)
     case I: return GLenum(GL_INT)
+    default: fatalError("no comp type for GLInputType: \(self)")
     }
   }
 }
@@ -76,7 +79,9 @@ class GLProgram {
 
   func addInput(name: String, isAttr: Bool, loc: GLint, type: GLenum, size: GLsizei) {
     assert(loc != -1,"no location for shader input: \(name)")
-    let info = GLInput(name: name, isAttr: isAttr, loc: loc, type: GLInputType(rawValue: type)!, size: Int(size))
+    let inputType = GLInputType(rawValue: type)
+    assert(inputType != nil, "bad input type: 0x\(Int(type).h)")
+    let info = GLInput(name: name, isAttr: isAttr, loc: loc, type: inputType!, size: Int(size))
     let label = isAttr ? "attr" : "uniform"
     println("  \(label): \(name): \(info)")
     inputs[name] = info
@@ -198,16 +203,16 @@ class GLProgram {
     glAssert()
   }
   
-  /*
   func bindUniform(name: String, tex: GLTexture, unit: Int) {
-    let loc = locForUniform(name)
+    let loc = inputLoc(name, isAttr: false, type: .S2, size: 1)
+    if loc == -1 { return }
     // NOTE: this addition assumes that the unit enums are consecutive.
     glActiveTexture(GLenum(GL_TEXTURE0 + unit))
     glAssert()
     tex.bind()
-    bindUniform(name, i: unit)
+    glUniform1i(loc, GLint(unit))
+    glAssert()
   }
-  */
   
   func bindAttr(name: String, size: Int, type: GLInputType, normalize: Bool, stride: Int, ptr: UnsafePointer<Void>) {
     let loc = inputLoc(name, isAttr: true, type: type, size: 1)

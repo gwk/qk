@@ -39,7 +39,4 @@ extension Int {
   
   func d0(width: Int) -> String { return self.repr(base: 10, pad: "0", width: width) }
   func h0(width: Int) -> String { return self.repr(base: 16, pad: "0", width: width) }
-  
-  var d0: String { return self.d(0) }
-  var h0: String { return self.h(0) }
 }

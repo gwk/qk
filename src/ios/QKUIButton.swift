@@ -23,9 +23,9 @@ class QKUIButton : UIButton {
     addActions()
   }
   
-  convenience init(n: String) {
+  convenience init(n: String, p: UIView?) {
     self.init(frame: frameInit)
-    name = n
+    helpInit(n, p)
   }
   
   // MARK: - QKUIButton

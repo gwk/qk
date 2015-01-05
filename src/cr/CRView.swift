@@ -14,9 +14,16 @@ extension CRView {
   
   convenience init(size: CGSize) { self.init(frame: CGRect(size)) }
   
-  convenience init(n: String) {
+  convenience init(n: String, p: CRView? = nil) {
     self.init(frame: frameInit)
-    self.name = n
+    helpInit(n, p)
+  }
+  
+  func helpInit(name: String, _ parent: CRView?) {
+    self.name = name
+    if let p = parent {
+      p.addSubview(self)
+    }
   }
   
   var name: String {

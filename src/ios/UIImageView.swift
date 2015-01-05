@@ -6,12 +6,12 @@ import UIKit
 
 extension UIImageView {
 
-  convenience init(n: String, _ imageName: String, _ litImageName: String?=nil) {
+  convenience init(n: String, p: UIView? = nil, _ imageName: String, _ litImageName: String? = nil) {
     self.init(image: UIImage(imageName))
-    if let n = litImageName {
-      self.highlightedImage = UIImage(n)
+    helpInit(n, p)
+    if let lin = litImageName {
+      self.highlightedImage = UIImage(lin)
     }
-    name = n
   }
 
   var lit: Bool {

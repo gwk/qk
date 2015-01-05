@@ -4,6 +4,12 @@
 import UIKit
 
 
+var stdButtonColor = CRColor.w
+var stdButtonTitleColor = CRColor(l: 0.1)
+var stdButtonLitTitleColor = CRColor(0.25, 0.5, 1)
+var stdButtonCornerRadius: Flt = 4
+
+
 class QKUIButton : UIButton {
   
   var touchDown: Action?
@@ -21,6 +27,10 @@ class QKUIButton : UIButton {
   override init(frame: CGRect) {
     super.init(frame: frameInit)
     addActions()
+    backgroundColor = stdButtonColor
+    titleColor = stdButtonTitleColor
+    litTitleColor = stdButtonLitTitleColor
+    layer.cornerRadius = stdButtonCornerRadius
   }
   
   convenience init(n: String, p: UIView?) {

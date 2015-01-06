@@ -9,11 +9,7 @@ extension UIViewController {
   var nav: UINavigationController? { return navigationController }
   
   class func fromStoryboard() -> UIViewController {
-    let s = NSStringFromClass(self)
-    let r = s.rangeOfString(".")!
-    let n = s.substringFromIndex(r.endIndex)
-    println("fromStoryboard: \(n)")
-    let board = UIStoryboard(name: n, bundle: nil)
+    let board = UIStoryboard(name: dynamicClassName, bundle: nil)
     return board.instantiateInitialViewController() as UIViewController
   }
   

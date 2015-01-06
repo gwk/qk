@@ -14,6 +14,11 @@ class QKViewController: UIViewController {
   
   override init(nibName: String? = nil, bundle: NSBundle? = nil) {
     super.init(nibName: nibName, bundle: bundle)
+    if title == nil {
+      #if DEBUG
+        title = dynamicTypeName // set the title to the class name as a convenience while prototyping.
+      #endif
+    }
   }
   
   override func viewDidLoad() {

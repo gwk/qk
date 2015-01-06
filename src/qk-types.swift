@@ -18,3 +18,4 @@ typealias F32 = Float
 typealias F64 = Double
 
 typealias Action = () -> ()
+typealias Predicate = () -> Bool

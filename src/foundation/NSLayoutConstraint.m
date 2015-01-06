@@ -27,7 +27,6 @@
   }
   @catch (NSException* e) {
     NSLog(@"ERROR: NSLayoutConstraints constraintWithVisualFormat failed:\n%@\nexception: %@", format, e);
-    [e raise]; // TODO: desirable?
     return @[];
   }
 }

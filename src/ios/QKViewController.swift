@@ -5,7 +5,7 @@ import UIKit
 
 
 // app-wide style variables.
-var stdViewColor: CRColor = CRColor(l:0.9)
+var stdViewColor: CRColor = CRColor(l: 0.85)
 
 
 class QKViewController: UIViewController {

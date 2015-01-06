@@ -92,12 +92,15 @@ extension UIViewController {
   // formulating QKLayoutOperand in terms of protocols including UILayoutSupport protocol is not possible in swift 1.1.
   var tg: UIView {
     let a: AnyObject = topLayoutGuide
-    return a as UIView // this cast works in ios 8, not guaranteed to work in the future.
-
+    let v = a as UIView // this cast works in ios 8; not guaranteed to work in the future.
+    v.name = "tg"
+    return v
   }
   var bg: UIView {
     let a: AnyObject = bottomLayoutGuide
-    return a as UIView // this cast works in ios 8, not guaranteed to work in the future.
+    let v = a as UIView // this cast works in ios 8; not guaranteed to work in the future.
+    v.name = "bg"
+    return v
   }
 }
 #endif

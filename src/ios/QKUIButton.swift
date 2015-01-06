@@ -12,57 +12,46 @@ var stdButtonCornerRadius: Flt = 4
 
 class QKUIButton : UIButton {
   
-  var touchDown: Action?
-  var touchUp: Action?
-  var touchCancel: Action?
+  var touchDown: Action = {}
+  var touchUp: Action = {}
+  var touchCancel: Action = {}
   
   // MARK: - UIView
   
   required init(coder: NSCoder) {
     // WARNING: archived instances do not preserve any action closures, so we expect them to be set up after decode.
     super.init(coder: coder)
-    addActions()
+    helpInit()
   }
   
   override init(frame: CGRect) {
-    super.init(frame: frameInit)
-    addActions()
+    super.init(frame: frame)
+    helpInit()
     backgroundColor = stdButtonColor
     titleColor = stdButtonTitleColor
     litTitleColor = stdButtonLitTitleColor
     layer.cornerRadius = stdButtonCornerRadius
   }
   
-  convenience init(n: String, p: UIView?) {
+  convenience init(n: String, p: UIView?, title: String? = nil) {
     self.init(frame: frameInit)
-    helpInit(n, p)
+    helpInit(name: n, parent: p)
+    self.title = title
   }
   
   // MARK: - QKUIButton
   
-  func addActions() {
+  func helpInit() {
     addTarget(self, action: "handleTouchDown", forControlEvents: .TouchDown)
     addTarget(self, action: "handleTouchUp", forControlEvents: .TouchUpInside)
     addTarget(self, action: "handleTouchCancel", forControlEvents: .TouchCancel)
   }
   
-  func handleTouchDown() {
-    if let a = touchDown {
-      a()
-    }
-  }
+  func handleTouchDown() { touchDown() }
   
-  func handleTouchUp() {
-    if let a = touchUp {
-      a()
-    }
-  }
+  func handleTouchUp() { touchUp() }
   
-  func handleTouchCancel() {
-    if let a = touchCancel {
-      a()
-    }
-  }
-  
+  func handleTouchCancel() { touchCancel() }
+
 }
 

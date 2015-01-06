@@ -8,7 +8,7 @@ extension UIImageView {
 
   convenience init(n: String, p: UIView? = nil, _ imageName: String, _ litImageName: String? = nil) {
     self.init(image: UIImage(imageName))
-    helpInit(n, p)
+    helpInit(name: n, parent: p)
     if let lin = litImageName {
       self.highlightedImage = UIImage(lin)
     }

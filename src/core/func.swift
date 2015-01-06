@@ -2,6 +2,10 @@
 // Permission to use this file is granted in license-qk.txt.
 
 
+let always: Predicate = { return true }
+let never: Predicate = { return false }
+
+
 func mapToDict<S: SequenceType, K, V>(seq: S, transform: (S.Generator.Element) -> (K, V)) -> [K:V] {
   var d = [K:V]()
   for e in seq {

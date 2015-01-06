@@ -18,15 +18,18 @@ extension UIViewController {
     (nav as UIViewController?).or(self).presentViewController(c, animated: animated, completion: completion)
   }
   
-  func presentNavRoot(root: UIViewController, isBarHidden: Bool = false, animated: Bool = true, completion: Action? = nil) {
-    root.navigationItem.leftBarButtonItem = UIBarButtonItem(
-      title: root.closeButtonTitle,
-      style: .Plain,
-      target: root,
-      action:"dismissSelfAction")
-    let n = UINavigationController(rootViewController: root)
-    n.navigationBarHidden = isBarHidden
-    present(n, animated: animated, completion: completion)
+  func presentNavRoot(root: UIViewController, dismissTitle: String? = "Close", isBarHidden: Bool = false, animated: Bool = true,
+    completion: Action? = nil) {
+      if let title = dismissTitle {
+        root.navigationItem.leftBarButtonItem = UIBarButtonItem(
+          title: title,
+          style: .Plain,
+          target: root,
+          action:"dismissSelfAction")
+      }
+      let n = UINavigationController(rootViewController: root)
+      n.navigationBarHidden = isBarHidden
+      present(n, animated: animated, completion: completion)
   }
   
   func dismissPresented(animated: Bool = true, completion: Action? = nil) {
@@ -40,11 +43,7 @@ extension UIViewController {
       println("dismissSelf: no presenting controller: \(self)")
     }
   }
-
-  func dismissSelfAction() { dismissSelf() }
   
-  var closeButtonTitle: String {
-    return "Close"
-  }
+  func dismissSelfAction() { dismissSelf() } // wrapper for objc action selectors.
 }
 

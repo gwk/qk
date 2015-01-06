@@ -147,9 +147,9 @@ extension String: QKLayoutConstraining {
   func constraintArray(views: [CRView], metrics: [String: NSNumber], opts: NSLayoutFormatOptions) -> [NSLayoutConstraint] {
     let viewDict = mapToDict(views) { ($0.name, $0) }
     #if DEBUG
-      let m = NSLayoutConstraint.constraintsWithVisualFormat
-      #else
       let m = NSLayoutConstraint.constraintsAndCatchWithVisualFormat
+      #else
+      let m = NSLayoutConstraint.constraintsWithVisualFormat
     #endif
     return m(self, options: opts, metrics: metrics, views: viewDict) as [NSLayoutConstraint]
   }
@@ -200,9 +200,9 @@ func constrain(views: [CRView], metrics: [String: NSNumber] = [:], opts: NSLayou
     allConstraints.extend(c.constraintArray(views, metrics: metrics, opts: opts))
   }
   #if DEBUG
-    NSLayoutConstraint.activateConstraints(allConstraints)
-    #else
     NSLayoutConstraint.activateAndCatchConstraints(allConstraints)
+    #else
+    NSLayoutConstraint.activateConstraints(allConstraints)
   #endif
 }
 

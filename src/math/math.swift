@@ -4,6 +4,12 @@
 import Foundation
 
 
+func clamp<T: IntegerArithmeticType>(a: T, l: T, h: T) -> T {
+  if a < l { return l }
+  if a > h { return h }
+  return a
+}
+
 func clamp<T: FloatingPointType>(a: T, l: T, h: T) -> T {
   if a < l { return l }
   if a > h { return h }

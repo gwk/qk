@@ -26,6 +26,12 @@ extension CRView {
     }
   }
   
+  func addSubviews(subviews: CRView...) {
+    for v in subviews {
+      addSubview(v)
+    }
+  }
+
   var name: String {
     get {
       #if os(OSX)
@@ -38,15 +44,78 @@ extension CRView {
       assert(newValue.isSym)
       #if os(OSX)
         setAccessibilityIdentifier(newValue)
-      #else
+        #else
         accessibilityIdentifier = newValue
       #endif
     }
   }
   
-  func addSubviews(subviews: CRView...) {
-    for v in subviews {
-      addSubview(v)
+  var huggingH: UILayoutPriority {
+    get {
+      #if os(OSX)
+        return contentHuggingPriorityForOrientation(.Horizontal)
+        #else
+        return contentHuggingPriorityForAxis(.Horizontal)
+      #endif
+    }
+    set {
+      #if os(OSX)
+        return setContentHuggingPriority(huggingH, forOrientation: .Horizontal)
+        #else
+        return setContentHuggingPriority(huggingH, forAxis: .Horizontal)
+      #endif
+    }
+  }
+  
+  var huggingV: UILayoutPriority {
+    get {
+      #if os(OSX)
+        return contentHuggingPriorityForOrientation(.Vertical)
+        #else
+        return contentHuggingPriorityForAxis(.Vertical)
+      #endif
+    }
+    set {
+      #if os(OSX)
+        return setContentHuggingPriority(huggingV, forOrientation: .Vertical)
+        #else
+        return setContentHuggingPriority(huggingV, forAxis: .Vertical)
+      #endif
+    }
+  }
+    
+  var compressionH: UILayoutPriority {
+    get {
+      #if os(OSX)
+        return contentCompressionResistancePriorityForOrientation(.Horizontal)
+        #else
+        return contentCompressionResistancePriorityForAxis(.Horizontal)
+      #endif
+    }
+    set {
+      #if os(OSX)
+        return setContentCompressionResistancePriority(compressionH, forOrientation: .Horizontal)
+        #else
+        return setContentCompressionResistancePriority(compressionH, forAxis: .Horizontal)
+      #endif
+    }
+  }
+  
+  
+  var compressionV: UILayoutPriority {
+    get {
+      #if os(OSX)
+        return contentCompressionResistancePriorityForOrientation(.Vertical)
+        #else
+        return contentCompressionResistancePriorityForAxis(.Vertical)
+      #endif
+    }
+    set {
+      #if os(OSX)
+        return setContentCompressionResistancePriority(compressionV, forOrientation: .Vertical)
+        #else
+        return setContentCompressionResistancePriority(compressionV, forAxis: .Vertical)
+      #endif
     }
   }
 }

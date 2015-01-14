@@ -43,5 +43,11 @@ extension CRView {
       #endif
     }
   }
+  
+  func addSubviews(subviews: CRView...) {
+    for v in subviews {
+      addSubview(v)
+    }
+  }
 }
 

@@ -144,6 +144,14 @@ extension NSLayoutConstraint: QKLayoutConstraining {
     // this is only useful for passing a manually constructed constraint as an argument to constrain().
     return [self] // ignore all the format-related arguments.
   }
+  
+  class func eq(l: QKLayoutOperand, _ r: QKLayoutOperand? = nil, m: Flt = 1, c: Flt = 0, p: LOP = LOPReq) -> NSLayoutConstraint {
+    // normally, the global functions below are used to construct one or two constraints at a time.
+    // however, in the case where we want a handle on a particlur constraint for subsequent modification (e.g. for animation),
+    // then use this function to construct exactly one constraint.
+    assert(l.componentCount == 1)
+    return NSLayoutConstraint(rel: NSLayoutRelation.Equal, l: l, r: r, m: V2(m, m), c: V2(c, c), p: p, useLX: l.ax.isSome)
+  }
 }
 
 
@@ -202,7 +210,7 @@ func eq(l: QKLayoutOperand, _ r: QKLayoutOperand? = nil, m: V2 = V2(1, 1), c: V2
 }
 
 func eq(l: QKLayoutOperand, _ r: QKLayoutOperand? = nil, #m: Flt, c: Flt = 0, p: LOP = LOPReq) -> QKLayoutRel {
-  // construct an equality relation between two operands with scalar m and optional c; m is required for disambiguation; see below.
+  // construct an equality relation between two operands with scalar m and optional c; m is required to disambiguate from the vector variant.
   return eq(l, r, m: V2(m, m), c: V2(c, c), p: p)
 }
 

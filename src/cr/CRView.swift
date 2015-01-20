@@ -4,10 +4,43 @@
 #if os(OSX)
   import AppKit
   typealias CRView = NSView
+  typealias CRFlex = NSAutoresizingMaskOptions
+  typealias CRAxis = NSLayoutConstraintOrientation
   #else
   import UIKit
   typealias CRView = UIView
+  typealias CRFlex = UIViewAutoresizing
+  typealias CRAxis = UILayoutConstraintAxis
 #endif
+
+
+extension CRFlex {
+
+  #if os(OSX)
+  static var N: CRFlex { return ViewNotSizable }
+  static var W: CRFlex { return ViewWidthSizable }
+  static var H: CRFlex { return ViewHeightSizable }
+  static var L: CRFlex { return ViewMinXMargin }
+  static var R: CRFlex { return ViewMaxXMargin }
+  static var T: CRFlex { return ViewMinYMargin }
+  static var B: CRFlex { return ViewMaxYMargin }
+  #else
+  static var N: CRFlex { return None }
+  static var W: CRFlex { return FlexibleWidth }
+  static var H: CRFlex { return FlexibleHeight }
+  static var L: CRFlex { return FlexibleLeftMargin }
+  static var R: CRFlex { return FlexibleRightMargin }
+  static var T: CRFlex { return FlexibleTopMargin }
+  static var B: CRFlex { return FlexibleBottomMargin }
+  #endif
+  
+  static var Size: CRFlex { return W | H }
+  static var Hori: CRFlex { return L | R }
+  static var Vert: CRFlex { return T | B }
+  static var Pos: CRFlex { return Hori | Vert }
+  static var WL: CRFlex { return W | L }
+  static var WR: CRFlex { return W | R }
+}
 
 
 extension CRView {

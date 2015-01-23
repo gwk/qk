@@ -102,6 +102,16 @@ extension CGRect {
     get { return s.h }
     set(h) { s = CGSize(s.w, h) }
   }
+  
+  var r: Flt {
+    get { return x + w }
+    set { x = newValue - w }
+  }
+  
+  var b: Flt {
+    get { return y + h }
+    set { y = newValue - h }
+  }
 }
 
 let frameInit = CGRect(0, 0, 256, 256) // large, weird size to make it obvious when we forget to specify layout constraints.

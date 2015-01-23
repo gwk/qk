@@ -4,27 +4,27 @@
 import UIKit
 
 
-typealias SwipeAction = (QKUISwipeRecognizer) -> ()
+typealias EdgePanAction = (QKUIEdgePanRecognizer) -> ()
 
 
-class QKUISwipeRecognizer: UISwipeGestureRecognizer {
+class QKUIEdgePanRecognizer: UIScreenEdgePanGestureRecognizer {
   
   class Handler: NSObject {
-    var action: SwipeAction
+    var action: EdgePanAction
     
-    init(action: SwipeAction) {
+    init(action: EdgePanAction) {
       self.action = action
       super.init()
     }
     
     func handleGesture(gestureRecognizer: UIGestureRecognizer) {
-      action(gestureRecognizer as QKUISwipeRecognizer)
+      action(gestureRecognizer as QKUIEdgePanRecognizer)
     }
   }
   
   let handler: Handler
   
-  init(view: UIView? = nil, delegate: UIGestureRecognizerDelegate? = nil, direction: UISwipeGestureRecognizerDirection, numTouches: Int = 1, action: SwipeAction = {(r) in ()}) {
+  init(view: UIView? = nil, delegate: UIGestureRecognizerDelegate? = nil, edges: UIRectEdge, action: EdgePanAction = {(r) in return ()}) {
     handler = Handler(action: action)
     // since we cannot pass self as the target, we need the proxy Handler.
     super.init(target: handler, action: "handleGesture:")
@@ -32,11 +32,10 @@ class QKUISwipeRecognizer: UISwipeGestureRecognizer {
       view?.addGestureRecognizer(self)
     }
     self.delegate = delegate
-    self.direction = direction
-    self.numberOfTouchesRequired = numTouches
+    self.edges = edges
   }
   
-  var action: SwipeAction {
+  var action: EdgePanAction {
     get { return handler.action }
     set { handler.action = newValue }
   }

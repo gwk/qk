@@ -4,27 +4,28 @@
 import UIKit
 
 
-typealias SwipeAction = (QKUISwipeRecognizer) -> ()
+typealias PanAction = (QKUIPanRecognizer) -> ()
 
 
-class QKUISwipeRecognizer: UISwipeGestureRecognizer {
+class QKUIPanRecognizer: UIPanGestureRecognizer {
   
   class Handler: NSObject {
-    var action: SwipeAction
+    var action: PanAction
     
-    init(action: SwipeAction) {
+    init(action: PanAction) {
       self.action = action
       super.init()
     }
     
     func handleGesture(gestureRecognizer: UIGestureRecognizer) {
-      action(gestureRecognizer as QKUISwipeRecognizer)
+      action(gestureRecognizer as QKUIPanRecognizer)
     }
   }
   
   let handler: Handler
   
-  init(view: UIView? = nil, delegate: UIGestureRecognizerDelegate? = nil, direction: UISwipeGestureRecognizerDirection, numTouches: Int = 1, action: SwipeAction = {(r) in ()}) {
+  init(view: UIView? = nil, delegate: UIGestureRecognizerDelegate? = nil, minTouches: Int = 1, maxTouches: Int = Int.max, action: PanAction = {(r) in return ()}) {
+    assert(minTouches > 0 && maxTouches > 0 && minTouches <= maxTouches)
     handler = Handler(action: action)
     // since we cannot pass self as the target, we need the proxy Handler.
     super.init(target: handler, action: "handleGesture:")
@@ -32,11 +33,12 @@ class QKUISwipeRecognizer: UISwipeGestureRecognizer {
       view?.addGestureRecognizer(self)
     }
     self.delegate = delegate
-    self.direction = direction
-    self.numberOfTouchesRequired = numTouches
+    self.minimumNumberOfTouches = minTouches
+    self.maximumNumberOfTouches = maxTouches
+
   }
   
-  var action: SwipeAction {
+  var action: PanAction {
     get { return handler.action }
     set { handler.action = newValue }
   }

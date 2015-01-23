@@ -4,27 +4,27 @@
 import UIKit
 
 
-typealias SwipeAction = (QKUISwipeRecognizer) -> ()
+typealias TapAction = (QKUITapRecognizer) -> ()
 
 
-class QKUISwipeRecognizer: UISwipeGestureRecognizer {
+class QKUITapRecognizer: UITapGestureRecognizer {
   
   class Handler: NSObject {
-    var action: SwipeAction
+    var action: TapAction
     
-    init(action: SwipeAction) {
+    init(action: TapAction) {
       self.action = action
       super.init()
     }
     
     func handleGesture(gestureRecognizer: UIGestureRecognizer) {
-      action(gestureRecognizer as QKUISwipeRecognizer)
+      action(gestureRecognizer as QKUITapRecognizer)
     }
   }
   
   let handler: Handler
   
-  init(view: UIView? = nil, delegate: UIGestureRecognizerDelegate? = nil, direction: UISwipeGestureRecognizerDirection, numTouches: Int = 1, action: SwipeAction = {(r) in ()}) {
+  init(view: UIView? = nil, delegate: UIGestureRecognizerDelegate? = nil, numTaps: Int = 1, numTouches: Int = 1, action: TapAction = {(r) in ()}) {
     handler = Handler(action: action)
     // since we cannot pass self as the target, we need the proxy Handler.
     super.init(target: handler, action: "handleGesture:")
@@ -32,11 +32,11 @@ class QKUISwipeRecognizer: UISwipeGestureRecognizer {
       view?.addGestureRecognizer(self)
     }
     self.delegate = delegate
-    self.direction = direction
+    self.numberOfTapsRequired = numTaps
     self.numberOfTouchesRequired = numTouches
   }
   
-  var action: SwipeAction {
+  var action: TapAction {
     get { return handler.action }
     set { handler.action = newValue }
   }

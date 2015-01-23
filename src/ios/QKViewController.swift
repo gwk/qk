@@ -23,6 +23,9 @@ class QKViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    #if DEBUG
+    view.name = "_" + dynamicTypeName + "_view_"
+    #endif
     view.backgroundColor = stdViewColor
   }
   

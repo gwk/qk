@@ -83,6 +83,15 @@ extension CRView {
     }
   }
   
+  var flex: CRFlex {
+    get {
+      return autoresizingMask
+    }
+    set {
+      autoresizingMask = newValue
+    }
+  }
+  
   var huggingH: UILayoutPriority {
     get {
       #if os(OSX)

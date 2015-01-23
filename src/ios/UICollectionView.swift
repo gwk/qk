@@ -5,9 +5,9 @@ import UIKit
 
 
 extension UICollectionView {
-  convenience init(n: String, layout: UICollectionViewLayout) {
+  convenience init(n: String, p: UIView? = nil, layout: UICollectionViewLayout) {
     self.init(frame: frameInit, collectionViewLayout: layout)
-    name = n
+    helpInit(name: n, parent: p)
   }
 }
 

@@ -9,7 +9,25 @@ let symbolCharsSet = mapToDict(symbolChars) { ($0, true) }
 
 
 extension String {
-
+  
+  func removePathExt() -> String {
+    if let r = rangeOfString(".", options: .BackwardsSearch) {
+      return substringToIndex(r.startIndex)
+    } else {
+      return self
+    }
+  }
+  
+  func replacePathExt(ext: String) -> String {
+    var pre: String
+    if let r = rangeOfString(".", options: .BackwardsSearch) {
+      pre = substringToIndex(r.endIndex)
+    } else {
+      pre = self + "."
+    }
+    return pre + ext
+  }
+  
   func contains(c: Character) -> Bool {
     for e in self {
       if e == c {

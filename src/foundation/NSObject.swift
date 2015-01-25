@@ -9,16 +9,12 @@ extension NSObject {
   class var dynamicClassFullName: String { return NSStringFromClass(self) }
   
   class var dynamicClassName: String {
-    let p = dynamicClassFullName
-    let r = p.rangeOfString(".")!
-    return p.substringFromIndex(r.endIndex)
+    return dynamicClassFullName.pathExtension
   }
   
   var dynamicTypeFullName: String { return NSStringFromClass(self.dynamicType) }
 
   var dynamicTypeName: String {
-    let p = dynamicTypeFullName
-    let r = p.rangeOfString(".")!
-    return p.substringFromIndex(r.endIndex)
+    return dynamicTypeFullName.pathExtension
   }
 }

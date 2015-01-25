@@ -65,6 +65,8 @@ extension CGRect {
   
   init(_ x: Flt, _ y: Flt, _ w: Flt, _ h: Flt) { self.init(x: x, y: y, width: w, height: h) }
 
+  init(x: Flt, y: Flt, r: Flt, b: Flt) { self.init(x: x, y: y, width: r - x, height: b - y) }
+
   init(_ w: Flt, _ h: Flt) { self.init(0, 0, w, h) }
   
   init(_ o: CGPoint, _ s: CGSize) { self.init(o.x, o.y, s.w, s.h) }
@@ -111,6 +113,10 @@ extension CGRect {
   var b: Flt {
     get { return y + h }
     set { y = newValue - h }
+  }
+  
+  func inset(dx: Flt, dy: Flt) -> CGRect {
+    return CGRectInset(self, dx, dy)
   }
 }
 

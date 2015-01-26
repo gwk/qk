@@ -3,11 +3,16 @@
 
 
 protocol ArithmeticType: IntegerLiteralConvertible {
-  func +(lhs: Self, rhs: Self) -> Self
-  func -(lhs: Self, rhs: Self) -> Self
-  func *(lhs: Self, rhs: Self) -> Self
-  func /(lhs: Self, rhs: Self) -> Self
-  func %(lhs: Self, rhs: Self) -> Self
+  func +(l: Self, r: Self) -> Self
+  func -(l: Self, r: Self) -> Self
+  func *(l: Self, r: Self) -> Self
+  func /(l: Self, r: Self) -> Self
+  func %(l: Self, r: Self) -> Self
+  func ==(l: Self, r: Self) -> Bool
+  func <(l: Self, r: Self) -> Bool
+  func >(l: Self, r: Self) -> Bool
+  func <=(l: Self, r: Self) -> Bool
+  func >=(l: Self, r: Self) -> Bool
 }
 
 extension Int: ArithmeticType {}
@@ -61,6 +66,18 @@ func sum<S: SequenceType where S.Generator.Element: ArithmeticType>(s: S) {
 func prod<S: SequenceType where S.Generator.Element: ArithmeticType>(s: S) {
   typealias E = S.Generator.Element
   reduce(s, 1) { (accum: E, item: E) in return accum * item }
+}
+
+
+func clamp<T: ArithmeticType>(a: T, l: T, h: T) -> T {
+  if a < l { return l }
+  if a > h { return h }
+  return a
+}
+
+
+func sign<T: ArithmeticType>(b: Bool) -> T {
+  return b ? 1 : -1
 }
 
 

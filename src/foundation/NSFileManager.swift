@@ -7,9 +7,12 @@ import Foundation
 let fileManager = NSFileManager.defaultManager()
 
 
-func absolutePath(path: String) -> String {
+func absolutePath(path: String) -> String? {
   let cr = fileManager.fileSystemRepresentationWithPath(path)
   let ca = realpath(cr, nil)
+  if ca == nil {
+    return nil
+  }
   let a = fileManager.stringWithFileSystemRepresentation(ca, length: Int(strlen(ca)))
   free(ca)
   return a
@@ -36,3 +39,19 @@ func removeFileOrDir(path: String) -> NSError? {
   fileManager.removeItemAtPath(path, error: &e)
   return e
 }
+
+func createDir(path: String, intermediates: Bool = false) -> NSError? {
+  var e: NSError? = nil
+  fileManager.createDirectoryAtPath(path,
+    withIntermediateDirectories: intermediates,
+    attributes: nil,
+    error: &e)
+  return e
+}
+
+func listDir(path: String) -> ([String], NSError?) {
+  var e: NSError? = nil
+  let l = fileManager.contentsOfDirectoryAtPath(path, error: &e)
+  return (l as [String], e)
+}
+

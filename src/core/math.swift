@@ -1,8 +1,6 @@
 // © 2014 George King.
 // Permission to use this file is granted in license-qk.txt.
 
-import Foundation
-
 
 func clamp<T: IntegerArithmeticType>(a: T, l: T, h: T) -> T {
   if a < l { return l }

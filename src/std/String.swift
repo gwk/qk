@@ -28,6 +28,10 @@ extension String {
     return pre + ext
   }
   
+  var fileUrl: NSURL? { return NSURL(fileURLWithPath: self, isDirectory: false) }
+
+  var dirUrl: NSURL? { return NSURL(fileURLWithPath: self, isDirectory: true) }
+
   func contains(c: Character) -> Bool {
     for e in self {
       if e == c {

@@ -10,7 +10,7 @@ default: all
 src/math/math-generated.swift: tools/gen-math.py
 	$^ > $@
 
-_bld/gen-cd-entities: src/core/func.swift src/core/types.swift src/core/util.swift src/CoreData/NSManagedObjectModel.swift src/foundation/NSError.swift src/foundation/NSFileManager.swift src/std/Int.swift src/std/Array.swift src/std/Character.swift src/std/Dictionary.swift src/std/String.swift tools/gen-cd-entities.swift tools/main.swift
+_bld/gen-cd-entities: src/core/func.swift src/core/Set.swift src/core/types.swift src/core/util.swift src/CoreData/NSManagedObjectModel.swift src/foundation/NSError.swift src/foundation/NSFileManager.swift src/foundation/NSOutputStream.swift src/std/Array.swift src/std/Character.swift src/std/Dictionary.swift src/std/Int.swift src/std/Optional.swift src/std/String.swift tools/gen-cd-entities.swift tools/main.swift
 	mkdir -p _bld
 	xcrun -sdk macosx swiftc 	$^ -o $@
 

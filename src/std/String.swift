@@ -10,8 +10,9 @@ let symbolCharsSet = mapToDict(symbolChars) { ($0, true) }
 
 extension String {
   
-  func removePathExt() -> String {
+  func withoutPathExt() -> String {
     if let r = rangeOfString(".", options: .BackwardsSearch) {
+      // TODO: check that the range does not span a slash; allow trailing slash.
       return substringToIndex(r.startIndex)
     } else {
       return self

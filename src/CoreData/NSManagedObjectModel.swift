@@ -16,7 +16,7 @@ extension NSAttributeType: Printable {
     case .DoubleAttributeType: return "Double"
     case .FloatAttributeType: return "Float"
     case .StringAttributeType: return "String"
-    case .BooleanAttributeType: return "Bool"
+    case .BooleanAttributeType: return "Boolean"
     case .DateAttributeType: return "Date"
     case .BinaryDataAttributeType: return "BinaryData"
     case .TransformableAttributeType: return "Transformable"
@@ -27,32 +27,100 @@ extension NSAttributeType: Printable {
 
 extension NSAttributeDescription {
 
-  var attrClassName: String { return attributeValueClassName! }
-  
-  public var attrTypeName: String? {
+  var typeName: String {
+    if let objcName = attributeValueClassName {
+      if objcName == "NSString" {
+        return "String"
+      }
+      return objcName
+    } else {
+      return "AnyObject"
+    }
+  }
+
+  var valTypeName: String? {
     switch attributeType {
-    case .UndefinedAttributeType: return nil
     case .Integer16AttributeType: return "Int"
     case .Integer32AttributeType: return "Int"
     case .Integer64AttributeType: return "Int"
-    case .DecimalAttributeType: return "NSDecimalNumber"
     case .DoubleAttributeType: return "Double"
     case .FloatAttributeType: return "Float"
-    case .StringAttributeType: return "String"
-    case .BooleanAttributeType: return "Bool"
-    case .DateAttributeType: return "NSDate"
-    case .BinaryDataAttributeType: return "NSData"
-    case .TransformableAttributeType: return nil
-    case .ObjectIDAttributeType: return nil
+    case .BooleanAttributeType: return "Boolean"
+    default: return nil
     }
   }
+
+  var valTypeAccessorName: String? {
+    switch attributeType {
+    case .Integer16AttributeType: return "integer"
+    case .Integer32AttributeType: return "integer"
+    case .Integer64AttributeType: return "integer"
+    case .DoubleAttributeType: return "double"
+    case .FloatAttributeType: return "float"
+    case .BooleanAttributeType: return "bool"
+    default: return nil
+    }
+  }
+}
+
+
+extension NSRelationshipDescription {
+
+  var typeName: String {
+    if toMany {
+      return ordered ? "NSOrderedSet" : "NSSet"
+    } else {
+      return (destinationEntity?.managedObjectClassName).or("MISSING_DESTINATION")
+    }
+  }
+}
+
+
+extension NSEntityDescription {
+
+  var namesToProps: [String: NSPropertyDescription] {
+    return propertiesByName as [String: NSPropertyDescription]
+  }
+
+  var namesToAttrs: [String: NSAttributeDescription] {
+    return attributesByName as [String: NSAttributeDescription]
+  }
+
+  var namesToRels: [String: NSRelationshipDescription] {
+    return relationshipsByName as [String: NSRelationshipDescription]
+  }
+
+  var props: [NSPropertyDescription] {
+    return valsSortedByKey(namesToProps)
+  }
+
+  var attrs: [NSAttributeDescription] {
+    return valsSortedByKey(namesToAttrs)
+  }
+
+  var rels: [NSRelationshipDescription] {
+    return valsSortedByKey(namesToRels)
+  }
+
+  var propNames: Set<String> {
+    return Set(namesToProps.keys)
+  }
+
+  var attrNames: Set<String> {
+    return Set(namesToAttrs.keys)
+  }
+
+  var relNames: Set<String> {
+    return Set(namesToRels.keys)
+  }
+
 }
 
 
 extension NSManagedObjectModel {
 
   convenience init?(path: String) {
-  self.init(contentsOfURL: NSURL(string: path)!)
+    self.init(contentsOfURL: NSURL(string: path)!)
   }
 }
 

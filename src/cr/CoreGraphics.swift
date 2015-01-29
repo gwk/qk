@@ -21,6 +21,8 @@ extension CGPoint: Printable {
   
   init(_ x: Flt, _ y: Flt) { self.init(x: x, y: y) }
   
+  init(_ s: CGSize) { self.init(s.w, s.h) }
+
   static let zero = CGPoint.zeroPoint
 
   public var description: String { return "V2(\(x), \(y))" }

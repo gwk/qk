@@ -5,7 +5,9 @@ import Foundation
 
 
 extension Array {
-
+  
+  var lastIndex: Int? { return count > 0 ? count - 1 : nil }
+  
   init(capacity: Int) {
     self = []
     self.reserveCapacity(capacity)

@@ -50,7 +50,7 @@ extension NSAttributeDescription {
     }
   }
 
-  var valTypeAccessorName: String? {
+  var valAccessorName: String? {
     switch attributeType {
     case .Integer16AttributeType: return "integer"
     case .Integer32AttributeType: return "integer"

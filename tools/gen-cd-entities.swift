@@ -7,6 +7,7 @@ import CoreData
 func genUserFile(path: String, e: NSEntityDescription) {
   // generate an empty extension file for custom code.
   if let stream = streamTo(path) {
+    println("  \(path)")
     let name = e.managedObjectClassName
     stream.writeLines(
       "//",
@@ -26,6 +27,7 @@ func genBaseFile(path: String, e: NSEntityDescription) {
   // generate a class definition with standard behavior;
   // this file is intended to be overwritten as the model changes.
   if let stream = streamTo(path) {
+    println("  \(path)")
     let name = e.managedObjectClassName
     let superName = (e.superentity?.managedObjectClassName).or("NSManagedObject")
     stream.writeLines(
@@ -35,32 +37,62 @@ func genBaseFile(path: String, e: NSEntityDescription) {
       "import CoreData",
       "",
       "@objc(\(name))",
-      "class \(name): \(superName) {")
+      "class \(name): \(superName) {\n")
 
     let superPropNames = (e.superentity?.propNames).or(Set<String>())
 
+    stream.writeLn("  // attributes.")
     for a in e.attrs {
       if superPropNames.contains(a.name) {
         continue
       }
-      stream.writeLn("  @NSManaged var \(a.name): \(a.typeName)")
+      stream.writeLn("\n  @NSManaged var \(a.name): \(a.typeName)")
       if let vtn = a.valTypeName {
         stream.writeLines(
           "  var \(a.name)Val: \(vtn) {",
           "    get {",
-          "      return \(a.name).\(a.valTypeAccessorName!)Value",
+          "      return \(a.name).\(a.valAccessorName!)Value",
           "    }",
           "    set {",
-          "      \(a.name) = NSNumber(\(a.valTypeAccessorName!): newValue)",
+          "      \(a.name) = NSNumber(\(a.valAccessorName!): newValue)",
           "    }",
-          "  }",
-          "")
+          "  }")
+      }
+    }
+
+    stream.writeLn("\n  // relationships.\n")
+    for r in e.rels {
+      stream.writeLn("  @NSManaged var \(r.name): \(r.typeName)")
+    }
+
+    stream.writeLn("\n  // json.\n")
+    stream.writeLn("  func updateWithJson(json: NSDictionary) -> NSError? {")
+    for a in e.attrs {
+      stream.writeLines(
+        "    if let u = json.objectForKey(\"\(a.name)\") {",
+        "      if let v = u as? \(a.typeName) {",
+        "        \(a.name) = v",
+        "      } else {",
+        "        return NSError(\"\(e.name!).updateWithJson: value for key has incorrect type: \\(u.dynamicType)\")",
+        "      }",
+        "    }")
+      if !a.optional {
+        stream.writeLines(
+          "    else {",
+          "      return NSError(\"\(e.name!).updateWithJson: missing value for key: \(a.name)\")",
+          "    }")
       }
     }
 
     for r in e.rels {
-      stream.writeLn("  @NSManaged var \(r.name): \(r.typeName)")
+      //stream.writeLines("  @NSManaged var \(r.name): \(r.typeName)")
     }
+
+    stream.writeLines(
+      "    ",
+      "    return nil",
+      "  }")
+
     stream.write("}\n")
   } else {
     fatalError("could not write file: \(path)")
@@ -98,7 +130,6 @@ func generate(path: String) {
 
   for e in m!.entities as [NSEntityDescription] {
     let n = e.name!
-    println("  entity: \(n)")
     let userPath = "\(dir)/\(n).swift"
     let basePath = "\(dirGen)/\(n)-gen.swift"
     if !isPathFile(userPath) {

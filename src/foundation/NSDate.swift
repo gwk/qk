@@ -3,6 +3,8 @@
 
 import Foundation
 
+let secPerDay: NSTimeInterval = 24 * 60 * 60
+
 extension NSCalendarUnit {
   
   static var preciseToDay: NSCalendarUnit {
@@ -55,6 +57,8 @@ extension NSDate {
     let d = NSCalendar.currentCalendar().components(units, fromDate: date)
     return s.day == d.day && s.month == d.month && s.year == d.year && s.era == d.era
   }
+  
+  var isToday: Bool { return isSameDayAs(NSDate()) }
   
   func plusHours(hours: Double) -> NSDate {
     return NSDate(timeIntervalSinceReferenceDate: refTime + hours * 60 * 60)

@@ -44,16 +44,31 @@ extension CRFlex {
 
 
 extension CRView {
+
   
-  convenience init(size: CGSize) { self.init(frame: CGRect(size)) }
+  convenience init(frame: CGRect, n: String, p: CRView? = nil) {
+    self.init(frame: frame)
+    helpInit(name: n, parent: p)
+  }
+  convenience init(frame: CGRect, p: CRView?) {
+    self.init(frame: frame)
+    helpInit(name: nil, parent: p)
+  }
+  
+  convenience init(size: CGSize, n: String? = nil, p: CRView? = nil) {
+    self.init(frame: CGRect(size))
+    helpInit(name: n, parent: p)
+  }
   
   convenience init(n: String, p: CRView? = nil) {
     self.init(frame: frameInit)
     helpInit(name: n, parent: p)
   }
   
-  func helpInit(#name: String, parent: CRView?) {
-    self.name = name
+  func helpInit(#name: String?, parent: CRView?) {
+    if let n = name {
+      self.name = n
+    }
     if let p = parent {
       p.addSubview(self)
     }

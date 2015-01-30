@@ -24,6 +24,15 @@ func mapEnumToDict<S: SequenceType, K, V>(seq: S, transform: (Int, S.Generator.E
   return d
 }
 
+func filterMap<S: SequenceType, E>(seq: S, transform: ((S.Generator.Element) -> E?)) -> [E] {
+  var a: [E] = []
+  for e in seq {
+    if let t = transform(e) {
+      a.append(t)
+    }
+  }
+  return a
+}
 
 func take<G: GeneratorType>(var gen: G, var n: Int) -> [G.Element] {
   var a: [G.Element] = []

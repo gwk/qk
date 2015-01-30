@@ -64,6 +64,12 @@ extension CRView {
       addSubview(v)
     }
   }
+  
+  func removeAllSubviews() {
+    for v in subviews {
+      v.removeFromSuperview()
+    }
+  }
 
   var name: String {
     get {

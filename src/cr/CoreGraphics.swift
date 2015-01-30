@@ -67,13 +67,34 @@ extension CGRect {
   
   init(_ x: Flt, _ y: Flt, _ w: Flt, _ h: Flt) { self.init(x: x, y: y, width: w, height: h) }
 
-  init(x: Flt, y: Flt, r: Flt, b: Flt) { self.init(x: x, y: y, width: r - x, height: b - y) }
+  init(x: Flt, y: Flt, r: Flt, b: Flt) { self.init(x, y, r - x, b - y) }
 
   init(_ w: Flt, _ h: Flt) { self.init(0, 0, w, h) }
   
   init(_ o: CGPoint, _ s: CGSize) { self.init(o.x, o.y, s.w, s.h) }
 
+  init(c: CGPoint, s: CGSize) { self.init(c.x - s.w * 0.5, c.y - s.h * 0.5, s.w, s.h) }
+  
   init(_ s: CGSize) { self.init(0, 0, s.w, s.h) }
+  
+  init(p0: CGPoint, p1: CGPoint) {
+    var x, y, w, h: Flt
+    if p0.x < p1.x {
+      x = p0.x
+      w = p1.x - p0.x
+    } else {
+      x = p1.x
+      w = p0.x - p1.x
+    }
+    if p0.y < p1.y {
+      y = p0.y
+      h = p1.y - p0.y
+    } else {
+      y = p1.y
+      h = p0.y - p1.y
+    }
+    self.init(x, y, w, h)
+  }
   
   static let zero = CGRect.zeroRect
   
@@ -117,7 +138,7 @@ extension CGRect {
     set { y = newValue - h }
   }
   
-  func inset(dx: Flt, dy: Flt) -> CGRect {
+  func inset(#dx: Flt, dy: Flt) -> CGRect {
     return CGRectInset(self, dx, dy)
   }
 }

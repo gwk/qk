@@ -6,9 +6,11 @@ import UIKit
 
 extension UIScrollView {
 
-  var contentRect: CGRect { return CGRect(CGPoint(), contentSize) }
+  //var contentRect: CGRect { return CGRect(CGPoint(), contentSize) } // TODO: figure out if this depends on contentInset.
   
-  var contentCenter: CGPoint { return CGPoint(contentSize) * 0.5 }
+  //var contentCenter: CGPoint { return CGPoint(contentSize) * 0.5 } // TODO: " ".
+  
+  //var visibleContentCenter: CGPoint { return contentInset + contentOffset + bounds.size.v * 0.5 } // TODO: // " ".
   
   var contentOffsetFracX: Flt {
     get {
@@ -36,19 +38,20 @@ extension UIScrollView {
     let bs = bounds.s
     let cs = contentSize
     let co = contentOffset
-    let o = CGPoint(clamp(co.x, 0, cs.w - bs.w), clamp(co.y, 0, cs.h - bs.h))
+    let ci = contentInset
+    let o = CGPoint(clamp(co.x, -ci.l, ci.r + cs.w - bs.w), clamp(co.y, -ci.t, ci.b + cs.h - bs.h))
     setContentOffset(o, animated: animated)
   }
   
   func centerOnContentPoint(point: CGPoint, animated: Bool) {
     // bounds half: the 'center' of bounds.size; not offset by origin like bounds center.
-    let bh = CGPoint(bounds.s) * 0.5
+    let bh = bounds.s.v * 0.5
     let o = point - bh
     setContentOffsetClamped(contentOffset, animated: animated)
   }
   
   func centerOnContentRect(rect: CGRect, animated: Bool) {
-    let bs = CGPoint(bounds.s)
+    let bs = bounds.s.v
     let rs = CGPoint(rect.s)
     let o = rect.o - (bs - rs) * 0.5
     setContentOffsetClamped(o, animated: animated)

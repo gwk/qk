@@ -57,7 +57,6 @@ extension Double {
   var round: Double { return round_f(self) }
 }
 
-
 func sum<S: SequenceType where S.Generator.Element: ArithmeticType>(s: S) {
   typealias E = S.Generator.Element
   reduce(s, 0) { (accum: E, item: E) in return accum + item }
@@ -114,4 +113,3 @@ struct HPOTSeq: SequenceType {
     }
   }
 }
-

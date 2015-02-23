@@ -6,11 +6,13 @@
   typealias CRView = NSView
   typealias CRFlex = NSAutoresizingMaskOptions
   typealias CRAxis = NSLayoutConstraintOrientation
+  typealias CRPriority = NSLayoutPriority
   #else
   import UIKit
   typealias CRView = UIView
   typealias CRFlex = UIViewAutoresizing
   typealias CRAxis = UILayoutConstraintAxis
+  typealias CRPriority = UILayoutPriority
 #endif
 
 
@@ -113,7 +115,7 @@ extension CRView {
     }
   }
   
-  var huggingH: UILayoutPriority {
+  var huggingH: CRPriority {
     get {
       #if os(OSX)
         return contentHuggingPriorityForOrientation(.Horizontal)
@@ -130,7 +132,7 @@ extension CRView {
     }
   }
   
-  var huggingV: UILayoutPriority {
+  var huggingV: CRPriority {
     get {
       #if os(OSX)
         return contentHuggingPriorityForOrientation(.Vertical)
@@ -147,7 +149,7 @@ extension CRView {
     }
   }
     
-  var compressionH: UILayoutPriority {
+  var compressionH: CRPriority {
     get {
       #if os(OSX)
         return contentCompressionResistancePriorityForOrientation(.Horizontal)
@@ -165,7 +167,7 @@ extension CRView {
   }
   
   
-  var compressionV: UILayoutPriority {
+  var compressionV: CRPriority {
     get {
       #if os(OSX)
         return contentCompressionResistancePriorityForOrientation(.Vertical)

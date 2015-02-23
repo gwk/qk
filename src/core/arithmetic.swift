@@ -15,6 +15,7 @@ protocol ArithmeticType: IntegerLiteralConvertible {
   func >=(l: Self, r: Self) -> Bool
 }
 
+
 extension Int: ArithmeticType {}
 extension I8: ArithmeticType {}
 extension I16: ArithmeticType {}
@@ -57,6 +58,7 @@ extension Double {
   var round: Double { return round_f(self) }
 }
 
+
 func sum<S: SequenceType where S.Generator.Element: ArithmeticType>(s: S) {
   typealias E = S.Generator.Element
   reduce(s, 0) { (accum: E, item: E) in return accum + item }
@@ -66,7 +68,6 @@ func prod<S: SequenceType where S.Generator.Element: ArithmeticType>(s: S) {
   typealias E = S.Generator.Element
   reduce(s, 1) { (accum: E, item: E) in return accum * item }
 }
-
 
 func clamp<T: ArithmeticType>(a: T, l: T, h: T) -> T {
   if a < l { return l }

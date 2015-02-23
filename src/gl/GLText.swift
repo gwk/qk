@@ -197,14 +197,15 @@ struct GLTextPage: Printable {
     let font = CRFont(name: fontName, size: Flt(fontSize))!
     let descriptor = font.fontDescriptor
     let attributes = descriptor.fontAttributes
-    advance = Int(font.fixedAdvance.ceil) // this usually returns 0.
+    var advance = Int(font.fixedAdvance.ceil) // this usually returns 0.
     if advance == 0 {
       advance = Int((font.lineHeight * 0.5).ceil)
     }
     lineHeight = Int(font.lineHeight.ceil)
     ascent = Int(font.ascender.ceil)
-    descent = -Int(font.descender.floor) // CRFont returns negative descender value.
+    var descent = -Int(font.descender.floor) // CRFont returns negative descender value.
     assert(descent >= 0)
+    self.descent = descent
     //let glyphRect = font.boundingRectForFont
     // generate strings and glyph info prior to allocating canvas.
     var attrStrings: [NSAttributedString] = []
@@ -244,13 +245,14 @@ struct GLTextPage: Printable {
       glyphRects.append(gr)
       maxGlyphHeight = max(maxGlyphHeight, Int(b.h))
     }
+    self.advance = advance
     assert(GLTexture_maxSize > 0)
     // choose size and layout glyphs.
-    glyphs = []
+    var glyphs:[GLGlyph] = []
     // TEMP!!
     let wMax = 2048 // GLTexture_maxSize // maxSize is a bad choice because it may leave lots of empty space left over on the final row.
-    w = 0
-    rows = 1
+    var w = 0
+    var rows = 1
     var tx = 0 // current texture offset.
     var ty = 0
     for r in glyphRects {
@@ -264,9 +266,12 @@ struct GLTextPage: Printable {
       glyphs.append(GLGlyph(gox: r.gox, goy: r.goy, tox: tx, toy: ty, tsw: r.tsw, tsh: r.tsh))
       tx += r.tsw
     }
+    self.glyphs = glyphs
+    self.rows = rows
     h = rows * maxGlyphHeight
     //println("real size: \(w) \(h)")
     w = ((w + 3) >> 2) << 2 // in certain cases (e.g. "0123" charset) odd widths cause staggering in the texture; padding up to word fixes it.
+    self.w = w
     // allocate ctx and draw glyphs.
     let ctx = _createContext(w, h)
     let rect = CGRect(x: 0, y: 0, width: w, height: h)
@@ -336,12 +341,13 @@ class GLTextAtlas {
     GLTexture_getMaxSize()
     let chars = Index(charsArray)
     self.fontName = fontName
-    sizes = []
+    var sizes:[F32] = []
     for i in HPOTSeq() {
       let f = F32(i)
       if f > maxSize * maxPxPerPt { break }
       sizes.append(f)
     }
+    self.sizes = sizes
     self.chars = chars
     self.pages = mapToDict(sizes) { return ($0, GLTextPage(fontName: fontName, fontSize: $0, chars: chars)) }
   }

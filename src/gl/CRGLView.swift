@@ -25,7 +25,7 @@ class CRGLView: CRView {
 
   override var wantsUpdateLayer: Bool { return true } // updateLayer will get called.
   var glLayer: GLLayer {
-    get { return layer as GLLayer }
+    get { return layer as! GLLayer }
     set { layer = newValue }
   }
 

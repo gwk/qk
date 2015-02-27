@@ -111,7 +111,7 @@ extension String {
   //func split<S : Sliceable, R : BooleanType>(elements: S, isSeparator: (S.Generator.Element) -> R, maxSplit: Int = default, allowEmptySlices: Bool = default) -> [S.SubSlice]
 
   var lines: [String] {
-    return split(self, { c in c == "\n" }, allowEmptySlices: true)
+    return split(self, allowEmptySlices: true, isSeparator: { c in c == "\n" })
   }
   
   func numberedLinesFrom(from: Int) -> [String] {

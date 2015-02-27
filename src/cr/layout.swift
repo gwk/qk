@@ -116,9 +116,9 @@ protocol QKLayoutConstraining {
 
 extension NSLayoutConstraint: QKLayoutConstraining {
   
-  var lv: CRView { return firstItem as CRView }
+  var lv: CRView { return firstItem as! CRView }
   var la: NSLayoutAttribute { return firstAttribute }
-  var rv: CRView? { return secondItem as CRView? }
+  var rv: CRView? { return secondItem as! CRView? }
   var ra: NSLayoutAttribute { return secondAttribute }
   
   convenience init(rel: NSLayoutRelation, l: QKLayoutOperand, r: QKLayoutOperand?, m: V2, c: V2, p: LOP, useLX: Bool) {
@@ -164,7 +164,7 @@ extension String: QKLayoutConstraining {
       #else
       let m = NSLayoutConstraint.constraintsWithVisualFormat
     #endif
-    return m(self, options: opts, metrics: metrics, views: viewDict) as [NSLayoutConstraint]
+    return m(self, options: opts, metrics: metrics, views: viewDict) as! [NSLayoutConstraint]
   }
 }
 

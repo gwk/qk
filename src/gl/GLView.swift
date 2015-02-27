@@ -76,10 +76,10 @@ class GLView {
     typealias Vertex = (V2F32, V2F32)
     func v(x: F32, y: F32) -> Vertex { // transform from viewUnitSpace to glSpace.
       return (
-        ((V2F32(x, y) * s) + offset) * scale + trans, // glPos.
+        ((V2F32(x, y) * self.s) + offset) * scale + trans, // glPos.
         V2F32( // cornerPos: distance in px from the corner. TODO: implement abs for vectors, use vector math.
-          pxPerPt * s.x * (0.5 - abs(x - 0.5)),
-          pxPerPt * s.y * (0.5 - abs(y - 0.5))))
+          pxPerPt * self.s.x * (0.5 - abs(x - 0.5)),
+          pxPerPt * self.s.y * (0.5 - abs(y - 0.5))))
     }
     // triangle fan starting from center, then upper left corner, left midpoint, and around counterclockwise.
     // this gives us triangles with exactly one point at the corner, simplifying the corner rounding fragment shader.

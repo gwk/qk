@@ -52,6 +52,6 @@ func createDir(path: String, intermediates: Bool = false) -> NSError? {
 func listDir(path: String) -> ([String], NSError?) {
   var e: NSError? = nil
   let l = fileManager.contentsOfDirectoryAtPath(path, error: &e)
-  return (l as [String], e)
+  return (l as! [String], e)
 }
 

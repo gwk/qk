@@ -165,10 +165,10 @@ func _createContext(w: Int, h: Int) -> CGContext {
   // TODO: use alphaOnly context?
   let info = CGBitmapInfo(CGImageAlphaInfo.None.rawValue | CGBitmapInfo.ByteOrderDefault.rawValue)
   return CGBitmapContextCreate(nil, // manage data internally.
-    Uns(w),
-    Uns(h),
+    w,
+    h,
     8, // bits per channel.
-    Uns(w), // bytes per row.
+    w, // bytes per row.
     cs,
     info)
 }

@@ -62,3 +62,43 @@ func viewportScaleLetterboxed(scale: V2, contentAR: Flt, canvasAR: Flt) -> V2 {
   }
 }
 
+
+extension PixFmt {
+
+  var glDataFormat: GLenum {
+    // OpenGLES 3.0 dataFormat must be one of:
+    // GL_RED, GL_RED_INTEGER, GL_RG, GL_RG_INTEGER, GL_RGB, GL_RGB_INTEGER, GL_RGBA, GL_RGBA_INTEGER, GL_ALPHA,
+    // GL_DEPTH_COMPONENT, GL_DEPTH_STENCIL, GL_LUMINANCE_ALPHA, GL_LUMINANCE.
+    switch self {
+    case .RGBU8: return GLenum(GL_RGB)
+    case .RGBAU8: return GLenum(GL_RGBA)
+    default:
+      fatalError("PixFmt is not mapped to OpenGL data format: \(self)")
+    }
+  }
+
+  var QKPixFmtGlDataType: GLenum {
+    // OpenGLES 3.0 dataType must be one of:
+    // GL_UNSIGNED_BYTE, GL_BYTE, GL_UNSIGNED_SHORT, GL_SHORT, GL_UNSIGNED_INT, GL_INT, GL_HALF_FLOAT, GL_FLOAT,
+    // GL_UNSIGNED_SHORT_5_6_5, GL_UNSIGNED_SHORT_4_4_4_4, GL_UNSIGNED_SHORT_5_5_5_1,
+    // GL_UNSIGNED_INT_2_10_10_10_REV, GL_UNSIGNED_INT_10F_11F_11F_REV, GL_UNSIGNED_INT_5_9_9_9_REV,
+    // GL_UNSIGNED_INT_24_8, GL_FLOAT_32_UNSIGNED_INT_24_8_REV.
+    switch self {
+    case .RGBU8: return GLenum(GL_UNSIGNED_BYTE)
+    case .RGBAU8: return GLenum(GL_UNSIGNED_BYTE)
+    default:
+      fatalError("PixFmt is not mapped to OpenGL data type: \(self)")
+    }
+  }
+
+  var cglColorSize: Int {
+    if isLum {
+      return bitsPerChannel
+    }
+    if isRGB {
+      return bitsPerChannel * 3
+    }
+    return 0
+  }
+
+}

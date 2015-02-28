@@ -120,5 +120,10 @@ extension String {
   
   var numberedLines: [String] { return numberedLinesFrom(1) }
   
+  // utf8.
+  
+  func withUtf8<R>(@noescape body: (UnsafeBufferPointer<UTF8.CodeUnit>) -> R) -> R {
+    return nulTerminatedUTF8.withUnsafeBufferPointer(body)
+  }
 }
 

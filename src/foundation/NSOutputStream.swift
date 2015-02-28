@@ -7,7 +7,7 @@ import Foundation
 extension NSOutputStream: OutputStreamType {
   
   public func write(string: String) {
-    string.nulTerminatedUTF8.withUnsafeBufferPointer() {
+    string.withUtf8() {
       (p) -> () in
       let count = p.count - 1 // exclude null terminator.
       if count > 0 {

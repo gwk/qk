@@ -1,6 +1,14 @@
 // © 2014 George King.
 // Permission to use this file is granted in license-qk.txt.
 
+#if os(OSX)
+  import OpenGL
+  import OpenGL.GL
+  #else
+  import OpenGLES
+  import OpenGLES.GL
+#endif
+
 
 var GLTexture_maxSize: Int = 0
 
@@ -25,7 +33,7 @@ class GLTexture {
   var h: Int = 0
   
   deinit {
-    glDeleteTexture(handle)
+    glDeleteTextureHandles(handle)
     glAssert()
   }
   

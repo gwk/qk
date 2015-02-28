@@ -3,6 +3,14 @@
 
 import Foundation
 
+#if os(OSX)
+  import OpenGL
+  import OpenGL.GL
+  #else
+  import OpenGLES
+  import OpenGLES.GL
+#endif
+
 
 var GLView_dflt_prog: GLProgram! = nil
 

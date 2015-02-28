@@ -1,6 +1,8 @@
 // © 2014 George King.
 // Permission to use this file is granted in license-qk.txt.
 
+import Foundation // required to get math.h as of swift 1.2.
+
 
 protocol ArithmeticType: IntegerLiteralConvertible {
   func +(l: Self, r: Self) -> Self

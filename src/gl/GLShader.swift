@@ -3,16 +3,24 @@
 
 import Foundation
 
-#if os(iOS)
-let GLShader_prefix = ""
+#if os(OSX)
+  import OpenGL
+  import OpenGL.GL
   #else
-    // ignore GLSL ES precision specifiers.
+  import OpenGLES
+  import OpenGLES.GL
+#endif
+
+#if os(OSX)
+  // ignore GLSL ES precision specifiers.
 let GLShader_prefix = String(lines:
   // "#version 150 core", SCNView does not support this?
   "#define lowp",
   "#define mediump",
   "#define highp",
   "")
+  #else
+  let GLShader_prefix = ""
 #endif
 
 
@@ -53,7 +61,7 @@ class GLShader: Printable {
     self.type = type
     self.name = name
     self.source = GLShader_prefix + String(lines: sources)
-    glShaderSource1(handle, source, Int32(source.lengthOfBytesUsingEncoding(NSUTF8StringEncoding)))
+    glProvideShaderSource(handle, source)
     glAssert()
     glCompileShader(handle)
     glAssert()

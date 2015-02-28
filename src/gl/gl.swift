@@ -3,8 +3,23 @@
 
 import Foundation
 
+#if os(OSX)
+  import OpenGL
+  import OpenGL.GL
+  typealias GLContext = CGLContextObj
+  #else
+  import OpenGLES
+  import OpenGLES.GL
+  typealias GLContext = EAGLContext
+#endif
+
+
 
 typealias GLHandle = GLuint
+
+
+extension CGLError: Equatable {}
+public func ==(a: CGLError, b: CGLError) -> Bool { return a.value == b.value }
 
 
 func glErrorString(code: GLenum) -> String {
@@ -40,6 +55,38 @@ func glAssert() {
   #if DEBUG
     glCheck()
   #endif
+}
+
+
+func glDeleteTextureHandles(textures: GLHandle...) {
+  glDeleteTextures(GLint(textures.count), textures)
+}
+
+
+func glProvideShaderSource(shader: GLHandle, source: String) {
+  source.withUtf8() {
+    (ptr, len) -> () in
+    let gp = unsafeBitCast(ptr, UnsafePointer<GLchar>.self)
+    let gl = GLint(len)
+    let gpa = [gp]
+    let gla = [gl]
+    glShaderSource(shader, 1, gpa, gla)
+    return ()
+  }
+}
+
+
+func glContextEnable(ctx: GLContext) {
+  var ok = false
+  #if os(OSX)
+    let error = CGLSetCurrentContext(ctx)
+    ok = (error == kCGLNoError)
+    #else
+    ok = EAGLContext.setCurrentContext(ctx)
+  #endif
+  if !ok {
+    println("GL ERROR: glContextEnable failed for context: \(ctx)")
+  }
 }
 
 func viewportOriginLetterboxed(origin: V2, contentAR: Flt, canvasAR: Flt) -> V2 {

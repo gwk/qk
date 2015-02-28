@@ -44,20 +44,17 @@ std:
 
 core:
 	tools/swift-both-parse.sh \
-	-import-objc-header src/core/core.h \
 	src/std/*.swift \
 	src/core/*.swift
 
 foundation:
 	tools/swift-both-parse.sh \
-	-import-objc-header src/core/core.h \
 	src/std/*.swift \
 	src/core/*.swift \
 	src/foundation/*.swift
 
 cd:
 	tools/swift-both-parse.sh \
-	-import-objc-header src/core/core.h \
 	src/std/*.swift \
 	src/core/*.swift \
 	src/foundation/*.swift \
@@ -65,7 +62,6 @@ cd:
 
 cr:
 	tools/swift-both-parse.sh \
-	-import-objc-header src/core/core.h \
 	src/std/*.swift \
 	src/core/*.swift \
 	src/foundation/*.swift \
@@ -73,7 +69,6 @@ cr:
 
 mac:
 	echo tools/swift-mac.sh -parse \
-	-import-objc-header src/core/core.h \
 	src/std/*.swift \
 	src/core/*.swift \
 	src/foundation/*.swift \
@@ -81,7 +76,6 @@ mac:
 
 ios:
 	echo tools/swift-ios.sh -parse \
-	-import-objc-header src/core/core.h \
 	src/std/*.swift \
 	src/core/*.swift \
 	src/foundation/*.swift \
@@ -89,7 +83,6 @@ ios:
 
 img:
 	tools/swift-both-parse.sh \
-	-import-objc-header src/core/core.h \
 	src/std/*.swift \
 	src/core/*.swift \
 	src/foundation/*.swift \
@@ -97,7 +90,6 @@ img:
 
 gl:
 	tools/swift-both-parse.sh \
-	-import-objc-header src/gl/gl.h \
 	src/std/*.swift \
 	src/core/*.swift \
 	src/foundation/*.swift \
@@ -107,7 +99,6 @@ gl:
 
 scn:
 	tools/swift-both-parse.sh \
-	-import-objc-header src/gl/gl.h \
 	src/std/*.swift \
 	src/core/*.swift \
 	src/foundation/*.swift \
@@ -118,7 +109,6 @@ scn:
 
 geom:
 	tools/swift-both-parse.sh \
-	-import-objc-header src/gl/gl.h \
 	src/std/*.swift \
 	src/core/*.swift \
 	src/foundation/*.swift \

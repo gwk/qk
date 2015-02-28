@@ -4,12 +4,12 @@
 
 typealias Uns = UInt
 
-typealias I8 = Int8
+typealias I8  = Int8
 typealias I16 = Int16
 typealias I32 = Int32
 typealias I64 = Int64
 
-typealias U8 = UInt8
+typealias U8  = UInt8
 typealias U16 = UInt16
 typealias U32 = UInt32
 typealias U64 = UInt64

@@ -107,7 +107,7 @@ gl:
 
 scn:
 	tools/swift-both-parse.sh \
-	-import-objc-header src/scn/scn.h \
+	-import-objc-header src/gl/gl.h \
 	src/std/*.swift \
 	src/core/*.swift \
 	src/foundation/*.swift \
@@ -118,7 +118,7 @@ scn:
 
 geom:
 	tools/swift-both-parse.sh \
-	-import-objc-header src/scn/scn.h \
+	-import-objc-header src/gl/gl.h \
 	src/std/*.swift \
 	src/core/*.swift \
 	src/foundation/*.swift \

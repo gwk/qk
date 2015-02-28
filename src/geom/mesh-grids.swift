@@ -1,6 +1,8 @@
 // © 2014 George King.
 // Permission to use this file is granted in license-qk.txt.
 
+import CoreGraphics
+
 
 func gridCage(divisions: Int, barRatio: Flt = 1 / 16) -> Mesh {
   let m = Mesh()

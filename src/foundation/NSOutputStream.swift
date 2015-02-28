@@ -8,12 +8,11 @@ extension NSOutputStream: OutputStreamType {
   
   public func write(string: String) {
     string.withUtf8() {
-      (p) -> () in
-      let count = p.count - 1 // exclude null terminator.
-      if count > 0 {
-        let countWritten = self.write(p.baseAddress, maxLength: count)
+      (ptr, len) -> () in
+      if len > 0 {
+        let written = self.write(ptr, maxLength: len)
         // TODO: real error handling.
-        assert(count == countWritten, "\(count) != \(countWritten); error: \(self.streamError)")
+        assert(len == written, "\(len) != \(written); error: \(self.streamError)")
       }
       return ()
     }

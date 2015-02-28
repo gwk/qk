@@ -46,10 +46,10 @@ class GLView {
   var cornerRad: F32 = 0
   var subs: [GLView] = []
   
-  var o: V2F32 = V2F32()
-  var _s: V2F32 = V2F32()
-  var pan: V2F32 = V2F32()
-  var color: V4F32 = V4F32()
+  var o: V2S = V2S()
+  var _s: V2S = V2S()
+  var pan: V2S = V2S()
+  var color: V4S = V4S()
   var needsLayout: Bool = true
   
   init(_ name: String, program: GLProgram? = nil, tex: GLTexture? = nil) {
@@ -57,7 +57,7 @@ class GLView {
     self.program = program.or(GLView_dflt_prog)
   }
   
-  var s: V2F32 {
+  var s: V2S {
     get { return _s }
     set {
       if _s != newValue {
@@ -69,15 +69,15 @@ class GLView {
   
   func layout() {}
   
-  func render(pxPerPt: F32, screenSizePt: V2F32, offset: V2F32) {
+  func render(pxPerPt: F32, screenSizePt: V2S, offset: V2S) {
     // glSpace has has range of (-1, 1), hence scaling by 2 from unit scale.
-    let scale = V2F32(2 / screenSizePt.x, -2 / screenSizePt.y) // scale from ptScale to glScale; flips y.
-    let trans = V2F32(-1, 1) // translate to glSpace origin; upper left of viewport  is (-1, 1).
-    typealias Vertex = (V2F32, V2F32)
+    let scale = V2S(2 / screenSizePt.x, -2 / screenSizePt.y) // scale from ptScale to glScale; flips y.
+    let trans = V2S(-1, 1) // translate to glSpace origin; upper left of viewport  is (-1, 1).
+    typealias Vertex = (V2S, V2S)
     func v(x: F32, y: F32) -> Vertex { // transform from viewUnitSpace to glSpace.
       return (
-        ((V2F32(x, y) * self.s) + offset) * scale + trans, // glPos.
-        V2F32( // cornerPos: distance in px from the corner. TODO: implement abs for vectors, use vector math.
+        ((V2S(x, y) * self.s) + offset) * scale + trans, // glPos.
+        V2S( // cornerPos: distance in px from the corner. TODO: implement abs for vectors, use vector math.
           pxPerPt * self.s.x * (0.5 - abs(x - 0.5)),
           pxPerPt * self.s.y * (0.5 - abs(y - 0.5))))
     }
@@ -88,13 +88,13 @@ class GLView {
     program.use()
     program.bindUniform("color", v4: color)
     program.bindUniform("cornerRadPx", f: cornerRad * pxPerPt)
-    program.bindAttr("glPos", stride: stride, V2F32: verts, offset: 0)
-    program.bindAttr("cornerPos", stride: stride, V2F32: verts, offset: sizeof(V2F32))
+    program.bindAttr("glPos", stride: stride, V2S: verts, offset: 0)
+    program.bindAttr("cornerPos", stride: stride, V2S: verts, offset: sizeof(V2S))
     glDrawArrays(GLenum(GL_TRIANGLE_FAN), 0, 10)
     glAssert()
   }
   
-  func renderTree(pxPerPt: F32, screenSizePt: V2F32, parentOffset: V2F32 = V2F32()) {
+  func renderTree(pxPerPt: F32, screenSizePt: V2S, parentOffset: V2S = V2S()) {
     if needsLayout {
       layout()
       needsLayout = false

@@ -1,7 +1,7 @@
 // © 2014 George King.
 // Permission to use this file is granted in license-qk.txt.
 
-#import "SceneKit.h"
+#import "scn.h"
 #import "gl.h"
 
 

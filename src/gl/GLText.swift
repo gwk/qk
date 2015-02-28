@@ -1,6 +1,14 @@
 // © 2014 George King.
 // Permission to use this file is granted in license-qk.txt.
 
+import CoreGraphics
+
+#if os(OSX)
+  import AppKit
+  #else
+  import UIKit
+#endif
+
 
 var GLTextView_dflt_prog: GLProgram! = nil
 
@@ -83,7 +91,7 @@ class GLTextView: GLView {
     
   }
   
-  override func render(pxPerPt: F32, screenSizePt: V2F32, offset: V2F32) {
+  override func render(pxPerPt: F32, screenSizePt: V2S, offset: V2S) {
     let page = atlasPage(pxPerPt) // all page metrics are in px units, so we do all layout in screenPxSpace.
     let screenSizePx = screenSizePt * pxPerPt
     let offsetPx = offset * pxPerPt
@@ -92,9 +100,9 @@ class GLTextView: GLView {
     let advance: F32 = F32(page.advance) * kern
     if sPx.y < lineHeight { return }
     // glSpace has has range of (-1, 1), hence scaling by 2 from unit scale.
-    let scale = V2F32(2 / screenSizePx.x, -2 / screenSizePx.y) // scale from pxScale to glScale; flips y.
-    let trans = V2F32(-1, 1) // translate to glSpace origin; upper left of viewport  is (-1, 1).
-    typealias Vertex = (V2F32, V2F32)
+    let scale = V2S(2 / screenSizePx.x, -2 / screenSizePx.y) // scale from pxScale to glScale; flips y.
+    let trans = V2S(-1, 1) // translate to glSpace origin; upper left of viewport  is (-1, 1).
+    typealias Vertex = (V2S, V2S)
     var verts: [Vertex] = []
     var pos = offsetPx // current character layout position in screenPxSpace (upper left).
     //println("\nRENDER: offset:\(offset) page:\(page)")
@@ -111,13 +119,13 @@ class GLTextView: GLView {
       }
       if let g = page.glyph(c) {
         // transform from viewPointSpace to glSpace.
-        let goPx = pos + V2F32(F32(g.gox), F32(g.goy)) // glyph origin in screenPxSpace.
-        let gePx = goPx + V2F32(F32(g.tsw), F32(g.tsh)) // glyph end (high values of rect) in screenPxSpace.
+        let goPx = pos + V2S(F32(g.gox), F32(g.goy)) // glyph origin in screenPxSpace.
+        let gePx = goPx + V2S(F32(g.tsw), F32(g.tsh)) // glyph end (high values of rect) in screenPxSpace.
         let go = goPx * scale + trans // glSpace.
         let ge = gePx * scale + trans // glSpace.
-        let toTx = V2F32(F32(g.tox), F32(g.toy)) // glyph texture origin in texel space.
-        let teTx = toTx + V2F32(F32(g.tsw), F32(g.tsh)) // glyph texture end in texel space.
-        let pageSize = V2F32(F32(page.w), F32(page.h))
+        let toTx = V2S(F32(g.tox), F32(g.toy)) // glyph texture origin in texel space.
+        let teTx = toTx + V2S(F32(g.tsw), F32(g.tsh)) // glyph texture end in texel space.
+        let pageSize = V2S(F32(page.w), F32(page.h))
         let to = toTx / pageSize // texture unit space.
         let te = teTx / pageSize // texture unit space.
         //println("pos:\(pos)")
@@ -125,8 +133,8 @@ class GLTextView: GLView {
         //println("goPx:\(goPx) gePx:\(gePx) go:\(go) ge:\(ge)")
         //println("toTx:\(toTx) teTx:\(teTx) to:\(to) te:\(te)")
         let v0 = Vertex(go, to)
-        let v1 = Vertex(V2F32(go.x, ge.y), V2F32(to.x, te.y))
-        let v2 = Vertex(V2F32(ge.x, go.y), V2F32(te.x, to.y))
+        let v1 = Vertex(V2S(go.x, ge.y), V2S(to.x, te.y))
+        let v2 = Vertex(V2S(ge.x, go.y), V2S(te.x, to.y))
         let v3 = Vertex(ge, te)
         // ccw triangles; v2 and v3 are repeated due to shared edge.
         verts.extend([v0, v1, v2, v1, v3, v2])
@@ -139,8 +147,8 @@ class GLTextView: GLView {
     program.use()
     program.bindUniform("color", v4: color)
     program.bindUniform("tex", tex: page.tex, unit: 0)
-    program.bindAttr("glPos", stride: stride, V2F32: verts, offset: 0)
-    program.bindAttr("texPos", stride: stride, V2F32: verts, offset: sizeof(V2F32))
+    program.bindAttr("glPos", stride: stride, V2S: verts, offset: 0)
+    program.bindAttr("texPos", stride: stride, V2S: verts, offset: sizeof(V2S))
     glDrawArrays(GLenum(GL_TRIANGLES), 0, GLsizei(verts.count))
     glAssert()
   }

@@ -1,6 +1,7 @@
 // © 2014 George King.
 // Permission to use this file is granted in license-qk.txt.
 
+import Foundation
 
 #if os(iOS)
 let GLShader_prefix = ""
@@ -13,7 +14,6 @@ let GLShader_prefix = String(lines:
   "#define highp",
   "")
 #endif
-
 
 
 class GLShader: Printable {

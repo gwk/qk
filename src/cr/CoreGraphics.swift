@@ -5,8 +5,6 @@ import CoreGraphics
 
 
 typealias Flt = CGFloat
-typealias V2 = CGPoint
-
 
 extension Flt: ArithmeticType {
   var sqr: Flt { return self * self }
@@ -17,29 +15,12 @@ extension Flt: ArithmeticType {
 }
 
 
-extension CGPoint: Printable {
-  
-  init(_ x: Flt, _ y: Flt) { self.init(x: x, y: y) }
-  
+// note: see V2-generated.swift for generated extensions.
+typealias V2 = CGPoint
+
+extension CGPoint {
   init(_ s: CGSize) { self.init(s.w, s.h) }
-
-  static let zero = CGPoint.zeroPoint
-
-  public var description: String { return "V2(\(x), \(y))" }
-  var v32: V2F32 { return V2F32(F32(x), F32(y)); }
-  var len: Flt { return (x.sqr + y.sqr).sqrt }
-  var norm: V2 { return self / self.len }
-  var clampToUnit: V2 { return V2(clamp(x, 0, 1), clamp(y, 0, 1)) }
 }
-
-func +(a: V2, b: V2) -> V2 { return V2(a.x + b.x, a.y + b.y) }
-func -(a: V2, b: V2) -> V2 { return V2(a.x - b.x, a.y - b.y) }
-func *(a: V2, b: V2) -> V2 { return V2(a.x * b.x, a.y * b.y) }
-func /(a: V2, b: V2) -> V2 { return V2(a.x / b.x, a.y / b.y) }
-func +(a: V2, s: Flt) -> V2 { return V2(a.x + s, a.y + s) }
-func -(a: V2, s: Flt) -> V2 { return V2(a.x - s, a.y - s) }
-func *(a: V2, s: Flt) -> V2 { return V2(a.x * s, a.y * s) }
-func /(a: V2, s: Flt) -> V2 { return V2(a.x / s, a.y / s) }
 
 
 extension CGSize {
@@ -59,7 +40,7 @@ extension CGSize {
   }
   
   var v: V2 { return V2(w, h); }
-  var v32: V2F32 { return V2F32(F32(w), F32(h)); }
+  var vs: V2S { return V2S(F32(w), F32(h)); }
 }
 
 

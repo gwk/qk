@@ -1,6 +1,11 @@
 // © 2014 George King.
 // Permission to use this file is granted in license-qk.txt.
 
+import Foundation
+
+
+typealias GLHandle = GLuint
+
 
 func glErrorString(code: GLenum) -> String {
   switch code {

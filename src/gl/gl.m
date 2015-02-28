@@ -2,7 +2,6 @@
 // Permission to use this file is granted in license-qk.txt.
 
 #import <stdio.h>
-#import <OpenGL/gl3.h>
 #import "gl.h"
 
 
@@ -18,11 +17,11 @@ void glContextEnable(GLContext ctx) {
 }
 
 
-void glDeleteTexture(GLHandle texture) {
+void glDeleteTexture(_GLHandle texture) {
   glDeleteTextures(1, &texture);
 }
 
 
-void glShaderSource1(GLHandle shader, const char* source, int len) {
+void glShaderSource1(_GLHandle shader, const char* source, int len) {
   glShaderSource(shader, 1, &source, &len);
 }

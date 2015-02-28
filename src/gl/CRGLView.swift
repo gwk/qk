@@ -1,6 +1,12 @@
 // © 2014 George King.
 // Permission to use this file is granted in license-qk.txt.
 
+#if os(OSX)
+  import AppKit
+  #else
+  import UIKit
+#endif
+
 
 class CRGLView: CRView {
 
@@ -29,6 +35,6 @@ class CRGLView: CRView {
     set { layer = newValue }
   }
 
-  var drawableSize: V2F32 { return glLayer.drawableSize }
+  var drawableSize: V2S { return glLayer.drawableSize }
 
 }

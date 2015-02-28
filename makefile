@@ -7,29 +7,125 @@
 
 default: all
 
-src/math/math-generated.swift: tools/gen-math.py
+src/core/math-generated.swift: tools/gen-math.py
 	$^ > $@
+
+src/cr/V2-generated.swift: tools/gen-math.py
+	$^ 2 Flt V2 > $@
+
+src/scn/V3-generated.swift: tools/gen-math.py
+	$^ 3 Flt V3 > $@
+
+src/scn/V4-generated.swift: tools/gen-math.py
+	$^ 4 Flt V4 > $@
 
 _bld/gen-cd-entities: src/core/func.swift src/core/Set.swift src/core/types.swift src/core/util.swift src/CoreData/NSManagedObjectModel.swift src/foundation/NSError.swift src/foundation/NSFileManager.swift src/foundation/NSOutputStream.swift src/std/Array.swift src/std/Character.swift src/std/Dictionary.swift src/std/Int.swift src/std/Optional.swift src/std/String.swift tools/gen-cd-entities.swift tools/main.swift
 	mkdir -p _bld
-	xcrun -sdk macosx swiftc 	$^ -o $@
+	xcrun -sdk macosx swiftc $^ -o $@
 
-.PHONY: clean default all core
+.PHONY: default clean gen all cd core cr foundation geom gl img ios scn std parse
 
 clean:
-	rm src/math/math-generated.swift
+	rm -f src/core/math-generated.swift
+	rm -f src/cr/V2-generated.swift
 	rm -rf _bld
 
-all: _bld/gen-cd-entities
+# all generated source targets.
+gen: src/core/math-generated.swift src/cr/V2-generated.swift src/scn/V3-generated.swift src/scn/V4-generated.swift
 
-core: src/core/*.swift 
-	xcrun -sdk macosx swiftc -parse $^
+# all real targets.
+all: _bld/gen-cd-entities gen
 
-CoreData: src/CoreData/*.swift
-	xcrun -sdk macosx swiftc -parse $^
+# parse targets ordered by dependency.
 
-cr: src/cr/*.swift
-	xcrun -sdk macosx swiftc -parse $^
+std:
+	tools/swift-both-parse.sh \
+	src/std/*.swift
 
-foundation: src/foundation/*.swift
-	xcrun -sdk macosx swiftc -parse $^
+core:
+	tools/swift-both-parse.sh \
+	-import-objc-header src/core/core.h \
+	src/std/*.swift \
+	src/core/*.swift
+
+foundation:
+	tools/swift-both-parse.sh \
+	-import-objc-header src/core/core.h \
+	src/std/*.swift \
+	src/core/*.swift \
+	src/foundation/*.swift
+
+cd:
+	tools/swift-both-parse.sh \
+	-import-objc-header src/core/core.h \
+	src/std/*.swift \
+	src/core/*.swift \
+	src/foundation/*.swift \
+	src/cd/*.swift
+
+cr:
+	tools/swift-both-parse.sh \
+	-import-objc-header src/core/core.h \
+	src/std/*.swift \
+	src/core/*.swift \
+	src/foundation/*.swift \
+	src/cr/*.swift
+
+mac:
+	echo tools/swift-mac.sh -parse \
+	-import-objc-header src/core/core.h \
+	src/std/*.swift \
+	src/core/*.swift \
+	src/foundation/*.swift \
+	src/mac/*.swift
+
+ios:
+	echo tools/swift-ios.sh -parse \
+	-import-objc-header src/core/core.h \
+	src/std/*.swift \
+	src/core/*.swift \
+	src/foundation/*.swift \
+	src/ios/*.swift
+
+img:
+	tools/swift-both-parse.sh \
+	-import-objc-header src/core/core.h \
+	src/std/*.swift \
+	src/core/*.swift \
+	src/foundation/*.swift \
+	src/img/*.swift
+
+gl:
+	tools/swift-both-parse.sh \
+	-import-objc-header src/gl/gl.h \
+	src/std/*.swift \
+	src/core/*.swift \
+	src/foundation/*.swift \
+	src/cr/*.swift \
+	src/img/*.swift \
+	src/gl/*.swift
+
+scn:
+	tools/swift-both-parse.sh \
+	-import-objc-header src/scn/scn.h \
+	src/std/*.swift \
+	src/core/*.swift \
+	src/foundation/*.swift \
+	src/cr/*.swift \
+	src/img/*.swift \
+	src/gl/*.swift \
+	src/scn/*.swift
+
+geom:
+	tools/swift-both-parse.sh \
+	-import-objc-header src/scn/scn.h \
+	src/std/*.swift \
+	src/core/*.swift \
+	src/foundation/*.swift \
+	src/cr/*.swift \
+	src/img/*.swift \
+	src/gl/*.swift \
+	src/scn/*.swift \
+	src/geom/*.swift
+
+parse: std core foundation cd cr mac ios img geom gl scn

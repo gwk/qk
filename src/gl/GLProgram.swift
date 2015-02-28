@@ -1,6 +1,12 @@
 // © 2014 George King.
 // Permission to use this file is granted in license-qk.txt.
 
+#if os(OSX)
+  import OpenGL
+  #else
+  import OpenGLES
+#endif
+
 
 enum GLInputType: GLenum, Printable {
   case F = 0x1406 // GL_FLOAT
@@ -175,21 +181,21 @@ class GLProgram {
     glAssert()
   }
   
-  func bindUniform(name: String, v2: V2F32) {
+  func bindUniform(name: String, v2: V2S) {
     let loc = inputLoc(name, isAttr: false, type: .V2, size: 1)
     if loc == -1 { return }
     glUniform2f(loc, v2.x, v2.y)
     glAssert()
   }
 
-  func bindUniform(name: String, v3: V3F32) {
+  func bindUniform(name: String, v3: V3S) {
     let loc = inputLoc(name, isAttr: false, type: .V3, size: 1)
     if loc == -1 { return }
     glUniform3f(loc, v3.x, v3.y, v3.z)
     glAssert()
   }
   
-  func bindUniform(name: String, v4: V4F32) {
+  func bindUniform(name: String, v4: V4S) {
     let loc = inputLoc(name, isAttr: false, type: .V4, size: 1)
     if loc == -1 { return }
     glUniform4f(loc, v4.x, v4.y, v4.z, v4.w)
@@ -226,15 +232,15 @@ class GLProgram {
     bindAttr(name, size: 1, type: .F, normalize: false, stride: stride, ptr: p + offset)
   }
   
-  func bindAttr(name: String, stride: Int, V2F32 p: UnsafePointer<Void>, offset: Int) {
+  func bindAttr(name: String, stride: Int, V2S p: UnsafePointer<Void>, offset: Int) {
     bindAttr(name, size: 2, type: .V2, normalize: false, stride: stride, ptr: p + offset)
   }
   
-  func bindAttr(name: String, stride: Int, V3F32 p: UnsafePointer<Void>, offset: Int) {
+  func bindAttr(name: String, stride: Int, V3S p: UnsafePointer<Void>, offset: Int) {
     bindAttr(name, size: 3, type: .V3, normalize: false, stride: stride, ptr: p + offset)
   }
   
-  func bindAttr(name: String, stride: Int, V4F32 p: UnsafePointer<Void>, offset: Int) {
+  func bindAttr(name: String, stride: Int, V4S p: UnsafePointer<Void>, offset: Int) {
     bindAttr(name, size: 4, type: .V4, normalize: false, stride: stride, ptr: p + offset)
   }
   

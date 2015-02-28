@@ -2,8 +2,9 @@
 // Permission to use this file is granted in license-qk.txt.
 
 #import <OpenGL/OpenGL.h>
+#import <OpenGL/gl3.h>
 
-typedef GLuint GLHandle;
+typedef GLuint _GLHandle;
 
 #if TARGET_OS_IPHONE
 typedef EAGLContext* GLContext;
@@ -14,6 +15,6 @@ typedef CGLContextObj GLContext;
 
 void glContextEnable(GLContext ctx);
 
-void glDeleteTexture(GLHandle texture);
+void glDeleteTexture(_GLHandle texture);
 
-void glShaderSource1(GLHandle shader, const char* source, int len);
+void glShaderSource1(_GLHandle shader, const char* source, int len);

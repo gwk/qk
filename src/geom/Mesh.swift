@@ -6,31 +6,31 @@ import SceneKit
 
 // hack for the busted type system.
 func ptr_id(p: UnsafePointer<F32>) -> UnsafePointer<F32> { return p }
-func ptr_id(p: UnsafePointer<V2F32>) -> UnsafePointer<V2F32> { return p }
-func ptr_id(p: UnsafePointer<V3F32>) -> UnsafePointer<V3F32> { return p }
-func ptr_id(p: UnsafePointer<V4F32>) -> UnsafePointer<V4F32> { return p }
+func ptr_id(p: UnsafePointer<V2S>) -> UnsafePointer<V2S> { return p }
+func ptr_id(p: UnsafePointer<V3S>) -> UnsafePointer<V3S> { return p }
+func ptr_id(p: UnsafePointer<V4S>) -> UnsafePointer<V4S> { return p }
 
 extension NSMutableData {
 
   func append(var f: F32) { appendBytes(ptr_id(&f), length: sizeof(F32)) }
-  func append(var v: V2F32) { appendBytes(ptr_id(&v), length: sizeof(V2F32)) }
-  func append(var v: V3F32) { appendBytes(ptr_id(&v), length: sizeof(V3F32)) }
-  func append(var v: V4F32) { appendBytes(ptr_id(&v), length: sizeof(V4F32)) }
+  func append(var v: V2S) { appendBytes(ptr_id(&v), length: sizeof(V2S)) }
+  func append(var v: V3S) { appendBytes(ptr_id(&v), length: sizeof(V3S)) }
+  func append(var v: V4S) { appendBytes(ptr_id(&v), length: sizeof(V4S)) }
   
   func bytesF32(offset: Int = 0, index: Int = 0) -> UnsafePointer<F32> {
     return UnsafePointer<F32>(self.bytes + offset) + index
   }
   
-  func bytesV2(offset: Int = 0, index: Int = 0) -> UnsafePointer<V2F32> {
-    return UnsafePointer<V2F32>(self.bytes + offset) + index
+  func bytesV2(offset: Int = 0, index: Int = 0) -> UnsafePointer<V2S> {
+    return UnsafePointer<V2S>(self.bytes + offset) + index
   }
   
-  func bytesV3(offset: Int = 0, index: Int = 0) -> UnsafePointer<V3F32> {
-    return UnsafePointer<V3F32>(self.bytes + offset) + index
+  func bytesV3(offset: Int = 0, index: Int = 0) -> UnsafePointer<V3S> {
+    return UnsafePointer<V3S>(self.bytes + offset) + index
   }
   
-  func bytesV4(offset: Int = 0, index: Int = 0) -> UnsafePointer<V4F32> {
-    return UnsafePointer<V4F32>(self.bytes + offset) + index
+  func bytesV4(offset: Int = 0, index: Int = 0) -> UnsafePointer<V4S> {
+    return UnsafePointer<V4S>(self.bytes + offset) + index
   }
 }
 
@@ -117,10 +117,10 @@ class Mesh {
     //var obw = 0
     //var obi = 0
 
-    var stride = sizeof(V3F32)
-    if !n.isEmpty   { assert(n.count == len); on = stride; stride += sizeof(V3F32) }
-    if !c.isEmpty   { assert(c.count == len); oc = stride; stride += sizeof(V4F32) }
-    if !t0.isEmpty  { assert(t0.count == len); ot0 = stride; stride += sizeof(V2F32) }
+    var stride = sizeof(V3S)
+    if !n.isEmpty   { assert(n.count == len); on = stride; stride += sizeof(V3S) }
+    if !c.isEmpty   { assert(c.count == len); oc = stride; stride += sizeof(V4S) }
+    if !t0.isEmpty  { assert(t0.count == len); ot0 = stride; stride += sizeof(V2S) }
     if !vc.isEmpty  { assert(vc.count == len); ovc = stride; stride += sizeof(F32) }
     if !ec.isEmpty  { assert(ec.count == len); oec = stride; stride += sizeof(F32) }
     //if !bw.isEmpty  { assert(bw.count == len); obw = stride; stride += sizeof(V4) }
@@ -129,10 +129,10 @@ class Mesh {
     let d = NSMutableData(capacity: len * stride)!
     
     for i in 0..<len {
-      d.append(p[i].v32)
-      if !n.isEmpty   { d.append(n[i].v32) }
-      if !c.isEmpty   { d.append(c[i].v32) }
-      if !t0.isEmpty  { d.append(t0[i].v32) }
+      d.append(p[i].vs)
+      if !n.isEmpty   { d.append(n[i].vs) }
+      if !c.isEmpty   { d.append(c[i].vs) }
+      if !t0.isEmpty  { d.append(t0[i].vs) }
       if !vc.isEmpty  { d.append(vc[i]) }
       if !ec.isEmpty  { d.append(ec[i]) }
       //if !bw.isEmpty  { d.append(bw[i]) }
@@ -214,15 +214,3 @@ class Mesh {
     return m
   }
 }
-
-
-extension V3F32 {
-  var v32: V3F32 { return self }
-}
-
-
-extension V4F32 {
-  var v32: V4F32 { return self }
-}
-
-

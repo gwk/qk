@@ -1,6 +1,7 @@
 // © 2014 George King.
 // Permission to use this file is granted in license-qk.txt.
 
+import QuartzCore
 
 #if os(OSX)
   typealias CRGLLayer = CAOpenGLLayer
@@ -14,7 +15,7 @@ class GLLayer: CRGLLayer {
   var fmt: PixFmt = .None
   var needsSceneSetup: Bool = true
   //var redisplayInterval: Flt
-  var drawableSize = V2F32()
+  var drawableSize = V2S()
   
   #if os(iOS)
     var context: EAGLContext!

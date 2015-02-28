@@ -5,7 +5,7 @@ import Foundation
 
 
 let symbolChars = [Character]("_0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzABCDEFG")
-let symbolCharsSet = mapToDict(symbolChars) { ($0, true) }
+let symbolCharsSet = Set(symbolChars)
 
 
 extension String {

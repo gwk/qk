@@ -9,13 +9,27 @@ import QuartzCore
   typealias CRGLLayer = CAEAGLLayer
 #endif
 
+
+typealias GLRenderSetupFn = (CFTimeInterval) -> ()
+typealias GLRenderFn = (CFTimeInterval) -> ()
+
   
 class GLLayer: CRGLLayer {
 
-  var fmt: PixFmt = .None
-  var needsSceneSetup: Bool = true
-  //var redisplayInterval: Flt
+  var needsRenderSetup: Bool = true
   var drawableSize = V2S()
+  
+  var pixFmt: PixFmt = .None {
+    willSet { assert(pixFmt == .None, "GLLayer: altering the pixFmt is not yet supported") }
+  }
+  
+  var renderSetup: GLRenderSetupFn = {(time) in ()} {
+    didSet { needsRenderSetup = true }
+  }
+  
+  var render: GLRenderFn = {(time) in ()} {
+    didSet {}
+  }
   
   #if os(iOS)
     var context: EAGLContext!
@@ -25,26 +39,30 @@ class GLLayer: CRGLLayer {
     var displayLink: CADisplayLink
   #endif
   
-  override init() { super.init() }
-  
   required init(coder: NSCoder) { fatalError() }
   
-  func setup(fmt: PixFmt) {
-    self.fmt = fmt
+  override init() { super.init() } // layer gets instantiated for us on iOS, so we must defer initialization to setup().
+  
+  func setup(pixFmt: PixFmt) {
+    self.pixFmt = pixFmt
+
     opaque = true
     opacity = 1
     asynchronous = false
+    
     #if os(iOS)
       context = EAGLContext(API: kEAGLRenderingAPIOpenGLES2)
       check(context != nil)
       check(EAGLContext.setCurrentContext(context)) // in case host does not support ES2
       drawableProperties = [
-        // once the render buffer is presented, its contents may be altered by OpenGL,
-        // and therefore must be completely redrawn.
+        // once the render buffer is presented, its contents may be altered by OpenGL, and therefore must be completely redrawn.
+        // TODO: respect pixFmt.
         kEAGLDrawablePropertyRetainedBacking : NSNumber(false),
         kEAGLDrawablePropertyColorFormat : NSNumber(kEAGLColorFormatRGBA8)]
     #endif
   }
+  
+  #if os(OSX)
   
   // CAOpenGLLayer.
   
@@ -53,15 +71,15 @@ class GLLayer: CRGLLayer {
     var attrs: [PFA] = []
     attrs.append(kCGLPFADoubleBuffer)
     attrs.append(kCGLPFAColorSize)
-    attrs.append(PFA(U32(fmt.cglColorSize)))
+    attrs.append(PFA(U32(pixFmt.cglColorSize)))
     attrs.append(kCGLPFAAlphaSize)
-    attrs.append(PFA(U32(fmt.alphaSize)))
+    attrs.append(PFA(U32(pixFmt.alphaSize)))
     attrs.append(kCGLPFADepthSize)
-    attrs.append(PFA(U32(fmt.depthSize)))
-    if (fmt.isF32) {
+    attrs.append(PFA(U32(pixFmt.depthSize)))
+    if (pixFmt.isF32) {
       attrs.append(kCGLPFAColorFloat)
     }
-    let ms = fmt.multisamples
+    let ms = pixFmt.multisamples
     if (ms > 0) {
       attrs.append(kCGLPFASampleBuffers)
       attrs.append(PFA(1))
@@ -77,7 +95,7 @@ class GLLayer: CRGLLayer {
     var virtualScreenCount: GLint = -1
     let e = CGLChoosePixelFormat(attrs, &pf, &virtualScreenCount)
     if e.value != kCGLNoError.value {
-      println("CGL error creating pixel format (will fall back): \(e)")
+      println("CGL error creating pixel format (will fall back to default): \(e)")
       return super.copyCGLPixelFormatForDisplayMask(mask)
     }
     describeFormat(pf, virtualScreen: 0)
@@ -91,7 +109,7 @@ class GLLayer: CRGLLayer {
   
   override func copyCGLContextForPixelFormat(pixelFormat: CGLPixelFormatObj) -> CGLContextObj {
     // TODO:
-    needsSceneSetup = true
+    needsRenderSetup = true
     return super.copyCGLContextForPixelFormat(pixelFormat)
   }
 
@@ -107,12 +125,12 @@ class GLLayer: CRGLLayer {
   
   override func drawInCGLContext(ctx: CGLContextObj, pixelFormat: CGLPixelFormatObj, forLayerTime layerTime: F64,
     displayTime: UnsafePointer<CVTimeStamp>) {
-      CGLSetCurrentContext(ctx)
-      if needsSceneSetup {
-        needsSceneSetup = false
-        //[self.scene setupGLLayer:self time:layerTime];
+      assert(CGLGetCurrentContext() == ctx)
+      if needsRenderSetup {
+        needsRenderSetup = false
+        renderSetup(layerTime)
       }
-      //[self.scene drawInGLLayer:self time:layerTime];
+      render(layerTime)
       CGLSetCurrentContext(nil)
       // according to the header comments, we should call super to flush correctly.
       super.drawInCGLContext(ctx, pixelFormat: pixelFormat, forLayerTime: layerTime, displayTime:displayTime)
@@ -159,4 +177,9 @@ class GLLayer: CRGLLayer {
     println()
   }
 
+  #else // iOS
+  
+  // TODO: implement asynchronous with an internal CADisplayLink.
+  
+  #endif
 }

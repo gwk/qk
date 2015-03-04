@@ -31,12 +31,12 @@ extension CGSize {
   
   var w: Flt {
     get { return width }
-    set(w) { width = w }
+    set { width = newValue }
   }
 
   var h: Flt {
     get { return height }
-    set(h) { height = h }
+    set { height = newValue }
   }
   
   var v: V2 { return V2(w, h); }
@@ -81,32 +81,32 @@ extension CGRect {
   
   var o: CGPoint {
     get { return origin }
-    set(o) { origin = o }
+    set { origin = newValue }
   }
   
   var s: CGSize {
     get { return size }
-    set(s) { size = s }
+    set { size = newValue }
   }
   
   var x: Flt {
     get { return o.x }
-    set(x) { o = CGPoint(x, o.y) }
+    set { o = CGPoint(newValue, o.y) }
   }
   
   var y: Flt {
     get { return o.y }
-    set(y) { o = CGPoint(o.x, y) }
+    set { o = CGPoint(o.x, newValue) }
   }
   
   var w: Flt {
     get { return s.w }
-    set(w) { s = CGSize(w, s.h) }
+    set { s = CGSize(newValue, s.h) }
   }
   
   var h: Flt {
     get { return s.h }
-    set(h) { s = CGSize(s.w, h) }
+    set { s = CGSize(s.w, newValue) }
   }
   
   var r: Flt {

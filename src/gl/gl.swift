@@ -6,11 +6,11 @@ import Foundation
 #if os(OSX)
   import OpenGL
   import OpenGL.GL
-  typealias GLContext = CGLContextObj
+  typealias CRGLContext = CGLContextObj
   #else
   import OpenGLES
   import OpenGLES.GL
-  typealias GLContext = EAGLContext
+  typealias CRGLContext = EAGLContext
 #endif
 
 
@@ -76,7 +76,7 @@ func glProvideShaderSource(shader: GLHandle, source: String) {
 }
 
 
-func glContextEnable(ctx: GLContext) {
+func glContextEnable(ctx: CRGLContext) {
   var ok = false
   #if os(OSX)
     let error = CGLSetCurrentContext(ctx)

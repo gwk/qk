@@ -9,8 +9,8 @@ typealias V3 = SCNVector3
 typealias V4 = SCNVector4
 
 
-func getCtx(renderer: SCNSceneRenderer) -> GLContext {
-  return unsafeBitCast(renderer.context, GLContext.self)
+func getCtx(renderer: SCNSceneRenderer) -> CRGLContext {
+  return unsafeBitCast(renderer.context, CRGLContext.self)
 }
 
 func enableCtx(renderer: SCNSceneRenderer) {

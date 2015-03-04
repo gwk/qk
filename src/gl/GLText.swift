@@ -42,7 +42,7 @@ func GLTextView_setup() {
 
 
 
-class GLTextView: GLView {
+class GLTextView: View {
   var _text: String = ""
   var _fontSize: F32 = 16 // key into GLTextAtlas page dictionary.
   var _kern: F32 = 1

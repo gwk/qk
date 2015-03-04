@@ -172,13 +172,15 @@ func _createContext(w: Int, h: Int) -> CGContext {
   let cs = CGColorSpaceCreateDeviceGray()
   // TODO: use alphaOnly context?
   let info = CGBitmapInfo(CGImageAlphaInfo.None.rawValue | CGBitmapInfo.ByteOrderDefault.rawValue)
-  return CGBitmapContextCreate(nil, // manage data internally.
+  let ctx = CGBitmapContextCreate(nil, // manage data internally.
     w,
     h,
     8, // bits per channel.
     w, // bytes per row.
     cs,
     info)
+  assert(ctx != nil)
+  return ctx
 }
 
 

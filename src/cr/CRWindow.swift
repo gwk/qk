@@ -33,12 +33,8 @@ extension CRWindow {
         sh = 0
       }
       let f = frame
-      println("O \(newValue)")
-      println("B \(origin)")
       // note: setFrameOriginTopLeft does not work as advertised on 10.10.
       setFrameOrigin(V2(newValue.x, sh - (newValue.y + f.size.height)))
-      println("A \(origin)")
-      
     }
   }
 

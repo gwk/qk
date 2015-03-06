@@ -10,11 +10,16 @@ import QuartzCore
 #endif
 
 
-typealias GLRenderSetupFn = (CFTimeInterval) -> ()
-typealias GLRenderFn = (CFTimeInterval) -> ()
+typealias GLRenderSetupFn = (Time) -> ()
+typealias GLRenderFn = (Time, Time) -> ()
+typealias GLHandleEventFn = (GLEvent) -> ()
 
   
 class GLLayer: CRGLLayer {
+
+  required init(coder: NSCoder) { fatalError() }
+  
+  override init() { super.init() } // layer gets instantiated for us on iOS, so we must defer initialization to setup().
 
   var needsRenderSetup: Bool = true
   var drawableSize = V2S()
@@ -23,33 +28,32 @@ class GLLayer: CRGLLayer {
     willSet { assert(pixFmt == .None, "GLLayer: altering the pixFmt is not yet supported") }
   }
   
-  var renderSetup: GLRenderSetupFn = {(time) in ()} {
+  weak var view: GLView? = nil
+  
+  var renderSetup: GLRenderSetupFn = { (time) in () } {
     didSet { needsRenderSetup = true }
   }
   
-  var render: GLRenderFn = {(time) in ()} {
+  var render: GLRenderFn = { (time) in () } {
     didSet {}
   }
   
+  var handleEvent: GLHandleEventFn = { (CREvent) in () }
+  
   #if os(iOS)
-    var context: EAGLContext!
-    var frameBuffer: GLuint = 0
-    var renderBuffer: GLuint = 0
-    var depthBuffer: GLuint = 0
-    var displayLink: CADisplayLink
+  var context: EAGLContext!
+  var frameBuffer: GLuint = 0
+  var renderBuffer: GLuint = 0
+  var depthBuffer: GLuint = 0
+  var displayLink: CADisplayLink!
   #endif
   
-  required init(coder: NSCoder) { fatalError() }
-  
-  override init() { super.init() } // layer gets instantiated for us on iOS, so we must defer initialization to setup().
-  
-  func setup(pixFmt: PixFmt) {
+  func setup(pixFmt: PixFmt, view: GLView? = nil) {
     self.pixFmt = pixFmt
-
+    self.view = view
     opaque = true
     opacity = 1
     asynchronous = false
-    
     #if os(iOS)
       context = EAGLContext(API: kEAGLRenderingAPIOpenGLES2)
       check(context != nil)
@@ -62,6 +66,10 @@ class GLLayer: CRGLLayer {
     #endif
   }
   
+  var needsInitialLayerTime = true
+  var initialLayerTime: Time = 0
+  var prevLayerTime: Time = 0
+
   #if os(OSX)
   
   // CAOpenGLLayer.
@@ -118,19 +126,27 @@ class GLLayer: CRGLLayer {
     super.releaseCGLContext(ctx)
   }
   
-  override func canDrawInCGLContext(ctx: CGLContextObj, pixelFormat: CGLPixelFormatObj, forLayerTime: CFTimeInterval,
+  override func canDrawInCGLContext(ctx: CGLContextObj, pixelFormat: CGLPixelFormatObj, forLayerTime layerTime: Time,
     displayTime: UnsafePointer<CVTimeStamp>) -> Bool {
       return true
   }
   
-  override func drawInCGLContext(ctx: CGLContextObj, pixelFormat: CGLPixelFormatObj, forLayerTime layerTime: F64,
+  override func drawInCGLContext(ctx: CGLContextObj, pixelFormat: CGLPixelFormatObj, forLayerTime layerTime: Time,
     displayTime: UnsafePointer<CVTimeStamp>) {
       assert(CGLGetCurrentContext() == ctx)
       if needsRenderSetup {
         needsRenderSetup = false
         renderSetup(layerTime)
       }
-      render(layerTime)
+      if needsInitialLayerTime {
+        needsInitialLayerTime = false
+        initialLayerTime = layerTime
+        prevLayerTime = layerTime
+      }
+      let delta = layerTime - prevLayerTime
+      handleEvent(.Tick(GLTick(time: layerTime, delta: delta)))
+      render(layerTime, delta)
+      prevLayerTime = layerTime
       CGLSetCurrentContext(nil)
       // according to the header comments, we should call super to flush correctly.
       super.drawInCGLContext(ctx, pixelFormat: pixelFormat, forLayerTime: layerTime, displayTime:displayTime)

@@ -57,4 +57,9 @@ class GLViewController: CRViewController {
     get { return glView.render }
     set { glView.render = newValue }
   }
+
+  var handleEvent: GLHandleEventFn {
+    get { return glView.handleEvent }
+    set { glView.handleEvent = newValue }
+  }
 }

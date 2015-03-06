@@ -8,3 +8,12 @@
   import UIKit
   typealias CREvent = UIEvent
 #endif
+
+
+// note: apparently this is lazily evaluated by swift, so it must be accessed at launch time to initialize correctly.
+let appLaunchSysTime = NSProcessInfo.processInfo().systemUptime
+
+
+extension CREvent {
+  var appTime: Time { return timestamp - appLaunchSysTime } // timestamp is relative to systemUptime.
+}

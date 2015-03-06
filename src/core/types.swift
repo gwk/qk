@@ -17,5 +17,7 @@ typealias U64 = UInt64
 typealias F32 = Float
 typealias F64 = Double
 
+typealias Time = F64
+
 typealias Action = () -> ()
 typealias Predicate = () -> Bool

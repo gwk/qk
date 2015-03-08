@@ -103,6 +103,8 @@ class View {
   }
   
   func renderTree(pxPerPt: F32, screenSizePt: V2S, parentOffset: V2S = V2S()) {
+    glEnable(GLenum(GL_BLEND))
+    glBlendFunc(GLenum(GL_SRC_ALPHA), GLenum(GL_ONE_MINUS_SRC_ALPHA))
     if needsLayout {
       layout()
       needsLayout = false

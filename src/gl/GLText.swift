@@ -218,7 +218,6 @@ struct GLTextPage: Printable {
     self.descent = descent
     //let glyphRect = font.boundingRectForFont
     // generate strings and glyph info prior to allocating canvas.
-    var attrStrings: [NSAttributedString] = []
     let style = NSMutableParagraphStyle()
     style.lineBreakMode = .ByCharWrapping
     style.alignment = .LeftTextAlignment
@@ -301,7 +300,8 @@ struct GLTextPage: Printable {
       let textScale = CGAffineTransformMakeScale(1, -1)
       let textMat = CGAffineTransformTranslate(textScale, Flt(-g.gox), Flt(g.goy - ascent))
       CGContextSetTextMatrix(ctx, textMat)
-      CTLineDraw(l, ctx)
+      assert(unsafeBitCast(ctx, Uns.self) != 0)
+      CTLineDraw(l, ctx) // TODO: figure out why this sometimes emits CG warnings.
       CGContextRestoreGState(ctx)
     }
     // allocate texture.
@@ -325,9 +325,9 @@ struct GLTextPage: Printable {
       println()
     #endif
     tex.update(w , h,
-      format: GLenum(GL_RED),
-      dataFormat: GLenum(GL_RED),
-      dataType: GLenum(GL_UNSIGNED_BYTE),
+      fmt: .L,
+      dataFmt: .L,
+      dataType: .U8,
       data: CGBitmapContextGetData(ctx))
   }
   

@@ -10,7 +10,7 @@ import QuartzCore
 #endif
 
 
-typealias GLRenderFn = (Time) -> ()
+typealias GLRenderFn = (F32, V2S, Time) -> ()
 typealias GLEventFn = (GLEvent) -> ()
 
   
@@ -128,7 +128,7 @@ class GLLayer: CRGLLayer {
         prevLayerTime = layerTime
       }
       handleEvent(.Tick(GLTick(time: layerTime)))
-      render(layerTime)
+      render(F32(contentsScale), bounds.size.vs, layerTime)
       prevLayerTime = layerTime
       // according to the header comments, we should call super to flush correctly.
       super.drawInCGLContext(ctx, pixelFormat: pixelFormat, forLayerTime: layerTime, displayTime:displayTime)

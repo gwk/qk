@@ -25,10 +25,36 @@ func GLTexture_getMaxSize() -> Int {
 }
 
 
+enum GLTexTarget: GLenum {
+  #if os(OSX)
+  case Rect = 0x0DE1 // GL_TEXTURE_2D.
+  case CubeMap = 0x8513 // GL_TEXTURE_CUBE_MAP.
+  #else
+  #endif
+}
+
+enum GLTexFmt: GLenum {
+  #if os(OSX)
+  case A = 0x1906     // GL_ALPHA.
+  case L = 0x1903     // GL_RED; GL_LUMINANCE is deprecated.
+  case LA = 0x190A    // GL_RG; GL_LUMINANCE_ALPHA is deprecated.
+  case RGB = 0x1907   // GL_RGB.
+  case RGBA = 0x1908  // GL_RGBA.
+  #else
+  #endif
+}
+
+enum GLDataType: GLenum {
+  #if os(OSX)
+  case U8 = 0x1401 // GL_UNSIGNED_BYTE.
+  #else
+  #endif
+}
+
 class GLTexture {
   let handle: GLHandle
-  var target: GLenum = GLenum(0) // e.g. GL_TEXTURE_2D.
-  var format: GLenum = GLenum(0) // i.e. GL_ALPHA, GL_LUMINANCE, GL_LUMINANCE_ALPHA, GL_RGB, GL_RGBA.
+  var target: GLTexTarget
+  var fmt: GLTexFmt = .RGBA
   var w: Int = 0
   var h: Int = 0
   
@@ -37,29 +63,29 @@ class GLTexture {
     glAssert()
   }
   
-  init(target: GLenum = GLenum(GL_TEXTURE_2D)) {
-    self.target = target // ES also supports GL_CUBE_MAP.
-    var h: GLHandle = 0
-    glGenTextures(1, &h)
+  init(target: GLTexTarget = .Rect) {
+    self.target = target
+    var _handle: GLHandle = 0
+    glGenTextures(1, &_handle)
     glAssert()
-    handle = h
+    handle = _handle
   }
   
-  convenience init(target: GLenum = GLenum(GL_TEXTURE_2D), w: Int, h: Int, format: GLenum, dataFormat: GLenum, dataType: GLenum, data: UnsafePointer<U8>) {
-    self.init(target: target)
-    update(w, h, format: format, dataFormat: dataFormat, dataType: dataType, data: data)
+  convenience init(target: GLTexTarget = .Rect, w: Int, h: Int, fmt: GLTexFmt, dataFmt: GLTexFmt, dataType: GLDataType,
+    data: UnsafePointer<Void>) {
+      self.init(target: target)
+      update(w, h, fmt: fmt, dataFmt: dataFmt, dataType: dataType, data: data)
   }
   
-  func update(w: Int, _ h: Int, format: GLenum, dataFormat: GLenum, dataType: GLenum, data: UnsafePointer<Void>) {
+  func update(w: Int, _ h: Int, fmt: GLTexFmt, dataFmt: GLTexFmt, dataType: GLDataType, data: UnsafePointer<Void>) {
     let maxSize = GLTexture_getMaxSize()
     check(w <= maxSize && h <= maxSize, "GLTexture exceeds maxSize (\(maxSize)): w: \(w); h: \(h)")
     self.w = w
     self.h = h
-    self.format = format
-    glBindTexture(target, handle)
+    self.fmt = fmt
+    glBindTexture(target.rawValue, handle)
     glAssert()
-    //func glTexImage2D(target: GLenum, level: GLint, internalformat: GLint, width: GLsizei, height: GLsizei, border: GLint, format: GLenum, type: GLenum, pixels: UnsafePointer<Void>)
-    glTexImage2D(target, 0, GLint(format), GLsizei(w), GLsizei(h), 0, dataFormat, dataType, data)
+    glTexImage2D(target.rawValue, 0, GLint(fmt.rawValue), GLsizei(w), GLsizei(h), 0, dataFmt.rawValue, dataType.rawValue, data)
     glAssert()
     // set default wrap and filter for convenience.
     // forgetting to set the filter appears to result in undefined behavior? (black samples).
@@ -77,7 +103,7 @@ class GLTexture {
       filter == GLenum(GL_NEAREST_MIPMAP_LINEAR) ||
       filter == GLenum(GL_LINEAR_MIPMAP_LINEAR),
       "bad texture filter parameter: \(filter)")
-    glTexParameteri(target, GLenum(GL_TEXTURE_MIN_FILTER), GLint(filter));
+    glTexParameteri(target.rawValue, GLenum(GL_TEXTURE_MIN_FILTER), GLint(filter));
     glAssert()
   }
   
@@ -85,7 +111,7 @@ class GLTexture {
     bind() // does texture need to be bound when this is called?
     assert(filter == GLenum(GL_NEAREST) || filter == GLenum(GL_LINEAR),
       "bad texture filter parameter: \(filter)")
-    glTexParameteri(target, GLenum(GL_TEXTURE_MAG_FILTER), GLint(filter))
+    glTexParameteri(target.rawValue, GLenum(GL_TEXTURE_MAG_FILTER), GLint(filter))
     glAssert()
   }
   
@@ -100,9 +126,9 @@ class GLTexture {
     bind() // does texture need to be bound when this is called?
     assert(wrap == GLenum(GL_CLAMP_TO_EDGE) || wrap == GLenum(GL_MIRRORED_REPEAT) || wrap == GLenum(GL_REPEAT),
       "bad texture wrap parameter: \(wrap)")
-    glTexParameteri(target, axis, GLint(wrap))
+    glTexParameteri(target.rawValue, axis, GLint(wrap))
     glAssert()
-    glTexParameteri(target, axis, GLint(wrap))
+    glTexParameteri(target.rawValue, axis, GLint(wrap))
     glAssert()
   }
   
@@ -113,14 +139,14 @@ class GLTexture {
   
   func bind() {
     //glEnable(_target); qkgl_assert(); // TODO: necessary in OpenGL? invalid in ES2.
-    glBindTexture(target, handle)
+    glBindTexture(target.rawValue, handle)
     glAssert()
   }
   
   func unbind() {
     // TODO: should this be a class function?
     //glEnable(_target); qkgl_assert(); // TODO: necessary in OpenGL? invalid in ES2.
-    glBindTexture(target, 0)
+    glBindTexture(target.rawValue, 0)
     glAssert()
   }
 }  

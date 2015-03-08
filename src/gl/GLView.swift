@@ -75,7 +75,7 @@ class GLView: CRView {
       layer!.autoresizingMask = CAAutoresizingMask(CAAutoresizingMask.LayerWidthSizable.rawValue | CAAutoresizingMask.LayerHeightSizable.rawValue) // ?
       layer!.needsDisplayOnBoundsChange = true // ?
     #endif
-    glLayer.setup(pixFmt, view: self)
+    glLayer.setup(pixFmt)
   }
   
   var glLayer: GLLayer {
@@ -90,17 +90,12 @@ class GLView: CRView {
     set { glLayer.pixFmt = newValue }
   }
   
-  var renderSetup: GLRenderSetupFn {
-    get { return glLayer.renderSetup }
-    set { glLayer.renderSetup = newValue }
-  }
-  
   var render: GLRenderFn {
     get { return glLayer.render }
     set { glLayer.render = newValue }
   }
 
-  var handleEvent: GLHandleEventFn {
+  var handleEvent: GLEventFn {
     get { return glLayer.handleEvent }
     set { glLayer.handleEvent = newValue }
   }

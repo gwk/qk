@@ -38,6 +38,7 @@ class GLViewController: CRViewController {
     let screen: NSScreen = view.window!.screen!
     scaleFactor = screen.backingScaleFactor
     println("screenDidChange: \(scaleFactor)")
+    view.layer?.contentsScale = scaleFactor
   }
   #endif
   
@@ -48,17 +49,12 @@ class GLViewController: CRViewController {
     set { glView.pixFmt = newValue }
   }
   
-  var renderSetup: GLRenderSetupFn {
-    get { return glView.renderSetup }
-    set { glView.renderSetup = newValue }
-  }
-  
   var render: GLRenderFn {
     get { return glView.render }
     set { glView.render = newValue }
   }
 
-  var handleEvent: GLHandleEventFn {
+  var handleEvent: GLEventFn {
     get { return glView.handleEvent }
     set { glView.handleEvent = newValue }
   }

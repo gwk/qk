@@ -64,7 +64,6 @@ struct GLKey {
 
 struct GLTick {
   let time: Time
-  let delta: Time
 }
 
 

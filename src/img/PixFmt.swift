@@ -626,7 +626,14 @@ enum PixFmt: U32, Printable {
     case .RGBXF32D32M8: return "RGBXF32D32M8"
     }
   }
-
+  
+  init(hasRGB: Bool, hasAlpha: Bool, is16Bit: Bool) {
+    self = PixFmt(rawValue: 0
+      | (hasRGB ? PixFmtBitRGB : PixFmtBitL)
+      | (hasAlpha ? PixFmtBitA : 0)
+      | (is16Bit ? PixFmtBitU16 : PixFmtBitU8))!
+  }
+  
   var isU8: Bool        { return rawValue & PixFmtBitU8 != 0 }
   var isU16: Bool       { return rawValue & PixFmtBitU16 != 0 }
   var isF32: Bool       { return rawValue & PixFmtBitF32 != 0 }

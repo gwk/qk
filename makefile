@@ -39,83 +39,83 @@ all: _bld/gen-cd-entities gen
 # parse targets ordered by dependency.
 
 std:
-	tools/swift-both-parse.sh \
-	src/std/*.swift
+	tools/swift-parse-both.sh \
+	src/std
 
 core:
-	tools/swift-both-parse.sh \
-	src/std/*.swift \
-	src/core/*.swift
+	tools/swift-parse-both.sh \
+	src/std \
+	src/core
 
 foundation:
-	tools/swift-both-parse.sh \
-	src/std/*.swift \
-	src/core/*.swift \
-	src/foundation/*.swift
+	tools/swift-parse-both.sh \
+	src/std \
+	src/core \
+	src/foundation
 
 cd:
-	tools/swift-both-parse.sh \
-	src/std/*.swift \
-	src/core/*.swift \
-	src/foundation/*.swift \
-	src/cd/*.swift
+	tools/swift-parse-both.sh \
+	src/std \
+	src/core \
+	src/foundation \
+	src/cd
 
 cr:
-	tools/swift-both-parse.sh \
-	src/std/*.swift \
-	src/core/*.swift \
-	src/foundation/*.swift \
-	src/cr/*.swift
+	tools/swift-parse-both.sh \
+	src/std \
+	src/core \
+	src/foundation \
+	src/cr
 
 mac:
-	echo tools/swift-mac.sh -parse \
-	src/std/*.swift \
-	src/core/*.swift \
-	src/foundation/*.swift \
-	src/mac/*.swift
+	echo tools/swift-parse-mac.sh \
+	src/std \
+	src/core \
+	src/foundation \
+	src/mac
 
 ios:
-	echo tools/swift-ios.sh -parse \
-	src/std/*.swift \
-	src/core/*.swift \
-	src/foundation/*.swift \
-	src/ios/*.swift
+	echo tools/swift-parse-ios.sh \
+	src/std \
+	src/core \
+	src/foundation \
+	src/ios
 
 img:
-	tools/swift-both-parse.sh \
-	src/std/*.swift \
-	src/core/*.swift \
-	src/foundation/*.swift \
-	src/img/*.swift
+	tools/swift-parse-both.sh \
+	src/std \
+	src/core \
+	src/foundation \
+	src/img
 
 gl:
-	tools/swift-both-parse.sh \
-	src/std/*.swift \
-	src/core/*.swift \
-	src/foundation/*.swift \
-	src/cr/*.swift \
-	src/img/*.swift \
-	src/gl/*.swift
+	tools/swift-parse-both.sh \
+	src/std \
+	src/core \
+	src/foundation \
+	src/cr \
+	src/img \
+	src/gl
 
 scn:
-	tools/swift-both-parse.sh \
-	src/std/*.swift \
-	src/core/*.swift \
-	src/foundation/*.swift \
-	src/cr/*.swift \
-	src/img/*.swift \
-	src/gl/*.swift \
-	src/scn/*.swift
+	tools/swift-parse-both.sh \
+	src/std \
+	src/core \
+	src/foundation \
+	src/cr \
+	src/img \
+	src/gl \
+	src/scn
 
 geom:
-	tools/swift-both-parse.sh \
-	src/std/*.swift \
-	src/core/*.swift \
-	src/foundation/*.swift \
-	src/cr/*.swift \
-	src/img/*.swift \
-	src/gl/*.swift \
-	src/scn/*.swift \
-	src/geom/*.swift
+	tools/swift-parse-both.sh \
+	src/std \
+	src/core \
+	src/foundation \
+	src/cr \
+	src/img \
+	src/gl \
+	src/scn \
+	src/geom
 
 parse: std core foundation cd cr mac ios img geom gl scn

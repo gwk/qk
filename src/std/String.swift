@@ -120,6 +120,12 @@ extension String {
   
   var numberedLines: [String] { return numberedLinesFrom(1) }
   
+  
+  // unicode.
+  
+  var codes: UnicodeScalarView { return unicodeScalars }
+  
+  
   // utf8.
   
   func withUtf8<R>(@noescape body: (UnsafeBufferPointer<UTF8.CodeUnit>) -> R) -> R {

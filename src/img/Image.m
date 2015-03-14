@@ -4,14 +4,8 @@
 #import <png.h>
 #import <zlib.h>
 #import "Image.h"
+#import "util.h"
 
-#define errFL(...) fprintf(stderr, __VA_ARGS__)
-
-#define check_malloc(ptr) \
-if (!ptr) { \
-errFL("malloc failed: %s:%i: %s", __FILE__, __LINE__, __FUNCTION__); \
-abort(); \
-}
 
 void logPngVersionInfo() {
   errFL("libpng compiled: %s; using: %s; zlib compiled: %s; using: %s",
@@ -122,10 +116,8 @@ void* imgDataFromPngReadPtr(png_structp readPtr,
   }
   
   size_t l =  rowsLength * h;
-  png_bytep data = (png_bytep)malloc(l);
-  check_malloc(data);
-  png_bytepp row_pointers = (png_bytepp)malloc(h * sizeof(png_bytep));
-  check_malloc(row_pointers);
+  png_bytep data = (png_bytep)malloc_safe(l);
+  png_bytepp row_pointers = (png_bytepp)malloc_safe(h * sizeof(png_bytep));
   
   // fill out row_pointers.
   const BOOL flip = YES; // make data layout match OpenGL texturing expectations.

@@ -49,24 +49,6 @@ func take<G: GeneratorType>(var gen: G, var n: Int) -> [G.Element] {
 }
 
 
-func takeWhile<G: GeneratorType>(var gen: G, pred: (G.Element) -> Bool) -> [G.Element] {
-  // NOTE: the element that fails the predicate is necessarily discarded; there is no way to 'put back' into the generator.
-  var a: [G.Element] = []
-  while true {
-    let oe = gen.next()
-    if let e = oe {
-      if !pred(e) {
-        return a
-      } else {
-        a.append(e)
-      }
-    } else {
-      return a
-    }
-  }
-}
-
-
 struct Zip2<G0: GeneratorType, G1: GeneratorType> {
   var g0: G0
   var g1: G1

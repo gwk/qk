@@ -10,7 +10,7 @@ Pair = namedtuple('Pair', ['a', 'b'])
 
 dims = [2, 3, 4]
 all_v_comps = ['x', 'y', 'z', 'w']
-types = [('F32', 'S'), ('F64', 'D')]
+types = [('F32', 'S'), ('F64', 'D'), ('Int', 'I')]
 ops = ['+', '-', '*', '/']
 
 def fmt(f, *items):
@@ -37,6 +37,18 @@ def gen_vec(d, t, tl, vt, isExisting=False):
   comps_b = ['b.' + c for c in comps]
   comps_ab = [Pair(a, b) for a, b in zip(comps_a, comps_b)]
   public = 'public ' if isExisting else ''
+
+  # conversion to float types for integer vectors.
+  if tl == 'I':
+    ft = 'Flt'
+    fvt = fmt('V$', d)
+    f_comps = [fmt('$($)', ft, c) for c in comps]
+    f_self = fmt('$(self)', fvt)
+  else:
+    ft = t
+    fvt = vt
+    f_comps = comps
+    f_self = 'self'
 
   if isExisting:
     outL('import CoreGraphics\n')
@@ -71,8 +83,13 @@ def gen_vec(d, t, tl, vt, isExisting=False):
     public, vt, jc([r'\({})'.format(c) for c in comps]))
   outL('  var vs: V$S { return V$S($) }', d, d, jcf('F32($)', comps))
   outL('  var vd: V$D { return V$D($) }', d, d, jcf('F64($)', comps))
-  outL('  var len: $ { return ($).sqrt }', t, ' + '.join(fmt('$.sqr', c) for c in comps))
-  outL('  var norm: $ { return self / self.len }', vt)
+  outL('  var len: $ { return ($).sqrt }', ft, ' + '.join(fmt('$.sqr', c) for c in f_comps))
+  
+  # this creates a dependency problem becase V3, V4 are defined in scn only;
+  # for now, just omit for the integer case.
+  if tl != 'I':
+    outL('  var norm: $ { return $ / self.len }', fvt, f_self)
+  
   outL('  var clampToUnit: $ { return $($) }', vt, vt, jcf('clamp($, 0, 1)', comps))
   outL('}\n')
 

@@ -18,6 +18,10 @@ extension V2: Printable {
     self.x = Flt(v.x)
     self.y = Flt(v.y)
   }
+  init(_ v: V2I) {
+    self.x = Flt(v.x)
+    self.y = Flt(v.y)
+  }
   init(_ v: V3S) {
     self.x = Flt(v.x)
     self.y = Flt(v.y)
@@ -26,11 +30,19 @@ extension V2: Printable {
     self.x = Flt(v.x)
     self.y = Flt(v.y)
   }
+  init(_ v: V3I) {
+    self.x = Flt(v.x)
+    self.y = Flt(v.y)
+  }
   init(_ v: V4S) {
     self.x = Flt(v.x)
     self.y = Flt(v.y)
   }
   init(_ v: V4D) {
+    self.x = Flt(v.x)
+    self.y = Flt(v.y)
+  }
+  init(_ v: V4I) {
     self.x = Flt(v.x)
     self.y = Flt(v.y)
   }

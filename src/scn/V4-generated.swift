@@ -24,6 +24,12 @@ extension V4: Printable {
     self.z = Flt(v.z)
     self.w = Flt(v.w)
   }
+  init(_ v: V4I) {
+    self.x = Flt(v.x)
+    self.y = Flt(v.y)
+    self.z = Flt(v.z)
+    self.w = Flt(v.w)
+  }
   init(_ v: V3, _ s: Flt) {
     self.x = v.x
     self.y = v.y

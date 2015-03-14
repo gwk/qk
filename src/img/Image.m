@@ -26,9 +26,14 @@ void* imgDataFromPngReadPtr(png_structp readPtr,
                             BOOL* is16BitPtr,
                             NSError** errorPtr) {
   
+  png_bytep data = NULL;
+  png_bytepp row_pointers = NULL;
+
   // setjmp() must be called prior to libng read function calls.
 #ifdef PNG_SETJMP_SUPPORTED
   if (setjmp(png_jmpbuf(readPtr))) {
+    free(data);
+    free(row_pointers);
     *errorPtr = [NSError errorWithDomain:@"Image"
                                     code:1
                                 userInfo:@{NSLocalizedDescriptionKey: @"PNG read failed", @"name" : name}];
@@ -116,8 +121,8 @@ void* imgDataFromPngReadPtr(png_structp readPtr,
   }
   
   size_t l =  rowsLength * h;
-  png_bytep data = (png_bytep)malloc_safe(l);
-  png_bytepp row_pointers = (png_bytepp)malloc_safe(h * sizeof(png_bytep));
+  data = (png_bytep)malloc_safe(l);
+  row_pointers = (png_bytepp)malloc_safe(h * sizeof(png_bytep));
   
   // fill out row_pointers.
   const BOOL flip = YES; // make data layout match OpenGL texturing expectations.
@@ -125,7 +130,6 @@ void* imgDataFromPngReadPtr(png_structp readPtr,
     row_pointers[flip ? ((h - 1) - i) : i] = data + i * rowsLength;
   }
   // read data.
-  // TODO: change the jmp buffer to release the malloced data?
   png_read_image(readPtr, row_pointers);
   free(row_pointers);
   return data;

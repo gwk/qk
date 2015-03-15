@@ -243,6 +243,9 @@ struct V3S: Printable, Equatable {
   var len: F32 { return (x.sqr + y.sqr + z.sqr).sqrt }
   var norm: V3S { return self / self.len }
   var clampToUnit: V3S { return V3S(clamp(x, 0, 1), clamp(y, 0, 1), clamp(z, 0, 1)) }
+  var r: F32 { return x }
+  var g: F32 { return y }
+  var b: F32 { return z }
 }
 
 func +(a: V3S, b: V3S) -> V3S { return V3S(a.x + b.x, a.y + b.y, a.z + b.z) }
@@ -307,6 +310,9 @@ struct V3D: Printable, Equatable {
   var len: F64 { return (x.sqr + y.sqr + z.sqr).sqrt }
   var norm: V3D { return self / self.len }
   var clampToUnit: V3D { return V3D(clamp(x, 0, 1), clamp(y, 0, 1), clamp(z, 0, 1)) }
+  var r: F64 { return x }
+  var g: F64 { return y }
+  var b: F64 { return z }
 }
 
 func +(a: V3D, b: V3D) -> V3D { return V3D(a.x + b.x, a.y + b.y, a.z + b.z) }
@@ -370,6 +376,9 @@ struct V3I: Printable, Equatable {
   var vd: V3D { return V3D(F64(x), F64(y), F64(z)) }
   var len: Flt { return (Flt(x).sqr + Flt(y).sqr + Flt(z).sqr).sqrt }
   var clampToUnit: V3I { return V3I(clamp(x, 0, 1), clamp(y, 0, 1), clamp(z, 0, 1)) }
+  var r: Int { return x }
+  var g: Int { return y }
+  var b: Int { return z }
 }
 
 func +(a: V3I, b: V3I) -> V3I { return V3I(a.x + b.x, a.y + b.y, a.z + b.z) }
@@ -424,6 +433,10 @@ struct V4S: Printable, Equatable {
   var len: F32 { return (x.sqr + y.sqr + z.sqr + w.sqr).sqrt }
   var norm: V4S { return self / self.len }
   var clampToUnit: V4S { return V4S(clamp(x, 0, 1), clamp(y, 0, 1), clamp(z, 0, 1), clamp(w, 0, 1)) }
+  var r: F32 { return x }
+  var g: F32 { return y }
+  var b: F32 { return z }
+  var a: F32 { return w }
 }
 
 func +(a: V4S, b: V4S) -> V4S { return V4S(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w) }
@@ -478,6 +491,10 @@ struct V4D: Printable, Equatable {
   var len: F64 { return (x.sqr + y.sqr + z.sqr + w.sqr).sqrt }
   var norm: V4D { return self / self.len }
   var clampToUnit: V4D { return V4D(clamp(x, 0, 1), clamp(y, 0, 1), clamp(z, 0, 1), clamp(w, 0, 1)) }
+  var r: F64 { return x }
+  var g: F64 { return y }
+  var b: F64 { return z }
+  var a: F64 { return w }
 }
 
 func +(a: V4D, b: V4D) -> V4D { return V4D(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w) }
@@ -531,6 +548,10 @@ struct V4I: Printable, Equatable {
   var vd: V4D { return V4D(F64(x), F64(y), F64(z), F64(w)) }
   var len: Flt { return (Flt(x).sqr + Flt(y).sqr + Flt(z).sqr + Flt(w).sqr).sqrt }
   var clampToUnit: V4I { return V4I(clamp(x, 0, 1), clamp(y, 0, 1), clamp(z, 0, 1), clamp(w, 0, 1)) }
+  var r: Int { return x }
+  var g: Int { return y }
+  var b: Int { return z }
+  var a: Int { return w }
 }
 
 func +(a: V4I, b: V4I) -> V4I { return V4I(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w) }

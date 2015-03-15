@@ -36,6 +36,7 @@ def gen_vec(d, t, tl, vt, isExisting=False):
   comps_a = ['a.' + c for c in comps]
   comps_b = ['b.' + c for c in comps]
   comps_ab = [Pair(a, b) for a, b in zip(comps_a, comps_b)]
+  comps_colors = list(zip('rgba', comps)) if d > 2 else []
   public = 'public ' if isExisting else ''
 
   # conversion to float types for integer vectors.
@@ -91,6 +92,12 @@ def gen_vec(d, t, tl, vt, isExisting=False):
     outL('  var norm: $ { return $ / self.len }', fvt, f_self)
   
   outL('  var clampToUnit: $ { return $($) }', vt, vt, jcf('clamp($, 0, 1)', comps))
+
+  for c, c_orig in comps_colors:
+    outL('  var $: $ { return $ }', c, t, c_orig)
+
+  # TODO: swizzles.
+  
   outL('}\n')
 
   for op in ops:

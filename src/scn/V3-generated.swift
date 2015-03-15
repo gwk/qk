@@ -53,6 +53,9 @@ extension V3: Printable {
   var len: Flt { return (x.sqr + y.sqr + z.sqr).sqrt }
   var norm: V3 { return self / self.len }
   var clampToUnit: V3 { return V3(clamp(x, 0, 1), clamp(y, 0, 1), clamp(z, 0, 1)) }
+  var r: Flt { return x }
+  var g: Flt { return y }
+  var b: Flt { return z }
 }
 
 func +(a: V3, b: V3) -> V3 { return V3(a.x + b.x, a.y + b.y, a.z + b.z) }

@@ -11,14 +11,14 @@ void logPngVersionInfo();
 // requireFmt: if YES, require format specified in bitDepthPtr, hasRGBPtr, hasAlphaPtr.
 // otherwise, return the natural format values of those images via those pointer parameters.
 // note: for now, only 8 bit depth is supported.
-  void* imgDataFromPngFile(FILE* file,
-                           NSString* name,
-                           BOOL requireFmt,
-                           BOOL gammaCorrect,
-                           double displayExponent,
-                           NSInteger* wPtr,
-                           NSInteger* hPtr,
-                           BOOL* hasRGBPtr,
-                           BOOL* hasAlphaPtr,
-                           BOOL* is16BitPtr,
-                           NSError** errorPtr);
+void* imgDataFromPngFile(FILE* file,
+                         NSString* name,
+                         BOOL requireFmt,
+                         BOOL gammaCorrect,
+                         double displayExponent,
+                         NSInteger* wPtr,
+                         NSInteger* hPtr,
+                         BOOL* hasRGBPtr,
+                         BOOL* hasAlphaPtr,
+                         BOOL* is16BitPtr,
+                         NSError** errorPtr);

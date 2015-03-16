@@ -41,7 +41,7 @@ def gen_vec(d, t, tl, vt, isExisting=False):
 
   # conversion to float types for integer vectors.
   if tl == 'I':
-    ft = 'Flt'
+    ft = 'F64'
     fvt = fmt('V$', d)
     f_comps = [fmt('$($)', ft, c) for c in comps]
     f_self = fmt('$(self)', fvt)
@@ -113,6 +113,7 @@ def gen_vec(d, t, tl, vt, isExisting=False):
     outL('func ==(a: $, b: $) -> Bool {', vt, vt)
     outL('  return $', ' && '.join(fmt('a.$ == b.$', c, c) for c in comps))
     outL('}\n')
+
 
 def gen_mat(d, t, tl):
   v_comps = all_v_comps[:d]

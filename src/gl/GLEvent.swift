@@ -145,6 +145,8 @@ func glEventFrom(event: CREvent, view: CRView) -> GLEvent {
     return .Ignored
   case .EventTypeQuickLook:
     return .Ignored
+  case .EventTypePressure:
+    return .Ignored
   }
   #else // ios
   // TODO

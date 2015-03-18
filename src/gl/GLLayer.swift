@@ -10,7 +10,7 @@ import QuartzCore
 #endif
 
 
-typealias GLRenderFn = (F32, V2S, Time) -> ()
+typealias GLRenderFn = (contentsScale: F32, size: V2S, time: Time) -> ()
 typealias GLEventFn = (GLEvent) -> ()
 
   
@@ -29,11 +29,11 @@ class GLLayer: CRGLLayer {
     willSet { assert(pixFmt == .None, "GLLayer: altering the pixFmt is not yet supported") }
   }
   
-  var render: GLRenderFn = { (time) in () } {
+  var render: GLRenderFn = { (contentsScale, size, time) in () } {
     didSet {}
   }
   
-  var handleEvent: GLEventFn = { (CREvent) in () }
+  var handleEvent: GLEventFn = { (event) in () }
   
   #if os(iOS)
   var context: EAGLContext!
@@ -128,7 +128,7 @@ class GLLayer: CRGLLayer {
         prevLayerTime = layerTime
       }
       handleEvent(.Tick(GLTick(time: layerTime)))
-      render(F32(contentsScale), bounds.size.vs, layerTime)
+      render(contentsScale: F32(contentsScale), size: bounds.size.vs, time: layerTime)
       prevLayerTime = layerTime
       // according to the header comments, we should call super to flush correctly.
       super.drawInCGLContext(ctx, pixelFormat: pixelFormat, forLayerTime: layerTime, displayTime:displayTime)

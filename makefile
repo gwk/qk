@@ -7,17 +7,17 @@
 
 default: all
 
-src/core/math-generated.swift: tools/gen-math.py
+src/core/vec-generated.swift: tools/gen-vec.py
 	$^ > $@
 
-src/cr/V2-generated.swift: tools/gen-math.py
-	$^ 2 Flt V2 > $@
+src/cr/V2-generated.swift: tools/gen-vec.py
+	$^ 2 CoreGraphics > $@
 
-src/scn/V3-generated.swift: tools/gen-math.py
-	$^ 3 Flt V3 > $@
+src/scn/V3-generated.swift: tools/gen-vec.py
+	$^ 3 SceneKit > $@
 
-src/scn/V4-generated.swift: tools/gen-math.py
-	$^ 4 Flt V4 > $@
+src/scn/V4-generated.swift: tools/gen-vec.py
+	$^ 4 SceneKit > $@
 
 _bld/gen-cd-entities: src/core/func.swift src/core/Set.swift src/core/types.swift src/core/util.swift src/CoreData/NSManagedObjectModel.swift src/foundation/NSError.swift src/foundation/NSFileManager.swift src/foundation/NSOutputStream.swift src/std/Array.swift src/std/Character.swift src/std/Dictionary.swift src/std/Int.swift src/std/Optional.swift src/std/String.swift tools/gen-cd-entities.swift tools/main.swift
 	mkdir -p _bld
@@ -26,12 +26,13 @@ _bld/gen-cd-entities: src/core/func.swift src/core/Set.swift src/core/types.swif
 .PHONY: default clean gen all cd core cr foundation geom gl img ios scn std parse
 
 clean:
-	rm -f src/core/math-generated.swift
+	rm -f src/core/vec-generated.swift
 	rm -f src/cr/V2-generated.swift
+	rm -f src/scn/{V3,V4}-generated.swift
 	rm -rf _bld
 
 # all generated source targets.
-gen: src/core/math-generated.swift src/cr/V2-generated.swift src/scn/V3-generated.swift src/scn/V4-generated.swift
+gen: src/core/vec-generated.swift src/cr/V2-generated.swift src/scn/V3-generated.swift src/scn/V4-generated.swift
 
 # all real targets.
 all: _bld/gen-cd-entities gen

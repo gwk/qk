@@ -180,10 +180,10 @@ struct QKLayoutRel: QKLayoutConstraining {
   // in the case where an XY pair of attributes are related to a single X or Y, the pair must be dependent on the single.
   let rel: NSLayoutRelation
   let l: QKLayoutOperand
-  let r: QKLayoutOperand? = nil
-  let m: V2 = V2(1, 1)
-  let c: V2 = V2(0, 0)
-  let p: LOP = LOPReq
+  let r: QKLayoutOperand?
+  let m: V2
+  let c: V2
+  let p: LOP
   
   func constraintArray(views: [CRView], metrics: [String: NSNumber], opts: NSLayoutFormatOptions) -> [NSLayoutConstraint] {
     // ignores all the format-related arguments and constructs one or two constraints from the operands.

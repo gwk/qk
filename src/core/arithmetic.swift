@@ -33,7 +33,7 @@ extension U64: ArithmeticType {}
 extension Float: ArithmeticType {}
 extension Double: ArithmeticType {}
 
-
+// wrappers around float/double math functions so that we can use overloading properly.
 func sqrt_f(f: Float) -> Float { return sqrtf(f) }
 func ceil_f(f: Float) -> Float { return ceilf(f) }
 func floor_f(f: Float) -> Float { return floorf(f) }

@@ -11,7 +11,7 @@ enum GLTouchState {
   case Up
 }
 
-enum GLKeyMod: Int {
+enum GLKeyMod: Uns {
   case None       = 0x00
   case ShiftAlpha = 0x01
   case Shift      = 0x02
@@ -24,12 +24,13 @@ enum GLKeyMod: Int {
 }
 
 struct GLKeyMods: OptionSetType {
+  typealias OptionType = GLKeyMod
   let val: Uns
-  init() { val = 0 }
-  init(_ val: Uns = 0) { self.val = val }
+  init(_ val: Uns) { self.val = val }
+  init(_ opt: GLKeyMod) { self.val = opt.rawValue }
 }
 
-enum GLMouseButton: Int {
+enum GLMouseButton: Uns {
   case None   = 0x0
   case Left   = 0x1
   case Right  = 0x2

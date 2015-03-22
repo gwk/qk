@@ -14,7 +14,6 @@ import Foundation
 #endif
 
 
-
 typealias GLHandle = GLuint
 
 

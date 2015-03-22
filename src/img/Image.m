@@ -4,7 +4,7 @@
 #import <png.h>
 #import <zlib.h>
 #import "Image.h"
-#import "util.h"
+#import "core.h"
 
 
 void logPngVersionInfo() {

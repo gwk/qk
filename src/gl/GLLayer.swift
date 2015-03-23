@@ -51,7 +51,7 @@ class GLLayer: CRGLLayer {
     #if os(iOS)
       context = EAGLContext(API: kEAGLRenderingAPIOpenGLES2)
       check(context != nil)
-      check(EAGLContext.setCurrentContext(context)) // in case host does not support ES2
+      check(EAGLContext.setCurrentContext(context)) // in case host does not support ES2.
       drawableProperties = [
         // once the render buffer is presented, its contents may be altered by OpenGL, and therefore must be completely redrawn.
         // TODO: respect pixFmt.

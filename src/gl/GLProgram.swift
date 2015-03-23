@@ -14,7 +14,7 @@ enum GLInputType: GLenum, Printable {
   case V3 = 0x8B51 // GL_FLOAT_VEC3
   case V4 = 0x8B52 // GL_FLOAT_VEC4
   case I = 0x1404 // GL_INT
-  case S2 = 0x8B5E // GL_SAMPLER_2D
+  case Sampler2 = 0x8B5E // GL_SAMPLER_2D
   //GL_INT_VEC2
   //GL_INT_VEC3
   //GL_INT_VEC4
@@ -29,7 +29,7 @@ enum GLInputType: GLenum, Printable {
     case V3: return "V3"
     case V4: return "V4"
     case I: return "I"
-    case S2: return "S2"
+    case Sampler2: return "Sampler2"
     }
   }
   
@@ -210,7 +210,7 @@ class GLProgram {
   }
   
   func bindUniform(name: String, tex: GLTexture, unit: Int) {
-    let loc = inputLoc(name, isAttr: false, type: .S2, size: 1)
+    let loc = inputLoc(name, isAttr: false, type: .Sampler2, size: 1)
     if loc == -1 { return }
     // NOTE: this addition assumes that the unit enums are consecutive.
     glActiveTexture(GLenum(GL_TEXTURE0 + unit))

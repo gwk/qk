@@ -42,6 +42,7 @@ enum GLInputType: GLenum, Printable {
   }
 }
 
+
 struct GLInput: Printable {
   let name: String
   let isAttr: Bool
@@ -51,9 +52,10 @@ struct GLInput: Printable {
   var description: String { return "GLVarInfo(name:\(name), isAttr:\(isAttr), loc:\(loc), type:\(type), size:\(size))" }
 }
 
+
 class GLProgram {
   let handle: GLHandle
-  let shaders: [GLShader]
+  var shaders: [GLShader] = []
   var inputs: [String : GLInput] = [:]
   
   deinit {
@@ -93,10 +95,15 @@ class GLProgram {
     inputs[name] = info
   }
   
-  init(shaders: [GLShader]) {
-    handle = glCreateProgram()
-    glAssert()
-    println("GLProgram(\(handle): \(shaders))")
+  
+  func link(shaders: [GLShader]) {
+    // detach old shaders.
+    for s in self.shaders {
+      glDetachShader(handle, s.handle)
+      glAssert()
+    }
+    inputs.removeAll()
+    // attach new shaders.
     self.shaders = shaders
     for s in shaders {
       glAttachShader(handle, s.handle)
@@ -143,9 +150,27 @@ class GLProgram {
       glAssert()
       addInput(name, isAttr: true, loc: loc, type: type, size: size)
     }
+    println("GLProgram(\(handle): \(shaders))")
+  }
+  
+  init() {
+    handle = glCreateProgram()
+    glAssert()
+  }
+  
+  convenience init(shaders: [GLShader]) {
+    self.init()
+    self.link(shaders)
   }
   
   convenience init(_ shaders: GLShader...) { self.init(shaders: shaders) }
+  
+  convenience init(source: String) {
+    
+    self.init()
+    self.link(shaders)
+  }
+  
   
   func inputLoc(name: String, isAttr: Bool, type: GLInputType, size: Int) -> GLint {
     // GLSL will optimize out unused uniforms/attrs, which is annyoing during development and debugging.

@@ -11,20 +11,21 @@ import Foundation
   import OpenGLES.GL
 #endif
 
-#if os(OSX)
-  // ignore GLSL ES precision specifiers.
-let GLShader_prefix = String(lines:
-  // "#version 150 core", SCNView does not support this?
-  "#define lowp",
-  "#define mediump",
-  "#define highp",
-  "")
-  #else
-  let GLShader_prefix = ""
-#endif
-
 
 class GLShader: Printable {
+  
+  #if os(OSX)
+  // ignore GLSL ES precision specifiers.
+  static let prefixLines = [
+    // "#version 150 core", SCNView does not support this?
+    "#define lowp",
+    "#define mediump",
+    "#define highp",
+    ""]
+  #else
+  let prefixlines = []
+  #endif
+  
   let handle: GLHandle
   let type: GLenum
   let name: String
@@ -37,8 +38,6 @@ class GLShader: Printable {
     glAssert()
   }
   
-  var prefixLineCount: Int { return GLShader_prefix.lineCount }
-
   func getPar(par: GLenum) -> GLint {
     var val: GLint = 0 // returned if error occurs.
     glGetShaderiv(handle, par, &val)
@@ -60,7 +59,7 @@ class GLShader: Printable {
     glAssert()
     self.type = type
     self.name = name
-    self.source = GLShader_prefix + String(lines: sources)
+    self.source = String(lines: GLShader.prefixLines + sources)
     glProvideShaderSource(handle, source)
     glAssert()
     glCompileShader(handle)
@@ -69,9 +68,9 @@ class GLShader: Printable {
       "shader compile failed: \(name)\n\(infoLog)source:\n\(String(lines: source.numberedLines))\n")
   }
   
-  class func res(res: [String]) -> GLShader {
-    let ext0 = res[0].pathExtension
-    let sources = res.map() {
+  class func withResources(resources: [String]) -> GLShader {
+    let ext0 = resources[0].pathExtension
+    let sources = resources.map() {
       (name: String) -> String in
       let ext = name.pathExtension
       assert(ext == ext0, "mismatched shader name extension: \(name)")
@@ -81,8 +80,8 @@ class GLShader: Printable {
     switch ext0 {
     case "vert": type = GLenum(GL_VERTEX_SHADER)
     case "frag": type = GLenum(GL_FRAGMENT_SHADER)
-    default: fatalError("bad shader name extension: \(res[0])")
+    default: fatalError("bad shader name extension: \(resources[0])")
     }
-    return GLShader(type: type, name: res.last!, sources: sources)
+    return GLShader(type: type, name: resources.last!, sources: sources)
   }
 }

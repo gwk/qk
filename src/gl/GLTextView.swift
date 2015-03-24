@@ -15,7 +15,7 @@ var GLTextView_dflt_prog: GLProgram! = nil
 func GLTextView_setup() {
   assert(GLTextView_dflt_prog == nil)
     
-  let vert = GLShader(type: GLenum(GL_VERTEX_SHADER), name: "GLTextView_dflt_vert", sources: [
+  let vert = GLShader(kind: .Vert, name: "GLTextView_dflt_vert", sources: [
     "attribute vec2 glPos;",
     "attribute vec2 texPos;",
     "varying vec2 texPosF;",
@@ -26,7 +26,7 @@ func GLTextView_setup() {
     "}"
     ])
   
-  let frag = GLShader(type: GLenum(GL_FRAGMENT_SHADER), name: "GLTextView_dflt_frag", sources: [
+  let frag = GLShader(kind: .Frag, name: "GLTextView_dflt_frag", sources: [
     "uniform mediump vec4 color;",
     "uniform mediump sampler2D tex;",
     "varying vec2 texPosF;",

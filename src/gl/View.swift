@@ -17,21 +17,21 @@ var View_dflt_prog: GLProgram! = nil
 func View_setup() {
   assert(View_dflt_prog == nil)
   
-  let vert = GLShader(type: GLenum(GL_VERTEX_SHADER), name: "View_dflt_vert", sources: [
+  View_dflt_prog = GLProgram(name: "View_dflt", sources: [
+    "varying vec2 cornerPosF;", // TODO: noperspective qualifier?
+
+    "vert:",
     "attribute vec2 glPos;",
     "attribute vec2 cornerPos;",
-    "varying vec2 cornerPosF;", // TODO: noperspective qualifier?
     "void main(void) {",
     "  gl_Position = vec4(glPos, 0.0, 1.0);",
     "  cornerPosF = cornerPos;",
     //"  gl_FrontColor = color;",
-    "}"
-    ])
+    "}",
 
-  let frag = GLShader(type: GLenum(GL_FRAGMENT_SHADER), name: "View_dflt_frag", sources: [
+    "frag:",
     "uniform mediump vec4 color;",
     "uniform mediump float cornerRadPx;",
-    "varying vec2 cornerPosF;",
     "void main(void) {",
     "  vec2 c = cornerPosF;",
     "  float r = cornerRadPx;",
@@ -43,8 +43,6 @@ func View_setup() {
     //"  gl_FragColor = gl_Color;",
     "}"
     ])
-
-  View_dflt_prog = GLProgram(vert, frag)
 }
 
 

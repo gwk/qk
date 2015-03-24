@@ -14,6 +14,19 @@ import Foundation
 
 class GLShader: Printable {
   
+  enum Kind: GLenum {
+    case Vert = 0x8B31 // GL_VERTEX_SHADER
+    case Frag = 0x8B30 // GL_FRAGMENT_SHADER
+    
+    static func fromString(string: String) -> Kind? {
+      switch string {
+      case "vert": return .Vert
+      case "frag": return .Frag
+      default: return nil
+      }
+    }
+  }
+  
   #if os(OSX)
   // ignore GLSL ES precision specifiers.
   static let prefixLines = [
@@ -27,7 +40,7 @@ class GLShader: Printable {
   #endif
   
   let handle: GLHandle
-  let type: GLenum
+  let kind: Kind
   let name: String
   let source: String
   
@@ -54,10 +67,10 @@ class GLShader: Printable {
     return String(UTF8String:info)!
   }
   
-  init(type: GLenum, name: String, sources: [String]) {
-    self.handle = glCreateShader(type)
+  init(kind: Kind, name: String, sources: [String]) {
+    self.handle = glCreateShader(kind.rawValue)
     glAssert()
-    self.type = type
+    self.kind = kind
     self.name = name
     self.source = String(lines: GLShader.prefixLines + sources)
     glProvideShaderSource(handle, source)
@@ -69,19 +82,14 @@ class GLShader: Printable {
   }
   
   class func withResources(resources: [String]) -> GLShader {
-    let ext0 = resources[0].pathExtension
+    let ext = resources.last!.pathExtension
     let sources = resources.map() {
       (name: String) -> String in
-      let ext = name.pathExtension
-      assert(ext == ext0, "mismatched shader name extension: \(name)")
+      let e = name.pathExtension
+      assert(e == ext, "mismatched shader name extension: \(name)")
       return NSBundle.textNamed(name)
     }
-    var type: GLenum
-    switch ext0 {
-    case "vert": type = GLenum(GL_VERTEX_SHADER)
-    case "frag": type = GLenum(GL_FRAGMENT_SHADER)
-    default: fatalError("bad shader name extension: \(resources[0])")
-    }
-    return GLShader(type: type, name: resources.last!, sources: sources)
+    let kind = Kind.fromString(ext)!
+    return GLShader(kind: kind, name: resources.last!, sources: sources)
   }
 }

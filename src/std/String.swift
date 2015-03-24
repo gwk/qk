@@ -108,10 +108,8 @@ extension String {
     return count
   }
 
-  //func split<S : Sliceable, R : BooleanType>(elements: S, isSeparator: (S.Generator.Element) -> R, maxSplit: Int = default, allowEmptySlices: Bool = default) -> [S.SubSlice]
-
   var lines: [String] {
-    return split(self, allowEmptySlices: true, isSeparator: { c in c == "\n" })
+    return split(self, allowEmptySlices: true) { $0 == "\n" }
   }
   
   func numberedLinesFrom(from: Int) -> [String] {
@@ -119,6 +117,12 @@ extension String {
   }
   
   var numberedLines: [String] { return numberedLinesFrom(1) }
+  
+  // search.
+  
+  func partition(seperator: String) -> (String, String)? {
+    return nil
+  }
   
   
   // unicode.

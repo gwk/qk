@@ -165,10 +165,31 @@ class GLProgram {
   
   convenience init(_ shaders: GLShader...) { self.init(shaders: shaders) }
   
-  convenience init(source: String) {
-    
+  convenience init(name: String, sources: [String]) {
+    // init from a single composite source file; the convention here is to use the extension '.shdr'.
+    // this file consists of three parts:
+    // <lines common to both vertex and fragment shaders>
+    // vert:
+    // <lines for vertex shader>
+    // frag:
+    // <lines for fragment shader>
     self.init()
-    self.link(shaders)
+    let source = String(lines: sources)
+    func error(msg: String) {
+      let lines = String(lines: source.numberedLines)
+      fatalError("GLProgram: invalid composite .shdr file: \(msg)\nsource:\n\(lines)\n")
+    }
+    if let (common, specifics) = part(source, "\nvert:\n") {
+      if let (vert, frag) = part(specifics, "\nfrag:\n") {
+        let v = GLShader(kind: .Vert, name: name + ":vert", sources: [common, vert])
+        let f = GLShader(kind: .Frag, name: name + ":frag", sources: [common, frag])
+        self.link([v, f])
+      } else {
+        error("missing '\\nfrag:\\n' separator line")
+      }
+    } else {
+      error("missing '\\nvert:\\n' separator line")
+    }
   }
   
   

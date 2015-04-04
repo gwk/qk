@@ -74,10 +74,10 @@ class GLTexture {
   convenience init(target: GLTexTarget = .Rect, w: Int, h: Int, fmt: GLTexFmt, dataFmt: GLTexFmt, dataType: GLDataType,
     data: UnsafePointer<Void>) {
       self.init(target: target)
-      update(w, h, fmt: fmt, dataFmt: dataFmt, dataType: dataType, data: data)
+      update(w: w, h: h, fmt: fmt, dataFmt: dataFmt, dataType: dataType, data: data)
   }
   
-  func update(w: Int, _ h: Int, fmt: GLTexFmt, dataFmt: GLTexFmt, dataType: GLDataType, data: UnsafePointer<Void>) {
+  func update(#w: Int, h: Int, fmt: GLTexFmt, dataFmt: GLTexFmt, dataType: GLDataType, data: UnsafePointer<Void>) {
     let maxSize = GLTexture_getMaxSize()
     check(w <= maxSize && h <= maxSize, "GLTexture exceeds maxSize (\(maxSize)): w: \(w); h: \(h)")
     self.w = w

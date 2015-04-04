@@ -84,7 +84,7 @@ struct GLTextPage: Printable {
     blockHigh = V2I()
     // allocate texture.
     tex = GLTexture()
-    tex.update(size.x, size.y,
+    tex.update(w: size.x, h: size.y,
       fmt: .L,
       dataFmt: .L,
       dataType: .U8,

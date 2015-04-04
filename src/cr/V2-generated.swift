@@ -52,7 +52,8 @@ extension V2 {
   public var description: String { return "V2(\(x), \(y))" }
   var vs: V2S { return V2S(F32(x), F32(y)) }
   var vd: V2D { return V2D(F64(x), F64(y)) }
-  var len: Flt { return (Flt(x).sqr + Flt(y).sqr).sqrt }
+  var sqrLen: Flt { return (Flt(x).sqr + Flt(y).sqr) }
+  var len: Flt { return sqrLen.sqrt }
   var norm: V2 { return V2(self) / self.len }
   var clampToUnit: V2 { return V2(clamp(x, 0, 1), clamp(y, 0, 1)) }
   var l: Flt { return x }
@@ -68,3 +69,5 @@ func -(a: V2, s: Flt) -> V2 { return V2(a.x - s, a.y - s) }
 func *(a: V2, s: Flt) -> V2 { return V2(a.x * s, a.y * s) }
 func /(a: V2, s: Flt) -> V2 { return V2(a.x / s, a.y / s) }
 
+func dist(a: V2, b: V2) -> Flt { return (b - a).len }
+func dot(a: V2, b: V2) -> Flt { return (a.x * b.x) + (a.y * b.y) }

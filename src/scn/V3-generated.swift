@@ -52,7 +52,8 @@ extension V3 {
   public var description: String { return "V3(\(x), \(y), \(z))" }
   var vs: V3S { return V3S(F32(x), F32(y), F32(z)) }
   var vd: V3D { return V3D(F64(x), F64(y), F64(z)) }
-  var len: Flt { return (Flt(x).sqr + Flt(y).sqr + Flt(z).sqr).sqrt }
+  var sqrLen: Flt { return (Flt(x).sqr + Flt(y).sqr + Flt(z).sqr) }
+  var len: Flt { return sqrLen.sqrt }
   var norm: V3 { return V3(self) / self.len }
   var clampToUnit: V3 { return V3(clamp(x, 0, 1), clamp(y, 0, 1), clamp(z, 0, 1)) }
   var r: Flt { return x }
@@ -69,3 +70,5 @@ func -(a: V3, s: Flt) -> V3 { return V3(a.x - s, a.y - s, a.z - s) }
 func *(a: V3, s: Flt) -> V3 { return V3(a.x * s, a.y * s, a.z * s) }
 func /(a: V3, s: Flt) -> V3 { return V3(a.x / s, a.y / s, a.z / s) }
 
+func dist(a: V3, b: V3) -> Flt { return (b - a).len }
+func dot(a: V3, b: V3) -> Flt { return (a.x * b.x) + (a.y * b.y) + (a.z * b.z) }

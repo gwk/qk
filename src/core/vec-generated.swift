@@ -47,7 +47,8 @@ struct V2S: Equatable, Printable, VecType2, FloatVecType {
   var description: String { return "V2S(\(x), \(y))" }
   var vs: V2S { return V2S(F32(x), F32(y)) }
   var vd: V2D { return V2D(F64(x), F64(y)) }
-  var len: F32 { return (F32(x).sqr + F32(y).sqr).sqrt }
+  var sqrLen: F32 { return (F32(x).sqr + F32(y).sqr) }
+  var len: F32 { return sqrLen.sqrt }
   var norm: V2S { return V2S(self) / self.len }
   var clampToUnit: V2S { return V2S(clamp(x, 0, 1), clamp(y, 0, 1)) }
   var l: F32 { return x }
@@ -67,6 +68,8 @@ func ==(a: V2S, b: V2S) -> Bool {
   return a.x == b.x && a.y == b.y
 }
 
+func dist(a: V2S, b: V2S) -> F32 { return (b - a).len }
+func dot(a: V2S, b: V2S) -> F32 { return (a.x * b.x) + (a.y * b.y) }
 struct V2D: Equatable, Printable, VecType2, FloatVecType {
   var x, y: F64
   typealias ScalarType = F64
@@ -111,7 +114,8 @@ struct V2D: Equatable, Printable, VecType2, FloatVecType {
   var description: String { return "V2D(\(x), \(y))" }
   var vs: V2S { return V2S(F32(x), F32(y)) }
   var vd: V2D { return V2D(F64(x), F64(y)) }
-  var len: F64 { return (F64(x).sqr + F64(y).sqr).sqrt }
+  var sqrLen: F64 { return (F64(x).sqr + F64(y).sqr) }
+  var len: F64 { return sqrLen.sqrt }
   var norm: V2D { return V2D(self) / self.len }
   var clampToUnit: V2D { return V2D(clamp(x, 0, 1), clamp(y, 0, 1)) }
   var l: F64 { return x }
@@ -131,6 +135,8 @@ func ==(a: V2D, b: V2D) -> Bool {
   return a.x == b.x && a.y == b.y
 }
 
+func dist(a: V2D, b: V2D) -> F64 { return (b - a).len }
+func dot(a: V2D, b: V2D) -> F64 { return (a.x * b.x) + (a.y * b.y) }
 struct V2I: Equatable, Printable, VecType2 {
   var x, y: Int
   typealias ScalarType = Int
@@ -175,7 +181,8 @@ struct V2I: Equatable, Printable, VecType2 {
   var description: String { return "V2I(\(x), \(y))" }
   var vs: V2S { return V2S(F32(x), F32(y)) }
   var vd: V2D { return V2D(F64(x), F64(y)) }
-  var len: F64 { return (F64(x).sqr + F64(y).sqr).sqrt }
+  var sqrLen: F64 { return (F64(x).sqr + F64(y).sqr) }
+  var len: F64 { return sqrLen.sqrt }
   var norm: V2D { return V2D(self) / self.len }
   var l: Int { return x }
   var a: Int { return y }
@@ -237,7 +244,8 @@ struct V3S: Equatable, Printable, VecType3, FloatVecType {
   var description: String { return "V3S(\(x), \(y), \(z))" }
   var vs: V3S { return V3S(F32(x), F32(y), F32(z)) }
   var vd: V3D { return V3D(F64(x), F64(y), F64(z)) }
-  var len: F32 { return (F32(x).sqr + F32(y).sqr + F32(z).sqr).sqrt }
+  var sqrLen: F32 { return (F32(x).sqr + F32(y).sqr + F32(z).sqr) }
+  var len: F32 { return sqrLen.sqrt }
   var norm: V3S { return V3S(self) / self.len }
   var clampToUnit: V3S { return V3S(clamp(x, 0, 1), clamp(y, 0, 1), clamp(z, 0, 1)) }
   var r: F32 { return x }
@@ -258,6 +266,8 @@ func ==(a: V3S, b: V3S) -> Bool {
   return a.x == b.x && a.y == b.y && a.z == b.z
 }
 
+func dist(a: V3S, b: V3S) -> F32 { return (b - a).len }
+func dot(a: V3S, b: V3S) -> F32 { return (a.x * b.x) + (a.y * b.y) + (a.z * b.z) }
 struct V3D: Equatable, Printable, VecType3, FloatVecType {
   var x, y, z: F64
   typealias ScalarType = F64
@@ -301,7 +311,8 @@ struct V3D: Equatable, Printable, VecType3, FloatVecType {
   var description: String { return "V3D(\(x), \(y), \(z))" }
   var vs: V3S { return V3S(F32(x), F32(y), F32(z)) }
   var vd: V3D { return V3D(F64(x), F64(y), F64(z)) }
-  var len: F64 { return (F64(x).sqr + F64(y).sqr + F64(z).sqr).sqrt }
+  var sqrLen: F64 { return (F64(x).sqr + F64(y).sqr + F64(z).sqr) }
+  var len: F64 { return sqrLen.sqrt }
   var norm: V3D { return V3D(self) / self.len }
   var clampToUnit: V3D { return V3D(clamp(x, 0, 1), clamp(y, 0, 1), clamp(z, 0, 1)) }
   var r: F64 { return x }
@@ -322,6 +333,8 @@ func ==(a: V3D, b: V3D) -> Bool {
   return a.x == b.x && a.y == b.y && a.z == b.z
 }
 
+func dist(a: V3D, b: V3D) -> F64 { return (b - a).len }
+func dot(a: V3D, b: V3D) -> F64 { return (a.x * b.x) + (a.y * b.y) + (a.z * b.z) }
 struct V3I: Equatable, Printable, VecType3 {
   var x, y, z: Int
   typealias ScalarType = Int
@@ -365,7 +378,8 @@ struct V3I: Equatable, Printable, VecType3 {
   var description: String { return "V3I(\(x), \(y), \(z))" }
   var vs: V3S { return V3S(F32(x), F32(y), F32(z)) }
   var vd: V3D { return V3D(F64(x), F64(y), F64(z)) }
-  var len: F64 { return (F64(x).sqr + F64(y).sqr + F64(z).sqr).sqrt }
+  var sqrLen: F64 { return (F64(x).sqr + F64(y).sqr + F64(z).sqr) }
+  var len: F64 { return sqrLen.sqrt }
   var norm: V3D { return V3D(self) / self.len }
   var r: Int { return x }
   var g: Int { return y }
@@ -417,7 +431,8 @@ struct V4S: Equatable, Printable, VecType4, FloatVecType {
   var description: String { return "V4S(\(x), \(y), \(z), \(w))" }
   var vs: V4S { return V4S(F32(x), F32(y), F32(z), F32(w)) }
   var vd: V4D { return V4D(F64(x), F64(y), F64(z), F64(w)) }
-  var len: F32 { return (F32(x).sqr + F32(y).sqr + F32(z).sqr + F32(w).sqr).sqrt }
+  var sqrLen: F32 { return (F32(x).sqr + F32(y).sqr + F32(z).sqr + F32(w).sqr) }
+  var len: F32 { return sqrLen.sqrt }
   var norm: V4S { return V4S(self) / self.len }
   var clampToUnit: V4S { return V4S(clamp(x, 0, 1), clamp(y, 0, 1), clamp(z, 0, 1), clamp(w, 0, 1)) }
   var r: F32 { return x }
@@ -439,6 +454,8 @@ func ==(a: V4S, b: V4S) -> Bool {
   return a.x == b.x && a.y == b.y && a.z == b.z && a.w == b.w
 }
 
+func dist(a: V4S, b: V4S) -> F32 { return (b - a).len }
+func dot(a: V4S, b: V4S) -> F32 { return (a.x * b.x) + (a.y * b.y) + (a.z * b.z) + (a.w * b.w) }
 struct V4D: Equatable, Printable, VecType4, FloatVecType {
   var x, y, z, w: F64
   typealias ScalarType = F64
@@ -471,7 +488,8 @@ struct V4D: Equatable, Printable, VecType4, FloatVecType {
   var description: String { return "V4D(\(x), \(y), \(z), \(w))" }
   var vs: V4S { return V4S(F32(x), F32(y), F32(z), F32(w)) }
   var vd: V4D { return V4D(F64(x), F64(y), F64(z), F64(w)) }
-  var len: F64 { return (F64(x).sqr + F64(y).sqr + F64(z).sqr + F64(w).sqr).sqrt }
+  var sqrLen: F64 { return (F64(x).sqr + F64(y).sqr + F64(z).sqr + F64(w).sqr) }
+  var len: F64 { return sqrLen.sqrt }
   var norm: V4D { return V4D(self) / self.len }
   var clampToUnit: V4D { return V4D(clamp(x, 0, 1), clamp(y, 0, 1), clamp(z, 0, 1), clamp(w, 0, 1)) }
   var r: F64 { return x }
@@ -493,6 +511,8 @@ func ==(a: V4D, b: V4D) -> Bool {
   return a.x == b.x && a.y == b.y && a.z == b.z && a.w == b.w
 }
 
+func dist(a: V4D, b: V4D) -> F64 { return (b - a).len }
+func dot(a: V4D, b: V4D) -> F64 { return (a.x * b.x) + (a.y * b.y) + (a.z * b.z) + (a.w * b.w) }
 struct V4I: Equatable, Printable, VecType4 {
   var x, y, z, w: Int
   typealias ScalarType = Int
@@ -525,7 +545,8 @@ struct V4I: Equatable, Printable, VecType4 {
   var description: String { return "V4I(\(x), \(y), \(z), \(w))" }
   var vs: V4S { return V4S(F32(x), F32(y), F32(z), F32(w)) }
   var vd: V4D { return V4D(F64(x), F64(y), F64(z), F64(w)) }
-  var len: F64 { return (F64(x).sqr + F64(y).sqr + F64(z).sqr + F64(w).sqr).sqrt }
+  var sqrLen: F64 { return (F64(x).sqr + F64(y).sqr + F64(z).sqr + F64(w).sqr) }
+  var len: F64 { return sqrLen.sqrt }
   var norm: V4D { return V4D(self) / self.len }
   var r: Int { return x }
   var g: Int { return y }

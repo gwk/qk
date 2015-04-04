@@ -97,8 +97,9 @@ def gen_vec(dim, s_type, fs_type, v_type, fv_type, v_prev, import_name, is_exist
     public, v_type, jc([r'\({})'.format(c) for c in comps]))
   outL('  var vs: V$S { return V$S($) }', dim, dim, jcf('F32($)', comps))
   outL('  var vd: V$D { return V$D($) }', dim, dim, jcf('F64($)', comps))
-  outL('  var len: $ { return ($).sqrt }',
+  outL('  var sqrLen: $ { return ($) }',
     fs_type, ' + '.join(fmt('$($).sqr', fs_type, c) for c in comps))
+  outL('  var len: $ { return sqrLen.sqrt }', fs_type)
   outL('  var norm: $ { return $(self) / self.len }', fv_type, fv_type)
   
   if is_float:
@@ -125,6 +126,10 @@ def gen_vec(dim, s_type, fs_type, v_type, fv_type, v_prev, import_name, is_exist
     outL('  return $', ' && '.join(fmt('a.$ == b.$', c, c) for c in comps))
     outL('}\n')
 
+  if is_float:
+    outL('func dist(a: $, b: $) -> $ { return (b - a).len }', v_type, v_type, s_type)
+    outL('func dot(a: $, b: $) -> $ { return $ }',
+      v_type, v_type, s_type, ' + '.join(fmt('(a.$ * b.$)', c, c) for c in comps))
 
 if __name__ == '__main__':
   args = sys.argv[1:]

@@ -42,7 +42,8 @@ extension V4 {
   public var description: String { return "V4(\(x), \(y), \(z), \(w))" }
   var vs: V4S { return V4S(F32(x), F32(y), F32(z), F32(w)) }
   var vd: V4D { return V4D(F64(x), F64(y), F64(z), F64(w)) }
-  var len: Flt { return (Flt(x).sqr + Flt(y).sqr + Flt(z).sqr + Flt(w).sqr).sqrt }
+  var sqrLen: Flt { return (Flt(x).sqr + Flt(y).sqr + Flt(z).sqr + Flt(w).sqr) }
+  var len: Flt { return sqrLen.sqrt }
   var norm: V4 { return V4(self) / self.len }
   var clampToUnit: V4 { return V4(clamp(x, 0, 1), clamp(y, 0, 1), clamp(z, 0, 1), clamp(w, 0, 1)) }
   var r: Flt { return x }
@@ -60,3 +61,5 @@ func -(a: V4, s: Flt) -> V4 { return V4(a.x - s, a.y - s, a.z - s, a.w - s) }
 func *(a: V4, s: Flt) -> V4 { return V4(a.x * s, a.y * s, a.z * s, a.w * s) }
 func /(a: V4, s: Flt) -> V4 { return V4(a.x / s, a.y / s, a.z / s, a.w / s) }
 
+func dist(a: V4, b: V4) -> Flt { return (b - a).len }
+func dot(a: V4, b: V4) -> Flt { return (a.x * b.x) + (a.y * b.y) + (a.z * b.z) + (a.w * b.w) }

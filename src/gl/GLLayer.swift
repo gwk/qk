@@ -96,7 +96,7 @@ class GLLayer: CRGLLayer {
       println("CGL error creating pixel format (will fall back to default): \(e)")
       return super.copyCGLPixelFormatForDisplayMask(mask)
     }
-    describeFormat(pf, virtualScreen: 0)
+    //describeFormat(pf, virtualScreen: 0)
     return pf
   }
   

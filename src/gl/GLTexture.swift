@@ -19,7 +19,7 @@ func GLTexture_getMaxSize() -> Int {
       glAssert()
       GLTexture_maxSize = Int(s)
       assert(GLTexture_maxSize > 0, "GLTexture_maxSize is zero; called before GL context is active?")
-      println("GLTexture maxSize: \(GLTexture_maxSize)")
+      //println("GLTexture maxSize: \(GLTexture_maxSize)")
     }
   return GLTexture_maxSize
 }

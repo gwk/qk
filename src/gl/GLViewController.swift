@@ -37,7 +37,7 @@ class GLViewController: CRViewController {
   func screenDidChange(note: NSNotification?) {
     let screen: NSScreen = view.window!.screen!
     scaleFactor = screen.backingScaleFactor
-    println("screenDidChange: \(scaleFactor)")
+    //println("screenDidChange: \(scaleFactor)")
     view.layer?.contentsScale = scaleFactor
   }
   #endif

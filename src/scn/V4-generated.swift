@@ -63,3 +63,11 @@ func /(a: V4, s: Flt) -> V4 { return V4(a.x / s, a.y / s, a.z / s, a.w / s) }
 
 func dist(a: V4, b: V4) -> Flt { return (b - a).len }
 func dot(a: V4, b: V4) -> Flt { return (a.x * b.x) + (a.y * b.y) + (a.z * b.z) + (a.w * b.w) }
+
+func cross(a: V4, b: V4) -> V4 { return V4(
+  a.y * b.z - a.z * b.y,
+  a.z * b.x - a.x * b.z,
+  a.x * b.y - a.y * b.x,
+  0
+)}
+

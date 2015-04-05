@@ -1,43 +1,9 @@
 #!/usr/bin/env python3
-# © 2014 George King.
+# © 2015 George King.
 # Permission to use this file is granted in license-qk.txt.
 
-import sys
-from collections import namedtuple
-from itertools import zip_longest
+from gen_util import *
 
-Pair = namedtuple('Pair', ['a', 'b'])
-
-dims = [2, 3, 4]
-all_v_comps = ['x', 'y', 'z', 'w']
-ops = ['+', '-', '*', '/']
-
-types = [ # s_type, suffix, fs_type, f_suffix.
-  ('F32', 'S', 'F32', 'S'),
-  ('F64', 'D', 'F64', 'D'),
-  ('Int', 'I', 'F64', 'D'),
-]
-
-def fmt(f, *items):
-  res = []
-  chunks = f.split('$')
-  for chunk, item in zip_longest(chunks, items, fillvalue=''):
-    res.append(chunk)
-    res.append(str(item))
-  return ''.join(res)
-
-def outL(f, *items):
-  print(fmt(f, *items))
-
-def errFL(f, *items):
-  print(fmt(f, *items), file=sys.stderr)
-
-def je(a): return ''.join(a) # join with empty string.
-def jc(a): return ', '.join(a) # join with comma.
-def js(a): return ' '.join(a) # join with space.
-
-def jcf(f, a): return jc([fmt(f, i) for i in a]) # format each item of the sequence.
-def jcft(f, a): return jc([fmt(f, *t) for t in a]) # format each tuple of the sequence.
 
 def gen_vec(dim, s_type, fs_type, v_type, fv_type, v_prev, import_name, is_existing):
   # dim: integer dimension.
@@ -48,7 +14,7 @@ def gen_vec(dim, s_type, fs_type, v_type, fv_type, v_prev, import_name, is_exist
   comps = all_v_comps[:dim]
   comps_a = ['a.' + c for c in comps]
   comps_b = ['b.' + c for c in comps]
-  comps_ab = [Pair(a, b) for a, b in zip(comps_a, comps_b)]
+  comps_ab = [p for p in zip(comps_a, comps_b)]
   comps_colors = list(zip('la' if dim == 2 else 'rgba', comps))
   public = 'public ' if is_existing else ''
   is_float = s_type.startswith('F')
@@ -130,6 +96,17 @@ def gen_vec(dim, s_type, fs_type, v_type, fv_type, v_prev, import_name, is_exist
     outL('func dist(a: $, b: $) -> $ { return (b - a).len }', v_type, v_type, s_type)
     outL('func dot(a: $, b: $) -> $ { return $ }',
       v_type, v_type, s_type, ' + '.join(fmt('(a.$ * b.$)', c, c) for c in comps))
+
+    if dim >= 3:
+      cross_pairs = ['yz', 'zx', 'xy', '__'][:dim]
+      outL('\nfunc cross(a: $, b: $) -> $ { return $(', v_type, v_type, v_type, v_type)
+      for i, (a, b) in enumerate(cross_pairs):
+        if a == '_':
+          outL('  0')
+        else:
+          comma = '' if i == dim - 1 else ','
+          outL('  a.$ * b.$ - a.$ * b.$$', a, b, b, a, comma)
+      outL(')}\n')
 
 if __name__ == '__main__':
   args = sys.argv[1:]

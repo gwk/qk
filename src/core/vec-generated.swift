@@ -268,6 +268,13 @@ func ==(a: V3S, b: V3S) -> Bool {
 
 func dist(a: V3S, b: V3S) -> F32 { return (b - a).len }
 func dot(a: V3S, b: V3S) -> F32 { return (a.x * b.x) + (a.y * b.y) + (a.z * b.z) }
+
+func cross(a: V3S, b: V3S) -> V3S { return V3S(
+  a.y * b.z - a.z * b.y,
+  a.z * b.x - a.x * b.z,
+  a.x * b.y - a.y * b.x
+)}
+
 struct V3D: Equatable, Printable, VecType3, FloatVecType {
   var x, y, z: F64
   typealias ScalarType = F64
@@ -335,6 +342,13 @@ func ==(a: V3D, b: V3D) -> Bool {
 
 func dist(a: V3D, b: V3D) -> F64 { return (b - a).len }
 func dot(a: V3D, b: V3D) -> F64 { return (a.x * b.x) + (a.y * b.y) + (a.z * b.z) }
+
+func cross(a: V3D, b: V3D) -> V3D { return V3D(
+  a.y * b.z - a.z * b.y,
+  a.z * b.x - a.x * b.z,
+  a.x * b.y - a.y * b.x
+)}
+
 struct V3I: Equatable, Printable, VecType3 {
   var x, y, z: Int
   typealias ScalarType = Int
@@ -456,6 +470,14 @@ func ==(a: V4S, b: V4S) -> Bool {
 
 func dist(a: V4S, b: V4S) -> F32 { return (b - a).len }
 func dot(a: V4S, b: V4S) -> F32 { return (a.x * b.x) + (a.y * b.y) + (a.z * b.z) + (a.w * b.w) }
+
+func cross(a: V4S, b: V4S) -> V4S { return V4S(
+  a.y * b.z - a.z * b.y,
+  a.z * b.x - a.x * b.z,
+  a.x * b.y - a.y * b.x,
+  0
+)}
+
 struct V4D: Equatable, Printable, VecType4, FloatVecType {
   var x, y, z, w: F64
   typealias ScalarType = F64
@@ -513,6 +535,14 @@ func ==(a: V4D, b: V4D) -> Bool {
 
 func dist(a: V4D, b: V4D) -> F64 { return (b - a).len }
 func dot(a: V4D, b: V4D) -> F64 { return (a.x * b.x) + (a.y * b.y) + (a.z * b.z) + (a.w * b.w) }
+
+func cross(a: V4D, b: V4D) -> V4D { return V4D(
+  a.y * b.z - a.z * b.y,
+  a.z * b.x - a.x * b.z,
+  a.x * b.y - a.y * b.x,
+  0
+)}
+
 struct V4I: Equatable, Printable, VecType4 {
   var x, y, z, w: Int
   typealias ScalarType = Int

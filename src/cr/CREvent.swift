@@ -10,17 +10,6 @@
 #endif
 
 
-func sysTime() -> Time {
-  return NSProcessInfo.processInfo().systemUptime
-}
-
-// note: this is lazily evaluated, so it must be accessed at launch time to initialize accurately.
-let appLaunchSysTime = sysTime()
-
-func appTime() -> Time {
-  return sysTime() - appLaunchSysTime
-}
-
 extension CREvent {
   var appTime: Time { return timestamp - appLaunchSysTime } // timestamp is relative to systemUptime.
 }

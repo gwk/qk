@@ -82,6 +82,12 @@ func sign<T: ArithmeticType>(b: Bool) -> T {
   return b ? 1 : -1
 }
 
+func sign<T: ArithmeticType>(x: T) -> T {
+  if x < 0 { return -1 }
+  if x > 0 { return 1 }
+  return 0
+}
+
 
 struct POTSeq: SequenceType {
   let start: Int = 1

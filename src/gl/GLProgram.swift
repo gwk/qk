@@ -91,7 +91,7 @@ class GLProgram {
     assert(inputType != nil, "bad input type: 0x\(Int(type).h)")
     let info = GLInput(name: name, isAttr: isAttr, loc: loc, type: inputType!, size: Int(size))
     let label = isAttr ? "attr" : "uniform"
-    println("  \(label): \(name): \(info)")
+    //println("  \(label): \(name): \(info)")
     inputs[name] = info
   }
   
@@ -150,7 +150,7 @@ class GLProgram {
       glAssert()
       addInput(name, isAttr: true, loc: loc, type: type, size: size)
     }
-    println("GLProgram(\(handle): \(shaders))")
+    //println("GLProgram(\(handle): \(shaders))")
   }
   
   init() {

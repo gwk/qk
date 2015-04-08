@@ -25,3 +25,13 @@ struct DispatchFileModes: OptionSetType {
   static var all: DispatchFileModes = union(.Delete, .Write, .Extend, .Attrib, .Link, .Rename, .Revoke)
 }
 
+
+func outLLA(items: [String]) {
+  dispatch_async(dispatch_get_main_queue()) {
+    for i in items {
+      println(i)
+    }
+  }
+}
+
+func outLLA(items: String...) { outLLA(items) }

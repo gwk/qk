@@ -5,9 +5,10 @@ import Foundation
 
 
 func atmInc(ptr: UnsafeMutablePointer<I64>) { OSAtomicIncrement64(ptr) }
+func atmDec(ptr: UnsafeMutablePointer<I64>) { OSAtomicDecrement64(ptr) }
 
 
-struct AtmCounters {
+class AtmCounters {
   var _counters: [I64]
   
   init(count: Int) {
@@ -18,7 +19,7 @@ struct AtmCounters {
   
   subscript (idx: Int) -> I64 { return _counters[idx] }
   
-  mutating func withPtr(idx: Int, @noescape body: (UnsafeMutablePointer<I64>) -> ()) {
+  func withPtr(idx: Int, @noescape body: (UnsafeMutablePointer<I64>) -> ()) {
     assert(idx < count)
     self._counters.withUnsafeMutableBufferPointer() {
       (inout buffer: UnsafeMutableBufferPointer<I64>) -> () in
@@ -26,13 +27,19 @@ struct AtmCounters {
     }
   }
   
-  mutating func inc(idx: Int) {
+  func inc(idx: Int) {
     withPtr(idx) {
       atmInc($0)
     }
   }
   
-  mutating func zeroAll() {
+  func dec(idx: Int) {
+    withPtr(idx) {
+      atmDec($0)
+    }
+  }
+  
+  func zeroAll() {
     for i in 0..<count {
       _counters[i] = 0
     }

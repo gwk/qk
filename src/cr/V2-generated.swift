@@ -63,11 +63,19 @@ extension V2 {
   var l: Flt { return x }
   var a: Flt { return y }
 
+  var allNormal: Bool { return x.isNormal && y.isNormal }
+  var allFinite: Bool { return x.isFinite && y.isFinite }
+  var allZero: Bool { return x.isNormal && y.isNormal }
+  var anySubnormal: Bool { return x.isSubnormal || y.isSubnormal}
+  var anyInfite: Bool { return x.isInfinite || y.isInfinite}
+  var anyNaN: Bool { return x.isNaN || y.isNaN}
+
   var norm: V2 { return V2(self) / self.len }
   var clampToUnit: V2 { return V2(clamp(x, 0, 1), clamp(y, 0, 1)) }
   func dist(b: V2) -> Flt { return (b - self).len }
   func dot(b: V2) -> Flt { return (x * b.x) + (y * b.y) }
   func angle(b: V2) -> Flt { return acos(self.dot(b) / (self.len * b.len)) }
+  func lerp(b: V2, _ t: Flt) -> V2 { return self * (1 - t) + b * t }
 
 }
 

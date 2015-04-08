@@ -77,6 +77,7 @@ def gen_mat(dim, t, suffix):
       outL('  )}\n')
 
     outL('  static func rot(#theta: $, norm: $) -> $ {', t, vt, mt)
+    outL('    if !theta.isNormal { return ident }')
     outL('    let _cos = cos(theta)')
     outL('    let _cosp = 1 - _cos')
     outL('    let _sin = sin(theta)')

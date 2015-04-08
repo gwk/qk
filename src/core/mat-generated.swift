@@ -147,6 +147,7 @@ struct M3S: Printable {
   )}
 
   static func rot(#theta: F32, norm: V3S) -> M3S {
+    if !theta.isNormal { return ident }
     let _cos = cos(theta)
     let _cosp = 1 - _cos
     let _sin = sin(theta)
@@ -239,6 +240,7 @@ struct M3D: Printable {
   )}
 
   static func rot(#theta: F64, norm: V3D) -> M3D {
+    if !theta.isNormal { return ident }
     let _cos = cos(theta)
     let _cosp = 1 - _cos
     let _sin = sin(theta)
@@ -343,6 +345,7 @@ struct M4S: Printable {
   )}
 
   static func rot(#theta: F32, norm: V4S) -> M4S {
+    if !theta.isNormal { return ident }
     let _cos = cos(theta)
     let _cosp = 1 - _cos
     let _sin = sin(theta)
@@ -462,6 +465,7 @@ struct M4D: Printable {
   )}
 
   static func rot(#theta: F64, norm: V4D) -> M4D {
+    if !theta.isNormal { return ident }
     let _cos = cos(theta)
     let _cosp = 1 - _cos
     let _sin = sin(theta)

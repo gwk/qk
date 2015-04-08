@@ -58,11 +58,19 @@ struct V2S: Equatable, Printable, VecType2, FloatVecType {
   var l: F32 { return x }
   var a: F32 { return y }
 
+  var allNormal: Bool { return x.isNormal && y.isNormal }
+  var allFinite: Bool { return x.isFinite && y.isFinite }
+  var allZero: Bool { return x.isNormal && y.isNormal }
+  var anySubnormal: Bool { return x.isSubnormal || y.isSubnormal}
+  var anyInfite: Bool { return x.isInfinite || y.isInfinite}
+  var anyNaN: Bool { return x.isNaN || y.isNaN}
+
   var norm: V2S { return V2S(self) / self.len }
   var clampToUnit: V2S { return V2S(clamp(x, 0, 1), clamp(y, 0, 1)) }
   func dist(b: V2S) -> F32 { return (b - self).len }
   func dot(b: V2S) -> F32 { return (x * b.x) + (y * b.y) }
   func angle(b: V2S) -> F32 { return acos(self.dot(b) / (self.len * b.len)) }
+  func lerp(b: V2S, _ t: F32) -> V2S { return self * (1 - t) + b * t }
 
 }
 
@@ -134,11 +142,19 @@ struct V2D: Equatable, Printable, VecType2, FloatVecType {
   var l: F64 { return x }
   var a: F64 { return y }
 
+  var allNormal: Bool { return x.isNormal && y.isNormal }
+  var allFinite: Bool { return x.isFinite && y.isFinite }
+  var allZero: Bool { return x.isNormal && y.isNormal }
+  var anySubnormal: Bool { return x.isSubnormal || y.isSubnormal}
+  var anyInfite: Bool { return x.isInfinite || y.isInfinite}
+  var anyNaN: Bool { return x.isNaN || y.isNaN}
+
   var norm: V2D { return V2D(self) / self.len }
   var clampToUnit: V2D { return V2D(clamp(x, 0, 1), clamp(y, 0, 1)) }
   func dist(b: V2D) -> F64 { return (b - self).len }
   func dot(b: V2D) -> F64 { return (x * b.x) + (y * b.y) }
   func angle(b: V2D) -> F64 { return acos(self.dot(b) / (self.len * b.len)) }
+  func lerp(b: V2D, _ t: F64) -> V2D { return self * (1 - t) + b * t }
 
 }
 
@@ -280,11 +296,19 @@ struct V3S: Equatable, Printable, VecType3, FloatVecType {
   var g: F32 { return y }
   var b: F32 { return z }
 
+  var allNormal: Bool { return x.isNormal && y.isNormal && z.isNormal }
+  var allFinite: Bool { return x.isFinite && y.isFinite && z.isFinite }
+  var allZero: Bool { return x.isNormal && y.isNormal && z.isNormal }
+  var anySubnormal: Bool { return x.isSubnormal || y.isSubnormal || z.isSubnormal}
+  var anyInfite: Bool { return x.isInfinite || y.isInfinite || z.isInfinite}
+  var anyNaN: Bool { return x.isNaN || y.isNaN || z.isNaN}
+
   var norm: V3S { return V3S(self) / self.len }
   var clampToUnit: V3S { return V3S(clamp(x, 0, 1), clamp(y, 0, 1), clamp(z, 0, 1)) }
   func dist(b: V3S) -> F32 { return (b - self).len }
   func dot(b: V3S) -> F32 { return (x * b.x) + (y * b.y) + (z * b.z) }
   func angle(b: V3S) -> F32 { return acos(self.dot(b) / (self.len * b.len)) }
+  func lerp(b: V3S, _ t: F32) -> V3S { return self * (1 - t) + b * t }
 
   func cross(b: V3S) -> V3S { return V3S(
   y * b.z - z * b.y,
@@ -363,11 +387,19 @@ struct V3D: Equatable, Printable, VecType3, FloatVecType {
   var g: F64 { return y }
   var b: F64 { return z }
 
+  var allNormal: Bool { return x.isNormal && y.isNormal && z.isNormal }
+  var allFinite: Bool { return x.isFinite && y.isFinite && z.isFinite }
+  var allZero: Bool { return x.isNormal && y.isNormal && z.isNormal }
+  var anySubnormal: Bool { return x.isSubnormal || y.isSubnormal || z.isSubnormal}
+  var anyInfite: Bool { return x.isInfinite || y.isInfinite || z.isInfinite}
+  var anyNaN: Bool { return x.isNaN || y.isNaN || z.isNaN}
+
   var norm: V3D { return V3D(self) / self.len }
   var clampToUnit: V3D { return V3D(clamp(x, 0, 1), clamp(y, 0, 1), clamp(z, 0, 1)) }
   func dist(b: V3D) -> F64 { return (b - self).len }
   func dot(b: V3D) -> F64 { return (x * b.x) + (y * b.y) + (z * b.z) }
   func angle(b: V3D) -> F64 { return acos(self.dot(b) / (self.len * b.len)) }
+  func lerp(b: V3D, _ t: F64) -> V3D { return self * (1 - t) + b * t }
 
   func cross(b: V3D) -> V3D { return V3D(
   y * b.z - z * b.y,
@@ -507,11 +539,19 @@ struct V4S: Equatable, Printable, VecType4, FloatVecType {
   var b: F32 { return z }
   var a: F32 { return w }
 
+  var allNormal: Bool { return x.isNormal && y.isNormal && z.isNormal && w.isNormal }
+  var allFinite: Bool { return x.isFinite && y.isFinite && z.isFinite && w.isFinite }
+  var allZero: Bool { return x.isNormal && y.isNormal && z.isNormal && w.isNormal }
+  var anySubnormal: Bool { return x.isSubnormal || y.isSubnormal || z.isSubnormal || w.isSubnormal}
+  var anyInfite: Bool { return x.isInfinite || y.isInfinite || z.isInfinite || w.isInfinite}
+  var anyNaN: Bool { return x.isNaN || y.isNaN || z.isNaN || w.isNaN}
+
   var norm: V4S { return V4S(self) / self.len }
   var clampToUnit: V4S { return V4S(clamp(x, 0, 1), clamp(y, 0, 1), clamp(z, 0, 1), clamp(w, 0, 1)) }
   func dist(b: V4S) -> F32 { return (b - self).len }
   func dot(b: V4S) -> F32 { return (x * b.x) + (y * b.y) + (z * b.z) + (w * b.w) }
   func angle(b: V4S) -> F32 { return acos(self.dot(b) / (self.len * b.len)) }
+  func lerp(b: V4S, _ t: F32) -> V4S { return self * (1 - t) + b * t }
 
   func cross(b: V4S) -> V4S { return V4S(
   y * b.z - z * b.y,
@@ -582,11 +622,19 @@ struct V4D: Equatable, Printable, VecType4, FloatVecType {
   var b: F64 { return z }
   var a: F64 { return w }
 
+  var allNormal: Bool { return x.isNormal && y.isNormal && z.isNormal && w.isNormal }
+  var allFinite: Bool { return x.isFinite && y.isFinite && z.isFinite && w.isFinite }
+  var allZero: Bool { return x.isNormal && y.isNormal && z.isNormal && w.isNormal }
+  var anySubnormal: Bool { return x.isSubnormal || y.isSubnormal || z.isSubnormal || w.isSubnormal}
+  var anyInfite: Bool { return x.isInfinite || y.isInfinite || z.isInfinite || w.isInfinite}
+  var anyNaN: Bool { return x.isNaN || y.isNaN || z.isNaN || w.isNaN}
+
   var norm: V4D { return V4D(self) / self.len }
   var clampToUnit: V4D { return V4D(clamp(x, 0, 1), clamp(y, 0, 1), clamp(z, 0, 1), clamp(w, 0, 1)) }
   func dist(b: V4D) -> F64 { return (b - self).len }
   func dot(b: V4D) -> F64 { return (x * b.x) + (y * b.y) + (z * b.z) + (w * b.w) }
   func angle(b: V4D) -> F64 { return acos(self.dot(b) / (self.len * b.len)) }
+  func lerp(b: V4D, _ t: F64) -> V4D { return self * (1 - t) + b * t }
 
   func cross(b: V4D) -> V4D { return V4D(
   y * b.z - z * b.y,

@@ -77,7 +77,7 @@ def gen_vec(dim, s_type, fs_type, v_type, fv_type, v_prev, import_name, is_exist
     fs_type, ' + '.join(fmt('$($).sqr', fs_type, c) for c in comps))
   outL('  var len: $ { return sqrLen.sqrt }', fs_type)
   outL('  var aspect: $ { return $(x) / $(y) }', fs_type, fs_type, fs_type)
-  
+
   for c, c_orig in comps_colors:
     outL('  var $: $ { return $ }', c, s_type, c_orig)
 
@@ -85,18 +85,27 @@ def gen_vec(dim, s_type, fs_type, v_type, fv_type, v_prev, import_name, is_exist
 
   if is_float:
     outL('')
+    outL('  var allNormal: Bool { return $ }', jf(' && ', '$.isNormal', comps))
+    outL('  var allFinite: Bool { return $ }', jf(' && ', '$.isFinite', comps))
+    outL('  var allZero: Bool { return $ }', jf(' && ', '$.isNormal', comps))
+    outL('  var anySubnormal: Bool { return $}', jf(' || ', '$.isSubnormal', comps))
+    outL('  var anyInfite: Bool { return $}', jf(' || ', '$.isInfinite', comps))
+    outL('  var anyNaN: Bool { return $}', jf(' || ', '$.isNaN', comps))
+    outL('')
     outL('  var norm: $ { return $(self) / self.len }', fv_type, fv_type)
     outL('  var clampToUnit: $ { return $($) }', v_type, v_type, jcf('clamp($, 0, 1)', comps))
     outL('  func dist(b: $) -> $ { return (b - self).len }', v_type, s_type)
     outL('  func dot(b: $) -> $ { return $ }',
       v_type, s_type, ' + '.join(fmt('($ * b.$)', c, c) for c in comps))
-
     outL('  func angle(b: $) -> $ { return acos(self.dot(b) / (self.len * b.len)) }',
       v_type, s_type)
+    outL('  func lerp(b: $, _ t: $) -> $ { return self * (1 - t) + b * t }',
+      v_type, s_type, v_type)
 
     if dim >= 3:
+      outL('')
       cross_pairs = ['yz', 'zx', 'xy', '__'][:dim]
-      outL('\n  func cross(b: $) -> $ { return $(', v_type, v_type, v_type)
+      outL('  func cross(b: $) -> $ { return $(', v_type, v_type, v_type)
       for i, (a, b) in enumerate(cross_pairs):
         if a == '_':
           outL('  0')

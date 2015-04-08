@@ -65,11 +65,19 @@ extension V3 {
   var g: Flt { return y }
   var b: Flt { return z }
 
+  var allNormal: Bool { return x.isNormal && y.isNormal && z.isNormal }
+  var allFinite: Bool { return x.isFinite && y.isFinite && z.isFinite }
+  var allZero: Bool { return x.isNormal && y.isNormal && z.isNormal }
+  var anySubnormal: Bool { return x.isSubnormal || y.isSubnormal || z.isSubnormal}
+  var anyInfite: Bool { return x.isInfinite || y.isInfinite || z.isInfinite}
+  var anyNaN: Bool { return x.isNaN || y.isNaN || z.isNaN}
+
   var norm: V3 { return V3(self) / self.len }
   var clampToUnit: V3 { return V3(clamp(x, 0, 1), clamp(y, 0, 1), clamp(z, 0, 1)) }
   func dist(b: V3) -> Flt { return (b - self).len }
   func dot(b: V3) -> Flt { return (x * b.x) + (y * b.y) + (z * b.z) }
   func angle(b: V3) -> Flt { return acos(self.dot(b) / (self.len * b.len)) }
+  func lerp(b: V3, _ t: Flt) -> V3 { return self * (1 - t) + b * t }
 
   func cross(b: V3) -> V3 { return V3(
   y * b.z - z * b.y,

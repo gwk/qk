@@ -57,11 +57,19 @@ extension V4 {
   var b: Flt { return z }
   var a: Flt { return w }
 
+  var allNormal: Bool { return x.isNormal && y.isNormal && z.isNormal && w.isNormal }
+  var allFinite: Bool { return x.isFinite && y.isFinite && z.isFinite && w.isFinite }
+  var allZero: Bool { return x.isNormal && y.isNormal && z.isNormal && w.isNormal }
+  var anySubnormal: Bool { return x.isSubnormal || y.isSubnormal || z.isSubnormal || w.isSubnormal}
+  var anyInfite: Bool { return x.isInfinite || y.isInfinite || z.isInfinite || w.isInfinite}
+  var anyNaN: Bool { return x.isNaN || y.isNaN || z.isNaN || w.isNaN}
+
   var norm: V4 { return V4(self) / self.len }
   var clampToUnit: V4 { return V4(clamp(x, 0, 1), clamp(y, 0, 1), clamp(z, 0, 1), clamp(w, 0, 1)) }
   func dist(b: V4) -> Flt { return (b - self).len }
   func dot(b: V4) -> Flt { return (x * b.x) + (y * b.y) + (z * b.z) + (w * b.w) }
   func angle(b: V4) -> Flt { return acos(self.dot(b) / (self.len * b.len)) }
+  func lerp(b: V4, _ t: Flt) -> V4 { return self * (1 - t) + b * t }
 
   func cross(b: V4) -> V4 { return V4(
   y * b.z - z * b.y,

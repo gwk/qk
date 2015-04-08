@@ -34,9 +34,12 @@ void* imgDataFromPngReadPtr(png_structp readPtr,
   if (setjmp(png_jmpbuf(readPtr))) {
     free(data);
     free(row_pointers);
-    *errorPtr = [NSError errorWithDomain:@"Image"
-                                    code:1
-                                userInfo:@{NSLocalizedDescriptionKey: @"PNG read failed", @"name" : name}];
+    if (errorPtr) {
+      *errorPtr = [NSError errorWithDomain:@"Image"
+                                      code:1
+                                  userInfo:@{NSLocalizedDescriptionKey: @"PNG read failed", @"name" : name}];
+      
+    }
     return NULL;
   }
 #endif
@@ -108,15 +111,17 @@ void* imgDataFromPngReadPtr(png_structp readPtr,
   int channels = png_get_channels(readPtr, infoPtr);
   size_t rowsLength = png_get_rowbytes(readPtr, infoPtr);
   if (rowsLength != h * channels * dstBitDepth / 8) {
-    *errorPtr = [NSError errorWithDomain:@"Image"
-                                    code:1
-                                userInfo:@{NSLocalizedDescriptionKey : @"unexpected rows array byte length",
-                                           @"name" : name,
-                                           @"length" : @(rowsLength),
-                                           @"w" : @(w),
-                                           @"h" : @(h),
-                                           @"channels" : @(channels),
-                                           @"depth" : @(dstBitDepth)}];
+    if (errorPtr) {
+      *errorPtr = [NSError errorWithDomain:@"Image"
+                                      code:1
+                                  userInfo:@{NSLocalizedDescriptionKey : @"unexpected rows array byte length",
+                                             @"name" : name,
+                                             @"length" : @(rowsLength),
+                                             @"w" : @(w),
+                                             @"h" : @(h),
+                                             @"channels" : @(channels),
+                                             @"depth" : @(dstBitDepth)}];
+    }
     return NULL;
   }
   
@@ -164,28 +169,34 @@ void* imgDataFromPngFile(CFile file,
   png_byte sig[8];
   fread(sig, 1, 8, file);
   if (!png_check_sig(sig, 8)) {
-    *errorPtr = [NSError errorWithDomain:@"Image"
-                                    code:1
-                                userInfo:@{NSLocalizedDescriptionKey : @"bad PNG signature",
-                                           @"name" : name}];
+    if (errorPtr) {
+      *errorPtr = [NSError errorWithDomain:@"Image"
+                                      code:1
+                                  userInfo:@{NSLocalizedDescriptionKey : @"bad PNG signature",
+                                             @"name" : name}];
+    }
     return NULL;
   }
   png_voidp error_ptr = NULL;
   png_error_ptr warn_fn = NULL;
   png_structp readPtr = png_create_read_struct(PNG_LIBPNG_VER_STRING, error_ptr, pngErrorFn, warn_fn);
   if (!readPtr) {
-    *errorPtr = [NSError errorWithDomain:@"Image"
-                                    code:1
-                                userInfo:@{NSLocalizedDescriptionKey : @"png_create_read_struct failed (out of memory?)",
-                                           @"name" : name}];
+    if (errorPtr) {
+      *errorPtr = [NSError errorWithDomain:@"Image"
+                                      code:1
+                                  userInfo:@{NSLocalizedDescriptionKey : @"png_create_read_struct failed (out of memory?)",
+                                             @"name" : name}];
+    }
     return NULL;
   }
   png_infop infoPtr = png_create_info_struct(readPtr);
   if (!readPtr) {
-    *errorPtr = [NSError errorWithDomain:@"Image"
-                                    code:1
-                                userInfo:@{NSLocalizedDescriptionKey : @"png_create_info_struct failed (out of memory?)",
-                                           @"name" : name}];
+    if (errorPtr) {
+      *errorPtr = [NSError errorWithDomain:@"Image"
+                                      code:1
+                                  userInfo:@{NSLocalizedDescriptionKey : @"png_create_info_struct failed (out of memory?)",
+                                             @"name" : name}];
+    }
     return NULL;
   }
   png_init_io(readPtr, file);

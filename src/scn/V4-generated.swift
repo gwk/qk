@@ -42,11 +42,16 @@ extension V4 {
     self.w = s
   }
   static let zero = V4(0, 0, 0, 0)
+  static let unitX = V4(1, 0, 0, 0)
+  static let unitY = V4(0, 1, 0, 0)
+  static let unitZ = V4(0, 0, 1, 0)
+  static let unitW = V4(0, 0, 0, 1)
   public var description: String { return "V4(\(x), \(y), \(z), \(w))" }
   var vs: V4S { return V4S(F32(x), F32(y), F32(z), F32(w)) }
   var vd: V4D { return V4D(F64(x), F64(y), F64(z), F64(w)) }
   var sqrLen: Flt { return (Flt(x).sqr + Flt(y).sqr + Flt(z).sqr + Flt(w).sqr) }
   var len: Flt { return sqrLen.sqrt }
+  var aspect: Flt { return Flt(x) / Flt(y) }
   var r: Flt { return x }
   var g: Flt { return y }
   var b: Flt { return z }

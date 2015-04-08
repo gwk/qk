@@ -65,6 +65,10 @@ def gen_vec(dim, s_type, fs_type, v_type, fv_type, v_prev, import_name, is_exist
   
   outL('  static let zero = $($)', v_type, jc('0' for comp in comps))
 
+  for c in comps:
+    outL('  static let unit$ = $($)',
+      c.upper(), v_type, jc('1' if d == c else '0' for d in comps))
+
   outL('  $var description: String { return "$($)" }',
     public, v_type, jc([r'\({})'.format(c) for c in comps]))
   outL('  var vs: V$S { return V$S($) }', dim, dim, jcf('F32($)', comps))
@@ -72,6 +76,7 @@ def gen_vec(dim, s_type, fs_type, v_type, fv_type, v_prev, import_name, is_exist
   outL('  var sqrLen: $ { return ($) }',
     fs_type, ' + '.join(fmt('$($).sqr', fs_type, c) for c in comps))
   outL('  var len: $ { return sqrLen.sqrt }', fs_type)
+  outL('  var aspect: $ { return $(x) / $(y) }', fs_type, fs_type, fs_type)
   
   for c, c_orig in comps_colors:
     outL('  var $: $ { return $ }', c, s_type, c_orig)

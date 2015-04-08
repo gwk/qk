@@ -48,8 +48,67 @@ def gen_mat(dim, t, suffix):
   for j in rng:
     outL('  var r$: $ { return $($) }', j, vt, vt, jc(els_rows[j]))
 
-  outL('static let zero = $($)', mt, jc('0' for e in els))
-  outL('static let ident = $($)', mt, jc(('1' if (i == j) else '0') for i, j in rng_sqr))
+  outL('  static let zero = $($)', mt, jc('0' for e in els))
+  outL('  static let ident = $($)', mt, jc(('1' if (i == j) else '0') for i, j in rng_sqr))
+
+  scale_pars = jc(fmt('$: $', c, t) for c in v_comps)
+  scale_args = jc((c if c == r else '0') for c, r in product(v_comps, v_comps))
+  outL('  static func scale($) -> $ { return $($) }\n', scale_pars, mt, mt, scale_args)
+
+  if dim >= 3:
+    for k, ck in enumerate(v_comps[:3]): # k is index of rotation axis.
+      outL('  static func rot$(theta: $) -> $ { return $(', ck.upper(), t, mt, mt)
+      for j, cj in enumerate(v_comps):
+        def rot_comp(i, ci):
+          if i == k or j == k or i == 3 or j == 3:
+            return '1' if i == j else '0'
+          if i == j:
+            return 'cos(theta)'
+          # pick the sign of the sin term by hand, based on row j.
+          # would love to find a more conceptually meaningful way of choosing the sign.
+          if k == 0:   isNegSinTerm = (j == 2)
+          elif k == 1: isNegSinTerm = (j == 0)
+          elif k == 2: isNegSinTerm = (j == 1)
+          else: assert False
+          return fmt('$sin(theta)', '-' if isNegSinTerm else '')
+        outL('    $$',
+          jc(rot_comp(i, ci).rjust(11) for i, ci in enumerate(v_comps)),
+          ',' if j < dim - 1 else '')
+      outL('  )}\n')
+
+    outL('  static func rot(#theta: $, norm: $) -> $ {', t, vt, mt)
+    outL('    let _cos = cos(theta)')
+    outL('    let _cosp = 1 - _cos')
+    outL('    let _sin = sin(theta)')
+    outL('    return $(', mt)
+
+    rot_terms = [
+      [ '_cos + _cosp * norm.x * norm.x',
+        '_cosp * norm.x * norm.y + norm.z * _sin',
+        '_cosp * norm.x * norm.z - norm.y * _sin',
+        0],
+
+      [ '_cosp * norm.x * norm.y - norm.z * _sin',
+        '_cos + _cosp * norm.y * norm.y',
+        '_cosp * norm.y * norm.z + norm.x * _sin',
+        0],
+
+      [ '_cosp * norm.x * norm.z + norm.y * _sin',
+        '_cosp * norm.y * norm.z - norm.x * _sin',
+        '_cos + _cosp * norm.z * norm.z',
+        0],
+
+      [0, 0, 0, 1]
+    ]
+
+    for i in rng:
+      for j in rng:
+        outL('      $$', rot_terms[i][j], commaUnlessAreLast(i, j))
+    outL('  )}\n')
+
+    outL('  static func rot(a: $, _ b: $) -> $ {', vt, vt, mt)
+    outL('    return rot(theta: a.angle(b), norm: a.cross(b).norm)')
+    outL('  }\n')
 
   outL('}\n')
 
@@ -80,67 +139,6 @@ def gen_mat(dim, t, suffix):
     dot = jft(' + ', '(l.m$$ * r.$)', [(i, j, v_comps[i]) for i in rng])
     outL('  $$', dot, commaUnlessIsLast(j))
   outL(')}\n')
-
-  scale_pars = jc(fmt('$: $', c, t) for c in v_comps)
-  scale_args = jc((c if c == r else '0') for c, r in product(v_comps, v_comps))
-  outL('func $Scale($) -> $ { return $($) }\n', mt, scale_pars, mt, mt, scale_args)
-
-  if dim >= 3:
-    for k, ck in enumerate(v_comps[:3]):
-      outL('func $Rot$(theta: $) -> $ {', mt, ck.upper(), t, mt)
-      outL('  return $(', mt)
-      for j, cj in enumerate(v_comps):
-        def rot_comp(i, ci):
-          if i == k or j == k or i == 3 or j == 3:
-            return '1' if i == j else '0'
-          if i == j:
-            return 'cos(theta)'
-          # would love to find a better way of choosing the sign of the sin terms.
-          if k == 0:   isNeg = (j == 1)
-          elif k == 1: isNeg = (j == 2)
-          elif k == 2: isNeg = (j == 0)
-          else: assert False
-          return fmt('$sin(theta)', '-' if isNeg else '')
-        outL('    $$',
-          jc(rot_comp(i, ci).rjust(12) for i, ci in enumerate(v_comps)),
-          ',' if j < dim - 1 else '')
-      outL(')}\n')
-
-    outL('func $Rot(theta: $, norm: $) -> $ {', mt, t, vt, mt)
-    outL('  let _cos = cos(theta)')
-    outL('  let _cosp = 1 - _cos')
-    outL('  let _sin = sin(theta)')
-    outL('  return $(', mt)
-
-    els = [
-      [ '_cos + _cosp * norm.x * norm.x',
-        '_cosp * norm.x * norm.y + norm.z * _sin',
-        '_cosp * norm.x * norm.z - norm.y * _sin',
-        0],
-
-      [ '_cosp * norm.x * norm.y - norm.z * _sin',
-        '_cos + _cosp * norm.y * norm.y',
-        '_cosp * norm.y * norm.z + norm.x * _sin',
-        0],
-
-      [ '_cosp * norm.x * norm.z + norm.y * _sin',
-        '_cosp * norm.y * norm.z - norm.x * _sin',
-        '_cos + _cosp * norm.z * norm.z',
-        0],
-
-      [0, 0, 0, 1]
-    ]
-
-    for i in rng:
-      for j in rng:
-        outL('    $$', els[i][j], commaUnlessAreLast(i, j))
-    outL(')}\n')
-
-    outL('func $Rot(a: $, b: $) -> $ {', mt, vt, vt, mt)
-    outL('  let theta = a.angle(b)')
-    outL('  let norm = a.cross(b).norm')
-    outL('  return $Rot(theta, norm)', mt)
-    outL('}\n')
 
 
 if __name__ == '__main__':

@@ -52,11 +52,15 @@ extension V3 {
     self.z = s
   }
   static let zero = V3(0, 0, 0)
+  static let unitX = V3(1, 0, 0)
+  static let unitY = V3(0, 1, 0)
+  static let unitZ = V3(0, 0, 1)
   public var description: String { return "V3(\(x), \(y), \(z))" }
   var vs: V3S { return V3S(F32(x), F32(y), F32(z)) }
   var vd: V3D { return V3D(F64(x), F64(y), F64(z)) }
   var sqrLen: Flt { return (Flt(x).sqr + Flt(y).sqr + Flt(z).sqr) }
   var len: Flt { return sqrLen.sqrt }
+  var aspect: Flt { return Flt(x) / Flt(y) }
   var r: Flt { return x }
   var g: Flt { return y }
   var b: Flt { return z }

@@ -47,11 +47,14 @@ struct V2S: Equatable, Printable, VecType2, FloatVecType {
     self.y = F32(v.y)
   }
   static let zero = V2S(0, 0)
+  static let unitX = V2S(1, 0)
+  static let unitY = V2S(0, 1)
   var description: String { return "V2S(\(x), \(y))" }
   var vs: V2S { return V2S(F32(x), F32(y)) }
   var vd: V2D { return V2D(F64(x), F64(y)) }
   var sqrLen: F32 { return (F32(x).sqr + F32(y).sqr) }
   var len: F32 { return sqrLen.sqrt }
+  var aspect: F32 { return F32(x) / F32(y) }
   var l: F32 { return x }
   var a: F32 { return y }
 
@@ -120,11 +123,14 @@ struct V2D: Equatable, Printable, VecType2, FloatVecType {
     self.y = F64(v.y)
   }
   static let zero = V2D(0, 0)
+  static let unitX = V2D(1, 0)
+  static let unitY = V2D(0, 1)
   var description: String { return "V2D(\(x), \(y))" }
   var vs: V2S { return V2S(F32(x), F32(y)) }
   var vd: V2D { return V2D(F64(x), F64(y)) }
   var sqrLen: F64 { return (F64(x).sqr + F64(y).sqr) }
   var len: F64 { return sqrLen.sqrt }
+  var aspect: F64 { return F64(x) / F64(y) }
   var l: F64 { return x }
   var a: F64 { return y }
 
@@ -193,11 +199,14 @@ struct V2I: Equatable, Printable, VecType2, IntVecType {
     self.y = Int(v.y)
   }
   static let zero = V2I(0, 0)
+  static let unitX = V2I(1, 0)
+  static let unitY = V2I(0, 1)
   var description: String { return "V2I(\(x), \(y))" }
   var vs: V2S { return V2S(F32(x), F32(y)) }
   var vd: V2D { return V2D(F64(x), F64(y)) }
   var sqrLen: F64 { return (F64(x).sqr + F64(y).sqr) }
   var len: F64 { return sqrLen.sqrt }
+  var aspect: F64 { return F64(x) / F64(y) }
   var l: Int { return x }
   var a: Int { return y }
 }
@@ -258,11 +267,15 @@ struct V3S: Equatable, Printable, VecType3, FloatVecType {
     self.z = s
   }
   static let zero = V3S(0, 0, 0)
+  static let unitX = V3S(1, 0, 0)
+  static let unitY = V3S(0, 1, 0)
+  static let unitZ = V3S(0, 0, 1)
   var description: String { return "V3S(\(x), \(y), \(z))" }
   var vs: V3S { return V3S(F32(x), F32(y), F32(z)) }
   var vd: V3D { return V3D(F64(x), F64(y), F64(z)) }
   var sqrLen: F32 { return (F32(x).sqr + F32(y).sqr + F32(z).sqr) }
   var len: F32 { return sqrLen.sqrt }
+  var aspect: F32 { return F32(x) / F32(y) }
   var r: F32 { return x }
   var g: F32 { return y }
   var b: F32 { return z }
@@ -337,11 +350,15 @@ struct V3D: Equatable, Printable, VecType3, FloatVecType {
     self.z = s
   }
   static let zero = V3D(0, 0, 0)
+  static let unitX = V3D(1, 0, 0)
+  static let unitY = V3D(0, 1, 0)
+  static let unitZ = V3D(0, 0, 1)
   var description: String { return "V3D(\(x), \(y), \(z))" }
   var vs: V3S { return V3S(F32(x), F32(y), F32(z)) }
   var vd: V3D { return V3D(F64(x), F64(y), F64(z)) }
   var sqrLen: F64 { return (F64(x).sqr + F64(y).sqr + F64(z).sqr) }
   var len: F64 { return sqrLen.sqrt }
+  var aspect: F64 { return F64(x) / F64(y) }
   var r: F64 { return x }
   var g: F64 { return y }
   var b: F64 { return z }
@@ -416,11 +433,15 @@ struct V3I: Equatable, Printable, VecType3, IntVecType {
     self.z = s
   }
   static let zero = V3I(0, 0, 0)
+  static let unitX = V3I(1, 0, 0)
+  static let unitY = V3I(0, 1, 0)
+  static let unitZ = V3I(0, 0, 1)
   var description: String { return "V3I(\(x), \(y), \(z))" }
   var vs: V3S { return V3S(F32(x), F32(y), F32(z)) }
   var vd: V3D { return V3D(F64(x), F64(y), F64(z)) }
   var sqrLen: F64 { return (F64(x).sqr + F64(y).sqr + F64(z).sqr) }
   var len: F64 { return sqrLen.sqrt }
+  var aspect: F64 { return F64(x) / F64(y) }
   var r: Int { return x }
   var g: Int { return y }
   var b: Int { return z }
@@ -471,11 +492,16 @@ struct V4S: Equatable, Printable, VecType4, FloatVecType {
     self.w = s
   }
   static let zero = V4S(0, 0, 0, 0)
+  static let unitX = V4S(1, 0, 0, 0)
+  static let unitY = V4S(0, 1, 0, 0)
+  static let unitZ = V4S(0, 0, 1, 0)
+  static let unitW = V4S(0, 0, 0, 1)
   var description: String { return "V4S(\(x), \(y), \(z), \(w))" }
   var vs: V4S { return V4S(F32(x), F32(y), F32(z), F32(w)) }
   var vd: V4D { return V4D(F64(x), F64(y), F64(z), F64(w)) }
   var sqrLen: F32 { return (F32(x).sqr + F32(y).sqr + F32(z).sqr + F32(w).sqr) }
   var len: F32 { return sqrLen.sqrt }
+  var aspect: F32 { return F32(x) / F32(y) }
   var r: F32 { return x }
   var g: F32 { return y }
   var b: F32 { return z }
@@ -541,11 +567,16 @@ struct V4D: Equatable, Printable, VecType4, FloatVecType {
     self.w = s
   }
   static let zero = V4D(0, 0, 0, 0)
+  static let unitX = V4D(1, 0, 0, 0)
+  static let unitY = V4D(0, 1, 0, 0)
+  static let unitZ = V4D(0, 0, 1, 0)
+  static let unitW = V4D(0, 0, 0, 1)
   var description: String { return "V4D(\(x), \(y), \(z), \(w))" }
   var vs: V4S { return V4S(F32(x), F32(y), F32(z), F32(w)) }
   var vd: V4D { return V4D(F64(x), F64(y), F64(z), F64(w)) }
   var sqrLen: F64 { return (F64(x).sqr + F64(y).sqr + F64(z).sqr + F64(w).sqr) }
   var len: F64 { return sqrLen.sqrt }
+  var aspect: F64 { return F64(x) / F64(y) }
   var r: F64 { return x }
   var g: F64 { return y }
   var b: F64 { return z }
@@ -611,11 +642,16 @@ struct V4I: Equatable, Printable, VecType4, IntVecType {
     self.w = s
   }
   static let zero = V4I(0, 0, 0, 0)
+  static let unitX = V4I(1, 0, 0, 0)
+  static let unitY = V4I(0, 1, 0, 0)
+  static let unitZ = V4I(0, 0, 1, 0)
+  static let unitW = V4I(0, 0, 0, 1)
   var description: String { return "V4I(\(x), \(y), \(z), \(w))" }
   var vs: V4S { return V4S(F32(x), F32(y), F32(z), F32(w)) }
   var vd: V4D { return V4D(F64(x), F64(y), F64(z), F64(w)) }
   var sqrLen: F64 { return (F64(x).sqr + F64(y).sqr + F64(z).sqr + F64(w).sqr) }
   var len: F64 { return sqrLen.sqrt }
+  var aspect: F64 { return F64(x) / F64(y) }
   var r: Int { return x }
   var g: Int { return y }
   var b: Int { return z }

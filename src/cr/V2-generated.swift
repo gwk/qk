@@ -52,11 +52,14 @@ extension V2 {
     self.y = Flt(v.y)
   }
   static let zero = V2(0, 0)
+  static let unitX = V2(1, 0)
+  static let unitY = V2(0, 1)
   public var description: String { return "V2(\(x), \(y))" }
   var vs: V2S { return V2S(F32(x), F32(y)) }
   var vd: V2D { return V2D(F64(x), F64(y)) }
   var sqrLen: Flt { return (Flt(x).sqr + Flt(y).sqr) }
   var len: Flt { return sqrLen.sqrt }
+  var aspect: Flt { return Flt(x) / Flt(y) }
   var l: Flt { return x }
   var a: Flt { return y }
 

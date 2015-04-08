@@ -35,8 +35,10 @@ struct M2S: Printable {
   var c1: V2S { return V2S(m10, m11) }
   var r0: V2S { return V2S(m00, m10) }
   var r1: V2S { return V2S(m01, m11) }
-static let zero = M2S(0, 0, 0, 0)
-static let ident = M2S(1, 0, 0, 1)
+  static let zero = M2S(0, 0, 0, 0)
+  static let ident = M2S(1, 0, 0, 1)
+  static func scale(x: F32, y: F32) -> M2S { return M2S(x, 0, 0, y) }
+
 }
 
 func +(l: M2S, r: M2S) -> M2S { return M2S(l.m00 + r.m00, l.m01 + r.m01, l.m10 + r.m10, l.m11 + r.m11) }
@@ -56,8 +58,6 @@ func *(l: M2S, r: V2S) -> V2S { return V2S(
   (l.m01 * r.x) + (l.m11 * r.y)
 )}
 
-func M2SScale(x: F32, y: F32) -> M2S { return M2S(x, 0, 0, y) }
-
 struct M2D: Printable {
   var m00, m01, m10, m11: F64
   init(_ m00: F64, _ m01: F64, _ m10: F64, _ m11: F64) {
@@ -76,8 +76,10 @@ struct M2D: Printable {
   var c1: V2D { return V2D(m10, m11) }
   var r0: V2D { return V2D(m00, m10) }
   var r1: V2D { return V2D(m01, m11) }
-static let zero = M2D(0, 0, 0, 0)
-static let ident = M2D(1, 0, 0, 1)
+  static let zero = M2D(0, 0, 0, 0)
+  static let ident = M2D(1, 0, 0, 1)
+  static func scale(x: F64, y: F64) -> M2D { return M2D(x, 0, 0, y) }
+
 }
 
 func +(l: M2D, r: M2D) -> M2D { return M2D(l.m00 + r.m00, l.m01 + r.m01, l.m10 + r.m10, l.m11 + r.m11) }
@@ -96,8 +98,6 @@ func *(l: M2D, r: V2D) -> V2D { return V2D(
   (l.m00 * r.x) + (l.m10 * r.y),
   (l.m01 * r.x) + (l.m11 * r.y)
 )}
-
-func M2DScale(x: F64, y: F64) -> M2D { return M2D(x, 0, 0, y) }
 
 struct M3S: Printable {
   var m00, m01, m02, m10, m11, m12, m20, m21, m22: F32
@@ -124,8 +124,48 @@ struct M3S: Printable {
   var r0: V3S { return V3S(m00, m10, m20) }
   var r1: V3S { return V3S(m01, m11, m21) }
   var r2: V3S { return V3S(m02, m12, m22) }
-static let zero = M3S(0, 0, 0, 0, 0, 0, 0, 0, 0)
-static let ident = M3S(1, 0, 0, 0, 1, 0, 0, 0, 1)
+  static let zero = M3S(0, 0, 0, 0, 0, 0, 0, 0, 0)
+  static let ident = M3S(1, 0, 0, 0, 1, 0, 0, 0, 1)
+  static func scale(x: F32, y: F32, z: F32) -> M3S { return M3S(x, 0, 0, 0, y, 0, 0, 0, z) }
+
+  static func rotX(theta: F32) -> M3S { return M3S(
+              1,           0,           0,
+              0,  cos(theta),  sin(theta),
+              0, -sin(theta),  cos(theta)
+  )}
+
+  static func rotY(theta: F32) -> M3S { return M3S(
+     cos(theta),           0, -sin(theta),
+              0,           1,           0,
+     sin(theta),           0,  cos(theta)
+  )}
+
+  static func rotZ(theta: F32) -> M3S { return M3S(
+     cos(theta),  sin(theta),           0,
+    -sin(theta),  cos(theta),           0,
+              0,           0,           1
+  )}
+
+  static func rot(#theta: F32, norm: V3S) -> M3S {
+    let _cos = cos(theta)
+    let _cosp = 1 - _cos
+    let _sin = sin(theta)
+    return M3S(
+      _cos + _cosp * norm.x * norm.x,
+      _cosp * norm.x * norm.y + norm.z * _sin,
+      _cosp * norm.x * norm.z - norm.y * _sin,
+      _cosp * norm.x * norm.y - norm.z * _sin,
+      _cos + _cosp * norm.y * norm.y,
+      _cosp * norm.y * norm.z + norm.x * _sin,
+      _cosp * norm.x * norm.z + norm.y * _sin,
+      _cosp * norm.y * norm.z - norm.x * _sin,
+      _cos + _cosp * norm.z * norm.z
+  )}
+
+  static func rot(a: V3S, _ b: V3S) -> M3S {
+    return rot(theta: a.angle(b), norm: a.cross(b).norm)
+  }
+
 }
 
 func +(l: M3S, r: M3S) -> M3S { return M3S(l.m00 + r.m00, l.m01 + r.m01, l.m02 + r.m02, l.m10 + r.m10, l.m11 + r.m11, l.m12 + r.m12, l.m20 + r.m20, l.m21 + r.m21, l.m22 + r.m22) }
@@ -150,51 +190,6 @@ func *(l: M3S, r: V3S) -> V3S { return V3S(
   (l.m01 * r.x) + (l.m11 * r.y) + (l.m21 * r.z),
   (l.m02 * r.x) + (l.m12 * r.y) + (l.m22 * r.z)
 )}
-
-func M3SScale(x: F32, y: F32, z: F32) -> M3S { return M3S(x, 0, 0, 0, y, 0, 0, 0, z) }
-
-func M3SRotX(theta: F32) -> M3S {
-  return M3S(
-               1,            0,            0,
-               0,   cos(theta),  -sin(theta),
-               0,   sin(theta),   cos(theta)
-)}
-
-func M3SRotY(theta: F32) -> M3S {
-  return M3S(
-      cos(theta),            0,   sin(theta),
-               0,            1,            0,
-     -sin(theta),            0,   cos(theta)
-)}
-
-func M3SRotZ(theta: F32) -> M3S {
-  return M3S(
-      cos(theta),  -sin(theta),            0,
-      sin(theta),   cos(theta),            0,
-               0,            0,            1
-)}
-
-func M3SRot(theta: F32, norm: V3S) -> M3S {
-  let _cos = cos(theta)
-  let _cosp = 1 - _cos
-  let _sin = sin(theta)
-  return M3S(
-    _cos + _cosp * norm.x * norm.x,
-    _cosp * norm.x * norm.y + norm.z * _sin,
-    _cosp * norm.x * norm.z - norm.y * _sin,
-    _cosp * norm.x * norm.y - norm.z * _sin,
-    _cos + _cosp * norm.y * norm.y,
-    _cosp * norm.y * norm.z + norm.x * _sin,
-    _cosp * norm.x * norm.z + norm.y * _sin,
-    _cosp * norm.y * norm.z - norm.x * _sin,
-    _cos + _cosp * norm.z * norm.z
-)}
-
-func M3SRot(a: V3S, b: V3S) -> M3S {
-  let theta = a.angle(b)
-  let norm = a.cross(b).norm
-  return M3SRot(theta, norm)
-}
 
 struct M3D: Printable {
   var m00, m01, m02, m10, m11, m12, m20, m21, m22: F64
@@ -221,8 +216,48 @@ struct M3D: Printable {
   var r0: V3D { return V3D(m00, m10, m20) }
   var r1: V3D { return V3D(m01, m11, m21) }
   var r2: V3D { return V3D(m02, m12, m22) }
-static let zero = M3D(0, 0, 0, 0, 0, 0, 0, 0, 0)
-static let ident = M3D(1, 0, 0, 0, 1, 0, 0, 0, 1)
+  static let zero = M3D(0, 0, 0, 0, 0, 0, 0, 0, 0)
+  static let ident = M3D(1, 0, 0, 0, 1, 0, 0, 0, 1)
+  static func scale(x: F64, y: F64, z: F64) -> M3D { return M3D(x, 0, 0, 0, y, 0, 0, 0, z) }
+
+  static func rotX(theta: F64) -> M3D { return M3D(
+              1,           0,           0,
+              0,  cos(theta),  sin(theta),
+              0, -sin(theta),  cos(theta)
+  )}
+
+  static func rotY(theta: F64) -> M3D { return M3D(
+     cos(theta),           0, -sin(theta),
+              0,           1,           0,
+     sin(theta),           0,  cos(theta)
+  )}
+
+  static func rotZ(theta: F64) -> M3D { return M3D(
+     cos(theta),  sin(theta),           0,
+    -sin(theta),  cos(theta),           0,
+              0,           0,           1
+  )}
+
+  static func rot(#theta: F64, norm: V3D) -> M3D {
+    let _cos = cos(theta)
+    let _cosp = 1 - _cos
+    let _sin = sin(theta)
+    return M3D(
+      _cos + _cosp * norm.x * norm.x,
+      _cosp * norm.x * norm.y + norm.z * _sin,
+      _cosp * norm.x * norm.z - norm.y * _sin,
+      _cosp * norm.x * norm.y - norm.z * _sin,
+      _cos + _cosp * norm.y * norm.y,
+      _cosp * norm.y * norm.z + norm.x * _sin,
+      _cosp * norm.x * norm.z + norm.y * _sin,
+      _cosp * norm.y * norm.z - norm.x * _sin,
+      _cos + _cosp * norm.z * norm.z
+  )}
+
+  static func rot(a: V3D, _ b: V3D) -> M3D {
+    return rot(theta: a.angle(b), norm: a.cross(b).norm)
+  }
+
 }
 
 func +(l: M3D, r: M3D) -> M3D { return M3D(l.m00 + r.m00, l.m01 + r.m01, l.m02 + r.m02, l.m10 + r.m10, l.m11 + r.m11, l.m12 + r.m12, l.m20 + r.m20, l.m21 + r.m21, l.m22 + r.m22) }
@@ -247,51 +282,6 @@ func *(l: M3D, r: V3D) -> V3D { return V3D(
   (l.m01 * r.x) + (l.m11 * r.y) + (l.m21 * r.z),
   (l.m02 * r.x) + (l.m12 * r.y) + (l.m22 * r.z)
 )}
-
-func M3DScale(x: F64, y: F64, z: F64) -> M3D { return M3D(x, 0, 0, 0, y, 0, 0, 0, z) }
-
-func M3DRotX(theta: F64) -> M3D {
-  return M3D(
-               1,            0,            0,
-               0,   cos(theta),  -sin(theta),
-               0,   sin(theta),   cos(theta)
-)}
-
-func M3DRotY(theta: F64) -> M3D {
-  return M3D(
-      cos(theta),            0,   sin(theta),
-               0,            1,            0,
-     -sin(theta),            0,   cos(theta)
-)}
-
-func M3DRotZ(theta: F64) -> M3D {
-  return M3D(
-      cos(theta),  -sin(theta),            0,
-      sin(theta),   cos(theta),            0,
-               0,            0,            1
-)}
-
-func M3DRot(theta: F64, norm: V3D) -> M3D {
-  let _cos = cos(theta)
-  let _cosp = 1 - _cos
-  let _sin = sin(theta)
-  return M3D(
-    _cos + _cosp * norm.x * norm.x,
-    _cosp * norm.x * norm.y + norm.z * _sin,
-    _cosp * norm.x * norm.z - norm.y * _sin,
-    _cosp * norm.x * norm.y - norm.z * _sin,
-    _cos + _cosp * norm.y * norm.y,
-    _cosp * norm.y * norm.z + norm.x * _sin,
-    _cosp * norm.x * norm.z + norm.y * _sin,
-    _cosp * norm.y * norm.z - norm.x * _sin,
-    _cos + _cosp * norm.z * norm.z
-)}
-
-func M3DRot(a: V3D, b: V3D) -> M3D {
-  let theta = a.angle(b)
-  let norm = a.cross(b).norm
-  return M3DRot(theta, norm)
-}
 
 struct M4S: Printable {
   var m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33: F32
@@ -327,8 +317,58 @@ struct M4S: Printable {
   var r1: V4S { return V4S(m01, m11, m21, m31) }
   var r2: V4S { return V4S(m02, m12, m22, m32) }
   var r3: V4S { return V4S(m03, m13, m23, m33) }
-static let zero = M4S(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-static let ident = M4S(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
+  static let zero = M4S(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+  static let ident = M4S(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
+  static func scale(x: F32, y: F32, z: F32, w: F32) -> M4S { return M4S(x, 0, 0, 0, 0, y, 0, 0, 0, 0, z, 0, 0, 0, 0, w) }
+
+  static func rotX(theta: F32) -> M4S { return M4S(
+              1,           0,           0,           0,
+              0,  cos(theta),  sin(theta),           0,
+              0, -sin(theta),  cos(theta),           0,
+              0,           0,           0,           1
+  )}
+
+  static func rotY(theta: F32) -> M4S { return M4S(
+     cos(theta),           0, -sin(theta),           0,
+              0,           1,           0,           0,
+     sin(theta),           0,  cos(theta),           0,
+              0,           0,           0,           1
+  )}
+
+  static func rotZ(theta: F32) -> M4S { return M4S(
+     cos(theta),  sin(theta),           0,           0,
+    -sin(theta),  cos(theta),           0,           0,
+              0,           0,           1,           0,
+              0,           0,           0,           1
+  )}
+
+  static func rot(#theta: F32, norm: V4S) -> M4S {
+    let _cos = cos(theta)
+    let _cosp = 1 - _cos
+    let _sin = sin(theta)
+    return M4S(
+      _cos + _cosp * norm.x * norm.x,
+      _cosp * norm.x * norm.y + norm.z * _sin,
+      _cosp * norm.x * norm.z - norm.y * _sin,
+      0,
+      _cosp * norm.x * norm.y - norm.z * _sin,
+      _cos + _cosp * norm.y * norm.y,
+      _cosp * norm.y * norm.z + norm.x * _sin,
+      0,
+      _cosp * norm.x * norm.z + norm.y * _sin,
+      _cosp * norm.y * norm.z - norm.x * _sin,
+      _cos + _cosp * norm.z * norm.z,
+      0,
+      0,
+      0,
+      0,
+      1
+  )}
+
+  static func rot(a: V4S, _ b: V4S) -> M4S {
+    return rot(theta: a.angle(b), norm: a.cross(b).norm)
+  }
+
 }
 
 func +(l: M4S, r: M4S) -> M4S { return M4S(l.m00 + r.m00, l.m01 + r.m01, l.m02 + r.m02, l.m03 + r.m03, l.m10 + r.m10, l.m11 + r.m11, l.m12 + r.m12, l.m13 + r.m13, l.m20 + r.m20, l.m21 + r.m21, l.m22 + r.m22, l.m23 + r.m23, l.m30 + r.m30, l.m31 + r.m31, l.m32 + r.m32, l.m33 + r.m33) }
@@ -361,61 +401,6 @@ func *(l: M4S, r: V4S) -> V4S { return V4S(
   (l.m02 * r.x) + (l.m12 * r.y) + (l.m22 * r.z) + (l.m32 * r.w),
   (l.m03 * r.x) + (l.m13 * r.y) + (l.m23 * r.z) + (l.m33 * r.w)
 )}
-
-func M4SScale(x: F32, y: F32, z: F32, w: F32) -> M4S { return M4S(x, 0, 0, 0, 0, y, 0, 0, 0, 0, z, 0, 0, 0, 0, w) }
-
-func M4SRotX(theta: F32) -> M4S {
-  return M4S(
-               1,            0,            0,            0,
-               0,   cos(theta),  -sin(theta),            0,
-               0,   sin(theta),   cos(theta),            0,
-               0,            0,            0,            1
-)}
-
-func M4SRotY(theta: F32) -> M4S {
-  return M4S(
-      cos(theta),            0,   sin(theta),            0,
-               0,            1,            0,            0,
-     -sin(theta),            0,   cos(theta),            0,
-               0,            0,            0,            1
-)}
-
-func M4SRotZ(theta: F32) -> M4S {
-  return M4S(
-      cos(theta),  -sin(theta),            0,            0,
-      sin(theta),   cos(theta),            0,            0,
-               0,            0,            1,            0,
-               0,            0,            0,            1
-)}
-
-func M4SRot(theta: F32, norm: V4S) -> M4S {
-  let _cos = cos(theta)
-  let _cosp = 1 - _cos
-  let _sin = sin(theta)
-  return M4S(
-    _cos + _cosp * norm.x * norm.x,
-    _cosp * norm.x * norm.y + norm.z * _sin,
-    _cosp * norm.x * norm.z - norm.y * _sin,
-    0,
-    _cosp * norm.x * norm.y - norm.z * _sin,
-    _cos + _cosp * norm.y * norm.y,
-    _cosp * norm.y * norm.z + norm.x * _sin,
-    0,
-    _cosp * norm.x * norm.z + norm.y * _sin,
-    _cosp * norm.y * norm.z - norm.x * _sin,
-    _cos + _cosp * norm.z * norm.z,
-    0,
-    0,
-    0,
-    0,
-    1
-)}
-
-func M4SRot(a: V4S, b: V4S) -> M4S {
-  let theta = a.angle(b)
-  let norm = a.cross(b).norm
-  return M4SRot(theta, norm)
-}
 
 struct M4D: Printable {
   var m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33: F64
@@ -451,8 +436,58 @@ struct M4D: Printable {
   var r1: V4D { return V4D(m01, m11, m21, m31) }
   var r2: V4D { return V4D(m02, m12, m22, m32) }
   var r3: V4D { return V4D(m03, m13, m23, m33) }
-static let zero = M4D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-static let ident = M4D(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
+  static let zero = M4D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+  static let ident = M4D(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
+  static func scale(x: F64, y: F64, z: F64, w: F64) -> M4D { return M4D(x, 0, 0, 0, 0, y, 0, 0, 0, 0, z, 0, 0, 0, 0, w) }
+
+  static func rotX(theta: F64) -> M4D { return M4D(
+              1,           0,           0,           0,
+              0,  cos(theta),  sin(theta),           0,
+              0, -sin(theta),  cos(theta),           0,
+              0,           0,           0,           1
+  )}
+
+  static func rotY(theta: F64) -> M4D { return M4D(
+     cos(theta),           0, -sin(theta),           0,
+              0,           1,           0,           0,
+     sin(theta),           0,  cos(theta),           0,
+              0,           0,           0,           1
+  )}
+
+  static func rotZ(theta: F64) -> M4D { return M4D(
+     cos(theta),  sin(theta),           0,           0,
+    -sin(theta),  cos(theta),           0,           0,
+              0,           0,           1,           0,
+              0,           0,           0,           1
+  )}
+
+  static func rot(#theta: F64, norm: V4D) -> M4D {
+    let _cos = cos(theta)
+    let _cosp = 1 - _cos
+    let _sin = sin(theta)
+    return M4D(
+      _cos + _cosp * norm.x * norm.x,
+      _cosp * norm.x * norm.y + norm.z * _sin,
+      _cosp * norm.x * norm.z - norm.y * _sin,
+      0,
+      _cosp * norm.x * norm.y - norm.z * _sin,
+      _cos + _cosp * norm.y * norm.y,
+      _cosp * norm.y * norm.z + norm.x * _sin,
+      0,
+      _cosp * norm.x * norm.z + norm.y * _sin,
+      _cosp * norm.y * norm.z - norm.x * _sin,
+      _cos + _cosp * norm.z * norm.z,
+      0,
+      0,
+      0,
+      0,
+      1
+  )}
+
+  static func rot(a: V4D, _ b: V4D) -> M4D {
+    return rot(theta: a.angle(b), norm: a.cross(b).norm)
+  }
+
 }
 
 func +(l: M4D, r: M4D) -> M4D { return M4D(l.m00 + r.m00, l.m01 + r.m01, l.m02 + r.m02, l.m03 + r.m03, l.m10 + r.m10, l.m11 + r.m11, l.m12 + r.m12, l.m13 + r.m13, l.m20 + r.m20, l.m21 + r.m21, l.m22 + r.m22, l.m23 + r.m23, l.m30 + r.m30, l.m31 + r.m31, l.m32 + r.m32, l.m33 + r.m33) }
@@ -485,59 +520,4 @@ func *(l: M4D, r: V4D) -> V4D { return V4D(
   (l.m02 * r.x) + (l.m12 * r.y) + (l.m22 * r.z) + (l.m32 * r.w),
   (l.m03 * r.x) + (l.m13 * r.y) + (l.m23 * r.z) + (l.m33 * r.w)
 )}
-
-func M4DScale(x: F64, y: F64, z: F64, w: F64) -> M4D { return M4D(x, 0, 0, 0, 0, y, 0, 0, 0, 0, z, 0, 0, 0, 0, w) }
-
-func M4DRotX(theta: F64) -> M4D {
-  return M4D(
-               1,            0,            0,            0,
-               0,   cos(theta),  -sin(theta),            0,
-               0,   sin(theta),   cos(theta),            0,
-               0,            0,            0,            1
-)}
-
-func M4DRotY(theta: F64) -> M4D {
-  return M4D(
-      cos(theta),            0,   sin(theta),            0,
-               0,            1,            0,            0,
-     -sin(theta),            0,   cos(theta),            0,
-               0,            0,            0,            1
-)}
-
-func M4DRotZ(theta: F64) -> M4D {
-  return M4D(
-      cos(theta),  -sin(theta),            0,            0,
-      sin(theta),   cos(theta),            0,            0,
-               0,            0,            1,            0,
-               0,            0,            0,            1
-)}
-
-func M4DRot(theta: F64, norm: V4D) -> M4D {
-  let _cos = cos(theta)
-  let _cosp = 1 - _cos
-  let _sin = sin(theta)
-  return M4D(
-    _cos + _cosp * norm.x * norm.x,
-    _cosp * norm.x * norm.y + norm.z * _sin,
-    _cosp * norm.x * norm.z - norm.y * _sin,
-    0,
-    _cosp * norm.x * norm.y - norm.z * _sin,
-    _cos + _cosp * norm.y * norm.y,
-    _cosp * norm.y * norm.z + norm.x * _sin,
-    0,
-    _cosp * norm.x * norm.z + norm.y * _sin,
-    _cosp * norm.y * norm.z - norm.x * _sin,
-    _cos + _cosp * norm.z * norm.z,
-    0,
-    0,
-    0,
-    0,
-    1
-)}
-
-func M4DRot(a: V4D, b: V4D) -> M4D {
-  let theta = a.angle(b)
-  let norm = a.cross(b).norm
-  return M4DRot(theta, norm)
-}
 

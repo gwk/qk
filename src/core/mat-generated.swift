@@ -58,18 +58,6 @@ func *(l: M2S, r: V2S) -> V2S { return V2S(
 
 func M2SScale(x: F32, y: F32) -> M2S { return M2S(x, 0, 0, y) }
 
-func M2SRotX(theta: F32) -> M2S {
-  return M2S(
-               1,            0,
-               0,   cos(theta)
-)}
-
-func M2SRotY(theta: F32) -> M2S {
-  return M2S(
-      cos(theta),            0,
-               0,            1
-)}
-
 struct M2D: Printable {
   var m00, m01, m10, m11: F64
   init(_ m00: F64, _ m01: F64, _ m10: F64, _ m11: F64) {
@@ -110,18 +98,6 @@ func *(l: M2D, r: V2D) -> V2D { return V2D(
 )}
 
 func M2DScale(x: F64, y: F64) -> M2D { return M2D(x, 0, 0, y) }
-
-func M2DRotX(theta: F64) -> M2D {
-  return M2D(
-               1,            0,
-               0,   cos(theta)
-)}
-
-func M2DRotY(theta: F64) -> M2D {
-  return M2D(
-      cos(theta),            0,
-               0,            1
-)}
 
 struct M3S: Printable {
   var m00, m01, m02, m10, m11, m12, m20, m21, m22: F32
@@ -214,6 +190,12 @@ func M3SRot(theta: F32, norm: V3S) -> M3S {
     _cos + _cosp * norm.z * norm.z
 )}
 
+func M3SRot(a: V3S, b: V3S) -> M3S {
+  let theta = a.angle(b)
+  let norm = a.cross(b).norm
+  return M3SRot(theta, norm)
+}
+
 struct M3D: Printable {
   var m00, m01, m02, m10, m11, m12, m20, m21, m22: F64
   init(_ m00: F64, _ m01: F64, _ m02: F64, _ m10: F64, _ m11: F64, _ m12: F64, _ m20: F64, _ m21: F64, _ m22: F64) {
@@ -304,6 +286,12 @@ func M3DRot(theta: F64, norm: V3D) -> M3D {
     _cosp * norm.y * norm.z - norm.x * _sin,
     _cos + _cosp * norm.z * norm.z
 )}
+
+func M3DRot(a: V3D, b: V3D) -> M3D {
+  let theta = a.angle(b)
+  let norm = a.cross(b).norm
+  return M3DRot(theta, norm)
+}
 
 struct M4S: Printable {
   var m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33: F32
@@ -423,6 +411,12 @@ func M4SRot(theta: F32, norm: V4S) -> M4S {
     1
 )}
 
+func M4SRot(a: V4S, b: V4S) -> M4S {
+  let theta = a.angle(b)
+  let norm = a.cross(b).norm
+  return M4SRot(theta, norm)
+}
+
 struct M4D: Printable {
   var m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33: F64
   init(_ m00: F64, _ m01: F64, _ m02: F64, _ m03: F64, _ m10: F64, _ m11: F64, _ m12: F64, _ m13: F64, _ m20: F64, _ m21: F64, _ m22: F64, _ m23: F64, _ m30: F64, _ m31: F64, _ m32: F64, _ m33: F64) {
@@ -540,4 +534,10 @@ func M4DRot(theta: F64, norm: V4D) -> M4D {
     0,
     1
 )}
+
+func M4DRot(a: V4D, b: V4D) -> M4D {
+  let theta = a.angle(b)
+  let norm = a.cross(b).norm
+  return M4DRot(theta, norm)
+}
 

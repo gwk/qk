@@ -2,15 +2,27 @@
 // Permission to use this file is granted in license-qk.txt.
 
 
-protocol VecType {
+protocol VecType: Equatable, Printable {
   typealias ScalarType
+  typealias FloatType
+  typealias VSType
+  typealias VDType
+  
+  var vs: VSType { get }
+  var vd: VDType { get }
+  var sqrLen: FloatType { get }
+  var len: FloatType { get }
 }
 
-protocol FloatVecType {
-
+protocol FloatVecType: VecType {
+  var norm: Self { get }
+  var clampToUnit: Self { get }
+  func dist(b: Self) -> ScalarType
+  func dot(b: Self) -> ScalarType
+  func angle(b: Self) -> ScalarType
 }
 
-protocol IntVecType {
+protocol IntVecType: VecType {
 
 }
 

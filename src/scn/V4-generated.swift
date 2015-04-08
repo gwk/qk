@@ -7,6 +7,9 @@ import SceneKit
 
 extension V4 {
   typealias ScalarType = Flt
+  typealias FloatType = Flt
+  typealias VSType = V4S
+  typealias VDType = V4D
   init(_ x: Flt = 0, _ y: Flt = 0, _ z: Flt = 0, _ w: Flt = 0) {
     self.x = x
     self.y = y
@@ -44,12 +47,24 @@ extension V4 {
   var vd: V4D { return V4D(F64(x), F64(y), F64(z), F64(w)) }
   var sqrLen: Flt { return (Flt(x).sqr + Flt(y).sqr + Flt(z).sqr + Flt(w).sqr) }
   var len: Flt { return sqrLen.sqrt }
-  var norm: V4 { return V4(self) / self.len }
-  var clampToUnit: V4 { return V4(clamp(x, 0, 1), clamp(y, 0, 1), clamp(z, 0, 1), clamp(w, 0, 1)) }
   var r: Flt { return x }
   var g: Flt { return y }
   var b: Flt { return z }
   var a: Flt { return w }
+
+  var norm: V4 { return V4(self) / self.len }
+  var clampToUnit: V4 { return V4(clamp(x, 0, 1), clamp(y, 0, 1), clamp(z, 0, 1), clamp(w, 0, 1)) }
+  func dist(b: V4) -> Flt { return (b - self).len }
+  func dot(b: V4) -> Flt { return (x * b.x) + (y * b.y) + (z * b.z) + (w * b.w) }
+  func angle(b: V4) -> Flt { return acos(self.dot(b) / (self.len * b.len)) }
+
+  func cross(b: V4) -> V4 { return V4(
+  y * b.z - z * b.y,
+  z * b.x - x * b.z,
+  x * b.y - y * b.x,
+  0
+)}
+
 }
 
 func +(a: V4, b: V4) -> V4 { return V4(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w) }
@@ -60,14 +75,4 @@ func +(a: V4, s: Flt) -> V4 { return V4(a.x + s, a.y + s, a.z + s, a.w + s) }
 func -(a: V4, s: Flt) -> V4 { return V4(a.x - s, a.y - s, a.z - s, a.w - s) }
 func *(a: V4, s: Flt) -> V4 { return V4(a.x * s, a.y * s, a.z * s, a.w * s) }
 func /(a: V4, s: Flt) -> V4 { return V4(a.x / s, a.y / s, a.z / s, a.w / s) }
-
-func dist(a: V4, b: V4) -> Flt { return (b - a).len }
-func dot(a: V4, b: V4) -> Flt { return (a.x * b.x) + (a.y * b.y) + (a.z * b.z) + (a.w * b.w) }
-
-func cross(a: V4, b: V4) -> V4 { return V4(
-  a.y * b.z - a.z * b.y,
-  a.z * b.x - a.x * b.z,
-  a.x * b.y - a.y * b.x,
-  0
-)}
 

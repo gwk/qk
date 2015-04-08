@@ -25,6 +25,8 @@ def gen_vec(dim, s_type, fs_type, v_type, fv_type, v_prev, import_name, is_exist
   protocols = fmt('Printable, VecType$', dim)
   if is_float:
     protocols += ', FloatVecType'
+  else:
+    protocols += ', IntVecType'
 
   if is_existing:
     #outL('extension $: $ {', v_type, protocols) # broken
@@ -34,6 +36,10 @@ def gen_vec(dim, s_type, fs_type, v_type, fv_type, v_prev, import_name, is_exist
     outL('  var $: $', jc(comps), s_type)
 
   outL('  typealias ScalarType = $', s_type)
+  outL('  typealias FloatType = $', fs_type)
+  outL('  typealias VSType = V$S', dim)
+  outL('  typealias VDType = V$D', dim)
+
   outL('  init($) {', jc(fmt('_ $: $ = 0', comp, s_type) for comp in comps))
   for c in comps:
     outL('    self.$ = $', c, c)
@@ -66,16 +72,36 @@ def gen_vec(dim, s_type, fs_type, v_type, fv_type, v_prev, import_name, is_exist
   outL('  var sqrLen: $ { return ($) }',
     fs_type, ' + '.join(fmt('$($).sqr', fs_type, c) for c in comps))
   outL('  var len: $ { return sqrLen.sqrt }', fs_type)
-  outL('  var norm: $ { return $(self) / self.len }', fv_type, fv_type)
   
-  if is_float:
-    outL('  var clampToUnit: $ { return $($) }', v_type, v_type, jcf('clamp($, 0, 1)', comps))
-
   for c, c_orig in comps_colors:
     outL('  var $: $ { return $ }', c, s_type, c_orig)
 
   # TODO: swizzles.
-  
+
+  if is_float:
+    outL('')
+    outL('  var norm: $ { return $(self) / self.len }', fv_type, fv_type)
+    outL('  var clampToUnit: $ { return $($) }', v_type, v_type, jcf('clamp($, 0, 1)', comps))
+    outL('  func dist(b: $) -> $ { return (b - self).len }', v_type, s_type)
+    outL('  func dot(b: $) -> $ { return $ }',
+      v_type, s_type, ' + '.join(fmt('($ * b.$)', c, c) for c in comps))
+
+    outL('  func angle(b: $) -> $ { return acos(self.dot(b) / (self.len * b.len)) }',
+      v_type, s_type)
+
+    if dim >= 3:
+      cross_pairs = ['yz', 'zx', 'xy', '__'][:dim]
+      outL('\n  func cross(b: $) -> $ { return $(', v_type, v_type, v_type)
+      for i, (a, b) in enumerate(cross_pairs):
+        if a == '_':
+          outL('  0')
+        else:
+          comma = '' if i == dim - 1 else ','
+          outL('  $ * b.$ - $ * b.$$', a, b, b, a, comma)
+      outL(')}')
+
+    outL('')
+
   outL('}\n')
 
   for op in ops:
@@ -91,22 +117,6 @@ def gen_vec(dim, s_type, fs_type, v_type, fv_type, v_prev, import_name, is_exist
     outL('func ==(a: $, b: $) -> Bool {', v_type, v_type)
     outL('  return $', ' && '.join(fmt('a.$ == b.$', c, c) for c in comps))
     outL('}\n')
-
-  if is_float:
-    outL('func dist(a: $, b: $) -> $ { return (b - a).len }', v_type, v_type, s_type)
-    outL('func dot(a: $, b: $) -> $ { return $ }',
-      v_type, v_type, s_type, ' + '.join(fmt('(a.$ * b.$)', c, c) for c in comps))
-
-    if dim >= 3:
-      cross_pairs = ['yz', 'zx', 'xy', '__'][:dim]
-      outL('\nfunc cross(a: $, b: $) -> $ { return $(', v_type, v_type, v_type, v_type)
-      for i, (a, b) in enumerate(cross_pairs):
-        if a == '_':
-          outL('  0')
-        else:
-          comma = '' if i == dim - 1 else ','
-          outL('  a.$ * b.$ - a.$ * b.$$', a, b, b, a, comma)
-      outL(')}\n')
 
 if __name__ == '__main__':
   args = sys.argv[1:]

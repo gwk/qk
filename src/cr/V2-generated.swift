@@ -7,6 +7,9 @@ import CoreGraphics
 
 extension V2 {
   typealias ScalarType = Flt
+  typealias FloatType = Flt
+  typealias VSType = V2S
+  typealias VDType = V2D
   init(_ x: Flt = 0, _ y: Flt = 0) {
     self.x = x
     self.y = y
@@ -54,10 +57,15 @@ extension V2 {
   var vd: V2D { return V2D(F64(x), F64(y)) }
   var sqrLen: Flt { return (Flt(x).sqr + Flt(y).sqr) }
   var len: Flt { return sqrLen.sqrt }
-  var norm: V2 { return V2(self) / self.len }
-  var clampToUnit: V2 { return V2(clamp(x, 0, 1), clamp(y, 0, 1)) }
   var l: Flt { return x }
   var a: Flt { return y }
+
+  var norm: V2 { return V2(self) / self.len }
+  var clampToUnit: V2 { return V2(clamp(x, 0, 1), clamp(y, 0, 1)) }
+  func dist(b: V2) -> Flt { return (b - self).len }
+  func dot(b: V2) -> Flt { return (x * b.x) + (y * b.y) }
+  func angle(b: V2) -> Flt { return acos(self.dot(b) / (self.len * b.len)) }
+
 }
 
 func +(a: V2, b: V2) -> V2 { return V2(a.x + b.x, a.y + b.y) }
@@ -69,5 +77,3 @@ func -(a: V2, s: Flt) -> V2 { return V2(a.x - s, a.y - s) }
 func *(a: V2, s: Flt) -> V2 { return V2(a.x * s, a.y * s) }
 func /(a: V2, s: Flt) -> V2 { return V2(a.x / s, a.y / s) }
 
-func dist(a: V2, b: V2) -> Flt { return (b - a).len }
-func dot(a: V2, b: V2) -> Flt { return (a.x * b.x) + (a.y * b.y) }

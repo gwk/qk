@@ -85,27 +85,27 @@ def gen_mat(dim, t, suffix):
   scale_args = jc((c if c == r else '0') for c, r in product(v_comps, v_comps))
   outL('func $Scale($) -> $ { return $($) }\n', mt, scale_pars, mt, mt, scale_args)
 
-  for k, ck in enumerate(v_comps[:3]):
-    outL('func $Rot$(theta: $) -> $ {', mt, ck.upper(), t, mt)
-    outL('  return $(', mt)
-    for j, cj in enumerate(v_comps):
-      def rot_comp(i, ci):
-        if i == k or j == k or i == 3 or j == 3:
-          return '1' if i == j else '0'
-        if i == j:
-          return 'cos(theta)'
-        # would love to find a better way of choosing the sign of the sin terms.
-        if k == 0:   isNeg = (j == 1)
-        elif k == 1: isNeg = (j == 2)
-        elif k == 2: isNeg = (j == 0)
-        else: assert False
-        return fmt('$sin(theta)', '-' if isNeg else '')
-      outL('    $$',
-        jc(rot_comp(i, ci).rjust(12) for i, ci in enumerate(v_comps)),
-        ',' if j < dim - 1 else '')
-    outL(')}\n')
-
   if dim >= 3:
+    for k, ck in enumerate(v_comps[:3]):
+      outL('func $Rot$(theta: $) -> $ {', mt, ck.upper(), t, mt)
+      outL('  return $(', mt)
+      for j, cj in enumerate(v_comps):
+        def rot_comp(i, ci):
+          if i == k or j == k or i == 3 or j == 3:
+            return '1' if i == j else '0'
+          if i == j:
+            return 'cos(theta)'
+          # would love to find a better way of choosing the sign of the sin terms.
+          if k == 0:   isNeg = (j == 1)
+          elif k == 1: isNeg = (j == 2)
+          elif k == 2: isNeg = (j == 0)
+          else: assert False
+          return fmt('$sin(theta)', '-' if isNeg else '')
+        outL('    $$',
+          jc(rot_comp(i, ci).rjust(12) for i, ci in enumerate(v_comps)),
+          ',' if j < dim - 1 else '')
+      outL(')}\n')
+
     outL('func $Rot(theta: $, norm: $) -> $ {', mt, t, vt, mt)
     outL('  let _cos = cos(theta)')
     outL('  let _cosp = 1 - _cos')
@@ -135,6 +135,12 @@ def gen_mat(dim, t, suffix):
       for j in rng:
         outL('    $$', els[i][j], commaUnlessAreLast(i, j))
     outL(')}\n')
+
+    outL('func $Rot(a: $, b: $) -> $ {', mt, vt, vt, mt)
+    outL('  let theta = a.angle(b)')
+    outL('  let norm = a.cross(b).norm')
+    outL('  return $Rot(theta, norm)', mt)
+    outL('}\n')
 
 
 if __name__ == '__main__':

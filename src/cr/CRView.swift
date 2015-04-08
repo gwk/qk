@@ -166,7 +166,6 @@ extension CRView {
     }
   }
   
-  
   var compressionV: CRPriority {
     get {
       #if os(OSX)
@@ -183,5 +182,9 @@ extension CRView {
       #endif
     }
   }
+  
+  #if os(OSX)
+    func setNeedsDisplay() { needsDisplay = true }
+  #endif
 }
 

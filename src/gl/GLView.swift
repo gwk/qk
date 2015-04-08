@@ -80,7 +80,6 @@ class GLView: CRView {
   
   var glLayer: GLLayer {
     get { return layer as! GLLayer }
-    set { layer = newValue }
   }
 
   var drawableSize: V2S { return glLayer.drawableSize }

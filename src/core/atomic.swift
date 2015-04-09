@@ -9,10 +9,10 @@ func atmDec(ptr: UnsafeMutablePointer<I64>) { OSAtomicDecrement64(ptr) }
 
 
 class AtmCounters {
-  var _counters: [I64]
+  private var _counters: ContiguousArray<I64>
   
   init(count: Int) {
-    _counters = [I64](count: count, repeatedValue: 0)
+    _counters = ContiguousArray<I64>(count: count, repeatedValue: 0)
   }
   
   var count: Int { return _counters.count }

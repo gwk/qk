@@ -88,25 +88,30 @@ extension CGRect {
     get { return size }
     set { size = newValue }
   }
+
+  var c: CGPoint {
+    get { return CGPoint(o.x + (0.5 * s.w), o.y + (0.5 * s.h)) }
+    set { o = CGPoint(newValue.x - (0.5 * s.w), newValue.y - (0.5 * s.h)) }
+  }
   
   var x: Flt {
     get { return o.x }
-    set { o = CGPoint(newValue, o.y) }
+    set { o.x = newValue }
   }
   
   var y: Flt {
     get { return o.y }
-    set { o = CGPoint(o.x, newValue) }
+    set { o.y = newValue }
   }
   
   var w: Flt {
     get { return s.w }
-    set { s = CGSize(newValue, s.h) }
+    set { s.w = newValue }
   }
   
   var h: Flt {
     get { return s.h }
-    set { s = CGSize(s.w, newValue) }
+    set { s.h = newValue }
   }
   
   var r: Flt {

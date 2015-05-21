@@ -107,11 +107,64 @@ extension CRView {
   }
   
   var flex: CRFlex {
+    get { return autoresizingMask }
+    set { autoresizingMask = newValue }
+  }
+  
+  var o: CGPoint {
+    get { return frame.origin }
+    set { frame.origin = newValue }
+  }
+  
+  var s: CGSize {
+    get { return frame.size }
+    set { frame.size = newValue }
+  }
+  
+  var x: CGFloat {
+    get { return frame.origin.x }
+    set { frame.origin.x = newValue }
+  }
+  
+  var y: CGFloat {
+    get { return frame.origin.y }
+    set { frame.origin.y = newValue }
+  }
+  
+  var w: CGFloat {
+    get { return frame.size.width }
+    set { frame.size.width = newValue }
+  }
+  
+  var h: CGFloat {
+    get { return frame.size.height }
+    set { frame.size.height = newValue }
+  }
+  
+  var r: CGFloat {
+    get { return x + w }
+    set { x = newValue - w }
+  }
+  
+  var b: CGFloat {
+    get { return y + h }
+    set { y = newValue - h }
+  }
+  
+  var c: CGPoint {
     get {
-      return autoresizingMask
+      #if os(OSX)
+        return CGPoint(x + (0.5 * w), y + (0.5 * h))
+      #else
+        return center
+      #endif
     }
     set {
-      autoresizingMask = newValue
+      #if os(OSX)
+        o = CGPoint(newValue.x - (0.5 * w), newValue.y - (0.5 * h))
+        #else
+        center = newValue
+      #endif
     }
   }
   

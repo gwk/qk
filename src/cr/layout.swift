@@ -38,34 +38,34 @@ extension CRView {
   
   // layout operand properties.
   
-  var l: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Left, ay: .NotAnAttribute) }
-  var r: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Right, ay: .NotAnAttribute) }
-  var t: QKLayoutOperand { return QKLayoutOperand(v: self, ax:  .NotAnAttribute, ay: .Top) }
-  var b: QKLayoutOperand { return QKLayoutOperand(v: self, ax:  .NotAnAttribute, ay: .Bottom) }
+  var c_l: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Left, ay: .NotAnAttribute) }
+  var c_r: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Right, ay: .NotAnAttribute) }
+  var c_t: QKLayoutOperand { return QKLayoutOperand(v: self, ax:  .NotAnAttribute, ay: .Top) }
+  var c_b: QKLayoutOperand { return QKLayoutOperand(v: self, ax:  .NotAnAttribute, ay: .Bottom) }
   
-  var x: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .CenterX, ay: .NotAnAttribute) }
-  var y: QKLayoutOperand { return QKLayoutOperand(v: self, ax:  .NotAnAttribute, ay: .CenterY) }
+  var c_x: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .CenterX, ay: .NotAnAttribute) }
+  var c_y: QKLayoutOperand { return QKLayoutOperand(v: self, ax:  .NotAnAttribute, ay: .CenterY) }
   
-  var lt: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Left, ay: .Top) }
-  var ly: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Left, ay: .CenterY) }
-  var lb: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Left, ay: .Bottom) }
-  var xt: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .CenterX, ay: .Top) }
-  var xy: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .CenterX, ay: .CenterY) }
-  var xb: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .CenterX, ay: .Bottom) }
-  var rt: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Right, ay: .Top) }
-  var ry: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Right, ay: .CenterY) }
-  var rb: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Right, ay: .Bottom) }
+  var c_lt: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Left, ay: .Top) }
+  var c_ly: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Left, ay: .CenterY) }
+  var c_lb: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Left, ay: .Bottom) }
+  var c_xt: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .CenterX, ay: .Top) }
+  var c_xy: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .CenterX, ay: .CenterY) }
+  var c_xb: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .CenterX, ay: .Bottom) }
+  var c_rt: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Right, ay: .Top) }
+  var c_ry: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Right, ay: .CenterY) }
+  var c_rb: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Right, ay: .Bottom) }
   
-  var lead: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Leading, ay:  .NotAnAttribute) }
-  var trail: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Trailing, ay: .NotAnAttribute) }
+  var c_lead: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Leading, ay:  .NotAnAttribute) }
+  var c_trail: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Trailing, ay: .NotAnAttribute) }
   
-  var w: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Width, ay: .NotAnAttribute) }
-  var h: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .NotAnAttribute, ay: .Height) }
-  var wh: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Width, ay: .Height) }
+  var c_w: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Width, ay: .NotAnAttribute) }
+  var c_h: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .NotAnAttribute, ay: .Height) }
+  var c_wh: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Width, ay: .Height) }
   
-  var base: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Baseline, ay: .NotAnAttribute) }
+  var c_base: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Baseline, ay: .NotAnAttribute) }
   
-  var usesARMask: Bool {
+  var c_usesARMask: Bool {
     // abbreviated, crossplatform property.
     get {
       #if os(OSX)
@@ -89,13 +89,13 @@ extension CRView {
 extension UIViewController {
   // expose the layoutGuide properties as UIView instances so that they can be used by QKLayoutOperand;
   // formulating QKLayoutOperand in terms of protocols including UILayoutSupport protocol is not possible in swift 1.1.
-  var tg: UIView {
+  var c_tg: UIView {
     let a: AnyObject = topLayoutGuide
     let v = a as UIView // this cast works in ios 8; not guaranteed to work in the future.
     v.name = "tg"
     return v
   }
-  var bg: UIView {
+  var c_bg: UIView {
     let a: AnyObject = bottomLayoutGuide
     let v = a as UIView // this cast works in ios 8; not guaranteed to work in the future.
     v.name = "bg"
@@ -204,19 +204,19 @@ struct QKLayoutRel: QKLayoutConstraining {
   }
 }
 
-func eq(l: QKLayoutOperand, _ r: QKLayoutOperand? = nil, m: V2 = V2(1, 1), c: V2 = V2(0, 0), p: LOP = LOPReq) -> QKLayoutRel {
+func c_eq(l: QKLayoutOperand, _ r: QKLayoutOperand? = nil, m: V2 = V2(1, 1), c: V2 = V2(0, 0), p: LOP = LOPReq) -> QKLayoutRel {
   // construct an equality relation between two operands with vector m and c.
   return QKLayoutRel(rel: .Equal, l: l, r: r, m: m, c: c, p: p)
 }
 
-func eq(l: QKLayoutOperand, _ r: QKLayoutOperand? = nil, #m: Flt, c: Flt = 0, p: LOP = LOPReq) -> QKLayoutRel {
+func c_eq(l: QKLayoutOperand, _ r: QKLayoutOperand? = nil, #m: Flt, c: Flt = 0, p: LOP = LOPReq) -> QKLayoutRel {
   // construct an equality relation between two operands with scalar m and optional c; m is required to disambiguate from the vector variant.
-  return eq(l, r, m: V2(m, m), c: V2(c, c), p: p)
+  return c_eq(l, r, m: V2(m, m), c: V2(c, c), p: p)
 }
 
-func eq(l: QKLayoutOperand, _ r: QKLayoutOperand? = nil, #c: Flt, p: LOP = LOPReq) -> QKLayoutRel {
+func c_eq(l: QKLayoutOperand, _ r: QKLayoutOperand? = nil, #c: Flt, p: LOP = LOPReq) -> QKLayoutRel {
   // construct an equality relation between two operands with scalar c; this variant is required to disambiguate from the vector variant.
-  return eq(l, r, m: V2(1, 1), c: V2(c, c), p: p)
+  return c_eq(l, r, m: V2(1, 1), c: V2(c, c), p: p)
 }
 
 // TODO: lt, gt, le, ge.
@@ -227,7 +227,7 @@ func eq(l: QKLayoutOperand, _ r: QKLayoutOperand? = nil, #c: Flt, p: LOP = LOPRe
 func constrain(views: [CRView], metrics: [String: NSNumber] = [:], opts: NSLayoutFormatOptions = NSLayoutFormatOptions(0), #constraints: [QKLayoutConstraining]) {
   // main variant.
   for v in views {
-    v.usesARMask = false
+    v.c_usesARMask = false
   }
   var allConstraints: [NSLayoutConstraint] = []
   for c in constraints {

@@ -4,7 +4,7 @@
 import Foundation
 
 
-let digitChars = [Character]("0123456789abcdef")
+let digitChars = [Character]("0123456789abcdef".characters)
 
 extension Int {
 
@@ -28,15 +28,15 @@ extension Int {
       a.append(pad)
       pad_len--
     }
-    return String(a.reverse())
+    return String(Array(a.reverse()))
   }
 
-  func d(width: Int) -> String { return self.repr(base: 10, width: width) }
-  func h(width: Int) -> String { return self.repr(base: 16, width: width) }
+  func d(width: Int) -> String { return self.repr(10, width: width) }
+  func h(width: Int) -> String { return self.repr(16, width: width) }
   
   var d: String { return self.d(0) }
   var h: String { return self.h(0) }
   
-  func d0(width: Int) -> String { return self.repr(base: 10, pad: "0", width: width) }
-  func h0(width: Int) -> String { return self.repr(base: 16, pad: "0", width: width) }
+  func d0(width: Int) -> String { return self.repr(10, pad: "0", width: width) }
+  func h0(width: Int) -> String { return self.repr(16, pad: "0", width: width) }
 }

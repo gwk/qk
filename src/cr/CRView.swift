@@ -36,12 +36,12 @@ extension CRFlex {
   static var B: CRFlex { return FlexibleBottomMargin }
   #endif
   
-  static var Size: CRFlex { return W | H }
-  static var Hori: CRFlex { return L | R }
-  static var Vert: CRFlex { return T | B }
-  static var Pos: CRFlex { return Hori | Vert }
-  static var WL: CRFlex { return W | L }
-  static var WR: CRFlex { return W | R }
+  static var Size: CRFlex { return [W, H] }
+  static var Hori: CRFlex { return [L, R] }
+  static var Vert: CRFlex { return [T, B] }
+  static var Pos: CRFlex { return [Hori, Vert] }
+  static var WL: CRFlex { return [W, L] }
+  static var WR: CRFlex { return [W, R] }
 }
 
 
@@ -67,7 +67,7 @@ extension CRView {
     helpInit(name: n, parent: p)
   }
   
-  func helpInit(#name: String?, parent: CRView?) {
+  func helpInit(name name: String?, parent: CRView?) {
     if let n = name {
       self.name = n
     }

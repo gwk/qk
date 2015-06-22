@@ -4,7 +4,7 @@
 import Foundation
 
 
-let symbolChars = [Character]("_0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzABCDEFG")
+let symbolChars = [Character]("_0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzABCDEFG".characters)
 let symbolCharsSet = Set(symbolChars)
 
 
@@ -34,7 +34,7 @@ extension String {
   var dirUrl: NSURL? { return NSURL(fileURLWithPath: self, isDirectory: true) }
 
   func contains(c: Character) -> Bool {
-    for e in self {
+    for e in self.characters {
       if e == c {
         return true
       }
@@ -44,7 +44,7 @@ extension String {
   
   func mapChars(transform: (Character) -> Character) -> String {
     var s = ""
-    for c in self {
+    for c in self.characters {
       s.append(transform(c))
     }
     return s
@@ -52,14 +52,14 @@ extension String {
   
   func mapChars(transform: (Character) -> String) -> String {
     var s = ""
-    for c in self {
+    for c in self.characters {
       s.extend(transform(c))
     }
     return s
   }
   
   var asSym: String {
-    for c0 in self { // do not actually iterate; just get first element.
+    for c0 in self.characters { // do not actually iterate; just get first element.
       if c0.isDigit {
         return "_" + mapChars() { symbolCharsSet.contains($0) ? $0 : "_" }
       } else {
@@ -74,7 +74,7 @@ extension String {
       return false
     }
     var first = true
-    for c in self {
+    for c in self.characters {
       if first {
         if c.isDigit {
           return false
@@ -100,7 +100,7 @@ extension String {
 
   var lineCount: Int {
     var count = 0
-    for c in self {
+    for c in self.characters {
       if c == "\n" {
         count++
       }
@@ -109,7 +109,7 @@ extension String {
   }
 
   var lines: [String] {
-    return split(self, allowEmptySlices: true) { $0 == "\n" }
+    return split(self.characters, allowEmptySlices: true) { $0 == "\n" }.map { String($0) }
   }
   
   func numberedLinesFrom(from: Int) -> [String] {
@@ -141,6 +141,14 @@ extension String {
       (bp: UnsafeBufferPointer<UTF8.CodeUnit>) -> R in
       return body(bp.baseAddress, bp.count - 1) // subtract one to omit the null terminator.
     }
+  }
+  
+  
+  func part(sep: String) -> (String, String)? {
+    if let (a, b) = characters.part(sep.characters) {
+      return (String(a), String(b))
+    }
+    return nil
   }
 }
 

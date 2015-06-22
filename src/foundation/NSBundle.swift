@@ -13,8 +13,14 @@ extension NSBundle {
   class func textNamed(name: String) -> String {
     let p = resPath(name)
     var e: NSError?
-    let s = String(contentsOfFile: p, encoding: NSUTF8StringEncoding, error: &e)
-    check(e, "could not read resource text: \(name) error: \(e)")
+    let s: String?
+    do {
+      s = try String(contentsOfFile: p, encoding: NSUTF8StringEncoding)
+    } catch var error as NSError {
+      e = error
+      s = nil
+    }
+    check(e, message: "could not read resource text: \(name) error: \(e)")
     return s!
   }
 }

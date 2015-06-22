@@ -2,7 +2,7 @@
 // Permission to use this file is granted in license-qk.txt.
 
 
-protocol VecType: Equatable, Printable {
+protocol VecType: Equatable, CustomStringConvertible {
   typealias ScalarType
   typealias FloatType
   typealias VSType

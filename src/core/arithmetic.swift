@@ -63,12 +63,12 @@ extension Double {
 
 func sum<S: SequenceType where S.Generator.Element: ArithmeticType>(s: S) {
   typealias E = S.Generator.Element
-  reduce(s, 0) { (accum: E, item: E) in return accum + item }
+  s.reduce(0) { (accum: E, item: E) in return accum + item }
 }
 
 func prod<S: SequenceType where S.Generator.Element: ArithmeticType>(s: S) {
   typealias E = S.Generator.Element
-  reduce(s, 1) { (accum: E, item: E) in return accum * item }
+  s.reduce(1) { (accum: E, item: E) in return accum * item }
 }
 
 func clamp<T: ArithmeticType>(a: T, l: T, h: T) -> T {
@@ -100,9 +100,9 @@ func sign<T: FloatingPointType>(x: T) -> T {
 
 struct POTSeq: SequenceType {
   let start: Int = 1
-  func generate() -> GeneratorOf<Int> {
+  func generate() -> AnyGenerator<Int> {
     var val: Int = start
-    return GeneratorOf<Int> {
+    return anyGenerator {
       let v = val
       val *= 2
       return v
@@ -112,10 +112,10 @@ struct POTSeq: SequenceType {
 
 struct HPOTSeq: SequenceType {
   let start: Int = 1
-  func generate() -> GeneratorOf<Int> {
+  func generate() -> AnyGenerator<Int> {
     var val: Int = start
     var pot: Bool = true
-    return GeneratorOf<Int> {
+    return anyGenerator {
       let v = val
       if v < 4 {
         val += 1

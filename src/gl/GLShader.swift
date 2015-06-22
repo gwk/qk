@@ -12,7 +12,7 @@ import Foundation
 #endif
 
 
-class GLShader: Printable {
+class GLShader: CustomStringConvertible {
   
   enum Kind: GLenum {
     case Vert = 0x8B31 // GL_VERTEX_SHADER
@@ -73,7 +73,7 @@ class GLShader: Printable {
     self.kind = kind
     self.name = name
     self.source = String(lines: GLShader.prefixLines + sources)
-    glProvideShaderSource(handle, source)
+    glProvideShaderSource(handle, source: source)
     glAssert()
     glCompileShader(handle)
     glAssert()

@@ -14,7 +14,7 @@ func _ftCheck(code: FT_Error, @autoclosure _ message: () -> String = "") {
 
 class Font {
   
-  struct Metrics: Printable {
+  struct Metrics: CustomStringConvertible {
     let size: F32
     let isFixedWidth: Bool
     let pxPerEm: Int
@@ -35,7 +35,7 @@ class Font {
     var baseline: Int { return leadTop + asc } // distance from top to baseline.
   }
   
-  struct Glyph: Printable {
+  struct Glyph: CustomStringConvertible {
     let char: Character
     let adv: Int
     let orig: V2I // from line top-left to glyph img top-left.
@@ -82,9 +82,9 @@ class Font {
     //font.face_flags & FT_FACE_FLAG_KERNING FT_Get_Kerning
     let fc = _face.memory
     if fc.num_fixed_sizes > 0 {
-      println("fixed sizes: \(fc.num_fixed_sizes)")
+      print("fixed sizes: \(fc.num_fixed_sizes)")
       for i in UnsafeBufferPointer(start: fc.available_sizes, count: Int(fc.num_fixed_sizes)) {
-        println("  \(i)")
+        print("  \(i)")
       }
     }
   }

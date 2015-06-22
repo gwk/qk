@@ -16,7 +16,7 @@ typealias GLEventFn = (GLEvent) -> ()
   
 class GLLayer: CRGLLayer {
 
-  required init(coder: NSCoder) { fatalError() }
+  required init?(coder: NSCoder) { fatalError() }
   
   override init() { super.init() } // layer gets instantiated for us on iOS, so we must defer initialization to setup().
 
@@ -92,8 +92,8 @@ class GLLayer: CRGLLayer {
     var pf: CGLPixelFormatObj = nil
     var virtualScreenCount: GLint = -1
     let e = CGLChoosePixelFormat(attrs, &pf, &virtualScreenCount)
-    if e.value != kCGLNoError.value {
-      println("CGL error creating pixel format (will fall back to default): \(e)")
+    if e.rawValue != kCGLNoError.rawValue {
+      print("CGL error creating pixel format (will fall back to default): \(e)")
       return super.copyCGLPixelFormatForDisplayMask(mask)
     }
     //describeFormat(pf, virtualScreen: 0)
@@ -101,7 +101,7 @@ class GLLayer: CRGLLayer {
   }
   
   override func releaseCGLPixelFormat(pf: CGLPixelFormatObj) {
-    println(__FUNCTION__)
+    print(__FUNCTION__)
     super.releaseCGLPixelFormat(pf)
   }
   
@@ -110,7 +110,7 @@ class GLLayer: CRGLLayer {
   }
 
   override func releaseCGLContext(ctx: CGLContextObj) {
-    println(__FUNCTION__)
+    print(__FUNCTION__)
     super.releaseCGLContext(ctx)
   }
   
@@ -137,42 +137,41 @@ class GLLayer: CRGLLayer {
   // GLLayer.
   
   func describeFormat(format: CGLPixelFormatObj, virtualScreen: GLint) {
-    println("pixel format: \(format)");
+    print("pixel format: \(format)");
     func desc(attr: CGLPixelFormatAttribute, name: String) {
       var val: GLint = 0
       let e = CGLDescribePixelFormat(format, virtualScreen, attr, &val)
-      if e.value != kCGLNoError.value {
-        println("  \(name): ERROR: \(e)")
+      if e.rawValue != kCGLNoError.rawValue {
+        print("  \(name): ERROR: \(e)")
       } else if val != 0 {
-        println("  \(name): \(val)")
+        print("  \(name): \(val)")
       }
     }
-    desc(kCGLPFAAccelerated, "Accelerated")
-    desc(kCGLPFAAcceleratedCompute, "AcceleratedCompute")
-    desc(kCGLPFAAllRenderers, "AllRenderers")
-    desc(kCGLPFAAllowOfflineRenderers, "AllowOfflineRenderers")
-    desc(kCGLPFAAlphaSize, "AlphaSize")
-    desc(kCGLPFABackingStore, "BackingStore")
-    desc(kCGLPFAClosestPolicy, "ClosestPolicy")
-    desc(kCGLPFAColorFloat, "ColorFloat")
-    desc(kCGLPFAColorSize, "ColorSize")
-    desc(kCGLPFADepthSize, "DepthSize")
-    desc(kCGLPFADisplayMask, "DisplayMask")
-    desc(kCGLPFADoubleBuffer, "DoubleBuffer")
-    desc(kCGLPFAMaximumPolicy, "MaximumPolicy")
-    desc(kCGLPFAMinimumPolicy, "MinimumPolicy")
-    desc(kCGLPFAMultisample, "Multisample")
-    desc(kCGLPFANoRecovery, "NoRecovery")
-    desc(kCGLPFAOpenGLProfile, "OpenGLProfile")
-    desc(kCGLPFARendererID, "RendererID")
-    desc(kCGLPFASampleAlpha, "SampleAlpha")
-    desc(kCGLPFASampleBuffers, "SampleBuffers")
-    desc(kCGLPFASamples, "Samples")
-    desc(kCGLPFAStencilSize, "StencilSize")
-    desc(kCGLPFAStereo, "Stereo")
-    desc(kCGLPFASupersample, "Supersample")
-    desc(kCGLPFAVirtualScreenCount, "VirtualScreenCount")
-    println()
+    desc(kCGLPFAAccelerated, name: "Accelerated")
+    desc(kCGLPFAAcceleratedCompute, name: "AcceleratedCompute")
+    desc(kCGLPFAAllRenderers, name: "AllRenderers")
+    desc(kCGLPFAAllowOfflineRenderers, name: "AllowOfflineRenderers")
+    desc(kCGLPFAAlphaSize, name: "AlphaSize")
+    desc(kCGLPFABackingStore, name: "BackingStore")
+    desc(kCGLPFAClosestPolicy, name: "ClosestPolicy")
+    desc(kCGLPFAColorFloat, name: "ColorFloat")
+    desc(kCGLPFAColorSize, name: "ColorSize")
+    desc(kCGLPFADepthSize, name: "DepthSize")
+    desc(kCGLPFADisplayMask, name: "DisplayMask")
+    desc(kCGLPFADoubleBuffer, name: "DoubleBuffer")
+    desc(kCGLPFAMaximumPolicy, name: "MaximumPolicy")
+    desc(kCGLPFAMinimumPolicy, name: "MinimumPolicy")
+    desc(kCGLPFAMultisample, name: "Multisample")
+    desc(kCGLPFANoRecovery, name: "NoRecovery")
+    desc(kCGLPFAOpenGLProfile, name: "OpenGLProfile")
+    desc(kCGLPFARendererID, name: "RendererID")
+    desc(kCGLPFASampleAlpha, name: "SampleAlpha")
+    desc(kCGLPFASampleBuffers, name: "SampleBuffers")
+    desc(kCGLPFASamples, name: "Samples")
+    desc(kCGLPFAStencilSize, name: "StencilSize")
+    desc(kCGLPFASupersample, name: "Supersample")
+    desc(kCGLPFAVirtualScreenCount, name: "VirtualScreenCount")
+    print("")
   }
 
   #else // iOS

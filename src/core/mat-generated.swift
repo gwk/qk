@@ -17,7 +17,7 @@
 // (len * row) + col = (4 * 3) + 2 = 14
 
 
-struct M2S: Printable {
+struct M2S: CustomStringConvertible {
   var m00, m01, m10, m11: F32
   init(_ m00: F32, _ m01: F32, _ m10: F32, _ m11: F32) {
     self.m00 = m00
@@ -58,7 +58,7 @@ func *(l: M2S, r: V2S) -> V2S { return V2S(
   (l.m01 * r.x) + (l.m11 * r.y)
 )}
 
-struct M2D: Printable {
+struct M2D: CustomStringConvertible {
   var m00, m01, m10, m11: F64
   init(_ m00: F64, _ m01: F64, _ m10: F64, _ m11: F64) {
     self.m00 = m00
@@ -99,7 +99,7 @@ func *(l: M2D, r: V2D) -> V2D { return V2D(
   (l.m01 * r.x) + (l.m11 * r.y)
 )}
 
-struct M3S: Printable {
+struct M3S: CustomStringConvertible {
   var m00, m01, m02, m10, m11, m12, m20, m21, m22: F32
   init(_ m00: F32, _ m01: F32, _ m02: F32, _ m10: F32, _ m11: F32, _ m12: F32, _ m20: F32, _ m21: F32, _ m22: F32) {
     self.m00 = m00
@@ -146,7 +146,7 @@ struct M3S: Printable {
               0,           0,           1
   )}
 
-  static func rot(#theta: F32, norm: V3S) -> M3S {
+  static func rot(theta theta: F32, norm: V3S) -> M3S {
     if !theta.isNormal { return ident }
     let _cos = cos(theta)
     let _cosp = 1 - _cos
@@ -192,7 +192,7 @@ func *(l: M3S, r: V3S) -> V3S { return V3S(
   (l.m02 * r.x) + (l.m12 * r.y) + (l.m22 * r.z)
 )}
 
-struct M3D: Printable {
+struct M3D: CustomStringConvertible {
   var m00, m01, m02, m10, m11, m12, m20, m21, m22: F64
   init(_ m00: F64, _ m01: F64, _ m02: F64, _ m10: F64, _ m11: F64, _ m12: F64, _ m20: F64, _ m21: F64, _ m22: F64) {
     self.m00 = m00
@@ -239,7 +239,7 @@ struct M3D: Printable {
               0,           0,           1
   )}
 
-  static func rot(#theta: F64, norm: V3D) -> M3D {
+  static func rot(theta theta: F64, norm: V3D) -> M3D {
     if !theta.isNormal { return ident }
     let _cos = cos(theta)
     let _cosp = 1 - _cos
@@ -285,7 +285,7 @@ func *(l: M3D, r: V3D) -> V3D { return V3D(
   (l.m02 * r.x) + (l.m12 * r.y) + (l.m22 * r.z)
 )}
 
-struct M4S: Printable {
+struct M4S: CustomStringConvertible {
   var m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33: F32
   init(_ m00: F32, _ m01: F32, _ m02: F32, _ m03: F32, _ m10: F32, _ m11: F32, _ m12: F32, _ m13: F32, _ m20: F32, _ m21: F32, _ m22: F32, _ m23: F32, _ m30: F32, _ m31: F32, _ m32: F32, _ m33: F32) {
     self.m00 = m00
@@ -344,7 +344,7 @@ struct M4S: Printable {
               0,           0,           0,           1
   )}
 
-  static func rot(#theta: F32, norm: V4S) -> M4S {
+  static func rot(theta theta: F32, norm: V4S) -> M4S {
     if !theta.isNormal { return ident }
     let _cos = cos(theta)
     let _cosp = 1 - _cos
@@ -405,7 +405,7 @@ func *(l: M4S, r: V4S) -> V4S { return V4S(
   (l.m03 * r.x) + (l.m13 * r.y) + (l.m23 * r.z) + (l.m33 * r.w)
 )}
 
-struct M4D: Printable {
+struct M4D: CustomStringConvertible {
   var m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33: F64
   init(_ m00: F64, _ m01: F64, _ m02: F64, _ m03: F64, _ m10: F64, _ m11: F64, _ m12: F64, _ m13: F64, _ m20: F64, _ m21: F64, _ m22: F64, _ m23: F64, _ m30: F64, _ m31: F64, _ m32: F64, _ m33: F64) {
     self.m00 = m00
@@ -464,7 +464,7 @@ struct M4D: Printable {
               0,           0,           0,           1
   )}
 
-  static func rot(#theta: F64, norm: V4D) -> M4D {
+  static func rot(theta theta: F64, norm: V4D) -> M4D {
     if !theta.isNormal { return ident }
     let _cos = cos(theta)
     let _cosp = 1 - _cos

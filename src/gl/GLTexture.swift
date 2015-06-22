@@ -77,7 +77,7 @@ class GLTexture {
       update(w: w, h: h, fmt: fmt, dataFmt: dataFmt, dataType: dataType, data: data)
   }
   
-  func update(#w: Int, h: Int, fmt: GLTexFmt, dataFmt: GLTexFmt, dataType: GLDataType, data: UnsafePointer<Void>) {
+  func update(w w: Int, h: Int, fmt: GLTexFmt, dataFmt: GLTexFmt, dataType: GLDataType, data: UnsafePointer<Void>) {
     let maxSize = GLTexture_getMaxSize()
     check(w <= maxSize && h <= maxSize, "GLTexture exceeds maxSize (\(maxSize)): w: \(w); h: \(h)")
     self.w = w

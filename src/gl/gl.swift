@@ -18,7 +18,7 @@ typealias GLHandle = GLuint
 
 
 extension CGLError: Equatable {}
-public func ==(a: CGLError, b: CGLError) -> Bool { return a.value == b.value }
+public func ==(a: CGLError, b: CGLError) -> Bool { return a.rawValue == b.rawValue }
 
 
 func glErrorString(code: GLenum) -> String {
@@ -84,7 +84,7 @@ func glContextEnable(ctx: CRGLContext) {
     ok = EAGLContext.setCurrentContext(ctx)
   #endif
   if !ok {
-    println("GL ERROR: glContextEnable failed for context: \(ctx)")
+    print("GL ERROR: glContextEnable failed for context: \(ctx)")
   }
 }
 

@@ -124,7 +124,7 @@ extension CGRect {
     set { y = newValue - h }
   }
   
-  func inset(#dx: Flt, dy: Flt) -> CGRect {
+  func inset(dx dx: Flt, dy: Flt) -> CGRect {
     return CGRectInset(self, dx, dy)
   }
 }

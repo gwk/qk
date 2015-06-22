@@ -4,7 +4,7 @@
 import CoreData
 
 
-extension NSAttributeType: Printable {
+extension NSAttributeType: CustomStringConvertible {
 
   public var description: String {
     switch self {
@@ -79,15 +79,15 @@ extension NSRelationshipDescription {
 extension NSEntityDescription {
 
   var namesToProps: [String: NSPropertyDescription] {
-    return propertiesByName as! [String: NSPropertyDescription]
+    return propertiesByName as [String: NSPropertyDescription]
   }
 
   var namesToAttrs: [String: NSAttributeDescription] {
-    return attributesByName as! [String: NSAttributeDescription]
+    return attributesByName as [String: NSAttributeDescription]
   }
 
   var namesToRels: [String: NSRelationshipDescription] {
-    return relationshipsByName as! [String: NSRelationshipDescription]
+    return relationshipsByName as [String: NSRelationshipDescription]
   }
 
   var props: [NSPropertyDescription] {

@@ -8,37 +8,37 @@ let secPerDay: NSTimeInterval = 24 * 60 * 60
 extension NSCalendarUnit {
   
   static var preciseToDay: NSCalendarUnit {
-    return NSCalendarUnit(0
-      | NSCalendarUnit.CalendarUnitEra.rawValue
-      | NSCalendarUnit.CalendarUnitYear.rawValue
-      | NSCalendarUnit.CalendarUnitMonth.rawValue
-      | NSCalendarUnit.CalendarUnitDay.rawValue)
+    return NSCalendarUnit(rawValue: 0
+      | NSCalendarUnit.Era.rawValue
+      | NSCalendarUnit.Year.rawValue
+      | NSCalendarUnit.Month.rawValue
+      | NSCalendarUnit.Day.rawValue)
   }
 
   static var precise: NSCalendarUnit {
-    return NSCalendarUnit(0
-      | NSCalendarUnit.CalendarUnitEra.rawValue
-      | NSCalendarUnit.CalendarUnitYear.rawValue
-      | NSCalendarUnit.CalendarUnitMonth.rawValue
-      | NSCalendarUnit.CalendarUnitDay.rawValue
-      | NSCalendarUnit.CalendarUnitHour.rawValue
-      | NSCalendarUnit.CalendarUnitMinute.rawValue
-      | NSCalendarUnit.CalendarUnitSecond.rawValue
-      | NSCalendarUnit.CalendarUnitNanosecond.rawValue)
+    return NSCalendarUnit(rawValue: 0
+      | NSCalendarUnit.Era.rawValue
+      | NSCalendarUnit.Year.rawValue
+      | NSCalendarUnit.Month.rawValue
+      | NSCalendarUnit.Day.rawValue
+      | NSCalendarUnit.Hour.rawValue
+      | NSCalendarUnit.Minute.rawValue
+      | NSCalendarUnit.Second.rawValue
+      | NSCalendarUnit.Nanosecond.rawValue)
   }
 
   static var timeOfDay: NSCalendarUnit {
-    return NSCalendarUnit(0
-      | NSCalendarUnit.CalendarUnitHour.rawValue
-      | NSCalendarUnit.CalendarUnitMinute.rawValue
-      | NSCalendarUnit.CalendarUnitSecond.rawValue
-      | NSCalendarUnit.CalendarUnitNanosecond.rawValue)
+    return NSCalendarUnit(rawValue: 0
+      | NSCalendarUnit.Hour.rawValue
+      | NSCalendarUnit.Minute.rawValue
+      | NSCalendarUnit.Second.rawValue
+      | NSCalendarUnit.Nanosecond.rawValue)
   }
   
   static var dayAndWeekday: NSCalendarUnit {
-    return NSCalendarUnit(0
-      | NSCalendarUnit.CalendarUnitDay.rawValue
-      | NSCalendarUnit.CalendarUnitWeekday.rawValue)
+    return NSCalendarUnit(rawValue: 0
+      | NSCalendarUnit.Day.rawValue
+      | NSCalendarUnit.Weekday.rawValue)
   }
 }
 
@@ -91,7 +91,7 @@ extension NSDate {
   
   var weekdayFromSundayAs1: Int { // 1-indexed weekday beginning with sunday.
     let cal = NSCalendar.currentCalendar()
-    let c = cal.components(NSCalendarUnit.CalendarUnitWeekday, fromDate: self)
+    let c = cal.components(NSCalendarUnit.Weekday, fromDate: self)
     return c.weekday
   }
   

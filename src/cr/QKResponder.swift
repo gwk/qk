@@ -23,23 +23,23 @@ class QKResponder: CRResponder {
 
   #if os(OSX)
   override func keyDown(e: CREvent) {
-    println("QKResponder keyDown: \(e)")
+    print("QKResponder keyDown: \(e)")
   }
   
   override func keyUp(e: CREvent) {
-    println("QKResponder keyUp: \(e)")
+    print("QKResponder keyUp: \(e)")
   }
   
   override func flagsChanged(e: CREvent) {
-    println("QKResponder flagsChanged: \(e)")
+    print("QKResponder flagsChanged: \(e)")
   }
   
   override func mouseDown(e: CREvent) {
-    println("QKResponder mouseDown: \(e)")
+    print("QKResponder mouseDown: \(e)")
   }
   
   override func mouseUp(e: CREvent) {
-    println("QKResponder mouseUp: \(e)")
+    print("QKResponder mouseUp: \(e)")
   }
   #endif
 }

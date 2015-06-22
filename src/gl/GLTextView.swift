@@ -106,7 +106,7 @@ class GLTextView: View {
     var verts: [Vertex] = []
     var pos = offsetPx // current character layout position in screenPxSpace (upper left).
     //println("\nRENDER: offset:\(offset) page:\(page)")
-    for c in text {
+    for c in text.characters {
       // TODO: word wrapping.
       if c == "\n" || pos.x + maxAdv > sizePx.x { // spill to next line.
         pos.x = offsetPx.x

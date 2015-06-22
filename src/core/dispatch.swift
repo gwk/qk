@@ -29,7 +29,7 @@ struct DispatchFileModes: OptionSetType {
 func outLLA(items: [String]) {
   dispatch_async(dispatch_get_main_queue()) {
     for i in items {
-      println(i)
+      print(i)
     }
   }
 }

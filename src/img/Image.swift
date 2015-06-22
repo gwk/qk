@@ -37,7 +37,7 @@ class Image {
       var _is16Bit = ObjCBool(false) // " "
       let data = imgDataFromPngFile(file, name, false, gammaCorrect, displayExponent, &w, &h, &_hasRGB, &_hasAlpha, &_is16Bit, &error)
       if (error != nil) {
-        println("Image error: \(error)")
+        print("Image error: \(error)")
         return .Fail
       }
       let fmt = PixFmt(hasRGB: Bool(_hasRGB), hasAlpha: Bool(_hasAlpha), is16Bit: Bool(_is16Bit))
@@ -63,7 +63,7 @@ class Image {
       assert(hasAlpha == Bool(_hasAlpha))
       assert(is16Bit == Bool(_is16Bit))
       if (error != nil) {
-        println("Image error: \(error)")
+        print("Image error: \(error)")
         return .Fail
       }
       let fmt = PixFmt(hasRGB: hasRGB, hasAlpha: hasAlpha, is16Bit: is16Bit)

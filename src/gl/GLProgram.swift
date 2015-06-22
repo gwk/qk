@@ -8,7 +8,7 @@
 #endif
 
 
-enum GLInputType: GLenum, Printable {
+enum GLInputType: GLenum, CustomStringConvertible {
   case F = 0x1406 // GL_FLOAT
   case V2 = 0x8B50 // GL_FLOAT_VEC2
   case V3 = 0x8B51 // GL_FLOAT_VEC3
@@ -43,7 +43,7 @@ enum GLInputType: GLenum, Printable {
 }
 
 
-struct GLInput: Printable {
+struct GLInput: CustomStringConvertible {
   let name: String
   let isAttr: Bool
   let loc: GLint
@@ -90,7 +90,7 @@ class GLProgram {
     let inputType = GLInputType(rawValue: type)
     assert(inputType != nil, "bad input type: 0x\(Int(type).h)")
     let info = GLInput(name: name, isAttr: isAttr, loc: loc, type: inputType!, size: Int(size))
-    let label = isAttr ? "attr" : "uniform"
+    //let label = isAttr ? "attr" : "uniform"
     //println("  \(label): \(name): \(info)")
     inputs[name] = info
   }
@@ -179,8 +179,8 @@ class GLProgram {
       let lines = String(lines: source.numberedLines)
       fatalError("GLProgram: invalid composite .shdr file: \(msg)\nsource:\n\(lines)\n")
     }
-    if let (common, specifics) = part(source, "\nvert:\n") {
-      if let (vert, frag) = part(specifics, "\nfrag:\n") {
+    if let (common, specifics) = source.part("\nvert:\n") {
+      if let (vert, frag) = specifics.part("\nfrag:\n") {
         let v = GLShader(kind: .Vert, name: name + ":vert", sources: [common, vert])
         let f = GLShader(kind: .Frag, name: name + ":frag", sources: [common, frag])
         self.link([v, f])
@@ -203,7 +203,7 @@ class GLProgram {
       assert(info.size == size)
       return info.loc
     } else {
-      println("NOTE: no input for name: \(name)")
+      print("NOTE: no input for name: \(name)")
       inputs[name] = GLInput(name: name, isAttr: isAttr, loc: -1, type: type, size: size)
       return -1
     }
@@ -212,7 +212,7 @@ class GLProgram {
   func use() {
     glUseProgram(handle)
     glAssert()
-    for (name, input) in inputs {
+    for (_, input) in inputs {
       if input.isAttr && input.loc != -1 {
         glEnableVertexAttribArray(GLuint(input.loc))
         glAssert()

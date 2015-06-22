@@ -17,7 +17,7 @@ func mapToDict<S: SequenceType, K, V>(seq: S, transform: (S.Generator.Element) -
 
 func mapEnumToDict<S: SequenceType, K, V>(seq: S, transform: (Int, S.Generator.Element) -> (K, V)) -> [K:V] {
   var d = [K:V]()
-  for (i, e) in enumerate(seq) {
+  for (i, e) in seq.enumerate() {
     let (k, v) = transform(i, e)
     d[k] = v
   }
@@ -33,21 +33,6 @@ func filterMap<S: SequenceType, E>(seq: S, transform: ((S.Generator.Element) -> 
   }
   return a
 }
-
-func take<G: GeneratorType>(var gen: G, var n: Int) -> [G.Element] {
-  var a: [G.Element] = []
-  while n > 0 {
-    let oe = gen.next()
-    if let e = oe {
-      a.append(e)
-    } else {
-      return a
-    }
-    n--
-  }
-  return a
-}
-
 
 struct Zip2<G0: GeneratorType, G1: GeneratorType> {
   var g0: G0

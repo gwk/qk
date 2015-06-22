@@ -6,6 +6,6 @@ import Foundation
 
 extension Process {
 
-  static let environment: [String:String] = NSProcessInfo.processInfo().environment as! [String:String]
+  static let environment: [String:String] = NSProcessInfo.processInfo().environment as [String:String]
 
 }

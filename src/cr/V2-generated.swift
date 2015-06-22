@@ -71,7 +71,7 @@ extension V2 {
   var anyNaN: Bool { return x.isNaN || y.isNaN}
 
   var norm: V2 { return V2(self) / self.len }
-  var clampToUnit: V2 { return V2(clamp(x, 0, 1), clamp(y, 0, 1)) }
+  var clampToUnit: V2 { return V2(clamp(x, l: 0, h: 1), clamp(y, l: 0, h: 1)) }
   func dist(b: V2) -> Flt { return (b - self).len }
   func dot(b: V2) -> Flt { return (x * b.x) + (y * b.y) }
   func angle(b: V2) -> Flt { return acos(self.dot(b) / (self.len * b.len)) }

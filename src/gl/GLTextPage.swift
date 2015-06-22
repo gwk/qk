@@ -10,7 +10,7 @@ import CoreGraphics
 #endif
 
 
-struct GLGlyph: Printable {
+struct GLGlyph: CustomStringConvertible {
   let char: Character
   let adv: Int
   let orig: V2I
@@ -21,7 +21,7 @@ struct GLGlyph: Printable {
 }
 
 
-struct GLTextPage: Printable {
+struct GLTextPage: CustomStringConvertible {
   let font: Font
   let strike: Font.Strike
   let chars: Index<Character>

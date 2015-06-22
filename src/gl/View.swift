@@ -89,7 +89,7 @@ class View {
     }
     // triangle fan starting from center, then upper left corner, left midpoint, and around counterclockwise.
     // this gives us triangles with exactly one point at the corner, simplifying the corner rounding fragment shader.
-    let verts = [v(0.5, 0.5), v(0, 0), v(0, 0.5), v(0, 1), v(0.5, 1), v(1, 1), v(1, 0.5), v(1, 0), v(0.5, 0), v(0, 0)]
+    let verts = [v(0.5, y: 0.5), v(0, y: 0), v(0, y: 0.5), v(0, y: 1), v(0.5, y: 1), v(1, y: 1), v(1, y: 0.5), v(1, y: 0), v(0.5, y: 0), v(0, y: 0)]
     let stride = sizeof(Vertex)
     program.use()
     program.bindUniform("color", v4: color)

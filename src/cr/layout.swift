@@ -127,13 +127,13 @@ extension NSLayoutConstraint: QKLayoutConstraining {
     assert(la != .NotAnAttribute)
     var rv: CRView? = nil
     var ra = NSLayoutAttribute.NotAnAttribute
-    var sm = useLX ? m.x : m.y
-    var sc = useLX ? c.x : c.y
+    let sm = useLX ? m.x : m.y
+    let sc = useLX ? c.x : c.y
     if let r = r {
       assert(r.componentCount > 0) // ax or ay or both are acceptable.
       rv = r.v
       // choose the axis of r matching axis of l, or if it is not set, fall back on the alternate.
-      var useRX = (useLX ? r.ax.isSome : !r.ay.isSome)
+      let useRX = (useLX ? r.ax.isSome : !r.ay.isSome)
       ra = (useRX ? r.ax : r.ay)
     }
     self.init(item: l.v, attribute: la, relatedBy: rel, toItem: rv, attribute: ra, multiplier: sm,  constant: sc)
@@ -164,7 +164,7 @@ extension String: QKLayoutConstraining {
       #else
       let m = NSLayoutConstraint.constraintsWithVisualFormat
     #endif
-    return m(self, options: opts, metrics: metrics, views: viewDict) as! [NSLayoutConstraint]
+    return m(self, options: opts, metrics: metrics, views: viewDict) as [NSLayoutConstraint]
   }
 }
 
@@ -187,8 +187,8 @@ struct QKLayoutRel: QKLayoutConstraining {
   
   func constraintArray(views: [CRView], metrics: [String: NSNumber], opts: NSLayoutFormatOptions) -> [NSLayoutConstraint] {
     // ignores all the format-related arguments and constructs one or two constraints from the operands.
-    var leftCount = 0
-    var rightCount = 0
+    //var leftCount = 0
+    //var rightCount = 0
     var constraints: [NSLayoutConstraint] = []
     assert(l.componentCount > 0)
     if l.componentCount == 1 && r != nil {
@@ -209,12 +209,12 @@ func c_eq(l: QKLayoutOperand, _ r: QKLayoutOperand? = nil, m: V2 = V2(1, 1), c: 
   return QKLayoutRel(rel: .Equal, l: l, r: r, m: m, c: c, p: p)
 }
 
-func c_eq(l: QKLayoutOperand, _ r: QKLayoutOperand? = nil, #m: Flt, c: Flt = 0, p: LOP = LOPReq) -> QKLayoutRel {
+func c_eq(l: QKLayoutOperand, _ r: QKLayoutOperand? = nil, m: Flt, c: Flt = 0, p: LOP = LOPReq) -> QKLayoutRel {
   // construct an equality relation between two operands with scalar m and optional c; m is required to disambiguate from the vector variant.
   return c_eq(l, r, m: V2(m, m), c: V2(c, c), p: p)
 }
 
-func c_eq(l: QKLayoutOperand, _ r: QKLayoutOperand? = nil, #c: Flt, p: LOP = LOPReq) -> QKLayoutRel {
+func c_eq(l: QKLayoutOperand, _ r: QKLayoutOperand? = nil, c: Flt, p: LOP = LOPReq) -> QKLayoutRel {
   // construct an equality relation between two operands with scalar c; this variant is required to disambiguate from the vector variant.
   return c_eq(l, r, m: V2(1, 1), c: V2(c, c), p: p)
 }
@@ -224,7 +224,7 @@ func c_eq(l: QKLayoutOperand, _ r: QKLayoutOperand? = nil, #c: Flt, p: LOP = LOP
 
 // MARK: constrain variants.
 
-func constrain(views: [CRView], metrics: [String: NSNumber] = [:], opts: NSLayoutFormatOptions = NSLayoutFormatOptions(0), #constraints: [QKLayoutConstraining]) {
+func constrain(views: [CRView], metrics: [String: NSNumber] = [:], opts: NSLayoutFormatOptions = NSLayoutFormatOptions(rawValue: 0), constraints: [QKLayoutConstraining]) {
   // main variant.
   for v in views {
     v.c_usesARMask = false
@@ -240,7 +240,7 @@ func constrain(views: [CRView], metrics: [String: NSNumber] = [:], opts: NSLayou
   #endif
 }
 
-func constrain(views: [CRView], metrics: [String: NSNumber] = [:], opts: NSLayoutFormatOptions = NSLayoutFormatOptions(0), constraints: QKLayoutConstraining...) {
+func constrain(views: [CRView], metrics: [String: NSNumber] = [:], opts: NSLayoutFormatOptions = NSLayoutFormatOptions(rawValue: 0), constraints: QKLayoutConstraining...) {
   // variadic variant.
   constrain(views, metrics: metrics, opts: opts, constraints: constraints)
 }

@@ -42,7 +42,7 @@ let PixFmtBitM2: U32 = 1 << 10 // 2 multisamples.
 let PixFmtBitM4: U32 = 1 << 11 // 4 multisamples.
 let PixFmtBitM8: U32 = 1 << 12 // 8 multisamples.
 
-enum PixFmt: U32, Printable {
+enum PixFmt: U32, CustomStringConvertible {
   case None = 0
   case AU8 = 0x9 // PixFmtBitA|PixFmtBitU8
   case AU8M2 = 0x409 // PixFmtBitA|PixFmtBitU8|PixFmtBitM2
@@ -674,7 +674,6 @@ enum PixFmt: U32, Printable {
 
   var bitmapInfo: CGBitmapInfo {
     var alpha = CGImageAlphaInfo.None
-    var info = CGBitmapInfo(0)
     if isLum || isRGB {
       if hasAlpha {
         alpha = .PremultipliedLast
@@ -689,12 +688,12 @@ enum PixFmt: U32, Printable {
     else {
       fatalError("bad PixFmt for bitmap: \(self)")
     }
-    return CGBitmapInfo(alpha.rawValue | (isF32 ? CGBitmapInfo.FloatComponents.rawValue : 0))
+    return CGBitmapInfo(rawValue: alpha.rawValue | (isF32 ? CGBitmapInfo.FloatComponents.rawValue : 0))
   }
 
   var cgColorSpace: CGColorSpace {
-    if isRGB { return CGColorSpaceCreateDeviceRGB() }
-    if isLum { return CGColorSpaceCreateDeviceGray() }
+    if isRGB { return CGColorSpaceCreateDeviceRGB()! }
+    if isLum { return CGColorSpaceCreateDeviceGray()! }
     fatalError("PixFmt does not map ot CGColorSpace: \(self)")
   }
 

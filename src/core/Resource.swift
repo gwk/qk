@@ -46,7 +46,7 @@ class Resource<T> {
     check(file >= 0, "resource path does not exist: \(path)")
     self.loadFn = loadFn
     self.obj = loadFn(file: file, update: nil)
-    let modes = DispatchFileModes.all
+    //let modes = DispatchFileModes.all
     self.source = nil // set by enqueue.
     self.enqueue()
   }
@@ -58,7 +58,7 @@ class Resource<T> {
       let update = (self.obj, DispatchFileMode(rawValue: m)!)
       self.obj = self.loadFn(file: self.file, update: update)
       if (m & DISPATCH_VNODE_DELETE != 0) {
-        println("watched file deleted! canceling source")
+        print("watched file deleted! canceling source")
         dispatch_source_cancel(self.source)
       }
     }

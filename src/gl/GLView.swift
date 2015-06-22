@@ -72,7 +72,7 @@ class GLView: CRView {
     self.name = n
     #if os(OSX)
       wantsLayer = true // layer-backed; if we want layer-hosting behavior, set layer explicitly first.
-      layer!.autoresizingMask = CAAutoresizingMask(CAAutoresizingMask.LayerWidthSizable.rawValue | CAAutoresizingMask.LayerHeightSizable.rawValue) // ?
+      layer!.autoresizingMask = CAAutoresizingMask(rawValue: CAAutoresizingMask.LayerWidthSizable.rawValue | CAAutoresizingMask.LayerHeightSizable.rawValue) // ?
       layer!.needsDisplayOnBoundsChange = true // ?
     #endif
     glLayer.setup(pixFmt)
@@ -100,7 +100,7 @@ class GLView: CRView {
   }
 
   func dispatchEvent(event: CREvent) {
-    let glEvent = glEventFrom(event, self)
+    let glEvent = glEventFrom(event, view: self)
     switch glEvent {
       case .Ignored: return
       default: handleEvent(glEvent)

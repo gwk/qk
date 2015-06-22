@@ -1,13 +1,12 @@
 // © 2015 George King.
 // Permission to use this file is granted in license-qk.txt.
 
-import Foundation
 
-
-func find<C: CollectionType where C.Generator.Element: Equatable>(domain: C, query: C,
-  start: C.Index? = nil, end: C.Index? = nil) -> Range<C.Index>? {
-    var i = start.or(domain.startIndex)
-    let e = end.or(domain.endIndex)
+extension CollectionType where Generator.Element : Equatable {
+  
+  func rangeOf(query: Self, start: Index? = nil, end: Index? = nil) -> Range<Index>? {
+    var i = start.or(startIndex)
+    let e = end.or(endIndex)
     while i != e {
       var j = i
       var found = true
@@ -15,7 +14,7 @@ func find<C: CollectionType where C.Generator.Element: Equatable>(domain: C, que
         if j == e {
           return nil // ran out of domain.
         }
-        if c != domain[j] {
+        if c != self[j] {
           found = false
           break
         }
@@ -27,20 +26,24 @@ func find<C: CollectionType where C.Generator.Element: Equatable>(domain: C, que
       i = i.successor()
     }
     return nil
+  }
+  
 }
 
 
-func part<C: Sliceable>(collection: C, range: Range<C.Index>) -> (C.SubSlice, C.SubSlice) {
-  let ra = collection.startIndex..<range.startIndex
-  let rb = range.endIndex..<collection.endIndex
-  return (collection[ra], collection[rb])
+extension CollectionType where Self : Sliceable, Generator.Element : Equatable {
+  
+  func part(range: Range<Index>) -> (SubSlice, SubSlice) {
+    let ra = startIndex..<range.startIndex
+    let rb = range.endIndex..<endIndex
+    return (self[ra], self[rb])
+  }
+  
+  func part(sep: Self, start: Index? = nil, end: Index? = nil) -> (SubSlice, SubSlice)? {
+      if let range = rangeOf(sep, start: start, end: end) {
+        return part(range)
+      }
+      return nil
+  }
 }
 
-
-func part<C: Sliceable where C.Generator.Element: Equatable>(collection: C, separator: C,
-  start: C.Index? = nil, end: C.Index? = nil) -> (C.SubSlice, C.SubSlice)? {
-    if let range = find(collection, separator, start: start, end: end) {
-      return part(collection, range)
-    }
-    return nil
-}

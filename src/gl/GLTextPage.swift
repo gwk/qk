@@ -90,10 +90,12 @@ struct GLTextPage: CustomStringConvertible {
       dataType: .U8,
       data: img)
     
-    //println("\(description)\n\(lumRepr(img: img, imgSize: size, offset: V2I(), size: size))")
+    #if false
+    println("\(description)\n\(lumRepr(img: img, imgSize: size, offset: V2I(), size: size))")
     for g in glyphs {
-      //println("\(g)\n\(lumRepr(img: img, imgSize: size, offset: g.texOrig, size: g.size))")
+      println("\(g)\n\(lumRepr(img: img, imgSize: size, offset: g.texOrig, size: g.size))")
     }
+    #endif
   }
   
   func glyph(char: Character) -> GLGlyph? {

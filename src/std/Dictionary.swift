@@ -20,8 +20,6 @@ func valsSortedByKey<K: Comparable, V>(dict: [K: V]) -> [V] {
     return a.k < b.k
   }
   return s.map() {
-    e in
-    let (k, v) = e
-    return v
+    (_, v) in return v
   }
 }

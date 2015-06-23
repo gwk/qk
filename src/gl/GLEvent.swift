@@ -11,23 +11,19 @@ enum GLTouchState {
   case Up
 }
 
-enum GLKeyMod: Uns {
-  case None       = 0x00
-  case ShiftAlpha = 0x01
-  case Shift      = 0x02
-  case Ctrl       = 0x04
-  case Alt        = 0x08
-  case Cmd        = 0x10
-  case NumPad     = 0x20
-  case Help       = 0x40
-  case Fn         = 0x80
-}
-
 struct GLKeyMods: OptionSetType {
-  typealias OptionType = GLKeyMod
-  let val: Uns
-  init(_ val: Uns) { self.val = val }
-  init(_ opt: GLKeyMod) { self.val = opt.rawValue }
+  let rawValue: Uns
+  init(rawValue: Uns) { self.rawValue = rawValue }
+
+  static let None       = GLKeyMods(rawValue: 0x00)
+  static let ShiftAlpha = GLKeyMods(rawValue: 0x01)
+  static let Shift      = GLKeyMods(rawValue: 0x02)
+  static let Ctrl       = GLKeyMods(rawValue: 0x04)
+  static let Alt        = GLKeyMods(rawValue: 0x08)
+  static let Cmd        = GLKeyMods(rawValue: 0x10)
+  static let NumPad     = GLKeyMods(rawValue: 0x20)
+  static let Help       = GLKeyMods(rawValue: 0x40)
+  static let Fn         = GLKeyMods(rawValue: 0x80)
 }
 
 enum GLMouseButton: Uns {
@@ -79,7 +75,7 @@ enum GLEvent {
 func glEventFrom(event: CREvent, view: CRView) -> GLEvent {
   #if os(OSX)
   func touchPos() -> V2 { return view.convertPoint(event.locationInWindow, fromView: nil) }
-  func mods() -> GLKeyMods { return GLKeyMods(0) } // TODO
+  func mods() -> GLKeyMods { return GLKeyMods() } // TODO
 
   switch event.type {
   case .LeftMouseDown:

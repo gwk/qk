@@ -15,12 +15,12 @@ class Resource<T> {
   // Resources of immutables function by mutating themselves on update.
   
   // either init or reload the object.
-  typealias LoadFn = (file: File, update: (T, DispatchFileMode)?) -> T
+  typealias LoadFn = (file: File, update: (T, DispatchFileModes)?) -> T
 
   static var queue: dispatch_queue_t { return dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0) }
   
   static func createSource(file: File) -> dispatch_queue_t {
-    return dispatch_source_create(DISPATCH_SOURCE_TYPE_VNODE, UInt(file), DispatchFileModes.all.val, Resource.queue)
+    return dispatch_source_create(DISPATCH_SOURCE_TYPE_VNODE, UInt(file), DispatchFileModes.all.rawValue, Resource.queue)
   }
   
   static var rootDir: String {
@@ -55,7 +55,7 @@ class Resource<T> {
     
     let eventFn: Action = {
       let m = dispatch_source_get_data(self.source)
-      let update = (self.obj, DispatchFileMode(rawValue: m)!)
+      let update = (self.obj, DispatchFileModes(rawValue: m))
       self.obj = self.loadFn(file: self.file, update: update)
       if (m & DISPATCH_VNODE_DELETE != 0) {
         print("watched file deleted! canceling source")
@@ -76,7 +76,7 @@ class Resource<T> {
       self.enqueue()
     }
     
-    self.source = dispatch_source_create(DISPATCH_SOURCE_TYPE_VNODE, UInt(file), DispatchFileModes.all.val, Resource.queue)
+    self.source = dispatch_source_create(DISPATCH_SOURCE_TYPE_VNODE, UInt(file), DispatchFileModes.all.rawValue, Resource.queue)
     dispatch_source_set_event_handler(source, eventFn)
     dispatch_source_set_cancel_handler(source, cancelFn)
     dispatch_resume(source)

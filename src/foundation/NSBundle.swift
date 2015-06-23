@@ -10,17 +10,13 @@ extension NSBundle {
     return mainBundle().pathForResource(name, ofType: nil)!
   }
 
-  class func textNamed(name: String) -> String {
+  class func textNamed(name: String) throws -> String {
     let p = resPath(name)
-    var e: NSError?
-    let s: String?
     do {
-      s = try String(contentsOfFile: p, encoding: NSUTF8StringEncoding)
-    } catch var error as NSError {
-      e = error
-      s = nil
+      return try String(contentsOfFile: p, encoding: NSUTF8StringEncoding)
+    } catch let e as NSError {
+      print("could not read resource text: \(name) error: \(e)")
+      throw e
     }
-    check(e, message: "could not read resource text: \(name) error: \(e)")
-    return s!
   }
 }

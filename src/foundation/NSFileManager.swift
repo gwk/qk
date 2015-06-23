@@ -34,37 +34,17 @@ func isPathDir(path: String) -> Bool {
   return exists && isDir
 }
 
-func removeFileOrDir(path: String) -> NSError? {
-  var e: NSError? = nil
-  do {
-    try fileManager.removeItemAtPath(path)
-  } catch var error as NSError {
-    e = error
-  }
-  return e
+func removeFileOrDir(path: String) throws {
+  try fileManager.removeItemAtPath(path)
 }
 
-func createDir(path: String, intermediates: Bool = false) -> NSError? {
-  var e: NSError? = nil
-  do {
-    try fileManager.createDirectoryAtPath(path,
-      withIntermediateDirectories: intermediates,
-      attributes: nil)
-  } catch var error as NSError {
-    e = error
-  }
-  return e
+func createDir(path: String, intermediates: Bool = false) throws {
+  try fileManager.createDirectoryAtPath(path,
+    withIntermediateDirectories: intermediates,
+    attributes: nil)
 }
 
-func listDir(path: String) -> ([String], NSError?) {
-  var e: NSError? = nil
-  let l: [AnyObject]?
-  do {
-    l = try fileManager.contentsOfDirectoryAtPath(path)
-  } catch var error as NSError {
-    e = error
-    l = nil
-  }
-  return (l as! [String], e)
+func listDir(path: String) throws -> [String] {
+  return try fileManager.contentsOfDirectoryAtPath(path)
 }
 

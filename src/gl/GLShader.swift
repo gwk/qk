@@ -81,13 +81,13 @@ class GLShader: CustomStringConvertible {
       "shader compile failed: \(name)\n\(infoLog)source:\n\(String(lines: source.numberedLines))\n")
   }
   
-  class func withResources(resources: [String]) -> GLShader {
+  class func withResources(resources: [String]) throws -> GLShader {
     let ext = resources.last!.pathExtension
-    let sources = resources.map() {
-      (name: String) -> String in
+    let sources = try resources.mapThrows() {
+      (name: String) throws -> String in
       let e = name.pathExtension
       assert(e == ext, "mismatched shader name extension: \(name)")
-      return NSBundle.textNamed(name)
+      return try NSBundle.textNamed(name)
     }
     let kind = Kind.fromString(ext)!
     return GLShader(kind: kind, name: resources.last!, sources: sources)

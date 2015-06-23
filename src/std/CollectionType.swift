@@ -2,6 +2,21 @@
 // Permission to use this file is granted in license-qk.txt.
 
 
+extension CollectionType {
+  
+  typealias Element = Self.Generator.Element
+  
+  func mapThrows<T>(@noescape transform: (Element) throws -> T) throws -> [T] {
+    var a = [T]()
+    for e in self {
+      let v = try transform(e)
+      a.append(v)
+    }
+    return a
+  }
+}
+
+
 extension CollectionType where Generator.Element : Equatable {
   
   func rangeOf(query: Self, start: Index? = nil, end: Index? = nil) -> Range<Index>? {

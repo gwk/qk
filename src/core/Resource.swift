@@ -17,9 +17,9 @@ class Resource<T> {
   // either init or reload the object.
   typealias LoadFn = (file: File, update: (T, DispatchFileModes)?) -> T
 
-  static var queue: dispatch_queue_t { return dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0) }
+  static var queue: dispatch_queue_t { return DispatchQOS.Default.queue }
   
-  static func createSource(file: File) -> dispatch_queue_t {
+  static func createSource(file: File) -> dispatch_source_t {
     return dispatch_source_create(DISPATCH_SOURCE_TYPE_VNODE, UInt(file), DispatchFileModes.all.rawValue, Resource.queue)
   }
   

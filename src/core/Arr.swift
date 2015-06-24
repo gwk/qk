@@ -1,8 +1,8 @@
 // © 2015 George King.
 // Permission to use this file is granted in license-qk.txt.
 
-import Foundation
 
+// TODO: rename.
 
 class Arr<T>: CollectionType {
   private var _array: ContiguousArray<T>

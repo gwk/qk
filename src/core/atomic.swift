@@ -1,8 +1,6 @@
 // © 2015 George King.
 // Permission to use this file is granted in license-qk.txt.
 
-import Foundation
-
 
 func atmInc(ptr: UnsafeMutablePointer<I64>) { OSAtomicIncrement64(ptr) }
 func atmDec(ptr: UnsafeMutablePointer<I64>) { OSAtomicDecrement64(ptr) }

@@ -28,7 +28,7 @@ class Image {
     file: CFile,
     name: String,
     gammaCorrect: Bool,
-    displayExponent: F64) -> Res<Image> {
+    displayExponent: F64) -> Result<Image> {
       var w: Int = 0
       var h: Int = 0
       var error: NSError? = nil
@@ -51,7 +51,7 @@ class Image {
     displayExponent: F64,
     hasRGB: Bool,
     hasAlpha: Bool,
-    is16Bit: Bool) -> Res<Image> {
+    is16Bit: Bool) -> Result<Image> {
       var w: Int = 0
       var h: Int = 0
       var error: NSError? = nil

@@ -2,9 +2,9 @@
 // Permission to use this file is granted in license-qk.txt.
 
 
-// TODO: rename.
-
-class Arr<T>: CollectionType {
+class ArrayRef<T>: CollectionType {
+  // pass-by-reference Array type.
+  
   private var _array: ContiguousArray<T>
   
   init() {

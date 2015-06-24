@@ -2,7 +2,7 @@
 // Permission to use this file is granted in license-qk.txt.
 
 
-class AreaBuffer<T>: Arr<T> {
+class AreaBuffer<T>: ArrayRef<T> {
   typealias Row = ArraySlice<T>
   private var _size: V2I
   

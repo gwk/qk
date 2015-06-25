@@ -2,11 +2,14 @@
 // Permission to use this file is granted in license-qk.txt.
 
 
-struct Locked<T: AnyObject> {
+class Locked<T: AnyObject> {
   // T must be a class type; otherwise it would have value semantics and locking would be pointless.
   
   private let _protected: T
   private let _semaphore: dispatch_semaphore_t
+  
+  var blockedCount: Int = 0
+  var accessCount: Int = 0
   
   init(_ initial: T) {
     _protected = initial
@@ -17,8 +20,16 @@ struct Locked<T: AnyObject> {
     // access the locked data.
     dispatch_semaphore_wait(_semaphore, DISPATCH_TIME_FOREVER)
     let ret = accessor(_protected)
-    dispatch_semaphore_signal(_semaphore)
+    let didAwakeBlocked = dispatch_semaphore_signal(_semaphore)
+    if (didAwakeBlocked != 0) {
+      blockedCount++
+    }
+    accessCount++
     return ret
+  }
+  
+  func statsDesc() -> String {
+    return "frac: \(Flt(blockedCount) / Flt(accessCount)); blocked: \(blockedCount); total: \(accessCount)."
   }
 }
 

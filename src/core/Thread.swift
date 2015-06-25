@@ -11,9 +11,10 @@ class Thread: NSThread {
   
   let action: Action
   
-  init(action: Action) {
+  init(name: String, action: Action) {
     self.action = action
     super.init()
+    self.name = name
   }
   
   override func main() {
@@ -22,8 +23,8 @@ class Thread: NSThread {
 }
 
 
-func spawnThread(action: Action) -> Thread {
-  let thread = Thread(action: action)
+func spawnThread(name: String, action: Action) -> Thread {
+  let thread = Thread(name: name, action: action)
   thread.start()
   return thread
 }

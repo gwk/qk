@@ -22,7 +22,7 @@ def gen_vec(dim, s_type, fs_type, v_type, fv_type, v_prev, import_name, is_exist
   if import_name:
     outL('import $\n', import_name)
 
-  protocols = fmt('Printable, VecType$', dim)
+  protocols = fmt('VecType$', dim)
   if is_float:
     protocols += ', FloatVecType'
   else:
@@ -93,7 +93,7 @@ def gen_vec(dim, s_type, fs_type, v_type, fv_type, v_prev, import_name, is_exist
     outL('  var anyNaN: Bool { return $}', jf(' || ', '$.isNaN', comps))
     outL('')
     outL('  var norm: $ { return $(self) / self.len }', fv_type, fv_type)
-    outL('  var clampToUnit: $ { return $($) }', v_type, v_type, jcf('clamp($, 0, 1)', comps))
+    outL('  var clampToUnit: $ { return $($) }', v_type, v_type, jcf('clamp($, l: 0, h: 1)', comps))
     outL('  func dist(b: $) -> $ { return (b - self).len }', v_type, s_type)
     outL('  func dot(b: $) -> $ { return $ }',
       v_type, s_type, ' + '.join(fmt('($ * b.$)', c, c) for c in comps))
@@ -134,9 +134,9 @@ def gen_vec(dim, s_type, fs_type, v_type, fv_type, v_prev, import_name, is_exist
 
 if __name__ == '__main__':
   args = sys.argv[1:]
-  expected = ['dimension', 'import_name']
+  expected = ['dimension', 'type_name', 'import_name']
   if args and len(args) != len(expected):
-    errFL('error: found $ args; expected $: $', len(args), len(expected), jc(expected))
+    errL('error: found $ args; expected $: $', len(args), len(expected), jc(expected))
     sys.exit(1)
 
   outL('''\
@@ -147,10 +147,9 @@ if __name__ == '__main__':
   ''')
 
   if args:
-    (ds, import_name) = args
-    dim = int(ds)
-    v_type = fmt('V$', dim)
-    v_prev = fmt('V$', dim - 1)
+    (dim_string, v_type, import_name) = args
+    dim = int(dim_string)
+    v_prev = None
     gen_vec(dim, 'Flt', 'Flt', v_type, v_type, v_prev, import_name, is_existing=True)
 
   else:

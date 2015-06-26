@@ -26,6 +26,9 @@ def fmt(f, *items):
 def outL(f, *items):
   print(fmt(f, *items))
 
+def errL(f, *items):
+  print(fmt(f, *items), file=sys.stderr)
+
 def je(a): return ''.join(a) # join with empty string.
 def jc(a): return ', '.join(a) # join with comma.
 def js(a): return ' '.join(a) # join with space.

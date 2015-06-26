@@ -28,7 +28,7 @@ def gen_mat(dim, t, suffix):
   els_r = tuple('r.' + c for c in els)
   els_lr = tuple(zip(els_l, els_r))
   
-  outL('struct $: Printable {', mt)
+  outL('struct $: CustomStringConvertible {', mt)
   outL('  var $: $', jc(els), t)
   
   outL('  init($) {', jc(fmt('_ $: $', el, t) for el in els))
@@ -76,7 +76,7 @@ def gen_mat(dim, t, suffix):
           ',' if j < dim - 1 else '')
       outL('  )}\n')
 
-    outL('  static func rot(#theta: $, norm: $) -> $ {', t, vt, mt)
+    outL('  static func rot(theta theta: $, norm: $) -> $ {', t, vt, mt)
     outL('    if !theta.isNormal { return ident }')
     outL('    let _cos = cos(theta)')
     outL('    let _cosp = 1 - _cos')

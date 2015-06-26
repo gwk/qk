@@ -43,7 +43,7 @@ enum GLKeyState {
 
 struct GLTouch {
   let time: Time
-  let pos: V2
+  let pos: CGPoint
   let button: GLMouseButton
   let state: GLTouchState
   let mods: GLKeyMods
@@ -74,7 +74,7 @@ enum GLEvent {
 
 func glEventFrom(event: CREvent, view: CRView) -> GLEvent {
   #if os(OSX)
-  func touchPos() -> V2 { return view.convertPoint(event.locationInWindow, fromView: nil) }
+  func touchPos() -> CGPoint { return view.convertPoint(event.locationInWindow, fromView: nil) }
   func mods() -> GLKeyMods { return GLKeyMods() } // TODO
 
   switch event.type {

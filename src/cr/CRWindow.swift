@@ -14,7 +14,7 @@
 extension CRWindow {
 
   #if os(OSX)
-  var origin: V2 { // top-left point.
+  var origin: CGPoint { // top-left point.
     get {
       var sh: Flt
       if let s = screen {
@@ -23,7 +23,7 @@ extension CRWindow {
         sh = 0
       }
       let f = frame
-      return V2(f.origin.x, sh - (f.origin.y + f.size.height))
+      return CGPoint(f.origin.x, sh - (f.origin.y + f.size.height))
     }
     set {
       var sh: Flt
@@ -34,7 +34,7 @@ extension CRWindow {
       }
       let f = frame
       // note: setFrameOriginTopLeft does not work as advertised on 10.10.
-      setFrameOrigin(V2(newValue.x, sh - (newValue.y + f.size.height)))
+      setFrameOrigin(CGPoint(newValue.x, sh - (newValue.y + f.size.height)))
     }
   }
 

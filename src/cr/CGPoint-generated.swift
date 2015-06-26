@@ -5,7 +5,7 @@
   
 import CoreGraphics
 
-extension V2 {
+extension CGPoint {
   typealias ScalarType = Flt
   typealias FloatType = Flt
   typealias VSType = V2S
@@ -14,7 +14,7 @@ extension V2 {
     self.x = x
     self.y = y
   }
-  init(_ v: V2) { self = v }
+  init(_ v: CGPoint) { self = v }
   init(_ v: V2S) {
     self.x = Flt(v.x)
     self.y = Flt(v.y)
@@ -51,10 +51,10 @@ extension V2 {
     self.x = Flt(v.x)
     self.y = Flt(v.y)
   }
-  static let zero = V2(0, 0)
-  static let unitX = V2(1, 0)
-  static let unitY = V2(0, 1)
-  public var description: String { return "V2(\(x), \(y))" }
+  static let zero = CGPoint(0, 0)
+  static let unitX = CGPoint(1, 0)
+  static let unitY = CGPoint(0, 1)
+  public var description: String { return "CGPoint(\(x), \(y))" }
   var vs: V2S { return V2S(F32(x), F32(y)) }
   var vd: V2D { return V2D(F64(x), F64(y)) }
   var sqrLen: Flt { return (Flt(x).sqr + Flt(y).sqr) }
@@ -70,21 +70,21 @@ extension V2 {
   var anyInfite: Bool { return x.isInfinite || y.isInfinite}
   var anyNaN: Bool { return x.isNaN || y.isNaN}
 
-  var norm: V2 { return V2(self) / self.len }
-  var clampToUnit: V2 { return V2(clamp(x, l: 0, h: 1), clamp(y, l: 0, h: 1)) }
-  func dist(b: V2) -> Flt { return (b - self).len }
-  func dot(b: V2) -> Flt { return (x * b.x) + (y * b.y) }
-  func angle(b: V2) -> Flt { return acos(self.dot(b) / (self.len * b.len)) }
-  func lerp(b: V2, _ t: Flt) -> V2 { return self * (1 - t) + b * t }
+  var norm: CGPoint { return CGPoint(self) / self.len }
+  var clampToUnit: CGPoint { return CGPoint(clamp(x, l: 0, h: 1), clamp(y, l: 0, h: 1)) }
+  func dist(b: CGPoint) -> Flt { return (b - self).len }
+  func dot(b: CGPoint) -> Flt { return (x * b.x) + (y * b.y) }
+  func angle(b: CGPoint) -> Flt { return acos(self.dot(b) / (self.len * b.len)) }
+  func lerp(b: CGPoint, _ t: Flt) -> CGPoint { return self * (1 - t) + b * t }
 
 }
 
-func +(a: V2, b: V2) -> V2 { return V2(a.x + b.x, a.y + b.y) }
-func -(a: V2, b: V2) -> V2 { return V2(a.x - b.x, a.y - b.y) }
-func *(a: V2, b: V2) -> V2 { return V2(a.x * b.x, a.y * b.y) }
-func /(a: V2, b: V2) -> V2 { return V2(a.x / b.x, a.y / b.y) }
-func +(a: V2, s: Flt) -> V2 { return V2(a.x + s, a.y + s) }
-func -(a: V2, s: Flt) -> V2 { return V2(a.x - s, a.y - s) }
-func *(a: V2, s: Flt) -> V2 { return V2(a.x * s, a.y * s) }
-func /(a: V2, s: Flt) -> V2 { return V2(a.x / s, a.y / s) }
+func +(a: CGPoint, b: CGPoint) -> CGPoint { return CGPoint(a.x + b.x, a.y + b.y) }
+func -(a: CGPoint, b: CGPoint) -> CGPoint { return CGPoint(a.x - b.x, a.y - b.y) }
+func *(a: CGPoint, b: CGPoint) -> CGPoint { return CGPoint(a.x * b.x, a.y * b.y) }
+func /(a: CGPoint, b: CGPoint) -> CGPoint { return CGPoint(a.x / b.x, a.y / b.y) }
+func +(a: CGPoint, s: Flt) -> CGPoint { return CGPoint(a.x + s, a.y + s) }
+func -(a: CGPoint, s: Flt) -> CGPoint { return CGPoint(a.x - s, a.y - s) }
+func *(a: CGPoint, s: Flt) -> CGPoint { return CGPoint(a.x * s, a.y * s) }
+func /(a: CGPoint, s: Flt) -> CGPoint { return CGPoint(a.x / s, a.y / s) }
 

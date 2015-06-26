@@ -88,28 +88,28 @@ func glContextEnable(ctx: CRGLContext) {
   }
 }
 
-func viewportOriginLetterboxed(origin: V2, contentAR: Flt, canvasAR: Flt) -> V2 {
+func viewportOriginLetterboxed(origin: CGPoint, contentAR: Flt, canvasAR: Flt) -> CGPoint {
   if contentAR <= 0 || canvasAR <= 0 {
     return origin
   }
   let ar = contentAR / canvasAR
   if ar > 1 { // content is wide compared to canvas; letterbox y.
-    return V2(origin.x, origin.y + (1 - ar) * 0.5)
+    return CGPoint(origin.x, origin.y + (1 - ar) * 0.5)
   } else { // content is narrow; letterbox x.
-    return V2(origin.x + (1 - (1 / ar)) * 0.5, origin.y)
+    return CGPoint(origin.x + (1 - (1 / ar)) * 0.5, origin.y)
   }
 }
 
 
-func viewportScaleLetterboxed(scale: V2, contentAR: Flt, canvasAR: Flt) -> V2 {
+func viewportScaleLetterboxed(scale: CGPoint, contentAR: Flt, canvasAR: Flt) -> CGPoint {
   if contentAR <= 0 || canvasAR <= 0 {
     return scale
   }
   let ar = contentAR / canvasAR
   if ar > 1 { // content is wide compared to canvas; letterbox y.
-    return V2(scale.x, scale.y / ar)
+    return CGPoint(scale.x, scale.y / ar)
   } else { // content is narrow; letterbox x
-    return V2(scale.x * ar, scale.y)
+    return CGPoint(scale.x * ar, scale.y)
   }
 }
 

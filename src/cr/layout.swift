@@ -121,7 +121,7 @@ extension NSLayoutConstraint: QKLayoutConstraining {
   var rv: CRView? { return secondItem as! CRView? }
   var ra: NSLayoutAttribute { return secondAttribute }
   
-  convenience init(rel: NSLayoutRelation, l: QKLayoutOperand, r: QKLayoutOperand?, m: V2, c: V2, p: LOP, useLX: Bool) {
+  convenience init(rel: NSLayoutRelation, l: QKLayoutOperand, r: QKLayoutOperand?, m: CGPoint, c: CGPoint, p: LOP, useLX: Bool) {
     // convenience constructor for QKLayoutRel; create a constraint from either ax or ay of left side.
     let la = (useLX ? l.ax : l.ay)
     assert(la != .NotAnAttribute)
@@ -150,7 +150,7 @@ extension NSLayoutConstraint: QKLayoutConstraining {
     // however, in the case where we want a handle on a particlur constraint for subsequent modification (e.g. for animation),
     // then use this function to construct exactly one constraint.
     assert(l.componentCount == 1)
-    return NSLayoutConstraint(rel: NSLayoutRelation.Equal, l: l, r: r, m: V2(m, m), c: V2(c, c), p: p, useLX: l.ax.isSome)
+    return NSLayoutConstraint(rel: NSLayoutRelation.Equal, l: l, r: r, m: CGPoint(m, m), c: CGPoint(c, c), p: p, useLX: l.ax.isSome)
   }
 }
 
@@ -181,8 +181,8 @@ struct QKLayoutRel: QKLayoutConstraining {
   let rel: NSLayoutRelation
   let l: QKLayoutOperand
   let r: QKLayoutOperand?
-  let m: V2
-  let c: V2
+  let m: CGPoint
+  let c: CGPoint
   let p: LOP
   
   func constraintArray(views: [CRView], metrics: [String: NSNumber], opts: NSLayoutFormatOptions) -> [NSLayoutConstraint] {
@@ -204,19 +204,19 @@ struct QKLayoutRel: QKLayoutConstraining {
   }
 }
 
-func c_eq(l: QKLayoutOperand, _ r: QKLayoutOperand? = nil, m: V2 = V2(1, 1), c: V2 = V2(0, 0), p: LOP = LOPReq) -> QKLayoutRel {
+func c_eq(l: QKLayoutOperand, _ r: QKLayoutOperand? = nil, m: CGPoint = CGPoint(1, 1), c: CGPoint = CGPoint(0, 0), p: LOP = LOPReq) -> QKLayoutRel {
   // construct an equality relation between two operands with vector m and c.
   return QKLayoutRel(rel: .Equal, l: l, r: r, m: m, c: c, p: p)
 }
 
 func c_eq(l: QKLayoutOperand, _ r: QKLayoutOperand? = nil, m: Flt, c: Flt = 0, p: LOP = LOPReq) -> QKLayoutRel {
   // construct an equality relation between two operands with scalar m and optional c; m is required to disambiguate from the vector variant.
-  return c_eq(l, r, m: V2(m, m), c: V2(c, c), p: p)
+  return c_eq(l, r, m: CGPoint(m, m), c: CGPoint(c, c), p: p)
 }
 
 func c_eq(l: QKLayoutOperand, _ r: QKLayoutOperand? = nil, c: Flt, p: LOP = LOPReq) -> QKLayoutRel {
   // construct an equality relation between two operands with scalar c; this variant is required to disambiguate from the vector variant.
-  return c_eq(l, r, m: V2(1, 1), c: V2(c, c), p: p)
+  return c_eq(l, r, m: CGPoint(1, 1), c: CGPoint(c, c), p: p)
 }
 
 // TODO: lt, gt, le, ge.

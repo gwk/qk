@@ -4,13 +4,12 @@
 import Foundation // required to get math.h as of swift 1.2.
 
 
-protocol ArithmeticType: IntegerLiteralConvertible {
+protocol ArithmeticType: IntegerLiteralConvertible, Equatable {
   func +(l: Self, r: Self) -> Self
   func -(l: Self, r: Self) -> Self
   func *(l: Self, r: Self) -> Self
   func /(l: Self, r: Self) -> Self
   func %(l: Self, r: Self) -> Self
-  func ==(l: Self, r: Self) -> Bool
   func <(l: Self, r: Self) -> Bool
   func >(l: Self, r: Self) -> Bool
   func <=(l: Self, r: Self) -> Bool

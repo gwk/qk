@@ -10,14 +10,15 @@
 #endif
 
 
-var GLTexture_maxSize: Int = 0
+var GLTexture_maxSize: I32 = 0
 
-func GLTexture_getMaxSize() -> Int {
+func GLTexture_getMaxSize() -> I32 {
+  // note: this is an explicit function because it must be called while the gl context is active.
     if GLTexture_maxSize == 0 {
       var s: GLint = 0
       glGetIntegerv(GLenum(GL_MAX_TEXTURE_SIZE), &s); // should be at least 2048.
       glAssert()
-      GLTexture_maxSize = Int(s)
+      GLTexture_maxSize = I32(s)
       assert(GLTexture_maxSize > 0, "GLTexture_maxSize is zero; called before GL context is active?")
       //println("GLTexture maxSize: \(GLTexture_maxSize)")
     }
@@ -78,8 +79,8 @@ class GLTexture {
   }
   
   func update(w w: Int, h: Int, fmt: GLTexFmt, dataFmt: GLTexFmt, dataType: GLDataType, data: UnsafePointer<Void>) {
-    let maxSize = GLTexture_getMaxSize()
-    check(w <= maxSize && h <= maxSize, "GLTexture exceeds maxSize (\(maxSize)): w: \(w); h: \(h)")
+    GLTexture_getMaxSize()
+    //check(w <= maxSize && h <= maxSize, "GLTexture exceeds maxSize (\(maxSize)): w: \(w); h: \(h)")
     self.w = w
     self.h = h
     self.fmt = fmt

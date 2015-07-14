@@ -1,7 +1,23 @@
 // © 2014 George King.
 // Permission to use this file is granted in license-qk.txt.
 
-import Foundation // required to get math.h as of swift 1.2.
+import Darwin
+
+
+typealias Uns = UInt
+
+typealias I8  = Int8
+typealias I16 = Int16
+typealias I32 = Int32
+typealias I64 = Int64
+
+typealias U8  = UInt8
+typealias U16 = UInt16
+typealias U32 = UInt32
+typealias U64 = UInt64
+
+typealias F32 = Float
+typealias F64 = Double
 
 
 protocol ArithmeticType: IntegerLiteralConvertible, Equatable {
@@ -97,7 +113,7 @@ func sign<T: FloatingPointType>(x: T) -> T {
 }
 
 
-struct POTSeq: SequenceType {
+struct POTSeq: SequenceType { // TODO: change to constant list.
   let start: Int = 1
   func generate() -> AnyGenerator<Int> {
     var val: Int = start
@@ -109,7 +125,7 @@ struct POTSeq: SequenceType {
   }
 }
 
-struct HPOTSeq: SequenceType {
+struct HPOTSeq: SequenceType { // TODO: change constant list.
   let start: Int = 1
   func generate() -> AnyGenerator<Int> {
     var val: Int = start

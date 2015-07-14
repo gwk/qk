@@ -16,25 +16,25 @@ class AreaBuffer<T>: ArrayRef<T> {
   override func resize(count: Int, val: T) { fatalError("use resize(size: V2I, val: T)") }
 
   func resize(size: V2I, val: T) {
-    super.resize(size.x * size.y, val: val)
+    super.resize(Int(size.x * size.y), val: val)
     _size = size
   }
   
   func row(row: Int) -> Row {
-    let off = size.x * row
-    return self[off..<(off + size.x)]
+    let off = Int(size.x) * row
+    return self[off..<(off + Int(size.x))]
   }
   
   func el(i: Int, _ j: Int) -> T {
-    return self[_size.x * j + i]
+    return self[Int(_size.x) * j + i]
   }
 
-  func el(coord: V2I) -> T { return el(coord.x, coord.y) }
+  func el(coord: V2I) -> T { return el(Int(coord.x), Int(coord.y)) }
   
   func setEl(i: Int, _ j: Int, _ val: T) {
-    self[_size.x * j + i] = val
+    self[Int(_size.x) * j + i] = val
   }
   
-  func setEl(coord: V2I, _ val: T) { setEl(coord.x, coord.y, val) }
+  func setEl(coord: V2I, _ val: T) { setEl(Int(coord.x), Int(coord.y), val) }
 }
 

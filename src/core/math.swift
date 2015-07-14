@@ -1,6 +1,8 @@
 // © 2015 George King.
 // Permission to use this file is granted in license-qk.txt.
 
+import Darwin
+
 
 let k_e             = M_E         // e
 let k_log2_e        = M_LOG2E     // log2(e)

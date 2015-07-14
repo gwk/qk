@@ -14,7 +14,7 @@ src/core/vec-generated.swift: tools/gen-vec.py
 	$^ > $@
 
 src/cr/CGPoint-generated.swift: tools/gen-vec.py
-	$^ 2 CGPoint CoreGraphics > $@
+	$^ CGPoint 2 CoreGraphics > $@
 
 _bld/gen-cd-entities: src/core/func.swift src/core/Set.swift src/core/types.swift src/core/util.swift src/CoreData/NSManagedObjectModel.swift src/foundation/NSError.swift src/foundation/NSFileManager.swift src/foundation/NSOutputStream.swift src/std/Array.swift src/std/Character.swift src/std/Dictionary.swift src/std/Int.swift src/std/Optional.swift src/std/String.swift tools/gen-cd-entities.swift tools/main.swift
 	mkdir -p _bld

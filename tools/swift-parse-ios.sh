@@ -2,7 +2,7 @@
 
 set -e
 
-header_files=$(find src -name *.h | xargs -L 1 echo -import-objc-header)
+header_files=$(find "$@" -name *.h | xargs -L 1 echo -import-objc-header)
 swift_files=$(find "$@" -name *.swift)
 
 xcrun -sdk iphoneos \

@@ -58,20 +58,20 @@ struct GLTextPage: CustomStringConvertible {
       }
       let glyph = GLGlyph(char: g.char, adv: g.adv, orig: g.orig, size: g.size, texOrig: V2I(x, y))
       glyphs.append(glyph)
-      x += g.size.x
+      x += Int(g.size.x)
       w = max(w, x)
     }
     w = ((w + 7) >> 3) << 3 // round up to nearest word; seems to be required by OpenGL.
     self.size = V2I(w, rows * strike.metrics.maxGlyphHeight)
-    var img = [U8](count: size.x * size.y, repeatedValue: 0)
+    var img = [U8](count: Int(size.x * size.y), repeatedValue: 0)
     for (sg, g) in zip(strike.glyphs, glyphs) {
       // TODO: factor out copy?
       for y in 0..<g.size.y {
         let py = g.texOrig.y + y
         for x in 0..<g.size.x {
           let px = g.texOrig.x + x
-          let src = sg.img[y * g.size.x + x]
-          img[py * w + px] = src
+          let src = sg.img[Int(y * g.size.x + x)]
+          img[Int(py) * w + Int(px)] = src
         }
       }
     }
@@ -84,7 +84,7 @@ struct GLTextPage: CustomStringConvertible {
     blockHigh = V2I()
     // allocate texture.
     tex = GLTexture()
-    tex.update(w: size.x, h: size.y,
+    tex.update(w: Int(size.x), h: Int(size.y),
       fmt: .L,
       dataFmt: .L,
       dataType: .U8,

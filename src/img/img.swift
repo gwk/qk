@@ -8,15 +8,15 @@ func lumRepr(img img: [U8], imgSize: V2I, offset: V2I, size: V2I, maxWidth: Int 
   var s = ""
   for j in 0..<size.y {
     let y = offset.y + j
-    for i in 0..<min(size.x, maxWidth) {
+    for i in 0..<min(Int(size.x), maxWidth) {
       let x = offset.x + i
       assert(x < imgSize.x)
       assert(y < imgSize.y)
-      let val = Int(img[y * imgSize.x + x])
+      let val = Int(img[Int(y * imgSize.x + x)])
       let si = (val == 0) ? "--" : (val == 255 ? "||" : val.h0(2))
       s.extend(si)
     }
-    if size.x > maxWidth {
+    if Int(size.x) > maxWidth {
       s.extend("~")
     }
     s.extend("\n")

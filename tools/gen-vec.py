@@ -5,62 +5,62 @@
 from gen_util import *
 
 
-def gen_vec(dim, s_type, fs_type, v_type, fv_type, v_prev, import_name, is_existing):
+def gen_vec(orig_type, dim, s_type, fs_type, v_type, v_prev, is_simd):
   # dim: integer dimension.
   # s_type: T type var or concrete numeric type.
   # fs_type: the appropriate float scalar type, where returning an int makes no sense.
   # v_type: the full type name being generated.
-  # fv_type: the appropriate float vector type.
+  # v_prev: lower dimension vector type, e.g. v_type=V3S, v_prev=V2S.
   comps = all_v_comps[:dim]
   comps_a = ['a.' + c for c in comps]
   comps_b = ['b.' + c for c in comps]
   comps_ab = [p for p in zip(comps_a, comps_b)]
   comps_colors = list(zip('la' if dim == 2 else 'rgba', comps))
-  public = 'public ' if is_existing else ''
+  public = 'public ' if not is_simd else ''
   is_float = s_type.startswith('F')
 
-  if import_name:
-    outL('import $\n', import_name)
-
-  protocols = fmt('VecType$', dim)
+  protocols = [fmt('VecType$', dim)]
   if is_float:
-    protocols += ', FloatVecType'
+    protocols.append('FloatVecType')
   else:
-    protocols += ', IntVecType'
+    protocols.append('IntVecType')
 
-  if is_existing:
-    #outL('extension $: $ {', v_type, protocols) # broken
-    outL('extension $ {', v_type)
-  else:
-    outL('struct $: Equatable, $ {', v_type, protocols)
-    outL('  var $: $', jc(comps), s_type)
+  protocols.append('CustomStringConvertible')
+
+  if is_simd:
+    outL('public typealias $ = $\n', v_type, orig_type)
+    protocols.append('Equatable')
+
+  outL('extension $ : $ {', v_type, jc(protocols))
 
   outL('  typealias ScalarType = $', s_type)
   outL('  typealias FloatType = $', fs_type)
   outL('  typealias VSType = V$S', dim)
   outL('  typealias VDType = V$D', dim)
 
-  outL('  init($) {', jc(fmt('_ $: $ = 0', comp, s_type) for comp in comps))
-  for c in comps:
-    outL('    self.$ = $', c, c)
-  outL('  }')
-  
-  outL('  init(_ v: $) { self = v }', v_type)
+  if not is_simd:
+    outL('  init($) {', jcf('_ $: ScalarType = 0', comps))
+    for c in comps:
+      outL('    self.$ = $', c, c)
+    outL('  }')
+
+  if s_type == 'I32':
+    outL('  init($) {', jcf('_ $: Int', comps))
+    outL('    self.init($)', jcf('ScalarType($)', comps))
+    outL('  }')
 
   for d in range(dim, 5):
-    for st, suffix, fst, f_suffix in types:
+    for st, suffix, fst, f_suffix, simd_type_prefix in types:
       if d == dim and st == s_type:
         continue
       vt = fmt('V$$', d, suffix)
       outL('  init(_ v: $) {', vt)
-      for c in comps:
-        outL('    self.$ = $(v.$)', c, s_type, c)
+      outL('    self.init($)', jcf('ScalarType(v.$)', comps))
       outL('  }')
   
   if dim > 2:
-    outL('  init(_ v: $, _ s: $) {', v_prev, s_type)
-    for i, c in enumerate(comps):
-      outL('    self.$ = $', c, fmt('v.$', c) if i < dim - 1 else 's')
+    outL('  init(_ v: $, _ s: ScalarType) {', v_prev)
+    outL('    self.init($)', jc(fmt('v.$', c) if i < dim - 1 else 's' for i, c in enumerate(comps)))
     outL('  }')
   
   outL('  static let zero = $($)', v_type, jc('0' for comp in comps))
@@ -69,17 +69,19 @@ def gen_vec(dim, s_type, fs_type, v_type, fv_type, v_prev, import_name, is_exist
     outL('  static let unit$ = $($)',
       c.upper(), v_type, jc('1' if d == c else '0' for d in comps))
 
-  outL('  $var description: String { return "$($)" }',
-    public, v_type, jc([r'\({})'.format(c) for c in comps]))
+  outL('  public var description: String { return "$($)" }',
+    v_type, jc([r'\({})'.format(c) for c in comps]))
+
   outL('  var vs: V$S { return V$S($) }', dim, dim, jcf('F32($)', comps))
   outL('  var vd: V$D { return V$D($) }', dim, dim, jcf('F64($)', comps))
-  outL('  var sqrLen: $ { return ($) }',
-    fs_type, ' + '.join(fmt('$($).sqr', fs_type, c) for c in comps))
-  outL('  var len: $ { return sqrLen.sqrt }', fs_type)
-  outL('  var aspect: $ { return $(x) / $(y) }', fs_type, fs_type, fs_type)
+
+  outL('  var sqrLen: FloatType { return ($) }', jf(' + ', 'FloatType($).sqr', comps))
+  outL('  var len: FloatType { return sqrLen.sqrt }')
+  outL('  var aspect: FloatType { return FloatType(x) / FloatType(y) }')
+  outL('  func dist(b: $) -> FloatType { return (b - self).len }', v_type)
 
   for c, c_orig in comps_colors:
-    outL('  var $: $ { return $ }', c, s_type, c_orig)
+    outL('  var $: ScalarType { return $ }', c, c_orig)
 
   # TODO: swizzles.
 
@@ -92,15 +94,14 @@ def gen_vec(dim, s_type, fs_type, v_type, fv_type, v_prev, import_name, is_exist
     outL('  var anyInfite: Bool { return $}', jf(' || ', '$.isInfinite', comps))
     outL('  var anyNaN: Bool { return $}', jf(' || ', '$.isNaN', comps))
     outL('')
-    outL('  var norm: $ { return $(self) / self.len }', fv_type, fv_type)
+    outL('  var norm: $ { return self / self.len }', v_type)
     outL('  var clampToUnit: $ { return $($) }', v_type, v_type, jcf('clamp($, l: 0, h: 1)', comps))
-    outL('  func dist(b: $) -> $ { return (b - self).len }', v_type, s_type)
-    outL('  func dot(b: $) -> $ { return $ }',
-      v_type, s_type, ' + '.join(fmt('($ * b.$)', c, c) for c in comps))
-    outL('  func angle(b: $) -> $ { return acos(self.dot(b) / (self.len * b.len)) }',
-      v_type, s_type)
-    outL('  func lerp(b: $, _ t: $) -> $ { return self * (1 - t) + b * t }',
-      v_type, s_type, v_type)
+    outL('  func dot(b: $) -> ScalarType { return $ }',
+      v_type, ' + '.join(fmt('($ * b.$)', c, c) for c in comps))
+    outL('  func angle(b: $) -> ScalarType { return acos(self.dot(b) / (self.len * b.len)) }',
+      v_type)
+    outL('  func lerp(b: $, _ t: ScalarType) -> $ { return self * (1 - t) + b * t }',
+      v_type, v_type)
 
     if dim >= 3:
       outL('')
@@ -127,14 +128,14 @@ def gen_vec(dim, s_type, fs_type, v_type, fv_type, v_prev, import_name, is_exist
 
   outL('')
 
-  if not is_existing:
-    outL('func ==(a: $, b: $) -> Bool {', v_type, v_type)
+  if is_simd:
+    outL('public func ==(a: $, b: $) -> Bool {', v_type, v_type)
     outL('  return $', ' && '.join(fmt('a.$ == b.$', c, c) for c in comps))
     outL('}\n')
 
 if __name__ == '__main__':
   args = sys.argv[1:]
-  expected = ['dimension', 'type_name', 'import_name']
+  expected = ['orig_type', 'dimension', 'import_name']
   if args and len(args) != len(expected):
     errL('error: found $ args; expected $: $', len(args), len(expected), jc(expected))
     sys.exit(1)
@@ -143,20 +144,25 @@ if __name__ == '__main__':
 // © 2015 George King.
 // Permission to use this file is granted in license-qk.txt.
 // This file is generated by gen-vec.py.
-
   ''')
 
+  outL('import Darwin')
+
   if args:
-    (dim_string, v_type, import_name) = args
+    (orig_type, dim_string, import_name) = args
     dim = int(dim_string)
+    v_type = orig_type
     v_prev = None
-    gen_vec(dim, 'Flt', 'Flt', v_type, v_type, v_prev, import_name, is_existing=True)
+    outL('import $\n\n', import_name)
+    gen_vec(orig_type, dim, 'Flt', 'Flt', v_type, v_prev, is_simd=False)
 
   else:
+    outL('import simd\n')
     for d in dims:
-      for st, suffix, fst, f_suffix in types:
-        vt = fmt('V$$', d, suffix)
-        fvt = fmt('V$$', d, f_suffix)
+      for s_type, suffix, fs_type, f_suffix, simd_type_prefix in types:
+        outL('')
+        simd_type = fmt('$$', simd_type_prefix, d)
+        v_type = fmt('V$$', d, suffix)
         v_prev = fmt('V$$', d - 1, suffix)
-        gen_vec(d, st, fst, vt, fvt, v_prev, import_name='', is_existing=False)
+        gen_vec(simd_type, d, s_type, fs_type, v_type, v_prev, is_simd=True)
 

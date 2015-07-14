@@ -1,6 +1,8 @@
 // © 2015 George King.
 // Permission to use this file is granted in license-qk.txt.
 
+import Dispatch
+
 
 class Locked<T: AnyObject> {
   // T must be a class type; otherwise it would have value semantics and locking would be pointless.
@@ -29,7 +31,7 @@ class Locked<T: AnyObject> {
   }
   
   func statsDesc() -> String {
-    return "frac: \(Flt(blockedCount) / Flt(accessCount)); blocked: \(blockedCount); total: \(accessCount)."
+    return "frac: \(Float(blockedCount) / Float(accessCount)); blocked: \(blockedCount); total: \(accessCount)."
   }
 }
 

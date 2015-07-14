@@ -38,26 +38,4 @@ func filterMap<S: SequenceType, E>(seq: S, transform: ((S.Generator.Element) -> 
   return a
 }
 
-struct Zip2<G0: GeneratorType, G1: GeneratorType> {
-  var g0: G0
-  var g1: G1
-  
-  mutating func next() -> (G0.Element, G1.Element)? {
-    if let e0 = g0.next() {
-      if let e1 = g1.next() {
-        return (e0, e1)
-      } else {
-        return nil
-      }
-    } else {
-      return nil
-    }
-  }
-}
-
-func zip<G0: GeneratorType, G1: GeneratorType>(g0: G0, g1: G1) -> Zip2<G0, G1> {
-  return Zip2(g0: g0, g1: g1)
-}
-
-
   

@@ -38,12 +38,6 @@ def gen_vec(orig_type, dim, s_type, fs_type, v_type, v_prev, is_simd):
   outL('  typealias VSType = V$S', dim)
   outL('  typealias VDType = V$D', dim)
 
-  if not is_simd:
-    outL('  init($) {', jcf('_ $: ScalarType = 0', comps))
-    for c in comps:
-      outL('    self.$ = $', c, c)
-    outL('  }')
-
   if s_type == 'I32':
     outL('  init($) {', jcf('_ $: Int', comps))
     outL('    self.init($)', jcf('ScalarType($)', comps))

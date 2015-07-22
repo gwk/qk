@@ -5,7 +5,10 @@ import CoreGraphics
 
 
 extension CGPoint {
-  init(_ s: CGSize) { self.init(s.w, s.h) }
+  
+  init(_ x: CGFloat, _ y: CGFloat) { self.init(x: x, y: y) }
+
+  init(_ s: CGSize) { self.init(x: s.w, y: s.h) }
 }
 
 

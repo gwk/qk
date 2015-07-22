@@ -11,10 +11,6 @@ extension CGPoint : VecType2, FloatVecType, CustomStringConvertible {
   typealias FloatType = Flt
   typealias VSType = V2S
   typealias VDType = V2D
-  init(_ x: ScalarType = 0, _ y: ScalarType = 0) {
-    self.x = x
-    self.y = y
-  }
   init(_ v: V2S) {
     self.init(ScalarType(v.x), ScalarType(v.y))
   }

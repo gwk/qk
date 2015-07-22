@@ -46,15 +46,15 @@ extension CollectionType where Generator.Element : Equatable {
 }
 
 
-extension CollectionType where Self : Sliceable, Generator.Element : Equatable {
+extension CollectionType where Generator.Element : Equatable {
   
-  func part(range: Range<Index>) -> (SubSlice, SubSlice) {
+  func part(range: Range<Index>) -> (SubSequence, SubSequence) {
     let ra = startIndex..<range.startIndex
     let rb = range.endIndex..<endIndex
     return (self[ra], self[rb])
   }
   
-  func part(sep: Self, start: Index? = nil, end: Index? = nil) -> (SubSlice, SubSlice)? {
+  func part(sep: Self, start: Index? = nil, end: Index? = nil) -> (SubSequence, SubSequence)? {
       if let range = rangeOf(sep, start: start, end: end) {
         return part(range)
       }

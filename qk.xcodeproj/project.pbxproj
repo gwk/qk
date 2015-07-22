@@ -18,7 +18,6 @@
 		EC900B9C1B5FE901003AAADA /* Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900B941B5FE901003AAADA /* Optional.swift */; };
 		EC900B9D1B5FE901003AAADA /* Process.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900B951B5FE901003AAADA /* Process.swift */; };
 		EC900B9E1B5FE901003AAADA /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900B961B5FE901003AAADA /* String.swift */; };
-		EC900BB41B5FEA1B003AAADA /* AreaBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BA01B5FEA1B003AAADA /* AreaBuffer.swift */; };
 		EC900BB51B5FEA1B003AAADA /* ArithmeticType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BA11B5FEA1B003AAADA /* ArithmeticType.swift */; };
 		EC900BB61B5FEA1B003AAADA /* ArrayRef.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BA21B5FEA1B003AAADA /* ArrayRef.swift */; };
 		EC900BB71B5FEA1B003AAADA /* atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BA31B5FEA1B003AAADA /* atomic.swift */; };
@@ -28,16 +27,13 @@
 		EC900BBB1B5FEA1B003AAADA /* func.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BA81B5FEA1B003AAADA /* func.swift */; };
 		EC900BBC1B5FEA1B003AAADA /* Index.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BA91B5FEA1B003AAADA /* Index.swift */; };
 		EC900BBD1B5FEA1B003AAADA /* Locked.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BAA1B5FEA1B003AAADA /* Locked.swift */; };
-		EC900BBE1B5FEA1B003AAADA /* mat-generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BAB1B5FEA1B003AAADA /* mat-generated.swift */; };
 		EC900BBF1B5FEA1B003AAADA /* math.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BAC1B5FEA1B003AAADA /* math.swift */; };
 		EC900BC01B5FEA1B003AAADA /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BAD1B5FEA1B003AAADA /* Resource.swift */; };
 		EC900BC11B5FEA1B003AAADA /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BAE1B5FEA1B003AAADA /* Result.swift */; };
 		EC900BC21B5FEA1B003AAADA /* Thread.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BAF1B5FEA1B003AAADA /* Thread.swift */; };
 		EC900BC31B5FEA1B003AAADA /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BB01B5FEA1B003AAADA /* Time.swift */; };
 		EC900BC41B5FEA1B003AAADA /* util.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BB11B5FEA1B003AAADA /* util.swift */; };
-		EC900BC51B5FEA1B003AAADA /* vec-generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BB21B5FEA1B003AAADA /* vec-generated.swift */; };
 		EC900BC61B5FEA1B003AAADA /* VecType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BB31B5FEA1B003AAADA /* VecType.swift */; };
-		EC900BDA1B5FEA2D003AAADA /* CGPoint-generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BC81B5FEA2D003AAADA /* CGPoint-generated.swift */; };
 		EC900BDB1B5FEA2D003AAADA /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BC91B5FEA2D003AAADA /* CGPoint.swift */; };
 		EC900BDC1B5FEA2D003AAADA /* CGRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BCA1B5FEA2D003AAADA /* CGRect.swift */; };
 		EC900BDD1B5FEA2D003AAADA /* CGSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BCB1B5FEA2D003AAADA /* CGSize.swift */; };
@@ -398,7 +394,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EC900BBE1B5FEA1B003AAADA /* mat-generated.swift in Sources */,
 				EC900BE51B5FEA2D003AAADA /* CRWindow.swift in Sources */,
 				EC900B991B5FE901003AAADA /* CollectionType.swift in Sources */,
 				EC900BBD1B5FEA1B003AAADA /* Locked.swift in Sources */,
@@ -423,15 +418,12 @@
 				EC900BDE1B5FEA2D003AAADA /* CRColor.swift in Sources */,
 				EC900BDF1B5FEA2D003AAADA /* CREdgeInsets.swift in Sources */,
 				EC900B9B1B5FE901003AAADA /* Int.swift in Sources */,
-				EC900BC51B5FEA1B003AAADA /* vec-generated.swift in Sources */,
-				EC900BDA1B5FEA2D003AAADA /* CGPoint-generated.swift in Sources */,
 				EC900BE31B5FEA2D003AAADA /* CRView.swift in Sources */,
 				EC900BB71B5FEA1B003AAADA /* atomic.swift in Sources */,
 				EC456BC81B5FE76C00126CFD /* AppDelegate.swift in Sources */,
 				EC900BBA1B5FEA1B003AAADA /* Error.swift in Sources */,
 				EC900BDD1B5FEA2D003AAADA /* CGSize.swift in Sources */,
 				EC900BE81B5FEA2D003AAADA /* NSLayoutConstraint.m in Sources */,
-				EC900BB41B5FEA1B003AAADA /* AreaBuffer.swift in Sources */,
 				EC900BB91B5FEA1B003AAADA /* DispatchFileModes.swift in Sources */,
 				EC900B9D1B5FE901003AAADA /* Process.swift in Sources */,
 				EC900B981B5FE901003AAADA /* Character.swift in Sources */,

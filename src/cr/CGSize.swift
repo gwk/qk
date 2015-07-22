@@ -19,7 +19,5 @@ extension CGSize {
     get { return height }
     set { height = newValue }
   }
-  
-  var vs: V2S { return V2S(F32(w), F32(h)); }
 }
 

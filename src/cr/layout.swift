@@ -67,20 +67,8 @@ extension CRView {
   
   var c_usesARMask: Bool {
     // abbreviated, crossplatform property.
-    get {
-      #if os(OSX)
-        return translatesAutoresizingMaskIntoConstraints
-        #else
-        return translatesAutoresizingMaskIntoConstraints()
-      #endif
-      }
-    set {
-      #if os(OSX)
-        translatesAutoresizingMaskIntoConstraints = newValue
-        #else
-      setTranslatesAutoresizingMaskIntoConstraints(newValue)
-      #endif
-    }
+    get { return translatesAutoresizingMaskIntoConstraints }
+    set { translatesAutoresizingMaskIntoConstraints = newValue }
   }
 }
 
@@ -91,13 +79,13 @@ extension UIViewController {
   // formulating QKLayoutOperand in terms of protocols including UILayoutSupport protocol is not possible in swift 1.1.
   var c_tg: UIView {
     let a: AnyObject = topLayoutGuide
-    let v = a as UIView // this cast works in ios 8; not guaranteed to work in the future.
+    let v = a as! UIView // this cast works in ios 8; not guaranteed to work in the future.
     v.name = "tg"
     return v
   }
   var c_bg: UIView {
     let a: AnyObject = bottomLayoutGuide
-    let v = a as UIView // this cast works in ios 8; not guaranteed to work in the future.
+    let v = a as! UIView // this cast works in ios 8; not guaranteed to work in the future.
     v.name = "bg"
     return v
   }

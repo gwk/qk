@@ -93,7 +93,7 @@ extension CRView {
       #if os(OSX)
         return accessibilityIdentifier()
         #else
-        return accessibilityIdentifier
+        return accessibilityIdentifier!
       #endif
     }
     set {

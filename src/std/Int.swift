@@ -31,12 +31,12 @@ extension Int {
     return String(Array(a.reverse()))
   }
 
-  func d(width: Int) -> String { return self.repr(10, width: width) }
-  func h(width: Int) -> String { return self.repr(16, width: width) }
+  func dec(width: Int) -> String { return self.repr(10, width: width) }
+  func hex(width: Int) -> String { return self.repr(16, width: width) }
   
-  var d: String { return self.d(0) }
-  var h: String { return self.h(0) }
+  var dec: String { return self.dec(0) }
+  var hex: String { return self.hex(0) }
   
-  func d0(width: Int) -> String { return self.repr(10, pad: "0", width: width) }
-  func h0(width: Int) -> String { return self.repr(16, pad: "0", width: width) }
+  func dec0(width: Int) -> String { return self.repr(10, pad: "0", width: width) }
+  func hex0(width: Int) -> String { return self.repr(16, pad: "0", width: width) }
 }

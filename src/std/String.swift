@@ -117,13 +117,7 @@ extension String {
   }
   
   var numberedLines: [String] { return numberedLinesFrom(1) }
-  
-  // search.
-  
-  func partition(seperator: String) -> (String, String)? {
-    return nil
-  }
-  
+    
   
   // unicode.
   

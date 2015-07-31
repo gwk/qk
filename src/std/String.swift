@@ -113,7 +113,7 @@ extension String {
   }
   
   func numberedLinesFrom(from: Int) -> [String] {
-    return lines.mapEnum() { i, line in "\((i + from).d(3)): \(line)" }
+    return lines.enumerate().map() { (i, line) in " \(line)" }
   }
   
   var numberedLines: [String] { return numberedLinesFrom(1) }

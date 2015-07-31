@@ -13,11 +13,4 @@ extension Array {
     self.reserveCapacity(capacity)
   }
 
-  func mapEnum<U>(transform: (Int, Element) -> U) -> [U] {
-    var a = [U](capacity:self.count)
-    for (i, e) in self.enumerate() {
-      a.append(transform(i, e))
-    }
-    return a
-  }
 }

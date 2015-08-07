@@ -128,7 +128,7 @@ class GLLayer: CRGLLayer {
         prevLayerTime = layerTime
       }
       handleEvent(.Tick(GLTick(time: layerTime)))
-      render(contentsScale: F32(contentsScale), size: bounds.size.vs, time: layerTime)
+      render(contentsScale: F32(contentsScale), size: V2S(bounds.size), time: layerTime)
       prevLayerTime = layerTime
       // according to the header comments, we should call super to flush correctly.
       super.drawInCGLContext(ctx, pixelFormat: pixelFormat, forLayerTime: layerTime, displayTime:displayTime)

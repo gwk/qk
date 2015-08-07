@@ -82,10 +82,10 @@ class GLShader: CustomStringConvertible {
   }
   
   class func withResources(resources: [String]) throws -> GLShader {
-    let ext = resources.last!.pathExtension
+    let ext = NSString(string: resources.last!).pathExtension // TODO: implement pathExtension on String.
     let sources = try resources.mapThrows() {
       (name: String) throws -> String in
-      let e = name.pathExtension
+      let e = NSString(string: name).pathExtension as String // TODO: implement pathExtension on String.
       assert(e == ext, "mismatched shader name extension: \(name)")
       return try NSBundle.textNamed(name)
     }

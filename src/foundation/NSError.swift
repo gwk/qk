@@ -4,7 +4,7 @@
 import Foundation
 
 
-func check(error: NSError?, @autoclosure message: () -> String, file: StaticString = __FILE__, line: UWord = __LINE__) {
+func check(error: NSError?, @autoclosure message: () -> String, file: StaticString = __FILE__, line: UInt = __LINE__) {
   if let e = error {
     fatalError("\(message())\nerror: \(e)", file: file, line: line)
   }

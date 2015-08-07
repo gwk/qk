@@ -9,12 +9,12 @@ extension NSObject {
   class var dynamicClassFullName: String { return NSStringFromClass(self) }
   
   class var dynamicClassName: String {
-    return dynamicClassFullName.pathExtension
+    return NSString(string: dynamicClassFullName).pathExtension // TODO: implement pathExtension for String.
   }
   
   var dynamicTypeFullName: String { return NSStringFromClass(self.dynamicType) }
 
   var dynamicTypeName: String {
-    return dynamicTypeFullName.pathExtension
+    return NSString(string: dynamicTypeFullName).pathExtension // TODO: implement pathExtension for String.
   }
 }

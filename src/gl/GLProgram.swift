@@ -88,7 +88,7 @@ class GLProgram {
   func addInput(name: String, isAttr: Bool, loc: GLint, type: GLenum, size: GLsizei) {
     assert(loc != -1,"no location for shader input: \(name)")
     let inputType = GLInputType(rawValue: type)
-    assert(inputType != nil, "bad input type: 0x\(Int(type).h)")
+    assert(inputType != nil, "bad input type: 0x\(Int(type).hex)")
     let info = GLInput(name: name, isAttr: isAttr, loc: loc, type: inputType!, size: Int(size))
     //let label = isAttr ? "attr" : "uniform"
     //println("  \(label): \(name): \(info)")

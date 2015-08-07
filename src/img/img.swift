@@ -13,7 +13,7 @@ func lumRepr(img img: [U8], imgSize: V2I, offset: V2I, size: V2I, maxWidth: Int 
       assert(x < imgSize.x)
       assert(y < imgSize.y)
       let val = Int(img[Int(y * imgSize.x + x)])
-      let si = (val == 0) ? "--" : (val == 255 ? "||" : val.h0(2))
+      let si = (val == 0) ? "--" : (val == 255 ? "||" : val.hex0(2))
       s.extend(si)
     }
     if Int(size.x) > maxWidth {

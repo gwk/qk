@@ -20,7 +20,7 @@ extension CRFont {
 #endif
   
   var fixedAdvance: Flt {
-    let attrs = fontDescriptor().fontAttributes()
+    let attrs = fontDescriptor.fontAttributes
     if let advanceVal: AnyObject = attrs[CRFontAttrFixedAdvance] {
       return Flt(advanceVal as! NSNumber)
     } else {

@@ -14,6 +14,54 @@
 		EC49BCEF1B75021200660AF0 /* mat-generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BAB1B5FEA1B003AAADA /* mat-generated.swift */; };
 		EC49BCF01B75021200660AF0 /* vec-generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BB21B5FEA1B003AAADA /* vec-generated.swift */; };
 		EC49BCF11B75021A00660AF0 /* CGPoint-generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BC81B5FEA2D003AAADA /* CGPoint-generated.swift */; };
+		EC49BCFD1B750E1C00660AF0 /* CRFontDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC49BCFC1B750E1C00660AF0 /* CRFontDescriptor.swift */; };
+		EC49BD051B7511AC00660AF0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC49BD041B7511AC00660AF0 /* AppDelegate.swift */; };
+		EC49BD071B7511AC00660AF0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EC49BD061B7511AC00660AF0 /* Assets.xcassets */; };
+		EC49BD0F1B75131F00660AF0 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900B8F1B5FE901003AAADA /* Array.swift */; };
+		EC49BD101B75131F00660AF0 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900B901B5FE901003AAADA /* Character.swift */; };
+		EC49BD111B75131F00660AF0 /* CollectionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900B911B5FE901003AAADA /* CollectionType.swift */; };
+		EC49BD121B75131F00660AF0 /* Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900B921B5FE901003AAADA /* Dictionary.swift */; };
+		EC49BD131B75131F00660AF0 /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900B931B5FE901003AAADA /* Int.swift */; };
+		EC49BD141B75131F00660AF0 /* Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900B941B5FE901003AAADA /* Optional.swift */; };
+		EC49BD151B75131F00660AF0 /* Process.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900B951B5FE901003AAADA /* Process.swift */; };
+		EC49BD161B75131F00660AF0 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900B961B5FE901003AAADA /* String.swift */; };
+		EC49BD171B75132C00660AF0 /* CGPoint-generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BC81B5FEA2D003AAADA /* CGPoint-generated.swift */; };
+		EC49BD181B75132C00660AF0 /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BC91B5FEA2D003AAADA /* CGPoint.swift */; };
+		EC49BD191B75132C00660AF0 /* CGRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BCA1B5FEA2D003AAADA /* CGRect.swift */; };
+		EC49BD1A1B75132C00660AF0 /* CGSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BCB1B5FEA2D003AAADA /* CGSize.swift */; };
+		EC49BD1B1B75132C00660AF0 /* CRColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BCC1B5FEA2D003AAADA /* CRColor.swift */; };
+		EC49BD1C1B75132C00660AF0 /* CREdgeInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BCD1B5FEA2D003AAADA /* CREdgeInsets.swift */; };
+		EC49BD1D1B75132C00660AF0 /* CREvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BCE1B5FEA2D003AAADA /* CREvent.swift */; };
+		EC49BD1E1B75132C00660AF0 /* CRFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BCF1B5FEA2D003AAADA /* CRFont.swift */; };
+		EC49BD1F1B75132C00660AF0 /* CRFontDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC49BCFC1B750E1C00660AF0 /* CRFontDescriptor.swift */; };
+		EC49BD201B75132C00660AF0 /* CRResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BD01B5FEA2D003AAADA /* CRResponder.swift */; };
+		EC49BD211B75132C00660AF0 /* CRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BD11B5FEA2D003AAADA /* CRView.swift */; };
+		EC49BD221B75132C00660AF0 /* CRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BD21B5FEA2D003AAADA /* CRViewController.swift */; };
+		EC49BD231B75132C00660AF0 /* CRWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BD31B5FEA2D003AAADA /* CRWindow.swift */; };
+		EC49BD241B75132C00660AF0 /* Flt.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BD41B5FEA2D003AAADA /* Flt.swift */; };
+		EC49BD251B75132C00660AF0 /* layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BD51B5FEA2D003AAADA /* layout.swift */; };
+		EC49BD271B75132C00660AF0 /* NSLayoutConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = EC900BD71B5FEA2D003AAADA /* NSLayoutConstraint.m */; };
+		EC49BD281B75132C00660AF0 /* NSLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BD81B5FEA2D003AAADA /* NSLayoutConstraint.swift */; };
+		EC49BD291B75132C00660AF0 /* QKResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BD91B5FEA2D003AAADA /* QKResponder.swift */; };
+		EC49BD2A1B75133700660AF0 /* AreaBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BA01B5FEA1B003AAADA /* AreaBuffer.swift */; };
+		EC49BD2B1B75133700660AF0 /* ArithmeticType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BA11B5FEA1B003AAADA /* ArithmeticType.swift */; };
+		EC49BD2C1B75133700660AF0 /* ArrayRef.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BA21B5FEA1B003AAADA /* ArrayRef.swift */; };
+		EC49BD2D1B75133700660AF0 /* atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BA31B5FEA1B003AAADA /* atomic.swift */; };
+		EC49BD2F1B75133700660AF0 /* dispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BA51B5FEA1B003AAADA /* dispatch.swift */; };
+		EC49BD301B75133700660AF0 /* DispatchFileModes.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BA61B5FEA1B003AAADA /* DispatchFileModes.swift */; };
+		EC49BD311B75133700660AF0 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BA71B5FEA1B003AAADA /* Error.swift */; };
+		EC49BD321B75133700660AF0 /* func.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BA81B5FEA1B003AAADA /* func.swift */; };
+		EC49BD331B75133700660AF0 /* Index.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BA91B5FEA1B003AAADA /* Index.swift */; };
+		EC49BD341B75133700660AF0 /* Locked.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BAA1B5FEA1B003AAADA /* Locked.swift */; };
+		EC49BD351B75133700660AF0 /* mat-generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BAB1B5FEA1B003AAADA /* mat-generated.swift */; };
+		EC49BD361B75133700660AF0 /* math.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BAC1B5FEA1B003AAADA /* math.swift */; };
+		EC49BD371B75133700660AF0 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BAD1B5FEA1B003AAADA /* Resource.swift */; };
+		EC49BD381B75133700660AF0 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BAE1B5FEA1B003AAADA /* Result.swift */; };
+		EC49BD391B75133700660AF0 /* Thread.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BAF1B5FEA1B003AAADA /* Thread.swift */; };
+		EC49BD3A1B75133700660AF0 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BB01B5FEA1B003AAADA /* Time.swift */; };
+		EC49BD3B1B75133700660AF0 /* check.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BB11B5FEA1B003AAADA /* check.swift */; };
+		EC49BD3C1B75133700660AF0 /* vec-generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BB21B5FEA1B003AAADA /* vec-generated.swift */; };
+		EC49BD3D1B75133700660AF0 /* VecType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BB31B5FEA1B003AAADA /* VecType.swift */; };
 		EC900B971B5FE901003AAADA /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900B8F1B5FE901003AAADA /* Array.swift */; };
 		EC900B981B5FE901003AAADA /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900B901B5FE901003AAADA /* Character.swift */; };
 		EC900B991B5FE901003AAADA /* CollectionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900B911B5FE901003AAADA /* CollectionType.swift */; };
@@ -36,7 +84,7 @@
 		EC900BC11B5FEA1B003AAADA /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BAE1B5FEA1B003AAADA /* Result.swift */; };
 		EC900BC21B5FEA1B003AAADA /* Thread.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BAF1B5FEA1B003AAADA /* Thread.swift */; };
 		EC900BC31B5FEA1B003AAADA /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BB01B5FEA1B003AAADA /* Time.swift */; };
-		EC900BC41B5FEA1B003AAADA /* util.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BB11B5FEA1B003AAADA /* util.swift */; };
+		EC900BC41B5FEA1B003AAADA /* check.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BB11B5FEA1B003AAADA /* check.swift */; };
 		EC900BC61B5FEA1B003AAADA /* VecType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BB31B5FEA1B003AAADA /* VecType.swift */; };
 		EC900BDB1B5FEA2D003AAADA /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BC91B5FEA2D003AAADA /* CGPoint.swift */; };
 		EC900BDC1B5FEA2D003AAADA /* CGRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BCA1B5FEA2D003AAADA /* CGRect.swift */; };
@@ -78,6 +126,11 @@
 		EC456BC41B5FE76C00126CFD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EC456BC61B5FE76C00126CFD /* qk-ios-test-info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "qk-ios-test-info.plist"; sourceTree = "<group>"; };
 		EC456BC71B5FE76C00126CFD /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		EC49BCFC1B750E1C00660AF0 /* CRFontDescriptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CRFontDescriptor.swift; sourceTree = "<group>"; };
+		EC49BD021B7511AC00660AF0 /* qk-osx-test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "qk-osx-test.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EC49BD041B7511AC00660AF0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		EC49BD061B7511AC00660AF0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		EC49BD0B1B7511AC00660AF0 /* qk-osx-test-info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "qk-osx-test-info.plist"; sourceTree = "<group>"; };
 		EC900B8F1B5FE901003AAADA /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		EC900B901B5FE901003AAADA /* Character.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
 		EC900B911B5FE901003AAADA /* CollectionType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionType.swift; sourceTree = "<group>"; };
@@ -103,7 +156,7 @@
 		EC900BAE1B5FEA1B003AAADA /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		EC900BAF1B5FEA1B003AAADA /* Thread.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Thread.swift; sourceTree = "<group>"; };
 		EC900BB01B5FEA1B003AAADA /* Time.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
-		EC900BB11B5FEA1B003AAADA /* util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = util.swift; sourceTree = "<group>"; };
+		EC900BB11B5FEA1B003AAADA /* check.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = check.swift; sourceTree = "<group>"; };
 		EC900BB21B5FEA1B003AAADA /* vec-generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "vec-generated.swift"; sourceTree = "<group>"; };
 		EC900BB31B5FEA1B003AAADA /* VecType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VecType.swift; sourceTree = "<group>"; };
 		EC900BC81B5FEA2D003AAADA /* CGPoint-generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint-generated.swift"; sourceTree = "<group>"; };
@@ -130,6 +183,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		EC49BCFF1B7511AC00660AF0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		ECBBE3661B5FE5D300DEA686 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -158,6 +218,7 @@
 			isa = PBXGroup;
 			children = (
 				EC456BC21B5FE76C00126CFD /* qk-ios-test */,
+				EC49BD031B7511AC00660AF0 /* qk-osx-test */,
 			);
 			path = test;
 			sourceTree = "<group>";
@@ -171,6 +232,16 @@
 				EC456BC71B5FE76C00126CFD /* ViewController.swift */,
 			);
 			path = "qk-ios-test";
+			sourceTree = "<group>";
+		};
+		EC49BD031B7511AC00660AF0 /* qk-osx-test */ = {
+			isa = PBXGroup;
+			children = (
+				EC49BD041B7511AC00660AF0 /* AppDelegate.swift */,
+				EC49BD061B7511AC00660AF0 /* Assets.xcassets */,
+				EC49BD0B1B7511AC00660AF0 /* qk-osx-test-info.plist */,
+			);
+			path = "qk-osx-test";
 			sourceTree = "<group>";
 		};
 		EC900B8D1B5FE8C3003AAADA /* src */ = {
@@ -218,7 +289,7 @@
 				EC900BAE1B5FEA1B003AAADA /* Result.swift */,
 				EC900BAF1B5FEA1B003AAADA /* Thread.swift */,
 				EC900BB01B5FEA1B003AAADA /* Time.swift */,
-				EC900BB11B5FEA1B003AAADA /* util.swift */,
+				EC900BB11B5FEA1B003AAADA /* check.swift */,
 				EC900BB21B5FEA1B003AAADA /* vec-generated.swift */,
 				EC900BB31B5FEA1B003AAADA /* VecType.swift */,
 			);
@@ -236,6 +307,7 @@
 				EC900BCD1B5FEA2D003AAADA /* CREdgeInsets.swift */,
 				EC900BCE1B5FEA2D003AAADA /* CREvent.swift */,
 				EC900BCF1B5FEA2D003AAADA /* CRFont.swift */,
+				EC49BCFC1B750E1C00660AF0 /* CRFontDescriptor.swift */,
 				EC900BD01B5FEA2D003AAADA /* CRResponder.swift */,
 				EC900BD11B5FEA2D003AAADA /* CRView.swift */,
 				EC900BD21B5FEA2D003AAADA /* CRViewController.swift */,
@@ -265,6 +337,7 @@
 				ECBBE3691B5FE5D300DEA686 /* qk-ios-test.app */,
 				ECBBE37D1B5FE5D300DEA686 /* qkTests.xctest */,
 				ECBBE3881B5FE5D300DEA686 /* qkUITests.xctest */,
+				EC49BD021B7511AC00660AF0 /* qk-osx-test.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -272,6 +345,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		EC49BD011B7511AC00660AF0 /* qk-osx-test */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EC49BD0C1B7511AC00660AF0 /* Build configuration list for PBXNativeTarget "qk-osx-test" */;
+			buildPhases = (
+				EC49BCFE1B7511AC00660AF0 /* Sources */,
+				EC49BCFF1B7511AC00660AF0 /* Frameworks */,
+				EC49BD001B7511AC00660AF0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "qk-osx-test";
+			productName = "qk-osx-test";
+			productReference = EC49BD021B7511AC00660AF0 /* qk-osx-test.app */;
+			productType = "com.apple.product-type.application";
+		};
 		ECBBE3681B5FE5D300DEA686 /* qk-ios-test */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = ECBBE3911B5FE5D300DEA686 /* Build configuration list for PBXNativeTarget "qk-ios-test" */;
@@ -335,6 +425,9 @@
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = gwk;
 				TargetAttributes = {
+					EC49BD011B7511AC00660AF0 = {
+						CreatedOnToolsVersion = 7.0;
+					};
 					ECBBE3681B5FE5D300DEA686 = {
 						CreatedOnToolsVersion = 7.0;
 					};
@@ -364,11 +457,20 @@
 				ECBBE3681B5FE5D300DEA686 /* qk-ios-test */,
 				ECBBE37C1B5FE5D300DEA686 /* qkTests */,
 				ECBBE3871B5FE5D300DEA686 /* qkUITests */,
+				EC49BD011B7511AC00660AF0 /* qk-osx-test */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		EC49BD001B7511AC00660AF0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EC49BD071B7511AC00660AF0 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		ECBBE3671B5FE5D300DEA686 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -394,12 +496,66 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		EC49BCFE1B7511AC00660AF0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EC49BD2A1B75133700660AF0 /* AreaBuffer.swift in Sources */,
+				EC49BD2B1B75133700660AF0 /* ArithmeticType.swift in Sources */,
+				EC49BD2C1B75133700660AF0 /* ArrayRef.swift in Sources */,
+				EC49BD2D1B75133700660AF0 /* atomic.swift in Sources */,
+				EC49BD2F1B75133700660AF0 /* dispatch.swift in Sources */,
+				EC49BD301B75133700660AF0 /* DispatchFileModes.swift in Sources */,
+				EC49BD311B75133700660AF0 /* Error.swift in Sources */,
+				EC49BD321B75133700660AF0 /* func.swift in Sources */,
+				EC49BD331B75133700660AF0 /* Index.swift in Sources */,
+				EC49BD341B75133700660AF0 /* Locked.swift in Sources */,
+				EC49BD351B75133700660AF0 /* mat-generated.swift in Sources */,
+				EC49BD361B75133700660AF0 /* math.swift in Sources */,
+				EC49BD371B75133700660AF0 /* Resource.swift in Sources */,
+				EC49BD381B75133700660AF0 /* Result.swift in Sources */,
+				EC49BD391B75133700660AF0 /* Thread.swift in Sources */,
+				EC49BD3A1B75133700660AF0 /* Time.swift in Sources */,
+				EC49BD3B1B75133700660AF0 /* check.swift in Sources */,
+				EC49BD3C1B75133700660AF0 /* vec-generated.swift in Sources */,
+				EC49BD3D1B75133700660AF0 /* VecType.swift in Sources */,
+				EC49BD171B75132C00660AF0 /* CGPoint-generated.swift in Sources */,
+				EC49BD181B75132C00660AF0 /* CGPoint.swift in Sources */,
+				EC49BD191B75132C00660AF0 /* CGRect.swift in Sources */,
+				EC49BD1A1B75132C00660AF0 /* CGSize.swift in Sources */,
+				EC49BD1B1B75132C00660AF0 /* CRColor.swift in Sources */,
+				EC49BD1C1B75132C00660AF0 /* CREdgeInsets.swift in Sources */,
+				EC49BD1D1B75132C00660AF0 /* CREvent.swift in Sources */,
+				EC49BD1E1B75132C00660AF0 /* CRFont.swift in Sources */,
+				EC49BD1F1B75132C00660AF0 /* CRFontDescriptor.swift in Sources */,
+				EC49BD201B75132C00660AF0 /* CRResponder.swift in Sources */,
+				EC49BD211B75132C00660AF0 /* CRView.swift in Sources */,
+				EC49BD221B75132C00660AF0 /* CRViewController.swift in Sources */,
+				EC49BD231B75132C00660AF0 /* CRWindow.swift in Sources */,
+				EC49BD241B75132C00660AF0 /* Flt.swift in Sources */,
+				EC49BD251B75132C00660AF0 /* layout.swift in Sources */,
+				EC49BD271B75132C00660AF0 /* NSLayoutConstraint.m in Sources */,
+				EC49BD281B75132C00660AF0 /* NSLayoutConstraint.swift in Sources */,
+				EC49BD291B75132C00660AF0 /* QKResponder.swift in Sources */,
+				EC49BD0F1B75131F00660AF0 /* Array.swift in Sources */,
+				EC49BD101B75131F00660AF0 /* Character.swift in Sources */,
+				EC49BD111B75131F00660AF0 /* CollectionType.swift in Sources */,
+				EC49BD121B75131F00660AF0 /* Dictionary.swift in Sources */,
+				EC49BD131B75131F00660AF0 /* Int.swift in Sources */,
+				EC49BD141B75131F00660AF0 /* Optional.swift in Sources */,
+				EC49BD151B75131F00660AF0 /* Process.swift in Sources */,
+				EC49BD161B75131F00660AF0 /* String.swift in Sources */,
+				EC49BD051B7511AC00660AF0 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		ECBBE3651B5FE5D300DEA686 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				EC49BCEE1B75021200660AF0 /* AreaBuffer.swift in Sources */,
 				EC49BCEF1B75021200660AF0 /* mat-generated.swift in Sources */,
+				EC49BCFD1B750E1C00660AF0 /* CRFontDescriptor.swift in Sources */,
 				EC49BCF01B75021200660AF0 /* vec-generated.swift in Sources */,
 				EC49BCF11B75021A00660AF0 /* CGPoint-generated.swift in Sources */,
 				EC900BE51B5FEA2D003AAADA /* CRWindow.swift in Sources */,
@@ -418,7 +574,7 @@
 				EC900BBB1B5FEA1B003AAADA /* func.swift in Sources */,
 				EC900BE41B5FEA2D003AAADA /* CRViewController.swift in Sources */,
 				EC900BE71B5FEA2D003AAADA /* layout.swift in Sources */,
-				EC900BC41B5FEA1B003AAADA /* util.swift in Sources */,
+				EC900BC41B5FEA1B003AAADA /* check.swift in Sources */,
 				EC900BC21B5FEA1B003AAADA /* Thread.swift in Sources */,
 				EC900BE21B5FEA2D003AAADA /* CRResponder.swift in Sources */,
 				EC900BE01B5FEA2D003AAADA /* CREvent.swift in Sources */,
@@ -477,6 +633,38 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		EC49BD0D1B7511AC00660AF0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "test/qk-osx-test/qk-osx-test-info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_CFLAGS = "-DOS_OSX";
+				PRODUCT_BUNDLE_IDENTIFIER = "gwk.qk-osx-test";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		EC49BD0E1B7511AC00660AF0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "test/qk-osx-test/qk-osx-test-info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_CFLAGS = "-DOS_OSX";
+				PRODUCT_BUNDLE_IDENTIFIER = "gwk.qk-osx-test";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
 		ECBBE38F1B5FE5D300DEA686 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -633,6 +821,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		EC49BD0C1B7511AC00660AF0 /* Build configuration list for PBXNativeTarget "qk-osx-test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EC49BD0D1B7511AC00660AF0 /* Debug */,
+				EC49BD0E1B7511AC00660AF0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		ECBBE3641B5FE5D300DEA686 /* Build configuration list for PBXProject "qk" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

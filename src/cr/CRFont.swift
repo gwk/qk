@@ -4,13 +4,9 @@
 #if os(OSX)
   import AppKit
   typealias CRFont = NSFont
-  typealias CRFontDescriptor = NSFontDescriptor
-  let CRFontAttrFixedAdvance = NSFontFixedAdvanceAttribute
   #else
   import UIKit
   typealias CRFont = UIFont
-  typealias CRFontDescriptor = UIFontDescriptor
-  let CRFontAttrFixedAdvance = UIFontDescriptorFixedAdvanceAttribute
 #endif
 
 
@@ -19,9 +15,16 @@ extension CRFont {
   var lineHeight: Flt { return (ascender - descender) + leading }
 #endif
   
+  var descriptor: CRFontDescriptor {
+    #if os(OSX)
+      return fontDescriptor
+      #else
+      return fontDescriptor()
+    #endif
+  }
+  
   var fixedAdvance: Flt {
-    let attrs = fontDescriptor.fontAttributes
-    if let advanceVal: AnyObject = attrs[CRFontAttrFixedAdvance] {
+    if let advanceVal: AnyObject = descriptor.attributes[CRFontAttrFixedAdvance] {
       return Flt(advanceVal as! NSNumber)
     } else {
       return 0

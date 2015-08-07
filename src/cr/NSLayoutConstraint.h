@@ -1,7 +1,7 @@
 // © 2014 George King.
 // Permission to use this file is granted in license-qk.txt.
 
-#if !TARGET_OS_IPHONE
+#if OS_OSX
 #import <AppKit/AppKit.h>
 #else
 #import <UIKit/UIKit.h>

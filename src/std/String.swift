@@ -109,7 +109,7 @@ extension String {
   }
 
   var lines: [String] {
-    return split(self.characters, allowEmptySlices: true) { $0 == "\n" }.map { String($0) }
+    return self.characters.split(allowEmptySlices: true) { $0 == "\n" }.map { String($0) }
   }
   
   func numberedLinesFrom(from: Int) -> [String] {

@@ -10,6 +10,10 @@
 		EC456BC81B5FE76C00126CFD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC456BC31B5FE76C00126CFD /* AppDelegate.swift */; };
 		EC456BC91B5FE76C00126CFD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EC456BC41B5FE76C00126CFD /* Assets.xcassets */; };
 		EC456BCC1B5FE76C00126CFD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC456BC71B5FE76C00126CFD /* ViewController.swift */; };
+		EC49BCEE1B75021200660AF0 /* AreaBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BA01B5FEA1B003AAADA /* AreaBuffer.swift */; };
+		EC49BCEF1B75021200660AF0 /* mat-generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BAB1B5FEA1B003AAADA /* mat-generated.swift */; };
+		EC49BCF01B75021200660AF0 /* vec-generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BB21B5FEA1B003AAADA /* vec-generated.swift */; };
+		EC49BCF11B75021A00660AF0 /* CGPoint-generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900BC81B5FEA2D003AAADA /* CGPoint-generated.swift */; };
 		EC900B971B5FE901003AAADA /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900B8F1B5FE901003AAADA /* Array.swift */; };
 		EC900B981B5FE901003AAADA /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900B901B5FE901003AAADA /* Character.swift */; };
 		EC900B991B5FE901003AAADA /* CollectionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC900B911B5FE901003AAADA /* CollectionType.swift */; };
@@ -394,6 +398,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EC49BCEE1B75021200660AF0 /* AreaBuffer.swift in Sources */,
+				EC49BCEF1B75021200660AF0 /* mat-generated.swift in Sources */,
+				EC49BCF01B75021200660AF0 /* vec-generated.swift in Sources */,
+				EC49BCF11B75021A00660AF0 /* CGPoint-generated.swift in Sources */,
 				EC900BE51B5FEA2D003AAADA /* CRWindow.swift in Sources */,
 				EC900B991B5FE901003AAADA /* CollectionType.swift in Sources */,
 				EC900BBD1B5FEA1B003AAADA /* Locked.swift in Sources */,

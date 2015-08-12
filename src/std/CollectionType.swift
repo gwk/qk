@@ -25,11 +25,11 @@ extension CollectionType where Generator.Element : Equatable {
     while i != e {
       var j = i
       var found = true
-      for c in query {
+      for el in query {
         if j == e {
           return nil // ran out of domain.
         }
-        if c != self[j] {
+        if el != self[j] {
           found = false
           break
         }
@@ -43,6 +43,16 @@ extension CollectionType where Generator.Element : Equatable {
     return nil
   }
   
+  func has(query: Self, atIndex: Index) -> Bool {
+    var i = atIndex
+    for e in query {
+      if i == endIndex || e != self[i] {
+        return false
+      }
+      i = i.successor()
+    }
+    return true
+  }
 }
 
 

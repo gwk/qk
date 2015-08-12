@@ -4,11 +4,23 @@
 import Foundation
 
 
-let symbolChars = [Character]("_0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzABCDEFG".characters)
-let symbolCharsSet = Set(symbolChars)
+let symbolHeadChars = [Character]("_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".characters)
+let symbolTailChars = symbolHeadChars + [Character]("0123456789".characters)
+
+let symbolHeadCharsSet = Set(symbolHeadChars)
+let symbolTailCharsSet = Set(symbolTailChars)
 
 
 extension String {
+  
+  init(count: Int, char: Character) {
+    // count:repeatedValue: is overloaded, so character literals fail as ambiguous.
+    self.init(count: count, repeatedValue: char)
+  }
+  
+  init(indent: Int) {
+    self.init(count: indent * 2, char: " ")
+  }
   
   func withoutPathExt() -> String {
     if let r = rangeOfString(".", options: .BackwardsSearch) {
@@ -58,18 +70,18 @@ extension String {
     return s
   }
   
-  var asSym: String {
+  var asSym: String { // TODO: decide if this should be strict; currently quite lax.
     for c0 in self.characters { // do not actually iterate; just get first element.
       if c0.isDigit {
-        return "_" + mapChars() { symbolCharsSet.contains($0) ? $0 : "_" }
+        return "_" + mapChars() { symbolTailCharsSet.contains($0) ? $0 : "_" }
       } else {
-        return mapChars() { symbolCharsSet.contains($0) ? $0 : "_" }
+        return mapChars() { symbolTailCharsSet.contains($0) ? $0 : "_" }
       }
     }
     return "" // empty case.
   }
   
-  var isSym: Bool {
+  var isSym: Bool { // TODO: decide if this should be strict; currently quite lax.
     if isEmpty {
       return false
     }
@@ -81,7 +93,7 @@ extension String {
         }
         first = false
       }
-      if !symbolCharsSet.contains(c) {
+      if !symbolTailCharsSet.contains(c) {
         return false
       }
     }

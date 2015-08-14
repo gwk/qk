@@ -22,7 +22,6 @@ class GLTextAtlas {
     var sizes:[F32] = []
     for i in HPOTSeq() {
       let f = F32(i)
-      
       if f > maxSize * maxPxPerPt { break }
       sizes.append(f)
     }

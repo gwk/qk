@@ -104,7 +104,13 @@ class OutFile: File, OutputStreamType {
   func write(string: String) {
     string.nulTerminatedUTF8.withUnsafeBufferPointer {
       (buffer: UnsafeBufferPointer<UTF8.CodeUnit>) -> () in
-        Darwin.write(fd, buffer.baseAddress, buffer.count)
+        Darwin.write(fd, buffer.baseAddress, buffer.count - 1) // do not write null terminator.
+    }
+  }
+  
+  func setPermissions(permissions: mode_t) {
+    if fchmod(fd, permissions) != 0 {
+      fatalError("setPermissions(\(permissions)) failed: \(stringForCurrentError())")
     }
   }
 }

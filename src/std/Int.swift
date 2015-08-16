@@ -10,7 +10,8 @@ extension Int {
 
   func repr(base: Int = 10, pad: Character = " ", width: Int = 0) -> String {
     if self == 0 {
-      return String(count: width, repeatedValue: pad)
+      let count = Swift.max(0, width - 1)
+      return String(count: count, repeatedValue: pad) + "0"
     }
     var a = [Character]()
     let neg = (self < 0)

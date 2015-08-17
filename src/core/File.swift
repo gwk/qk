@@ -43,6 +43,10 @@ class File: CustomStringConvertible {
     check(res == 0, "File stat failed: '\(desc)'.")
     return stat_res
   }
+  
+  static func setPerms(path: String, _ perms: mode_t) {
+    Darwin.chmod(path, perms)
+  }
 }
 
 
@@ -108,9 +112,9 @@ class OutFile: File, OutputStreamType {
     }
   }
   
-  func setPermissions(permissions: mode_t) {
-    if fchmod(fd, permissions) != 0 {
-      fatalError("setPermissions(\(permissions)) failed: \(stringForCurrentError())")
+  func setPerms(perms: mode_t) {
+    if fchmod(fd, perms) != 0 {
+      fail("setPerms(\(perms)) failed: \(stringForCurrentError()); '\(desc)'")
     }
   }
 }

@@ -125,7 +125,7 @@ struct POTSeq: SequenceType { // TODO: change to constant list.
   }
 }
 
-struct HPOTSeq: SequenceType { // TODO: change constant list.
+struct HPOTSeq: SequenceType { // TODO: change to constant list.
   let start: Int = 1
   func generate() -> AnyGenerator<Int> {
     var val: Int = start

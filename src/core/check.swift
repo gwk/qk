@@ -15,3 +15,10 @@ func check(condition: Bool, file: StaticString = __FILE__, line: UInt = __LINE__
     fatalError("check failure", file: file, line: line)
   }
 }
+
+@noreturn func fail(message: String) {
+  std_err.write("error: ")
+  std_err.write(message)
+  std_err.write("\n")
+  Process.exit(1)
+}

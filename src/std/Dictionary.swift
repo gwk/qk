@@ -6,19 +6,19 @@ import Foundation
 extension Dictionary {
   
   func contains(key: Key) -> Bool {
-    switch self[key] {
-    case .None: return false
-    case .Some: return true
-    }
+    return self[key] != nil
   }
 }
 
-func valsSortedByKey<K: Comparable, V>(dict: [K: V]) -> [V] {
-  let s = dict.sort {
-    (a: (k: K, v: V), b: (k: K, v: V)) in
-    return a.k < b.k
-  }
-  return s.map() {
-    (_, v) in return v
+
+extension Dictionary where Key: Comparable {
+  var valsSortedByKey: [Value] {
+    let s = sort {
+      (a: (k: Key, v: Value), b: (k: Key, v: Value)) in
+      return a.k < b.k
+    }
+    return s.map() {
+      (_, v) in return v
+    }
   }
 }

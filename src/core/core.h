@@ -1,5 +1,4 @@
-// © 2015 George King.
-// Permission to use this file is granted in license-qk.txt.
+// © 2015 George King. Permission to use this file is granted in license-qk.txt.
 
 
 #define errFL(fmt, ...) fprintf(stderr, fmt "\n" ,##__VA_ARGS__)

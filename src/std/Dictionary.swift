@@ -8,6 +8,16 @@ extension Dictionary {
   func contains(key: Key) -> Bool {
     return self[key] != nil
   }
+  
+  mutating func get(key: Key, dflt: () -> Value) -> Value {
+    if let v = self[key] {
+      return v
+    } else {
+      let v = dflt()
+      self[key] = v
+      return v
+    }
+  }
 }
 
 

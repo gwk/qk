@@ -37,10 +37,6 @@ extension CollectionType where Generator.Element : Equatable {
     }
     return true
   }
-}
-
-
-extension CollectionType where Generator.Element : Equatable {
   
   func part(range: Range<Index>) -> (SubSequence, SubSequence) {
     let ra = startIndex..<range.startIndex

@@ -82,6 +82,16 @@ extension String {
     }
     return s
   }
+
+  func replace(query: Character, with: Character) -> String {
+    return String(characters.replace(query, with: with))
+  }
+  
+  func replace(query: String, with: String) -> String {
+    return String(characters.replace(query.characters, with: with.characters))
+  }
+  
+  var dashToUnder: String { return replace(Character("-"), with: Character("_")) }
   
   // MARK: symbols.
   

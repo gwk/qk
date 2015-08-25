@@ -75,14 +75,14 @@ extension Double {
 }
 
 
-func sum<S: SequenceType where S.Generator.Element: ArithmeticType>(s: S) {
+func sum<S: SequenceType where S.Generator.Element: ArithmeticType>(s: S) -> S.Generator.Element {
   typealias E = S.Generator.Element
-  s.reduce(0) { (accum: E, item: E) in return accum + item }
+  return s.reduce(0) { (accum: E, item: E) in return accum + item }
 }
 
-func prod<S: SequenceType where S.Generator.Element: ArithmeticType>(s: S) {
+func prod<S: SequenceType where S.Generator.Element: ArithmeticType>(s: S) -> S.Generator.Element {
   typealias E = S.Generator.Element
-  s.reduce(1) { (accum: E, item: E) in return accum * item }
+  return s.reduce(1) { (accum: E, item: E) in return accum * item }
 }
 
 func clamp<T: ArithmeticType>(a: T, l: T, h: T) -> T {

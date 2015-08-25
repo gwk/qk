@@ -39,14 +39,14 @@ extension SequenceType where Generator.Element: Equatable {
       if e == query[i] {
         i = i.successor()
         if i == query.endIndex {
-          result.extend(with)
+          result.appendContentsOf(with)
           buffer.removeAll()
           i = query.startIndex
         } else {
           buffer.append(e)
         }
       } else {
-        result.extend(buffer)
+        result.appendContentsOf(buffer)
         result.append(e)
         buffer.removeAll()
         i = query.startIndex

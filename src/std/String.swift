@@ -78,11 +78,11 @@ extension String {
   func mapChars(transform: (Character) -> String) -> String {
     var s = ""
     for c in self.characters {
-      s.extend(transform(c))
+      s.appendContentsOf(transform(c))
     }
     return s
   }
-
+  
   func replace(query: Character, with: Character) -> String {
     return String(characters.replace(query, with: with))
   }
@@ -128,11 +128,11 @@ extension String {
   // MARK: lines.
   
   init(lines: [String]) {
-    self = "\n".join(lines)
+    self = lines.joinWithSeparator("\n")
   }
   
   init(lines: String...) {
-    self = "\n".join(lines)
+    self = lines.joinWithSeparator("\n")
   }
 
   var lineCount: Int {

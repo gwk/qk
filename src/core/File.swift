@@ -130,11 +130,12 @@ var std_out = OutFile(fd: STDOUT_FILENO, desc: "std_out")
 var std_err = OutFile(fd: STDERR_FILENO, desc: "std_err")
 
 
-func out<T>(item: T)  { print(item, &std_out, appendNewline: false) }
-func outL<T>(item: T) { print(item, &std_out, appendNewline: true) }
+func out<T>(item: T)  { print(item, separator: "", terminator: "", toStream: &std_out) }
+func outL<T>(item: T) { print(item, separator: "", terminator: "\n", toStream: &std_out) }
 
-func err<T>(item: T)  { print(item, &std_err, appendNewline: false) }
-func errL<T>(item: T) { print(item, &std_err, appendNewline: true) }
+func err<T>(item: T)  { print(item, separator: "", terminator: "", toStream: &std_err) }
+func errL<T>(item: T) { print(item, separator: "", terminator: "\n", toStream: &std_err) }
+
 
 func errSL(items: Any...) {
   std_err.write(items, sep: " ", end: "\n")

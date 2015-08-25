@@ -3,7 +3,7 @@
 
 extension Optional {
 
-  func or(@autoclosure alt: () -> T) -> T {
+  func or(@autoclosure alt: () -> Wrapped) -> Wrapped {
     if let val = self {
       return val
     } else {

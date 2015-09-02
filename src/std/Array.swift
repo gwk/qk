@@ -10,4 +10,11 @@ extension Array {
     self.reserveCapacity(capacity)
   }
 
+  func get(index: Int) -> Element? {
+    if index >= 0 && index < count {
+      return self[index]
+    } else {
+      return nil
+    }
+  }
 }

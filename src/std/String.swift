@@ -59,6 +59,10 @@ extension String {
     return false
   }
   
+  func has(query: String, atIndex: Index) -> Bool {
+    return characters.has(query.characters, atIndex: atIndex)
+  }
+
   func beforeSuffix(suffix: String) -> String? {
     if hasSuffix(suffix) {
       return String(self.characters.dropLast(suffix.characters.count))

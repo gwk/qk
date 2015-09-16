@@ -218,7 +218,7 @@ func constrain(views: [CRView], metrics: [String: NSNumber] = [:], opts: NSLayou
   }
   var allConstraints: [NSLayoutConstraint] = []
   for c in constraints {
-    allConstraints.extend(c.constraintArray(views, metrics: metrics, opts: opts))
+    allConstraints.appendContentsOf(c.constraintArray(views, metrics: metrics, opts: opts))
   }
   #if DEBUG
     NSLayoutConstraint.activateAndCatchConstraints(allConstraints)

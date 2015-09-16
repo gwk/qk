@@ -34,7 +34,9 @@ class ArrayRef<T>: CollectionType {
   
   func resize(count: Int, val: T) {
     _array.removeAll(keepCapacity: true)
-    _array.extend(lazy(0..<count).map { (i) in return val })
+    for _ in 0..<count {
+        _array.append(val)
+    }
   }
   
   func withUnsafeBufferPointer<R>(@noescape body: (UnsafeBufferPointer<T>) -> R) -> R {

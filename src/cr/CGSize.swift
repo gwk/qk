@@ -6,9 +6,7 @@ import CoreGraphics
 extension CGSize {
   
   init(_ w: Flt, _ h: Flt) { self.init(width: w, height: h) }
-  
-  static let zero = CGSize.zeroSize
-  
+    
   var w: Flt {
     get { return width }
     set { width = newValue }

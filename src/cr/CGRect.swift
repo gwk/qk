@@ -35,9 +35,7 @@ extension CGRect {
     }
     self.init(x, y, w, h)
   }
-  
-  static let zero = CGRect.zeroRect
-  
+    
   var o: CGPoint {
     get { return origin }
     set { origin = newValue }

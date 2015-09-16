@@ -3,7 +3,7 @@
 import Foundation
 
 
-typealias File = CInt // file descriptor.
+typealias FileDescriptor = CInt // file descriptor.
 
 class Resource<T> {
   // A Resource is an encapsulated object:T that can be hotloaded from a file asset.
@@ -14,11 +14,11 @@ class Resource<T> {
   // Resources of immutables function by mutating themselves on update.
   
   // either init or reload the object.
-  typealias LoadFn = (file: File, update: (T, DispatchFileModes)?) -> T
+  typealias LoadFn = (file: FileDescriptor, update: (T, DispatchFileModes)?) -> T
 
   static var queue: dispatch_queue_t { return DispatchQOS.Default.queue }
   
-  static func createSource(file: File) -> dispatch_source_t {
+  static func createSource(file: FileDescriptor) -> dispatch_source_t {
     return dispatch_source_create(DISPATCH_SOURCE_TYPE_VNODE, UInt(file), DispatchFileModes.all.rawValue, Resource.queue)
   }
   
@@ -28,7 +28,7 @@ class Resource<T> {
   }
   
   let path: String
-  var file: File
+  var file: FileDescriptor
   var obj: T
   let loadFn: LoadFn
   var source: dispatch_source_t!

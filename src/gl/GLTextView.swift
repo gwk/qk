@@ -133,7 +133,7 @@ class GLTextView: View {
         let v2 = Vertex(V2S(ge.x, go.y), V2S(te.x, to.y))
         let v3 = Vertex(ge, te)
         // ccw triangles; v2 and v3 are repeated due to shared edge.
-        verts.extend([v0, v1, v2, v1, v3, v2])
+        verts.appendContentsOf([v0, v1, v2, v1, v3, v2])
         pos.x += F32(g.adv)
       } else { // missing glyph
         pos.x += maxAdv

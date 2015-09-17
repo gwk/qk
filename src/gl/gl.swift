@@ -42,8 +42,8 @@ func glCheck() {
   var s = String()
   while code != GLenum(GL_NO_ERROR) {
     let e = glErrorString(code)
-    s.extend(" ")
-    s.extend(e)
+    s.appendContentsOf(" ")
+    s.appendContentsOf(e)
     code = glGetError()
   }
   fatalError("glCheck: \(s)")

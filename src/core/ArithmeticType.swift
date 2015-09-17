@@ -96,21 +96,11 @@ func sign<T: ArithmeticType>(b: Bool) -> T {
   return b ? 1 : -1
 }
 
-#if fase // compiler generates bad code for Doubles.
 func sign<T: ArithmeticType>(x: T) -> T {
   if x < 0 { return -1 }
   if x > 0 { return 1 }
   return 0
 }
-#endif
-
-func sign<T: FloatingPointType>(x: T) -> T {
-  let zero = T(0)
-  if x < zero { return T(-1) }
-  if x > zero { return T(1) }
-  return zero
-}
-
 
 struct POTSeq: SequenceType { // TODO: change to constant list.
   let start: Int = 1

@@ -1,9 +1,9 @@
 // © 2014 George King. Permission to use this file is granted in license-qk.txt.
 
-#if OS_OSX
-#import <AppKit/AppKit.h>
-#else
+#if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
+#else
+#import <AppKit/AppKit.h>
 #endif
 
 @interface NSLayoutConstraint (QK)

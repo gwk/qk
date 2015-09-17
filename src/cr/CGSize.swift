@@ -16,5 +16,7 @@ extension CGSize {
     get { return height }
     set { height = newValue }
   }
+  
+  var aspect: Flt { return w / h }
 }
 

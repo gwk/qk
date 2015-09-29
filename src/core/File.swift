@@ -15,6 +15,7 @@ class File: CustomStringConvertible {
   let desc: String
   
   deinit {
+    // TODO: flush?
     close(fd)
   }
   

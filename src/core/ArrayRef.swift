@@ -4,6 +4,9 @@
 class ArrayRef<T>: CollectionType {
   // pass-by-reference Array type.
   
+  typealias Generator = ContiguousArray<T>.Generator
+  typealias Index = ContiguousArray<T>.Index
+  
   private var _array: ContiguousArray<T>
   
   init() {
@@ -11,13 +14,9 @@ class ArrayRef<T>: CollectionType {
   }
 
   var count: Int { return _array.count }
-
-  typealias Generator = ContiguousArray<T>.Generator
   
   func generate() -> Generator { return _array.generate() }
   
-  typealias Index = ContiguousArray<T>.Index
-
   var startIndex: Index { return _array.startIndex }
 
   var endIndex: Index { return _array.endIndex }

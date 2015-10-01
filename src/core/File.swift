@@ -177,6 +177,11 @@ class OutFile: File, OutputStreamType {
         Darwin.write(descriptor, buffer.baseAddress, buffer.count - 1) // do not write null terminator.
     }
   }
+
+  func writeL(string: String) {
+    write(string)
+    write("\n")
+  }
   
   func setPerms(perms: Perms) {
     if Darwin.fchmod(descriptor, perms) != 0 {

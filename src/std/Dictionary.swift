@@ -9,7 +9,7 @@ extension Dictionary {
     return self[key] != nil
   }
   
-  mutating func get(key: Key, dflt: () -> Value) -> Value {
+  mutating func getDefault(key: Key, dflt: () -> Value) -> Value {
     if let v = self[key] {
       return v
     } else {

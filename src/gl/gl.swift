@@ -16,10 +16,6 @@ import Foundation
 typealias GLHandle = GLuint
 
 
-extension CGLError: Equatable {}
-public func ==(a: CGLError, b: CGLError) -> Bool { return a.rawValue == b.rawValue }
-
-
 func glErrorString(code: GLenum) -> String {
   switch code {
   case GLenum(GL_NO_ERROR): return "GL_NO_ERROR"

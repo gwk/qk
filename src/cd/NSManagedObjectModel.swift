@@ -90,15 +90,15 @@ extension NSEntityDescription {
   }
 
   var props: [NSPropertyDescription] {
-    return valsSortedByKey(namesToProps)
+    return namesToProps.valsSortedByKey
   }
 
   var attrs: [NSAttributeDescription] {
-    return valsSortedByKey(namesToAttrs)
+    return namesToAttrs.valsSortedByKey
   }
 
   var rels: [NSRelationshipDescription] {
-    return valsSortedByKey(namesToRels)
+    return namesToRels.valsSortedByKey
   }
 
   var propNames: Set<String> {

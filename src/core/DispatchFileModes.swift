@@ -19,6 +19,5 @@ struct DispatchFileModes: OptionSetType {
   static let Revoke = DispatchFileModes(rawValue: DISPATCH_VNODE_REVOKE)
   
   static var all: DispatchFileModes = [Delete, Write, Extend, Attrib, Link, Rename, Revoke]
+  static var loadable: DispatchFileModes = [Write, Extend, Rename, Revoke]
 }
-
-

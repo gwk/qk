@@ -3,49 +3,50 @@
 import Foundation
 
 
-typealias FileDescriptor = CInt // file descriptor.
+protocol Reloadable {
+  mutating func reload(file:File) -> Bool
+}
 
-class Resource<T> {
-  // A Resource is an encapsulated object:T that can be hotloaded from a file asset.
-  // When the file changes the Resource calls a reload function to update or replace the object.
+
+let resourceRootDir: String = {
+  // TODO: if in release mode or flag not present, return bundle resource directory.
+  return Process.environment["RALLY_RES"]!
+}()
+
+
+func pathForResourcePath(resPath: String) -> String {
+  return "\(resourceRootDir)/\(resPath)"
+}
+
+
+class Resource<T: Reloadable> {
+  // A Resource is an encapsulated object:T that can be reloaded from a file asset.
+  // When the file changes the Resource calls reload to update the object.
   // It is intended as a mechanism for speeding up the development cycle.
-  // Hot loading requires some sort of mutation of the working object graph; otherwise it will have on effect.
-  // Resource supports both mutable and immutable objects;
-  // Resources of immutables function by mutating themselves on update.
+  // Hot loading requires some sort of mutation of the object.
   
-  // either init or reload the object.
-  typealias LoadFn = (file: FileDescriptor, update: (T, DispatchFileModes)?) -> T
-
-  static var queue: dispatch_queue_t { return DispatchQOS.Default.queue }
+  static var queue: dispatch_queue_t { return dispatch_get_main_queue() } // dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0) }
   
-  static func createSource(file: FileDescriptor) -> dispatch_source_t {
-    return dispatch_source_create(DISPATCH_SOURCE_TYPE_VNODE, UInt(file), DispatchFileModes.all.rawValue, Resource.queue)
+  static func createSource(file: File) -> dispatch_source_t {
+    return dispatch_source_create(DISPATCH_SOURCE_TYPE_VNODE, UInt(file.fd), DispatchFileModes.loadable.rawValue, Resource.queue)
   }
   
-  static var rootDir: String {
-    // TODO: if in release mode or flag not present, return bundle resource directory.
-    return Process.environment["RALLY_RES"]!
-  }
-  
+  let resPath: String
   let path: String
-  var file: FileDescriptor
+  var file: InFile
   var obj: T
-  let loadFn: LoadFn
   var source: dispatch_source_t!
   
   deinit {
-    close(file)
+    dispatch_source_cancel(self.source)
   }
   
-  init(relPath: String, loadFn: LoadFn) {
-    let path = "\(Resource.rootDir)/\(relPath)"
+  init(resPath: String, obj: T) {
+    let path = pathForResourcePath(resPath)
+    self.resPath = resPath
     self.path = path
-    self.file = open(path, O_RDONLY)
-    // TODO: make this a failable init.
-    check(file >= 0, "resource path does not exist: \(path)")
-    self.loadFn = loadFn
-    self.obj = loadFn(file: file, update: nil)
-    //let modes = DispatchFileModes.all
+    self.file = InFile(path: path)
+    self.obj = obj
     self.source = nil // set by enqueue.
     self.enqueue()
   }
@@ -54,28 +55,39 @@ class Resource<T> {
     
     let eventFn: Action = {
       let m = dispatch_source_get_data(self.source)
-      let update = (self.obj, DispatchFileModes(rawValue: m))
-      self.obj = self.loadFn(file: self.file, update: update)
-      if (m & DISPATCH_VNODE_DELETE != 0) {
-        print("watched file deleted! canceling source")
+      let mode = DispatchFileModes(rawValue: m)
+      if (mode == .Delete || mode == .Revoke) {
+        print("watched file deleted/revoked: \(self.resPath)")
         dispatch_source_cancel(self.source)
+      } else {
+        lseek(self.file.fd, 0, SEEK_SET) // TODO: necessary?
+        self.obj.reload(self.file)
       }
     }
     
     let cancelFn: Action = {
-      close(self.file)
+      [weak self] () -> () in
+      print("watched file source canceled: \(self?.resPath)")
+      if let s = self {
+        close(s.file.fd) // TODO: still necessary with InFile object semantics?
+      }
       while true {
-        let file = open(self.path, O_RDONLY)
-        if file != -1 {
-          self.file = file
+        if let s = self {
+          let fd = open(s.path, O_RDONLY)
+          if fd != -1 {
+            print("watched file reopened: \(s.resPath)")
+            s.file = InFile(fd: fd, desc: s.file.description)
+            s.obj.reload(s.file) // is this redundant with eventFn???
+            s.enqueue()
+          }
+        } else { // self was deallocated.
           break
         }
         sleep(1)
       }
-      self.enqueue()
     }
     
-    self.source = dispatch_source_create(DISPATCH_SOURCE_TYPE_VNODE, UInt(file), DispatchFileModes.all.rawValue, Resource.queue)
+    self.source = Resource.createSource(file)
     dispatch_source_set_event_handler(source, eventFn)
     dispatch_source_set_cancel_handler(source, cancelFn)
     dispatch_resume(source)

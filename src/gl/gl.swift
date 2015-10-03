@@ -58,7 +58,7 @@ func glDeleteTextureHandles(textures: GLHandle...) {
 
 
 func glProvideShaderSource(shader: GLHandle, source: String) {
-  source.withUtf8() {
+  source.asUtf8() {
     (ptr, len) -> () in
     let gp = unsafeBitCast(ptr, UnsafePointer<GLchar>.self)
     let gl = GLint(len)

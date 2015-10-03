@@ -6,7 +6,7 @@ import Foundation
 extension NSOutputStream: OutputStreamType {
   
   public func write(string: String) {
-    string.withUtf8() {
+    string.asUtf8() {
       (ptr, len) -> () in
       if len > 0 {
         let written = self.write(ptr, maxLength: len)

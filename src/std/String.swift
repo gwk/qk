@@ -167,12 +167,12 @@ extension String {
   
   // MARK: utf8.
   
-  func withUtf8<R>(@noescape body: (UnsafeBufferPointer<UTF8.CodeUnit>) -> R) -> R {
+  func asUtf8<R>(@noescape body: (UnsafeBufferPointer<UTF8.CodeUnit>) -> R) -> R {
     return nulTerminatedUTF8.withUnsafeBufferPointer(body)
   }
   
-  func withUtf8<R>(@noescape body: (UnsafePointer<UTF8.CodeUnit>, Int) -> R) -> R {
-    return withUtf8() {
+  func asUtf8<R>(@noescape body: (UnsafePointer<UTF8.CodeUnit>, Int) -> R) -> R {
+    return asUtf8() {
       (bp: UnsafeBufferPointer<UTF8.CodeUnit>) -> R in
       return body(bp.baseAddress, bp.count - 1) // subtract one to omit the null terminator.
     }

@@ -55,3 +55,11 @@ extension SequenceType where Generator.Element: Equatable {
     return result
   }
 }
+
+
+extension SequenceType where Generator.Element == String {
+  func join() -> String {
+    return joinWithSeparator("")
+  }
+}
+

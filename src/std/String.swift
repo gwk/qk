@@ -70,7 +70,7 @@ extension String {
       return nil
     }
   }
-  
+
   func mapChars(transform: (Character) -> Character) -> String {
     var s = ""
     for c in self.characters {
@@ -185,40 +185,6 @@ extension String {
       return (String(a), String(b))
     }
     return nil
-  }
-  
-  // files.
-  
-  init?(file: File) {
-    let len = Int(lseek(file.fd, 0, SEEK_END))
-    if len < 0 {
-      print("file seek failed: \(file.desc)")
-      return nil
-    }
-    let buffer = UnsafeMutablePointer<CChar>(malloc(len))
-    pread(file.fd, buffer, len, 0)
-    let s = String.fromCString(buffer)
-    free(buffer)
-    if let s = s {
-      self = s
-    } else {
-      print("file text failed conversion to utf8: \(file.desc)")
-      return nil
-    }
-  }
-  
-  init?(path: String) {
-    let fd = open(path, O_RDONLY)
-    if fd < 0 {
-      print("file open failed: \(path)")
-      return nil
-    }
-    let s: String? = String(file: InFile(fd: fd, desc: path), label: path)
-    if let s = s {
-      self = s
-    } else {
-      return nil
-    }
   }
 }
 

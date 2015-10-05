@@ -4,7 +4,8 @@ import Foundation
 
 
 protocol Reloadable {
-  mutating func reload(file:File) -> Bool
+  init()
+  mutating func reload(file: InFile) -> Bool
 }
 
 
@@ -20,77 +21,84 @@ func pathForResourcePath(resPath: String) -> String {
 
 
 class Resource<T: Reloadable> {
-  // A Resource is an encapsulated object:T that can be reloaded from a file asset.
+  // A Resource is an encapsulated object that can be reloaded from a file asset.
   // When the file changes the Resource calls reload to update the object.
-  // It is intended as a mechanism for speeding up the development cycle.
-  // Hot loading requires some sort of mutation of the object.
-  
-  static var queue: dispatch_queue_t { return dispatch_get_main_queue() } // dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0) }
-  
-  static func createSource(file: File) -> dispatch_source_t {
-    return dispatch_source_create(DISPATCH_SOURCE_TYPE_VNODE, UInt(file.fd), DispatchFileModes.loadable.rawValue, Resource.queue)
-  }
+  // It is intended as a means of speeding up the development cycle.
+  // Note that this mechanism requires some sort of mutation of the object.
   
   let resPath: String
   let path: String
-  var file: InFile
-  var obj: T
-  var source: dispatch_source_t!
+  private(set) var obj: T
+  private var file: InFile? = nil
+  private var source: DispatchSource? = nil
   
   deinit {
-    dispatch_source_cancel(self.source)
+    cancelSource()
   }
   
-  init(resPath: String, obj: T) {
+  init(resPath: String) {
     let path = pathForResourcePath(resPath)
     self.resPath = resPath
     self.path = path
-    self.file = InFile(path: path)
-    self.obj = obj
-    self.source = nil // set by enqueue.
-    self.enqueue()
+    self.obj = T()
+    retry()
   }
-  
+
+  func cancelSource() {
+    source?.cancel()
+    source = nil
+  }
+
+  func reload() {
+    if !self.obj.reload(self.file!) {
+      errL("resource reload failed: \(self.resPath)")
+    }
+  }
+
+  func retry() {
+    do {
+      file = try InFile(path: path)
+      errL("resource file opened: \(resPath)")
+      reload()
+      enqueue()
+    } catch let e as File.Error {
+      errL("resource file unavailable: \(resPath); error: \(e)")
+      dispatch_after(DispatchTime.fromNow(1), dispatchMainQueue) {
+        [weak self] in
+        self?.retry()
+      }
+    } catch { fatalError() }
+  }
+
+  func handleEvent() {
+    let m = source!.getData() as dispatch_source_vnode_flags_t
+    let modes = DispatchFileModes(rawValue: m)
+    if modes.contains(.Delete) || modes.contains(.Rename) || modes.contains(.Revoke) {
+      errL("resource removed (\(modes)): \(resPath)")
+      cancelSource()
+      return
+    }
+    assert(modes == .Write, "unexpected modes: \(modes)")
+    errL("resource modified: \(resPath)")
+    if !file!.rewindMaybe() {
+      errL("resource rewind failed: \(resPath)")
+      cancelSource()
+      return
+    }
+    reload()
+  }
+
+  func handleCancel() {
+    errL("resource dispatch source canceled: \(resPath)")
+    file = nil
+    retry()
+  }
+
   func enqueue() {
-    
-    let eventFn: Action = {
-      let m = dispatch_source_get_data(self.source)
-      let mode = DispatchFileModes(rawValue: m)
-      if (mode == .Delete || mode == .Revoke) {
-        print("watched file deleted/revoked: \(self.resPath)")
-        dispatch_source_cancel(self.source)
-      } else {
-        lseek(self.file.fd, 0, SEEK_SET) // TODO: necessary?
-        self.obj.reload(self.file)
-      }
-    }
-    
-    let cancelFn: Action = {
-      [weak self] () -> () in
-      print("watched file source canceled: \(self?.resPath)")
-      if let s = self {
-        close(s.file.fd) // TODO: still necessary with InFile object semantics?
-      }
-      while true {
-        if let s = self {
-          let fd = open(s.path, O_RDONLY)
-          if fd != -1 {
-            print("watched file reopened: \(s.resPath)")
-            s.file = InFile(fd: fd, desc: s.file.description)
-            s.obj.reload(s.file) // is this redundant with eventFn???
-            s.enqueue()
-          }
-        } else { // self was deallocated.
-          break
-        }
-        sleep(1)
-      }
-    }
-    
-    self.source = Resource.createSource(file)
-    dispatch_source_set_event_handler(source, eventFn)
-    dispatch_source_set_cancel_handler(source, cancelFn)
-    dispatch_resume(source)
+    let cancelFn: Action = { [weak self] in self?.handleCancel() }
+    let eventFn: Action = { [weak self] in self?.handleEvent() }
+    source = file!.createDispatchSource([.Delete, .Rename, .Revoke, .Write], cancelFn: cancelFn, eventFn: eventFn)
+    source!.resume()
   }
 }
 

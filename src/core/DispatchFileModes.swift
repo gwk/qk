@@ -3,7 +3,7 @@
 import Dispatch
 
 
-struct DispatchFileModes: OptionSetType {
+struct DispatchFileModes: OptionSetType, CustomStringConvertible {
   
   let rawValue: Uns
   
@@ -20,4 +20,15 @@ struct DispatchFileModes: OptionSetType {
   
   static var all: DispatchFileModes = [Delete, Write, Extend, Attrib, Link, Rename, Revoke]
   static var loadable: DispatchFileModes = [Write, Extend, Rename, Revoke]
+
+  var description: String {
+    var strings: [String] = []
+    if self.contains(DispatchFileModes.Delete) { strings.append("Delete") }
+    if self.contains(DispatchFileModes.Write)  { strings.append("Write") }
+    if self.contains(DispatchFileModes.Extend) { strings.append("Extend") }
+    if self.contains(DispatchFileModes.Attrib) { strings.append("Attrib") }
+    if self.contains(DispatchFileModes.Rename) { strings.append("Rename") }
+    if self.contains(DispatchFileModes.Revoke) { strings.append("Revoke") }
+    return "[(\(strings.joinWithSeparator(", "))]"
+  }
 }

@@ -3,132 +3,192 @@
 import Darwin
 
 
-func stringForCurrentError() -> String {
-  return String.fromCString(strerror(errno))!
-}
-
-
 class File: CustomStringConvertible {
+  // the File classs encapsulates a system file descriptor.
+  // the design is intended to:
+  // prevent misuse of the file descriptor that could lead to problems like file descriptor leaks.
+  // for example, calling close on a raw file descriptor could allow that descriptor to be reassigned to a new file;
+  // aliases of that descriptor will then misuse the new file.
+
   typealias Descriptor = Int32
-  
-  let fd: Descriptor
-  let desc: String
-  
+  typealias Stats = Darwin.stat
+  typealias Perms = mode_t
+
+  enum Error: ErrorType {
+    case ChangePerms(path: String, perms: Perms)
+    case Copy(from: String, to: String)
+    case Open(path: String, msg: String)
+    case Read(path: String, offset: Int, len: Int)
+    case ReadMalloc(path: String, len: Int)
+    case Seek(path: String, pos: Int)
+    case Stat(path: String, msg: String)
+    case Utf8Decode(path: String)
+  }
+
+  let path: String
+  private let descriptor: Descriptor
+
   deinit {
-    // TODO: flush?
-    close(fd)
+    if Darwin.close(descriptor) != 0 { errL("WARNING: File.close failed: \(self); \(stringForCurrentError())") }
   }
   
-  required init(fd: Descriptor, desc: String) {
-    self.fd = fd
-    self.desc = desc
+  init(path: String, descriptor: Descriptor) {
+    guard descriptor >= 0 else { fatalError("bad file descriptor for File at path: \(path)") }
+    self.path = path
+    self.descriptor = descriptor
   }
-  
-  init(path: String, mode: CInt, create: mode_t? = nil) {
-    self.desc = path
-    if let permissions = create {
-      fd = open(path, mode | O_CREAT, permissions)
+
+  class func openDescriptor(path: String, mode: CInt, create: Perms? = nil) throws -> Descriptor {
+    var descriptor: Descriptor
+    if let perms = create {
+      descriptor = Darwin.open(path, mode | O_CREAT, perms)
     } else {
-      fd = open(path, mode)
+      descriptor = Darwin.open(path, mode)
     }
-    check(fd >= 0, "open failed for path: '\(path)'; error: \(stringForCurrentError()).")
+    guard descriptor >= 0 else { throw Error.Open(path: path, msg: stringForCurrentError()) }
+    return descriptor
+  }
+
+  convenience init(path: String, mode: CInt, create: Perms? = nil) throws {
+    self.init(path: path, descriptor: try File.openDescriptor(path, mode: mode, create: create))
   }
   
   var description: String {
-    return "\(self.dynamicType)(fd:\(fd), desc:'\(desc)')"
+    return "\(self.dynamicType)(path:'\(path)', descriptor: \(descriptor))"
   }
-  
-  var stats: stat {
-    var stat_res = stat()
-    let res = fstat(fd, &stat_res)
-    check(res == 0, "File stat failed: '\(desc)'.")
-    return stat_res
+
+  func stats() throws -> Stats {
+    var stats = Darwin.stat()
+    let res = Darwin.fstat(descriptor, &stats)
+    guard res == 0 else { throw Error.Stat(path: path, msg: stringForCurrentError()) }
+    return stats
   }
-  
-  static func setPerms(path: String, _ perms: mode_t) {
-    Darwin.chmod(path, perms)
+
+  func seekAbs(pos: Int) throws {
+    guard Darwin.lseek(descriptor, off_t(pos), SEEK_SET) == 0 else { throw Error.Seek(path: path, pos: pos) }
+  }
+
+  func rewind() throws {
+    try seekAbs(0)
+  }
+
+  func rewindMaybe() -> Bool {
+    do {
+      try rewind()
+    } catch {
+      return false
+    }
+    return true
+  }
+
+  func createDispatchSource(modes: DispatchFileModes, queue: DispatchQueue = dispatchMainQueue,
+    registerFn: Action? = nil, cancelFn: Action? = nil, eventFn: Action) -> DispatchSource {
+      let source = dispatch_source_create(DISPATCH_SOURCE_TYPE_VNODE, Uns(descriptor), modes.rawValue, queue)!
+      if let rf = registerFn {
+        dispatch_source_set_registration_handler(source, rf)
+      }
+      // the cancel handler retains the file to prevent a race condition
+      // where the file descriptor gets reused but the source is not yet canceled.
+      // see the documentation for dispatch_source_set_cancel_handler.
+      let _self = self
+      if let cf = cancelFn {
+        dispatch_source_set_cancel_handler(source) {
+          [_self] in
+          _self // no-op.
+          cf()
+        }
+      } else {
+        dispatch_source_set_cancel_handler(source) {
+          [_self] in
+          _self
+        }
+      }
+    dispatch_source_set_event_handler(source, eventFn)
+    return source
+  }
+
+  static func changePerms(path: String, _ perms: Perms) throws {
+    guard Darwin.chmod(path, perms) == 0 else { throw Error.ChangePerms(path: path, perms: perms) }
+  }
+
+  func copy(fromPath fromPath: String, toPath: String, create: Perms? = nil) throws {
+    try InFile(path: fromPath).copyTo(OutFile(path: toPath, create: create))
   }
 }
 
 
 class InFile: File {
-  
-  required init(fd: Descriptor, desc: String) { super.init(fd: fd, desc: desc) }
-  
-  override init(path: String, mode: CInt, create: mode_t? = nil) {
-    fatalError("ReadFile should use init(path, create?)")
+
+  convenience init(path: String, create: Perms? = nil) throws {
+    self.init(path: path, descriptor: try File.openDescriptor(path, mode: O_RDONLY, create: create))
   }
+
+  func len() throws -> Int { return try Int(stats().st_size) }
   
-  init(path: String, create: mode_t? = nil) {
-    super.init(path: path, mode: O_RDONLY, create: create)
-  }
-  
-  var len: Int { return Int(stats.st_size) }
-  
-  func read(offset offset: Int, len: Int, ptr: UnsafeMutablePointer<Void>) -> Int {
-    let len_act = Darwin.pread(Int32(fd), ptr, len, off_t(offset))
-    check(len_act >= 0, "file read failed: '\(desc)'.")
+  func readAbs(offset offset: Int, len: Int, ptr: UnsafeMutablePointer<Void>) throws -> Int {
+    let len_act = Darwin.pread(Int32(descriptor), ptr, len, off_t(offset))
+    guard len_act >= 0 else { throw Error.Read(path: path, offset: offset, len: len) }
     return len_act
   }
   
-  func read() -> String {
-    let len = self.len
+  func readText() throws -> String {
+    let len = try self.len()
     let bufferLen = len + 1
     let buffer = malloc(bufferLen)
-    check(buffer != nil, "File.read: malloc failed for size: \(bufferLen); '\(desc)'.")
-    let len_act = read(offset: 0, len: len, ptr: buffer)
-    check(len_act == len, "File.read: expected read length: \(len); actually read \(len_act).")
+    guard buffer != nil else { throw Error.ReadMalloc(path: path, len: len) }
+    let len_act = try readAbs(offset: 0, len: len, ptr: buffer)
+    guard len_act == len else { throw Error.Read(path: path, offset: 0, len: len) }
     let charBuffer = unsafeBitCast(buffer, UnsafeMutablePointer<CChar>.self)
-    charBuffer[len] = 0
+    charBuffer[len] = 0 // null terminator.
     let (s, _) = String.fromCStringRepairingIllFormedUTF8(charBuffer)
     free(buffer)
-    check(s != nil, "File.read: UTF8 error could not be repaired: '\(desc)'.")
-    return s!
+    guard let res = s else { throw Error.Utf8Decode(path: path) }
+    return res
   }
   
-  func copyTo(outFile: OutFile) {
+  func copyTo(outFile: OutFile) throws {
     let attrs: Int32 = COPYFILE_ACL|COPYFILE_STAT|COPYFILE_XATTR|COPYFILE_DATA
-    let res = fcopyfile(self.fd, outFile.fd, copyfile_state_t(), copyfile_flags_t(attrs))
-    check(res == 0, "File.copyTo: failed to copy from \(self) to \(outFile)")
+    guard Darwin.fcopyfile(self.descriptor, outFile.descriptor, copyfile_state_t(), copyfile_flags_t(attrs)) == 0 else {
+      throw Error.Copy(from: path, to: outFile.path)
+    }
+  }
+
+  static func readText(path: String) throws -> String {
+    let f = try InFile(path: path)
+    return try f.readText()
+  }
+
+  static func readTextOrFail(path: String) throws -> String {
+    let f = try InFile(path: path)
+    return try f.readText()
   }
 }
 
 
 class OutFile: File, OutputStreamType {
   
-  required init(fd: Descriptor, desc: String) { super.init(fd: fd, desc: desc) }
+  convenience init(path: String, create: Perms? = nil) throws {
+    self.init(path: path, descriptor: try File.openDescriptor(path, mode: O_WRONLY | O_TRUNC, create: create))
+  }
 
-  override init(path: String, mode: CInt, create: mode_t? = nil) {
-    fatalError("OutFile should use init(path, create?).")
-  }
-  
-  init(path: String, create: mode_t? = nil) {
-    super.init(path: path, mode: O_WRONLY | O_TRUNC, create: create)
-  }
-  
   func write(string: String) {
     string.nulTerminatedUTF8.withUnsafeBufferPointer {
       (buffer: UnsafeBufferPointer<UTF8.CodeUnit>) -> () in
-        Darwin.write(fd, buffer.baseAddress, buffer.count - 1) // do not write null terminator.
+        Darwin.write(descriptor, buffer.baseAddress, buffer.count - 1) // do not write null terminator.
     }
   }
   
-  func setPerms(perms: mode_t) {
-    if fchmod(fd, perms) != 0 {
-      fail("setPerms(\(perms)) failed: \(stringForCurrentError()); '\(desc)'")
+  func setPerms(perms: Perms) {
+    if Darwin.fchmod(descriptor, perms) != 0 {
+      fail("setPerms(\(perms)) failed: \(stringForCurrentError()); '\(path)'")
     }
   }
 }
 
 
-func copy(fromPath fromPath: String, toPath: String, create: mode_t? = nil) {
-  InFile(path: fromPath).copyTo(OutFile(path: toPath, create: create))
-}
-
-
-var std_in = InFile(fd: STDIN_FILENO, desc: "std_in")
-var std_out = OutFile(fd: STDOUT_FILENO, desc: "std_out")
-var std_err = OutFile(fd: STDERR_FILENO, desc: "std_err")
+var std_in = InFile(path: "std_in", descriptor: STDIN_FILENO)
+var std_out = OutFile(path: "std_out", descriptor: STDOUT_FILENO)
+var std_err = OutFile(path: "std_err", descriptor: STDERR_FILENO)
 
 
 func out<T>(item: T)  { print(item, separator: "", terminator: "", toStream: &std_out) }

@@ -1,5 +1,6 @@
 // © 2014 George King. Permission to use this file is granted in license-qk.txt.
 
+#import "TargetConditionals.h" 
 #if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
 #else

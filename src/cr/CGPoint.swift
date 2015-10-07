@@ -9,5 +9,3 @@ extension CGPoint {
 
   init(_ s: CGSize) { self.init(x: s.w, y: s.h) }
 }
-
-

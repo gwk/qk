@@ -1,27 +1,52 @@
-//
-//  AppDelegate.swift
-//  qk-osx-test
-//
-//  Created by George King on 8/7/15.
-//  Copyright © 2015 gwk. All rights reserved.
-//
+// © 2015 George King. Permission to use this file is granted in license-qk.txt.
 
-import Cocoa
+import AppKit
 
-@NSApplicationMain
+
+let initWindowSize = CGSize(512, 256)
+
 class AppDelegate: NSObject, NSApplicationDelegate {
+  
+  weak var window: NSWindow!
+  var viewController: NSViewController!
 
-  @IBOutlet weak var window: NSWindow!
-
-
-  func applicationDidFinishLaunching(aNotification: NSNotification) {
-    // Insert code here to initialize your application
+  func applicationDidFinishLaunching(note: NSNotification) {
+    
+    let processInfo = NSProcessInfo.processInfo()
+    
+    // menu bar.
+    let quitItem = NSMenuItem(
+      title: "Quit " + processInfo.processName,
+      action: Selector("terminate:"),
+      keyEquivalent:"q")
+    
+    let appMenu = NSMenu()
+    appMenu.addItem(quitItem)
+    
+    let appMenuBarItem = NSMenuItem()
+    appMenuBarItem.submenu = appMenu
+    
+    let menuBar = NSMenu()
+    menuBar.addItem(appMenuBarItem)
+    
+    let app = NSApplication.sharedApplication()
+    app.mainMenu = menuBar
+    
+    viewController = NSViewController()
+    viewController.title = processInfo.processName
+    
+    window = NSWindow(
+      contentRect: CGRectZero, // arbitrary; gets clobbered by controller view initial size.
+      styleMask: NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask | NSResizableWindowMask,
+      backing: NSBackingStoreType.Buffered,
+      `defer`: false)
+    window.contentViewController = viewController
+    window.bind(NSTitleBinding, toObject:viewController, withKeyPath:"title", options:nil)
+    //viewController.updateWindowObserver()
+    
+    window.origin = CGPoint(8, 48)
+    window.size = initWindowSize
+    window.makeKeyAndOrderFront(nil)
   }
-
-  func applicationWillTerminate(aNotification: NSNotification) {
-    // Insert code here to tear down your application
-  }
-
-
 }
 

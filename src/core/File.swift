@@ -203,7 +203,11 @@ func outL<T>(item: T) { print(item, separator: "", terminator: "\n", toStream: &
 func err<T>(item: T)  { print(item, separator: "", terminator: "", toStream: &std_err) }
 func errL<T>(item: T) { print(item, separator: "", terminator: "\n", toStream: &std_err) }
 
-
 func errSL(items: Any...) {
+  std_err.write(items, sep: " ", end: "\n")
+}
+
+func warn(items: Any...) {
+  err("WARNING: ")
   std_err.write(items, sep: " ", end: "\n")
 }

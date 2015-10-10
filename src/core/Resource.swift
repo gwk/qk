@@ -15,7 +15,7 @@ let resourceRootDir: String = {
 }()
 
 
-func pathForResourcePath(resPath: String) -> String {
+func pathForResource(resPath: String) -> String {
   return "\(resourceRootDir)/\(resPath)"
 }
 
@@ -37,7 +37,7 @@ class Resource<T: Reloadable> {
   }
   
   init(resPath: String) {
-    let path = pathForResourcePath(resPath)
+    let path = pathForResource(resPath)
     self.resPath = resPath
     self.path = path
     self.obj = T()
@@ -61,13 +61,13 @@ class Resource<T: Reloadable> {
       errL("resource file opened: \(resPath)")
       reload()
       enqueue()
-    } catch let e as File.Error {
+    } catch let e {
       errL("resource file unavailable: \(resPath); error: \(e)")
       dispatch_after(DispatchTime.fromNow(1), dispatchMainQueue) {
         [weak self] in
         self?.retry()
       }
-    } catch { fatalError() }
+    }
   }
 
   func handleEvent() {

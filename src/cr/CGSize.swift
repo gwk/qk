@@ -20,3 +20,7 @@ extension CGSize {
   var aspect: Flt { return w / h }
 }
 
+
+func *(a: CGSize, s: Flt) -> CGSize { return CGSize(a.w * s, a.h * s) }
+func /(a: CGSize, s: Flt) -> CGSize { return CGSize(a.w / s, a.h / s) }
+

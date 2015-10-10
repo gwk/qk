@@ -74,3 +74,6 @@ func -(a: CGPoint, s: Flt) -> CGPoint { return CGPoint(a.x - s, a.y - s) }
 func *(a: CGPoint, s: Flt) -> CGPoint { return CGPoint(a.x * s, a.y * s) }
 func /(a: CGPoint, s: Flt) -> CGPoint { return CGPoint(a.x / s, a.y / s) }
 
+func +(a: CGPoint, b: CGSize) -> CGPoint { return CGPoint(a.x + b.w, a.y + b.h) }
+func -(a: CGPoint, b: CGSize) -> CGPoint { return CGPoint(a.x - b.w, a.y - b.h) }
+

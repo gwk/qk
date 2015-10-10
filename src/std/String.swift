@@ -22,7 +22,15 @@ extension String {
   }
   
   // MARK: paths.
-  
+
+  var pathExt: String {
+    if let r = rangeOfString(".", options: .BackwardsSearch) {
+      return substringFromIndex(r.startIndex)
+    } else {
+      return ""
+    }
+  }
+
   func withoutPathExt() -> String {
     if let r = rangeOfString(".", options: .BackwardsSearch) {
       // TODO: check that the range does not span a slash; allow trailing slash.

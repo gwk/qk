@@ -25,8 +25,8 @@ extension CRColor {
     self.init(red: r, green: g, blue: b, alpha: a)
   }
 
-  convenience init(rd: U8, gd: U8, bd: U8, a: CGFloat = 1) {
-    self.init(red: Flt(rd) / 255, green: Flt(gd) / 255, blue: Flt(bd) / 255, alpha: a)
+  convenience init(ur: U8, ug: U8, ub: U8, a: CGFloat = 1) {
+    self.init(red: Flt(ur) / 0xff, green: Flt(ug) / 0xff, blue: Flt(ub) / 0xff, alpha: a)
   }
   
   convenience init(l: CGFloat, a: CGFloat = 1) {

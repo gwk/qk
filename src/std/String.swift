@@ -23,17 +23,21 @@ extension String {
   
   // MARK: paths.
 
+  var pathExtRange: Range<Index>? { return rangeOfString(".", options: .BackwardsSearch) }
+  var pathDirRange: Range<Index>? { return rangeOfString("/", options: .BackwardsSearch) }
+
   var pathExt: String {
-    if let r = rangeOfString(".", options: .BackwardsSearch) {
+    if let r = pathExtRange {
       return substringFromIndex(r.startIndex)
     } else {
       return ""
     }
   }
 
-  func withoutPathExt() -> String {
-    if let r = rangeOfString(".", options: .BackwardsSearch) {
-      // TODO: check that the range does not span a slash; allow trailing slash.
+  var withoutPathExt: String {
+    if let r = pathExtRange {
+      // TODO: check that the range does not span a slash.
+      // TODO: allow trailing slash.
       return substringToIndex(r.startIndex)
     } else {
       return self
@@ -42,14 +46,30 @@ extension String {
   
   func replacePathExt(ext: String) -> String {
     var pre: String
-    if let r = rangeOfString(".", options: .BackwardsSearch) {
+    if let r = pathExtRange {
       pre = substringToIndex(r.endIndex)
     } else {
       pre = self + "."
     }
     return pre + ext
   }
-  
+
+  var pathDir: String {
+    if let r = pathDirRange {
+      return substringToIndex(r.startIndex)
+    } else {
+      return ""
+    }
+  }
+
+  var withoutPathDir: String {
+    if let r = pathDirRange {
+      return substringFromIndex(r.endIndex)
+    } else {
+      return self
+    }
+  }
+
   // MARK: urls.
   
   var fileUrl: NSURL? { return NSURL(fileURLWithPath: self, isDirectory: false) }

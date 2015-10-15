@@ -17,4 +17,15 @@ extension Array {
       return nil
     }
   }
+
+  mutating func removeBySwappingLast(index: Int) -> Element {
+    let last = self.removeLast()
+    if index != count {
+      let val = self[index]
+      self[index] = last
+      return val
+    } else {
+      return last
+    }
+  }
 }

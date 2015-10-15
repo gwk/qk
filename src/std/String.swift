@@ -23,11 +23,11 @@ extension String {
   
   // MARK: paths.
 
-  var pathExtRange: Range<Index>? { return rangeOfString(".", options: .BackwardsSearch) }
-  var pathDirRange: Range<Index>? { return rangeOfString("/", options: .BackwardsSearch) }
+  var pathExtDotRange: Range<Index>?    { return rangeOfString(".", options: .BackwardsSearch) }
+  var pathDirSlashRange: Range<Index>?  { return rangeOfString("/", options: .BackwardsSearch) }
 
   var pathExt: String {
-    if let r = pathExtRange {
+    if let r = pathExtDotRange {
       return substringFromIndex(r.startIndex)
     } else {
       return ""
@@ -35,7 +35,7 @@ extension String {
   }
 
   var withoutPathExt: String {
-    if let r = pathExtRange {
+    if let r = pathExtDotRange {
       // TODO: check that the range does not span a slash.
       // TODO: allow trailing slash.
       return substringToIndex(r.startIndex)
@@ -46,7 +46,7 @@ extension String {
   
   func replacePathExt(ext: String) -> String {
     var pre: String
-    if let r = pathExtRange {
+    if let r = pathExtDotRange {
       pre = substringToIndex(r.endIndex)
     } else {
       pre = self + "."
@@ -55,7 +55,7 @@ extension String {
   }
 
   var pathDir: String {
-    if let r = pathDirRange {
+    if let r = pathDirSlashRange {
       return substringToIndex(r.startIndex)
     } else {
       return ""
@@ -63,7 +63,7 @@ extension String {
   }
 
   var withoutPathDir: String {
-    if let r = pathDirRange {
+    if let r = pathDirSlashRange {
       return substringFromIndex(r.endIndex)
     } else {
       return self

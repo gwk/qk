@@ -104,7 +104,12 @@ extension CRView {
       #endif
     }
   }
-  
+
+  func describeTree(depth: Int = 0) {
+    err(String(count: depth, repeatedValue: Character(" ")))
+    errL(description)
+  }
+
   var flex: CRFlex {
     get { return autoresizingMask }
     set { autoresizingMask = newValue }

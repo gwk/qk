@@ -6,7 +6,7 @@ import Dispatch
 extension File {
   func createDispatchSource(modes: DispatchFileModes, queue: DispatchQueue = dispatchMainQueue,
     registerFn: Action? = nil, cancelFn: Action? = nil, eventFn: Action) -> DispatchSource {
-      let source = dispatch_source_create(DISPATCH_SOURCE_TYPE_VNODE, Uns(descriptor), modes.rawValue, queue)!
+      let source = dispatch_source_create(DISPATCH_SOURCE_TYPE_VNODE, _dispatchSourceHandle, modes.rawValue, queue)!
       if let rf = registerFn {
         dispatch_source_set_registration_handler(source, rf)
       }

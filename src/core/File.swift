@@ -57,6 +57,11 @@ class File: CustomStringConvertible {
     return "\(self.dynamicType)(path:'\(path)', descriptor: \(descriptor))"
   }
 
+  var _dispatchSourceHandle: Uns {
+    // note: this is a purposeful leak of the private descriptor so that File+Dispatch can be defined as an extension.
+    return Uns(descriptor)
+  }
+
   func stats() throws -> Stats {
     var stats = Darwin.stat()
     let res = Darwin.fstat(descriptor, &stats)

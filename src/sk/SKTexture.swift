@@ -5,14 +5,15 @@ import SpriteKit
 
 extension SKTexture {
 
-  convenience init(resPath: String) {
+  convenience init(path: String, filteringMode: SKTextureFilteringMode = .Linear) {
     let image: CGImageRef
     do {
-      image = try CGImageRef.with(path: pathForResource(resPath))
+      image = try CGImageRef.with(path: path)
     } catch let e {
       warn("texture resource load failed: \(e)")
       image = try! CGImageRef.with(path: pathForResource("missing.png"))
     }
     self.init(CGImage: image)
+    self.filteringMode = filteringMode
   }
 }

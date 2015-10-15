@@ -10,4 +10,8 @@ extension GKComponentSystem {
       GKComponentSystem(componentClass: $0)
     }
   }
+
+  public override var description: String {
+    return "GKComponentSystem(\(componentClass))"
+  }
 }

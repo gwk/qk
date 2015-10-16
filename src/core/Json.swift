@@ -21,7 +21,7 @@ enum Json {
     case Conversion(exp: Any.Type, json: JsonType)
     case Key(key: String, exp: Any.Type, json: JsonType)
     case Other(ErrorType)
-    case Path(String)
+    case Path(String, ErrorType)
     case UnexpectedType(exp: Any.Type, json: JsonType)
   }
 
@@ -38,6 +38,9 @@ enum Json {
 
   static func fromStream<T: JsonType>(stream: NSInputStream, options: NSJSONReadingOptions = []) throws -> T {
     do {
+      if stream.streamStatus == .NotOpen {
+        stream.open()
+      }
       let json = try NSJSONSerialization.JSONObjectWithStream(stream, options: options) as! JsonType
       if let json = json as? T {
         return json
@@ -48,10 +51,10 @@ enum Json {
   }
 
   static func fromPath<T: JsonType>(path: String, options: NSJSONReadingOptions = []) throws -> T {
-    guard let stream = NSInputStream(fileAtPath: path) else {
-      throw Error.Path(path)
-    }
-    stream.open()
-    return try fromStream(stream, options: options)
+    var data: NSData
+    do {
+      data = try NSData(contentsOfFile: path, options: [.DataReadingUncached])
+    } catch let e { throw Error.Path(path, e) }
+    return try fromData(data, options: options)
   }
 }

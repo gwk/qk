@@ -27,6 +27,8 @@ extension CGImage {
     }
   }
 
+  static let missing = try! CGImageRef.with(path: pathForResource("missing.png")) // TODO: move into resource bundle or render.
+
   var w: Int { return CGImageGetWidth(self) }
   var h: Int { return CGImageGetHeight(self) }
   var bitsPerComponent: Int { return CGImageGetBitsPerComponent(self) }

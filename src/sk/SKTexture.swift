@@ -4,9 +4,12 @@ import CoreImage
 import SpriteKit
 
 
-let missingResourceImage = try! CGImageRef.with(path: pathForResource("missing.png"))
+let SKTexture_missing: SKTexture = SKTexture(CGImage: CoreGraphics.CGImage.missing) // workaround for 2.1b3.
+
 
 extension SKTexture {
+
+  static var missing: SKTexture { return SKTexture_missing }
 
   convenience init(path: String, filteringMode: SKTextureFilteringMode = .Linear) {
     let image: CGImageRef
@@ -14,13 +17,11 @@ extension SKTexture {
       image = try CGImageRef.with(path: path)
     } catch let e {
       warn("texture resource load failed: \(e)")
-      image = missingResourceImage
+      image = CoreGraphics.CGImage.missing
     }
     self.init(CGImage: image)
     self.filteringMode = filteringMode
   }
-
-  class func missing() -> SKTexture { return SKTexture(CGImage: missingResourceImage) }
 
   var textureByFlippingH: SKTexture {
     return SKTexture(CGImage: self.CGImage.flipH())

@@ -4,6 +4,8 @@ import CoreGraphics
 
 
 extension CGRect {
+
+  static let unit = CGRect(0, 0, 1, 1)
   
   init(_ x: Flt, _ y: Flt, _ w: Flt, _ h: Flt) { self.init(x: x, y: y, width: w, height: h) }
   

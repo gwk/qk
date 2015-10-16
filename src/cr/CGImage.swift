@@ -26,4 +26,21 @@ extension CGImage {
     default: throw Error.PathExtension(path: path)
     }
   }
+
+  var w: Int { return CGImageGetWidth(self) }
+  var h: Int { return CGImageGetHeight(self) }
+  var bitsPerComponent: Int { return CGImageGetBitsPerComponent(self) }
+  var colorSpace: CGColorSpace? { return CGImageGetColorSpace(self) }
+  var bitmapInfo: CGBitmapInfo { return CGImageGetBitmapInfo(self) }
+
+  func makeBitmapContext() -> CGContext {
+    return CGBitmapContextCreate(nil, w, h, bitsPerComponent, 0, colorSpace, bitmapInfo.rawValue)!
+  }
+
+  func flipH() -> CGImage {
+    let ctx = CGBitmapContextCreate(nil, w, h, bitsPerComponent, 0, colorSpace, bitmapInfo.rawValue)!
+    ctx.flipHCTM()
+    ctx.drawImage(self)
+    return ctx.createImage()
+  }
 }

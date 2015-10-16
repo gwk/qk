@@ -1,7 +1,10 @@
 // © 2015 George King. Permission to use this file is granted in license-qk.txt.
 
+import CoreImage
 import SpriteKit
 
+
+let missingResourceImage = try! CGImageRef.with(path: pathForResource("missing.png"))
 
 extension SKTexture {
 
@@ -11,9 +14,15 @@ extension SKTexture {
       image = try CGImageRef.with(path: path)
     } catch let e {
       warn("texture resource load failed: \(e)")
-      image = try! CGImageRef.with(path: pathForResource("missing.png"))
+      image = missingResourceImage
     }
     self.init(CGImage: image)
     self.filteringMode = filteringMode
+  }
+
+  class func missing() -> SKTexture { return SKTexture(CGImage: missingResourceImage) }
+
+  var textureByFlippingH: SKTexture {
+    return SKTexture(CGImage: self.CGImage.flipH())
   }
 }

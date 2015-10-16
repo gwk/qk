@@ -14,7 +14,7 @@ class Dir {
   let path: String
   private let descriptor: Descriptor
 
-  init(path: String) throws {
+  init(_ path: String) throws {
     self.path = path
     self.descriptor = opendir(path)
     guard descriptor != nil else {
@@ -22,7 +22,7 @@ class Dir {
     }
   }
 
-  func listNames(prefix prefix: String? = nil, suffix: String? = nil) -> [String] {
+  func listNames(prefix prefix: String? = nil, suffix: String? = nil, includeHidden: Bool = false) -> [String] {
     var names = [String]()
     while true {
       let entryPtr = Darwin.readdir(descriptor)
@@ -33,6 +33,10 @@ class Dir {
       withUnsafePointer(&entryPtr.memory.d_name) {
         name = String.fromCString(UnsafePointer<Int8>($0))!
       }
+      if !includeHidden {
+        if name.hasPrefix(".") { continue }
+      }
+      else if [".", ".."].contains(name) { continue }
       if let prefix = prefix {
         if !name.hasPrefix(prefix) { continue }
       }

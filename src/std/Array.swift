@@ -10,6 +10,13 @@ extension Array {
     self.reserveCapacity(capacity)
   }
 
+  init<S: SequenceType where S.Generator.Element == Generator.Element>(join sequences: S...) {
+    self = []
+    for s in sequences {
+      appendContentsOf(s)
+    }
+  }
+
   func get(index: Int) -> Element? {
     if index >= 0 && index < count {
       return self[index]

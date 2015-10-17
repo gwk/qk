@@ -12,6 +12,8 @@ extension CGImage {
     case PNG(path: String)
   }
 
+  static let missing = try! CGImageRef.with(path: pathForResource("missing.png")) // TODO: move into resource bundle or render.
+
   class func with(path path: String, shouldInterpolate: Bool = false, intent: CGColorRenderingIntent = .RenderingIntentDefault) throws -> CGImage {
     guard let provider = CGDataProviderCreateWithFilename(path) else {
       throw Error.Path(path: path)
@@ -26,8 +28,6 @@ extension CGImage {
     default: throw Error.PathExtension(path: path)
     }
   }
-
-  static let missing = try! CGImageRef.with(path: pathForResource("missing.png")) // TODO: move into resource bundle or render.
 
   var w: Int { return CGImageGetWidth(self) }
   var h: Int { return CGImageGetHeight(self) }

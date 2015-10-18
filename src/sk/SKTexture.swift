@@ -23,6 +23,8 @@ extension SKTexture {
   }
 
   var textureByFlippingH: SKTexture {
-    return SKTexture(CGImage: self.CGImage.flipH())
+    let tex = SKTexture(CGImage: self.CGImage.flipH())
+    tex.filteringMode = filteringMode
+    return tex
   }
 }

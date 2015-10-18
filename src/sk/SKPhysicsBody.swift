@@ -6,8 +6,6 @@ import SpriteKit
 extension SKPhysicsBody {
 
   convenience init(edgeLoopPoints: [CGPoint]) {
-    let path = CGPathCreateMutable()
-    path.addLines(edgeLoopPoints)
-    self.init(edgeLoopFromPath: path)
+    self.init(edgeLoopFromPath: CGPath.with(loopPoints: edgeLoopPoints))
   }
 }

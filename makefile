@@ -35,7 +35,8 @@ clean:
 gen: \
 	src/core/mat-generated.swift \
 	src/core/vec-generated.swift \
-	src/cr/CGPoint-generated.swift
+	src/cr/CGPoint-generated.swift \
+	src/cr/CGVector-generated.swift
 
 # all real targets.
 all: _bld/gen-cd-entities gen

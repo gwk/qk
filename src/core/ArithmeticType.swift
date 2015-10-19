@@ -101,37 +101,3 @@ func sign<T: ArithmeticType>(x: T) -> T {
   if x > 0 { return 1 }
   return 0
 }
-
-struct POTSeq: SequenceType { // TODO: change to constant list.
-  let start: Int = 1
-  func generate() -> AnyGenerator<Int> {
-    var val: Int = start
-    return anyGenerator {
-      let v = val
-      val *= 2
-      return v
-    }
-  }
-}
-
-struct HPOTSeq: SequenceType { // TODO: change to constant list.
-  let start: Int = 1
-  func generate() -> AnyGenerator<Int> {
-    var val: Int = start
-    var pot: Bool = true
-    return anyGenerator {
-      let v = val
-      if v < 4 {
-        val += 1
-        return v
-      }
-      else if pot {
-        val = (val * 3) / 2
-      } else {
-        val = (val * 4) / 3
-      }
-      pot = !pot
-      return v
-    }
-  }
-}

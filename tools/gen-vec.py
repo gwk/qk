@@ -88,7 +88,7 @@ def gen_vec(orig_type, dim, s_type, fs_type, v_type, v_prev, is_simd):
     outL('  var anyNaN: Bool { return $}', jf(' || ', '$.isNaN', comps))
     outL('')
     outL('  var norm: $ { return self / self.len }', v_type)
-    outL('  var clampToUnit: $ { return $($) }', v_type, v_type, jcf('clamp($, l: 0, h: 1)', comps))
+    outL('  var clampToUnit: $ { return $($) }', v_type, v_type, jcf('clamp($, min: 0, max: 1)', comps))
     outL('  func dot(b: $) -> ScalarType { return $ }',
       v_type, ' + '.join(fmt('($ * b.$)', c, c) for c in comps))
     outL('  func angle(b: $) -> ScalarType { return acos(self.dot(b) / (self.len * b.len)) }',

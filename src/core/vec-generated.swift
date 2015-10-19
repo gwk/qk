@@ -57,7 +57,7 @@ extension V2S : VecType2, FloatVecType, CustomStringConvertible, Equatable {
   var anyNaN: Bool { return x.isNaN || y.isNaN}
 
   var norm: V2S { return self / self.len }
-  var clampToUnit: V2S { return V2S(clamp(x, l: 0, h: 1), clamp(y, l: 0, h: 1)) }
+  var clampToUnit: V2S { return V2S(clamp(x, min: 0, max: 1), clamp(y, min: 0, max: 1)) }
   func dot(b: V2S) -> ScalarType { return (x * b.x) + (y * b.y) }
   func angle(b: V2S) -> ScalarType { return acos(self.dot(b) / (self.len * b.len)) }
   func lerp(b: V2S, _ t: ScalarType) -> V2S { return self * (1 - t) + b * t }
@@ -130,7 +130,7 @@ extension V2D : VecType2, FloatVecType, CustomStringConvertible, Equatable {
   var anyNaN: Bool { return x.isNaN || y.isNaN}
 
   var norm: V2D { return self / self.len }
-  var clampToUnit: V2D { return V2D(clamp(x, l: 0, h: 1), clamp(y, l: 0, h: 1)) }
+  var clampToUnit: V2D { return V2D(clamp(x, min: 0, max: 1), clamp(y, min: 0, max: 1)) }
   func dot(b: V2D) -> ScalarType { return (x * b.x) + (y * b.y) }
   func angle(b: V2D) -> ScalarType { return acos(self.dot(b) / (self.len * b.len)) }
   func lerp(b: V2D, _ t: ScalarType) -> V2D { return self * (1 - t) + b * t }
@@ -261,7 +261,7 @@ extension V3S : VecType3, FloatVecType, CustomStringConvertible, Equatable {
   var anyNaN: Bool { return x.isNaN || y.isNaN || z.isNaN}
 
   var norm: V3S { return self / self.len }
-  var clampToUnit: V3S { return V3S(clamp(x, l: 0, h: 1), clamp(y, l: 0, h: 1), clamp(z, l: 0, h: 1)) }
+  var clampToUnit: V3S { return V3S(clamp(x, min: 0, max: 1), clamp(y, min: 0, max: 1), clamp(z, min: 0, max: 1)) }
   func dot(b: V3S) -> ScalarType { return (x * b.x) + (y * b.y) + (z * b.z) }
   func angle(b: V3S) -> ScalarType { return acos(self.dot(b) / (self.len * b.len)) }
   func lerp(b: V3S, _ t: ScalarType) -> V3S { return self * (1 - t) + b * t }
@@ -336,7 +336,7 @@ extension V3D : VecType3, FloatVecType, CustomStringConvertible, Equatable {
   var anyNaN: Bool { return x.isNaN || y.isNaN || z.isNaN}
 
   var norm: V3D { return self / self.len }
-  var clampToUnit: V3D { return V3D(clamp(x, l: 0, h: 1), clamp(y, l: 0, h: 1), clamp(z, l: 0, h: 1)) }
+  var clampToUnit: V3D { return V3D(clamp(x, min: 0, max: 1), clamp(y, min: 0, max: 1), clamp(z, min: 0, max: 1)) }
   func dot(b: V3D) -> ScalarType { return (x * b.x) + (y * b.y) + (z * b.z) }
   func angle(b: V3D) -> ScalarType { return acos(self.dot(b) / (self.len * b.len)) }
   func lerp(b: V3D, _ t: ScalarType) -> V3D { return self * (1 - t) + b * t }
@@ -462,7 +462,7 @@ extension V4S : VecType4, FloatVecType, CustomStringConvertible, Equatable {
   var anyNaN: Bool { return x.isNaN || y.isNaN || z.isNaN || w.isNaN}
 
   var norm: V4S { return self / self.len }
-  var clampToUnit: V4S { return V4S(clamp(x, l: 0, h: 1), clamp(y, l: 0, h: 1), clamp(z, l: 0, h: 1), clamp(w, l: 0, h: 1)) }
+  var clampToUnit: V4S { return V4S(clamp(x, min: 0, max: 1), clamp(y, min: 0, max: 1), clamp(z, min: 0, max: 1), clamp(w, min: 0, max: 1)) }
   func dot(b: V4S) -> ScalarType { return (x * b.x) + (y * b.y) + (z * b.z) + (w * b.w) }
   func angle(b: V4S) -> ScalarType { return acos(self.dot(b) / (self.len * b.len)) }
   func lerp(b: V4S, _ t: ScalarType) -> V4S { return self * (1 - t) + b * t }
@@ -531,7 +531,7 @@ extension V4D : VecType4, FloatVecType, CustomStringConvertible, Equatable {
   var anyNaN: Bool { return x.isNaN || y.isNaN || z.isNaN || w.isNaN}
 
   var norm: V4D { return self / self.len }
-  var clampToUnit: V4D { return V4D(clamp(x, l: 0, h: 1), clamp(y, l: 0, h: 1), clamp(z, l: 0, h: 1), clamp(w, l: 0, h: 1)) }
+  var clampToUnit: V4D { return V4D(clamp(x, min: 0, max: 1), clamp(y, min: 0, max: 1), clamp(z, min: 0, max: 1), clamp(w, min: 0, max: 1)) }
   func dot(b: V4D) -> ScalarType { return (x * b.x) + (y * b.y) + (z * b.z) + (w * b.w) }
   func angle(b: V4D) -> ScalarType { return acos(self.dot(b) / (self.len * b.len)) }
   func lerp(b: V4D, _ t: ScalarType) -> V4D { return self * (1 - t) + b * t }

@@ -58,7 +58,7 @@ extension CGVector : VecType2, FloatVecType, CustomStringConvertible {
   var anyNaN: Bool { return x.isNaN || y.isNaN}
 
   var norm: CGVector { return self / self.len }
-  var clampToUnit: CGVector { return CGVector(clamp(x, l: 0, h: 1), clamp(y, l: 0, h: 1)) }
+  var clampToUnit: CGVector { return CGVector(clamp(x, min: 0, max: 1), clamp(y, min: 0, max: 1)) }
   func dot(b: CGVector) -> ScalarType { return (x * b.x) + (y * b.y) }
   func angle(b: CGVector) -> ScalarType { return acos(self.dot(b) / (self.len * b.len)) }
   func lerp(b: CGVector, _ t: ScalarType) -> CGVector { return self * (1 - t) + b * t }

@@ -85,9 +85,10 @@ func prod<S: SequenceType where S.Generator.Element: ArithmeticType>(s: S) -> S.
   return s.reduce(1) { (accum: E, item: E) in return accum * item }
 }
 
-func clamp<T: ArithmeticType>(a: T, l: T, h: T) -> T {
-  if a < l { return l }
-  if a > h { return h }
+
+func clamp<T: ArithmeticType>(a: T, min: T, max: T) -> T {
+  if a < min { return min }
+  if a > max { return max }
   return a
 }
 

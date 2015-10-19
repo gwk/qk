@@ -58,7 +58,7 @@ extension CGPoint : VecType2, FloatVecType, CustomStringConvertible {
   var anyNaN: Bool { return x.isNaN || y.isNaN}
 
   var norm: CGPoint { return self / self.len }
-  var clampToUnit: CGPoint { return CGPoint(clamp(x, l: 0, h: 1), clamp(y, l: 0, h: 1)) }
+  var clampToUnit: CGPoint { return CGPoint(clamp(x, min: 0, max: 1), clamp(y, min: 0, max: 1)) }
   func dot(b: CGPoint) -> ScalarType { return (x * b.x) + (y * b.y) }
   func angle(b: CGPoint) -> ScalarType { return acos(self.dot(b) / (self.len * b.len)) }
   func lerp(b: CGPoint, _ t: ScalarType) -> CGPoint { return self * (1 - t) + b * t }

@@ -11,3 +11,6 @@ extension CGPoint {
 
   init(_ s: CGSize) { self.init(x: s.w, y: s.h) }
 }
+
+func +(a: CGPoint, b: CGSize) -> CGPoint { return CGPoint(a.x + b.w, a.y + b.h) }
+func -(a: CGPoint, b: CGSize) -> CGPoint { return CGPoint(a.x - b.w, a.y - b.h) }

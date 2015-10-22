@@ -32,8 +32,7 @@ extension NSWindow {
 
   var viewSize: CGSize {
     get {
-      let rect = CGRect(origin: .zero, size: frame.size)
-      return contentRectForFrameRect(rect).size
+      return contentRectForFrameRect(frame).size
     }
     set {
       setContentSize(newValue)

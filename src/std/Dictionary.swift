@@ -6,12 +6,43 @@ extension Dictionary {
   func contains(key: Key) -> Bool {
     return self[key] != nil
   }
-  
+
+  func mapVals<V>(transform: (Value) -> V) -> [Key:V] {
+    var d: [Key:V] = [:]
+    for (k, v) in self {
+      d[k] = transform(v)
+    }
+    return d
+  }
+
   mutating func getDefault(key: Key, dflt: () -> Value) -> Value {
     if let v = self[key] {
       return v
     } else {
       let v = dflt()
+      self[key] = v
+      return v
+    }
+  }
+
+  mutating func getDefault(key: Key, dflt: Value) -> Value {
+    if let v = self[key] {
+      return v
+    } else {
+      let v = dflt
+      self[key] = v
+      return v
+    }
+  }
+}
+
+
+extension Dictionary where Value: DefaultInitializable {
+  mutating func getDefault(key: Key) -> Value {
+    if let v = self[key] {
+      return v
+    } else {
+      let v = Value()
       self[key] = v
       return v
     }
@@ -28,5 +59,26 @@ extension Dictionary where Key: Comparable {
     return s.map() {
       (_, v) in return v
     }
+  }
+}
+
+
+protocol AppendableValueType {
+  typealias Element
+  mutating func append(element: Element)
+}
+
+extension Array: AppendableValueType {}
+
+extension Dictionary where Value: AppendableValueType, Value: DefaultInitializable {
+  mutating func appendToVal(key: Key, _ el: Value.Element) {
+    var v: Value
+    if let ov = removeValueForKey(key) {
+      v = ov
+    } else {
+      v = Value()
+    }
+    v.append(el)
+    self[key] = v
   }
 }

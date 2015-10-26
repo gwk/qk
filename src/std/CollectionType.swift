@@ -2,7 +2,11 @@
 
 
 extension CollectionType where Generator.Element : Equatable {
-  
+
+  func contains(element: Generator.Element) -> Bool {
+    return indexOf(element) != nil
+  }
+
   func rangeOf(query: Self, start: Index? = nil, end: Index? = nil) -> Range<Index>? {
     var i = start.or(startIndex)
     let e = end.or(endIndex)
@@ -37,7 +41,7 @@ extension CollectionType where Generator.Element : Equatable {
     }
     return true
   }
-  
+
   func part(range: Range<Index>) -> (SubSequence, SubSequence) {
     let ra = startIndex..<range.startIndex
     let rb = range.endIndex..<endIndex
@@ -49,6 +53,28 @@ extension CollectionType where Generator.Element : Equatable {
         return part(range)
       }
       return nil
+  }
+}
+
+extension CollectionType {
+
+  func group<K: Hashable>(fn: (Generator.Element) -> K?) -> [K:[Generator.Element]] {
+    var d: [K:[Generator.Element]] = [:]
+    for e in self {
+      if let k = fn(e) {
+        d.appendToVal(k, e)
+      }
+    }
+    return d
+  }
+
+  func mapToDict<K: Hashable, V>(transform: (Generator.Element) -> (K, V)) -> [K:V] {
+    var d: [K:V] = [:]
+    for e in self {
+      let (k, v) = transform(e)
+      d[k] = v
+    }
+    return d
   }
 }
 

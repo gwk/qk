@@ -214,5 +214,9 @@ extension String {
     }
     return nil
   }
+
+  func split(separator: Character) -> [String] {
+    return characters.split(separator).map() { String($0) }
+  }
 }
 

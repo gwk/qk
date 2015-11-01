@@ -56,6 +56,24 @@ extension CollectionType where Generator.Element : Equatable {
   }
 }
 
+
+extension CollectionType where Generator.Element: Comparable {
+
+  var isSorted: Bool {
+    var prev: Generator.Element? = nil
+    for el in self {
+      if let prev = prev {
+        if !(prev < el) {
+          return false
+        }
+      }
+      prev = el
+    }
+    return true
+  }
+}
+
+
 extension CollectionType {
 
   func group<K: Hashable>(fn: (Generator.Element) -> K?) -> [K:[Generator.Element]] {

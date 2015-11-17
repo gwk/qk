@@ -13,9 +13,9 @@ extension SequenceType {
     return d
   }
 
-  func filterMap<S: SequenceType, E>(seq: S, transform: ((S.Generator.Element) -> E?)) -> [E] {
+  func filterMap<E>(transform: ((Generator.Element) -> E?)) -> [E] {
     var a: [E] = []
-    for e in seq {
+    for e in self {
       if let t = transform(e) {
         a.append(t)
       }

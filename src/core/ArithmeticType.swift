@@ -19,7 +19,7 @@ typealias F32 = Float
 typealias F64 = Double
 
 
-protocol ArithmeticType: IntegerLiteralConvertible, Equatable {
+protocol ArithmeticType: IntegerLiteralConvertible, Equatable, Comparable {
   func +(l: Self, r: Self) -> Self
   func -(l: Self, r: Self) -> Self
   func *(l: Self, r: Self) -> Self

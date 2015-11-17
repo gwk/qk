@@ -51,12 +51,16 @@ extension Dictionary where Value: DefaultInitializable {
 
 
 extension Dictionary where Key: Comparable {
-  var valsSortedByKey: [Value] {
-    let s = sort {
+
+  var pairsSortedByKey: [(Key, Value)] {
+    return sort() {
       (a: (k: Key, v: Value), b: (k: Key, v: Value)) in
       return a.k < b.k
     }
-    return s.map() {
+  }
+
+  var valsSortedByKey: [Value] {
+    return pairsSortedByKey.map() {
       (_, v) in return v
     }
   }

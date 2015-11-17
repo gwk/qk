@@ -7,7 +7,7 @@ class Index<T: Hashable> {
   
   init(_ vals: [T]) {
     self.vals = vals
-    self.indexes = mapEnumToDict(vals) { ($1, $0) }
+    self.indexes = vals.enumerate().mapToDict { ($1, $0) }
   }
   
 

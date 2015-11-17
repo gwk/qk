@@ -145,7 +145,7 @@ extension NSLayoutConstraint: QKLayoutConstraining {
 extension String: QKLayoutConstraining {
   
   func constraintArray(views: [CRView], metrics: [String: NSNumber], opts: NSLayoutFormatOptions) -> [NSLayoutConstraint] {
-    let viewDict = mapToDict(views) { ($0.name, $0) }
+    let viewDict = views.mapToDict { ($0.name, $0) }
     #if DEBUG // only use the wrapper method for debug.
       let m = NSLayoutConstraint.constraintsAndCatchWithVisualFormat
       #else

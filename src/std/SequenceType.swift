@@ -119,6 +119,28 @@ extension SequenceType where Generator.Element == String {
 }
 
 
+extension SequenceType where Generator.Element == Bool {
+
+  func all() -> Bool {
+    for e in self {
+      if !e {
+        return false
+      }
+    }
+    return true
+  }
+
+  func any() -> Bool {
+    for e in self {
+      if e {
+        return true
+      }
+    }
+    return false
+  }
+}
+
+
 func allZip<S1: SequenceType, S2: SequenceType>(seq1: S1, _ seq2: S2, predicate: (S1.Generator.Element, S2.Generator.Element) -> Bool) -> Bool {
   var g2 = seq2.generate()
   for e1 in seq1 {

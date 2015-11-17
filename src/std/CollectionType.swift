@@ -73,26 +73,3 @@ extension CollectionType where Generator.Element: Comparable {
   }
 }
 
-
-extension CollectionType {
-
-  func group<K: Hashable>(fn: (Generator.Element) -> K?) -> [K:[Generator.Element]] {
-    var d: [K:[Generator.Element]] = [:]
-    for e in self {
-      if let k = fn(e) {
-        d.appendToVal(k, e)
-      }
-    }
-    return d
-  }
-
-  func mapToDict<K: Hashable, V>(transform: (Generator.Element) -> (K, V)) -> [K:V] {
-    var d: [K:V] = [:]
-    for e in self {
-      let (k, v) = transform(e)
-      d[k] = v
-    }
-    return d
-  }
-}
-

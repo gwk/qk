@@ -10,7 +10,7 @@ extension SKNode {
     return child
   }
 
-  func addAll(children: [SKNode]) {
+  func addChildren(children: [SKNode]) {
     for c in children {
       addChild(c)
     }

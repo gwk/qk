@@ -9,10 +9,12 @@ extension CGSize {
 
   // TODO: init<V: VecType2>(_ v: V) // requires that ScalarType be FloatingPointConvertible or something.
 
+  init(_ v: V2) { self.init(width: v.x, height: v.y) }
+
   init(_ v: V2I) {
     self.init(width: Flt(v.x), height: Flt(v.y))
   }
-
+  
   var w: Flt {
     get { return width }
     set { width = newValue }
@@ -26,7 +28,5 @@ extension CGSize {
   var aspect: Flt { return w / h }
 }
 
-
 func *(a: CGSize, s: Flt) -> CGSize { return CGSize(a.w * s, a.h * s) }
 func /(a: CGSize, s: Flt) -> CGSize { return CGSize(a.w / s, a.h / s) }
-

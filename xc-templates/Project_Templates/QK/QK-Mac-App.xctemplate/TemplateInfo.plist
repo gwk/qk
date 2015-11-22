@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Kind</key>
+  <string>Xcode.Xcode3.ProjectTemplateUnitKind</string>
+  <key>Identifier</key>
+  <string>com.gonkus.qk.qk-mac-app</string>
+  <key>Concrete</key>
+  <true/>
+  <key>Description</key>
+  <string>QK OS X application template.</string>
+  <key>SortOrder</key>
+  <integer>2</integer>
+  <key>Ancestors</key>
+  <array>
+    <string>com.apple.dt.unit.cocoaApplicationBase</string>
+  </array>
+  <key>Definitions</key>
+  <dict>
+    <key>src/AppDelegate.swift</key>
+    <dict>
+      <key>Path</key>
+      <string>src/AppDelegate.swift</string>
+    </dict>
+    <key>src/bridge.h</key>
+    <dict>
+      <key>Path</key>
+      <string>src/bridge.h</string>
+    </dict>
+    <key>src/main.swift</key>
+    <dict>
+      <key>Path</key>
+      <string>src/main.swift</string>
+    </dict>
+    <key>src/ViewController.swift</key>
+    <dict>
+      <key>Path</key>
+      <string>src/ViewController.swift</string>
+    </dict>
+  </dict>
+  <key>Nodes</key>
+  <array>
+    <string>src/AppDelegate.swift</string>
+    <string>src/bridge.h</string>
+    <string>src/main.swift</string>
+    <string>src/ViewController.swift</string>
+  </array>
+  <key>Project</key>
+  <dict>
+    <key>Configurations</key>
+    <dict>
+        <key>Debug</key>
+        <dict>
+            <key>DEBUG_INFORMATION_FORMAT</key>
+            <string>dwarf-with-dsym</string>
+            <key>SWIFT_OPTIMIZATION_LEVEL</key>
+            <string>-Onone</string>
+        </dict>
+        <key>Release</key>
+        <dict>
+            <key>DEBUG_INFORMATION_FORMAT</key>
+            <string>dwarf-with-dsym</string>
+        </dict>
+    </dict>
+  </dict>
+  <key>Options</key>
+  <array>
+  </array>
+</dict>
+</plist>

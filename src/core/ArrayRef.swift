@@ -34,7 +34,7 @@ class ArrayRef<T>: CollectionType {
   func resize(count: Int, val: T) {
     _array.removeAll(keepCapacity: true)
     for _ in 0..<count {
-        _array.append(val)
+      _array.append(val)
     }
   }
   

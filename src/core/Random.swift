@@ -38,7 +38,7 @@ class Random {
     }
   }
 
-  func next(min: U64, max: U64) -> U64 {
+  func next(min min: U64, max: U64) -> U64 {
     if max <= min {
       return min
     }
@@ -51,7 +51,7 @@ class Random {
     return F64(u) / F64(maxU)
   }
 
-  func next(min: F64, max: F64) -> F64 {
+  func next(min min: F64, max: F64) -> F64 {
     if max <= min {
       return min
     }

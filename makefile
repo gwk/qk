@@ -27,7 +27,7 @@ _bld/gen-cd-entities: src/core/*.swift src/cd/*.swift src/foundation/*.swift src
 
 clean:
 	rm -rf _bld
-	rm \
+	rm -f \
 	src/core/mat-generated.swift \
 	src/core/vec-generated.swift \
 	src/cr/CGPoint-generated.swift \

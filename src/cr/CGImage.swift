@@ -39,7 +39,7 @@ extension CGImage {
       let bytesPerRow = Int(size.x) * (bitsPerPixel / 8)
       let colorSpace = CGColorSpaceCreateDeviceGray()
       let bitmapInfo: CGBitmapInfo = [.ByteOrderDefault]
-      let data = NSData(bytes: p.baseAddress, length: p.count)
+      let data = NSData(bytes: p.baseAddress, length: p.count * sizeof(U8))
       let provider = CGDataProviderCreateWithCFData(data)
       let decodeArray: UnsafePointer<Flt> = nil
       return CGImageCreate(Int(size.x), Int(size.y),
@@ -56,7 +56,7 @@ extension CGImage {
       let bytesPerRow = Int(size.x) * (bitsPerPixel / 8)
       let colorSpace = CGColorSpaceCreateDeviceGray()
       let bitmapInfo: CGBitmapInfo = [.FloatComponents, .ByteOrder32Little]
-      let data = NSData(bytes: p.baseAddress, length: p.count)
+      let data = NSData(bytes: p.baseAddress, length: p.count * sizeof(F32))
       let provider = CGDataProviderCreateWithCFData(data)
       let decodeArray: UnsafePointer<Flt> = nil
       return CGImageCreate(Int(size.x), Int(size.y),

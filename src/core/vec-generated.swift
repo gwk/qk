@@ -18,6 +18,9 @@ extension V2S : VecType2, FloatVecType, Equatable, CustomStringConvertible {
   init(_ v: V2I) {
     self.init(ScalarType(v.x), ScalarType(v.y))
   }
+  init(_ v: V2U8) {
+    self.init(ScalarType(v.x), ScalarType(v.y))
+  }
   init(_ v: V3S) {
     self.init(ScalarType(v.x), ScalarType(v.y))
   }
@@ -27,6 +30,9 @@ extension V2S : VecType2, FloatVecType, Equatable, CustomStringConvertible {
   init(_ v: V3I) {
     self.init(ScalarType(v.x), ScalarType(v.y))
   }
+  init(_ v: V3U8) {
+    self.init(ScalarType(v.x), ScalarType(v.y))
+  }
   init(_ v: V4S) {
     self.init(ScalarType(v.x), ScalarType(v.y))
   }
@@ -34,6 +40,9 @@ extension V2S : VecType2, FloatVecType, Equatable, CustomStringConvertible {
     self.init(ScalarType(v.x), ScalarType(v.y))
   }
   init(_ v: V4I) {
+    self.init(ScalarType(v.x), ScalarType(v.y))
+  }
+  init(_ v: V4U8) {
     self.init(ScalarType(v.x), ScalarType(v.y))
   }
   static let zero = V2S(0, 0)
@@ -91,6 +100,9 @@ extension V2D : VecType2, FloatVecType, Equatable, CustomStringConvertible {
   init(_ v: V2I) {
     self.init(ScalarType(v.x), ScalarType(v.y))
   }
+  init(_ v: V2U8) {
+    self.init(ScalarType(v.x), ScalarType(v.y))
+  }
   init(_ v: V3S) {
     self.init(ScalarType(v.x), ScalarType(v.y))
   }
@@ -100,6 +112,9 @@ extension V2D : VecType2, FloatVecType, Equatable, CustomStringConvertible {
   init(_ v: V3I) {
     self.init(ScalarType(v.x), ScalarType(v.y))
   }
+  init(_ v: V3U8) {
+    self.init(ScalarType(v.x), ScalarType(v.y))
+  }
   init(_ v: V4S) {
     self.init(ScalarType(v.x), ScalarType(v.y))
   }
@@ -107,6 +122,9 @@ extension V2D : VecType2, FloatVecType, Equatable, CustomStringConvertible {
     self.init(ScalarType(v.x), ScalarType(v.y))
   }
   init(_ v: V4I) {
+    self.init(ScalarType(v.x), ScalarType(v.y))
+  }
+  init(_ v: V4U8) {
     self.init(ScalarType(v.x), ScalarType(v.y))
   }
   static let zero = V2D(0, 0)
@@ -151,19 +169,25 @@ public func ==(a: V2D, b: V2D) -> Bool {
 }
 
 
-extension V2I : IntVecType, Equatable, CustomStringConvertible {
+public struct V2I : VecType2, IntVecType, Equatable, CustomStringConvertible {
   typealias ScalarType = Int
   typealias FloatType = F64
   typealias VSType = V2S
   typealias VDType = V2D
-  init() { self.init(x: 0, y: 0) }
-  init(_ x: Int, _ y: Int) {
-    self.init(x: x, y: y)
+  var x: ScalarType
+  var y: ScalarType
+  init(_ x: ScalarType, _ y: ScalarType) {
+    self.x = x
+    self.y = y
   }
+  init() { self.init(0, 0) }
   init(_ v: V2S) {
     self.init(ScalarType(v.x), ScalarType(v.y))
   }
   init(_ v: V2D) {
+    self.init(ScalarType(v.x), ScalarType(v.y))
+  }
+  init(_ v: V2U8) {
     self.init(ScalarType(v.x), ScalarType(v.y))
   }
   init(_ v: V3S) {
@@ -175,6 +199,9 @@ extension V2I : IntVecType, Equatable, CustomStringConvertible {
   init(_ v: V3I) {
     self.init(ScalarType(v.x), ScalarType(v.y))
   }
+  init(_ v: V3U8) {
+    self.init(ScalarType(v.x), ScalarType(v.y))
+  }
   init(_ v: V4S) {
     self.init(ScalarType(v.x), ScalarType(v.y))
   }
@@ -182,6 +209,9 @@ extension V2I : IntVecType, Equatable, CustomStringConvertible {
     self.init(ScalarType(v.x), ScalarType(v.y))
   }
   init(_ v: V4I) {
+    self.init(ScalarType(v.x), ScalarType(v.y))
+  }
+  init(_ v: V4U8) {
     self.init(ScalarType(v.x), ScalarType(v.y))
   }
   static let zero = V2I(0, 0)
@@ -212,6 +242,79 @@ public func ==(a: V2I, b: V2I) -> Bool {
 }
 
 
+public struct V2U8 : VecType2, IntVecType, Equatable, CustomStringConvertible {
+  typealias ScalarType = U8
+  typealias FloatType = F32
+  typealias VSType = V2S
+  typealias VDType = V2D
+  var x: ScalarType
+  var y: ScalarType
+  init(_ x: ScalarType, _ y: ScalarType) {
+    self.x = x
+    self.y = y
+  }
+  init() { self.init(0, 0) }
+  init(_ v: V2S) {
+    self.init(ScalarType(v.x), ScalarType(v.y))
+  }
+  init(_ v: V2D) {
+    self.init(ScalarType(v.x), ScalarType(v.y))
+  }
+  init(_ v: V2I) {
+    self.init(ScalarType(v.x), ScalarType(v.y))
+  }
+  init(_ v: V3S) {
+    self.init(ScalarType(v.x), ScalarType(v.y))
+  }
+  init(_ v: V3D) {
+    self.init(ScalarType(v.x), ScalarType(v.y))
+  }
+  init(_ v: V3I) {
+    self.init(ScalarType(v.x), ScalarType(v.y))
+  }
+  init(_ v: V3U8) {
+    self.init(ScalarType(v.x), ScalarType(v.y))
+  }
+  init(_ v: V4S) {
+    self.init(ScalarType(v.x), ScalarType(v.y))
+  }
+  init(_ v: V4D) {
+    self.init(ScalarType(v.x), ScalarType(v.y))
+  }
+  init(_ v: V4I) {
+    self.init(ScalarType(v.x), ScalarType(v.y))
+  }
+  init(_ v: V4U8) {
+    self.init(ScalarType(v.x), ScalarType(v.y))
+  }
+  static let zero = V2U8(0, 0)
+  static let unitX = V2U8(1, 0)
+  static let unitY = V2U8(0, 1)
+  public var description: String { return "V2U8(\(x), \(y))" }
+  var vs: V2S { return V2S(F32(x), F32(y)) }
+  var vd: V2D { return V2D(F64(x), F64(y)) }
+  var sqrLen: FloatType { return (FloatType(x).sqr + FloatType(y).sqr) }
+  var len: FloatType { return sqrLen.sqrt }
+  var aspect: FloatType { return FloatType(x) / FloatType(y) }
+  func dist(b: V2U8) -> FloatType { return (b - self).len }
+  var l: ScalarType { return x }
+  var a: ScalarType { return y }
+}
+
+func +(a: V2U8, b: V2U8) -> V2U8 { return V2U8(a.x + b.x, a.y + b.y) }
+func -(a: V2U8, b: V2U8) -> V2U8 { return V2U8(a.x - b.x, a.y - b.y) }
+func *(a: V2U8, b: V2U8) -> V2U8 { return V2U8(a.x * b.x, a.y * b.y) }
+func /(a: V2U8, b: V2U8) -> V2U8 { return V2U8(a.x / b.x, a.y / b.y) }
+func +(a: V2U8, s: U8) -> V2U8 { return V2U8(a.x + s, a.y + s) }
+func -(a: V2U8, s: U8) -> V2U8 { return V2U8(a.x - s, a.y - s) }
+func *(a: V2U8, s: U8) -> V2U8 { return V2U8(a.x * s, a.y * s) }
+func /(a: V2U8, s: U8) -> V2U8 { return V2U8(a.x / s, a.y / s) }
+
+public func ==(a: V2U8, b: V2U8) -> Bool {
+  return a.x == b.x && a.y == b.y
+}
+
+
 public typealias V3S = float3
 
 extension V3S : VecType3, FloatVecType, Equatable, CustomStringConvertible {
@@ -225,6 +328,9 @@ extension V3S : VecType3, FloatVecType, Equatable, CustomStringConvertible {
   init(_ v: V3I) {
     self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z))
   }
+  init(_ v: V3U8) {
+    self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z))
+  }
   init(_ v: V4S) {
     self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z))
   }
@@ -232,6 +338,9 @@ extension V3S : VecType3, FloatVecType, Equatable, CustomStringConvertible {
     self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z))
   }
   init(_ v: V4I) {
+    self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z))
+  }
+  init(_ v: V4U8) {
     self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z))
   }
   init(_ v: V2S, _ s: ScalarType) {
@@ -300,6 +409,9 @@ extension V3D : VecType3, FloatVecType, Equatable, CustomStringConvertible {
   init(_ v: V3I) {
     self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z))
   }
+  init(_ v: V3U8) {
+    self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z))
+  }
   init(_ v: V4S) {
     self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z))
   }
@@ -307,6 +419,9 @@ extension V3D : VecType3, FloatVecType, Equatable, CustomStringConvertible {
     self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z))
   }
   init(_ v: V4I) {
+    self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z))
+  }
+  init(_ v: V4U8) {
     self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z))
   }
   init(_ v: V2D, _ s: ScalarType) {
@@ -362,19 +477,27 @@ public func ==(a: V3D, b: V3D) -> Bool {
 }
 
 
-extension V3I : VecType3, IntVecType, Equatable, CustomStringConvertible {
+public struct V3I : VecType3, IntVecType, Equatable, CustomStringConvertible {
   typealias ScalarType = Int
   typealias FloatType = F64
   typealias VSType = V3S
   typealias VDType = V3D
-  init() { self.init(x: 0, y: 0, z: 0) }
-  init(_ x: Int, _ y: Int, _ z: Int) {
-    self.init(x: x, y: y, z: z)
+  var x: ScalarType
+  var y: ScalarType
+  var z: ScalarType
+  init(_ x: ScalarType, _ y: ScalarType, _ z: ScalarType) {
+    self.x = x
+    self.y = y
+    self.z = z
   }
+  init() { self.init(0, 0, 0) }
   init(_ v: V3S) {
     self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z))
   }
   init(_ v: V3D) {
+    self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z))
+  }
+  init(_ v: V3U8) {
     self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z))
   }
   init(_ v: V4S) {
@@ -384,6 +507,9 @@ extension V3I : VecType3, IntVecType, Equatable, CustomStringConvertible {
     self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z))
   }
   init(_ v: V4I) {
+    self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z))
+  }
+  init(_ v: V4U8) {
     self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z))
   }
   init(_ v: V2I, _ s: ScalarType) {
@@ -419,6 +545,74 @@ public func ==(a: V3I, b: V3I) -> Bool {
 }
 
 
+public struct V3U8 : VecType3, IntVecType, Equatable, CustomStringConvertible {
+  typealias ScalarType = U8
+  typealias FloatType = F32
+  typealias VSType = V3S
+  typealias VDType = V3D
+  var x: ScalarType
+  var y: ScalarType
+  var z: ScalarType
+  init(_ x: ScalarType, _ y: ScalarType, _ z: ScalarType) {
+    self.x = x
+    self.y = y
+    self.z = z
+  }
+  init() { self.init(0, 0, 0) }
+  init(_ v: V3S) {
+    self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z))
+  }
+  init(_ v: V3D) {
+    self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z))
+  }
+  init(_ v: V3I) {
+    self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z))
+  }
+  init(_ v: V4S) {
+    self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z))
+  }
+  init(_ v: V4D) {
+    self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z))
+  }
+  init(_ v: V4I) {
+    self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z))
+  }
+  init(_ v: V4U8) {
+    self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z))
+  }
+  init(_ v: V2U8, _ s: ScalarType) {
+    self.init(v.x, v.y, s)
+  }
+  static let zero = V3U8(0, 0, 0)
+  static let unitX = V3U8(1, 0, 0)
+  static let unitY = V3U8(0, 1, 0)
+  static let unitZ = V3U8(0, 0, 1)
+  public var description: String { return "V3U8(\(x), \(y), \(z))" }
+  var vs: V3S { return V3S(F32(x), F32(y), F32(z)) }
+  var vd: V3D { return V3D(F64(x), F64(y), F64(z)) }
+  var sqrLen: FloatType { return (FloatType(x).sqr + FloatType(y).sqr + FloatType(z).sqr) }
+  var len: FloatType { return sqrLen.sqrt }
+  var aspect: FloatType { return FloatType(x) / FloatType(y) }
+  func dist(b: V3U8) -> FloatType { return (b - self).len }
+  var r: ScalarType { return x }
+  var g: ScalarType { return y }
+  var b: ScalarType { return z }
+}
+
+func +(a: V3U8, b: V3U8) -> V3U8 { return V3U8(a.x + b.x, a.y + b.y, a.z + b.z) }
+func -(a: V3U8, b: V3U8) -> V3U8 { return V3U8(a.x - b.x, a.y - b.y, a.z - b.z) }
+func *(a: V3U8, b: V3U8) -> V3U8 { return V3U8(a.x * b.x, a.y * b.y, a.z * b.z) }
+func /(a: V3U8, b: V3U8) -> V3U8 { return V3U8(a.x / b.x, a.y / b.y, a.z / b.z) }
+func +(a: V3U8, s: U8) -> V3U8 { return V3U8(a.x + s, a.y + s, a.z + s) }
+func -(a: V3U8, s: U8) -> V3U8 { return V3U8(a.x - s, a.y - s, a.z - s) }
+func *(a: V3U8, s: U8) -> V3U8 { return V3U8(a.x * s, a.y * s, a.z * s) }
+func /(a: V3U8, s: U8) -> V3U8 { return V3U8(a.x / s, a.y / s, a.z / s) }
+
+public func ==(a: V3U8, b: V3U8) -> Bool {
+  return a.x == b.x && a.y == b.y && a.z == b.z
+}
+
+
 public typealias V4S = float4
 
 extension V4S : VecType4, FloatVecType, Equatable, CustomStringConvertible {
@@ -430,6 +624,9 @@ extension V4S : VecType4, FloatVecType, Equatable, CustomStringConvertible {
     self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z), ScalarType(v.w))
   }
   init(_ v: V4I) {
+    self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z), ScalarType(v.w))
+  }
+  init(_ v: V4U8) {
     self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z), ScalarType(v.w))
   }
   init(_ v: V3S, _ s: ScalarType) {
@@ -501,6 +698,9 @@ extension V4D : VecType4, FloatVecType, Equatable, CustomStringConvertible {
   init(_ v: V4I) {
     self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z), ScalarType(v.w))
   }
+  init(_ v: V4U8) {
+    self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z), ScalarType(v.w))
+  }
   init(_ v: V3D, _ s: ScalarType) {
     self.init(v.x, v.y, v.z, s)
   }
@@ -557,19 +757,29 @@ public func ==(a: V4D, b: V4D) -> Bool {
 }
 
 
-extension V4I : IntVecType, Equatable, CustomStringConvertible {
+public struct V4I : VecType4, IntVecType, Equatable, CustomStringConvertible {
   typealias ScalarType = Int
   typealias FloatType = F64
   typealias VSType = V4S
   typealias VDType = V4D
-  init() { self.init(x: 0, y: 0, z: 0, w: 0) }
-  init(_ x: Int, _ y: Int, _ z: Int, _ w: Int) {
-    self.init(x: x, y: y, z: z, w: w)
+  var x: ScalarType
+  var y: ScalarType
+  var z: ScalarType
+  var w: ScalarType
+  init(_ x: ScalarType, _ y: ScalarType, _ z: ScalarType, _ w: ScalarType) {
+    self.x = x
+    self.y = y
+    self.z = z
+    self.w = w
   }
+  init() { self.init(0, 0, 0, 0) }
   init(_ v: V4S) {
     self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z), ScalarType(v.w))
   }
   init(_ v: V4D) {
+    self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z), ScalarType(v.w))
+  }
+  init(_ v: V4U8) {
     self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z), ScalarType(v.w))
   }
   init(_ v: V3I, _ s: ScalarType) {
@@ -603,6 +813,66 @@ func *(a: V4I, s: Int) -> V4I { return V4I(a.x * s, a.y * s, a.z * s, a.w * s) }
 func /(a: V4I, s: Int) -> V4I { return V4I(a.x / s, a.y / s, a.z / s, a.w / s) }
 
 public func ==(a: V4I, b: V4I) -> Bool {
+  return a.x == b.x && a.y == b.y && a.z == b.z && a.w == b.w
+}
+
+
+public struct V4U8 : VecType4, IntVecType, Equatable, CustomStringConvertible {
+  typealias ScalarType = U8
+  typealias FloatType = F32
+  typealias VSType = V4S
+  typealias VDType = V4D
+  var x: ScalarType
+  var y: ScalarType
+  var z: ScalarType
+  var w: ScalarType
+  init(_ x: ScalarType, _ y: ScalarType, _ z: ScalarType, _ w: ScalarType) {
+    self.x = x
+    self.y = y
+    self.z = z
+    self.w = w
+  }
+  init() { self.init(0, 0, 0, 0) }
+  init(_ v: V4S) {
+    self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z), ScalarType(v.w))
+  }
+  init(_ v: V4D) {
+    self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z), ScalarType(v.w))
+  }
+  init(_ v: V4I) {
+    self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z), ScalarType(v.w))
+  }
+  init(_ v: V3U8, _ s: ScalarType) {
+    self.init(v.x, v.y, v.z, s)
+  }
+  static let zero = V4U8(0, 0, 0, 0)
+  static let unitX = V4U8(1, 0, 0, 0)
+  static let unitY = V4U8(0, 1, 0, 0)
+  static let unitZ = V4U8(0, 0, 1, 0)
+  static let unitW = V4U8(0, 0, 0, 1)
+  public var description: String { return "V4U8(\(x), \(y), \(z), \(w))" }
+  var vs: V4S { return V4S(F32(x), F32(y), F32(z), F32(w)) }
+  var vd: V4D { return V4D(F64(x), F64(y), F64(z), F64(w)) }
+  var sqrLen: FloatType { return (FloatType(x).sqr + FloatType(y).sqr + FloatType(z).sqr + FloatType(w).sqr) }
+  var len: FloatType { return sqrLen.sqrt }
+  var aspect: FloatType { return FloatType(x) / FloatType(y) }
+  func dist(b: V4U8) -> FloatType { return (b - self).len }
+  var r: ScalarType { return x }
+  var g: ScalarType { return y }
+  var b: ScalarType { return z }
+  var a: ScalarType { return w }
+}
+
+func +(a: V4U8, b: V4U8) -> V4U8 { return V4U8(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w) }
+func -(a: V4U8, b: V4U8) -> V4U8 { return V4U8(a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w) }
+func *(a: V4U8, b: V4U8) -> V4U8 { return V4U8(a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w) }
+func /(a: V4U8, b: V4U8) -> V4U8 { return V4U8(a.x / b.x, a.y / b.y, a.z / b.z, a.w / b.w) }
+func +(a: V4U8, s: U8) -> V4U8 { return V4U8(a.x + s, a.y + s, a.z + s, a.w + s) }
+func -(a: V4U8, s: U8) -> V4U8 { return V4U8(a.x - s, a.y - s, a.z - s, a.w - s) }
+func *(a: V4U8, s: U8) -> V4U8 { return V4U8(a.x * s, a.y * s, a.z * s, a.w * s) }
+func /(a: V4U8, s: U8) -> V4U8 { return V4U8(a.x / s, a.y / s, a.z / s, a.w / s) }
+
+public func ==(a: V4U8, b: V4U8) -> Bool {
   return a.x == b.x && a.y == b.y && a.z == b.z && a.w == b.w
 }
 

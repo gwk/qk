@@ -4,7 +4,7 @@
 from gen_util import *
 
 
-def gen_vec(orig_type, dim, s_type, fs_type, v_type, v_prev, is_simd):
+def gen_vec(orig_type, dim, s_type, fs_type, v_type, v_prev, is_simd, is_novel):
   # dim: integer dimension.
   # s_type: T type var or concrete numeric type.
   # fs_type: the appropriate float scalar type, where returning an int makes no sense.
@@ -17,7 +17,7 @@ def gen_vec(orig_type, dim, s_type, fs_type, v_type, v_prev, is_simd):
   comps_colors = list(zip('la' if dim == 2 else 'rgba', comps))
   public = 'public ' if not is_simd else ''
   is_float = s_type.startswith('F')
-  needs_eq = is_simd or not is_float
+  needs_eq = is_simd or is_novel
 
   protocols = [fmt('VecType$', dim)]
   if is_float:
@@ -32,21 +32,24 @@ def gen_vec(orig_type, dim, s_type, fs_type, v_type, v_prev, is_simd):
   if is_simd:
     outL('public typealias $ = $\n', v_type, orig_type)
 
-  outL('extension $ : $ {', v_type, jc(protocols))
-
+  decl_keyword = 'public struct' if is_novel else 'extension'
+  outL('$ $ : $ {', decl_keyword, v_type, jc(protocols))
   outL('  typealias ScalarType = $', s_type)
   outL('  typealias FloatType = $', fs_type)
   outL('  typealias VSType = V$S', dim)
   outL('  typealias VDType = V$D', dim)
 
-  if s_type == 'Int':
-    outL('  init() { self.init($) }',  jcf('$: 0', comps))
-    outL('  init($) {', jcf('_ $: Int', comps))
-    outL('    self.init($)', jcft('$: $', zip(comps, comps)))
+  if is_novel:
+    for c in comps:
+      outL('  var $: ScalarType', c)
+    outL('  init($) {', jcf('_ $: ScalarType', comps))
+    for c in comps:
+      outL('    self.$ = $', c, c)
     outL('  }')
+    outL('  init() { self.init($) }',  jc('0' for c in comps))
 
   for d in range(dim, 5):
-    for st, suffix, fst, f_suffix, simd_type_prefix in types:
+    for st, suffix, fst, f_suffix, simd_type_prefix, is_novel in types:
       if d == dim and st == s_type:
         continue
       vt = fmt('V$$', d, suffix)
@@ -148,15 +151,15 @@ if __name__ == '__main__':
     dim = int(dim_string)
     v_type = orig_type
     outL('import $\n\n', import_name)
-    gen_vec(orig_type, dim, s_type, fs_type, v_type, v_prev=None, is_simd=False)
+    gen_vec(orig_type, dim, s_type, fs_type, v_type, v_prev=None, is_simd=False, is_novel=False)
 
   else:
     outL('import simd\n')
     for d in dims:
-      for s_type, suffix, fs_type, f_suffix, simd_type_prefix in types:
+      for s_type, suffix, fs_type, f_suffix, simd_type_prefix, is_novel in types:
         outL('')
         simd_type = fmt('$$', simd_type_prefix, d)
         v_type = fmt('V$$', d, suffix)
         v_prev = fmt('V$$', d - 1, suffix) if d > 2 else None
-        gen_vec(simd_type, d, s_type, fs_type, v_type, v_prev, is_simd=bool(simd_type_prefix))
+        gen_vec(simd_type, d, s_type, fs_type, v_type, v_prev, is_simd=bool(simd_type_prefix), is_novel=is_novel)
 

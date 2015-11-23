@@ -19,6 +19,9 @@ extension CGPoint : VecType2, FloatVecType, CustomStringConvertible {
   init(_ v: V2I) {
     self.init(ScalarType(v.x), ScalarType(v.y))
   }
+  init(_ v: V2U8) {
+    self.init(ScalarType(v.x), ScalarType(v.y))
+  }
   init(_ v: V3S) {
     self.init(ScalarType(v.x), ScalarType(v.y))
   }
@@ -28,6 +31,9 @@ extension CGPoint : VecType2, FloatVecType, CustomStringConvertible {
   init(_ v: V3I) {
     self.init(ScalarType(v.x), ScalarType(v.y))
   }
+  init(_ v: V3U8) {
+    self.init(ScalarType(v.x), ScalarType(v.y))
+  }
   init(_ v: V4S) {
     self.init(ScalarType(v.x), ScalarType(v.y))
   }
@@ -35,6 +41,9 @@ extension CGPoint : VecType2, FloatVecType, CustomStringConvertible {
     self.init(ScalarType(v.x), ScalarType(v.y))
   }
   init(_ v: V4I) {
+    self.init(ScalarType(v.x), ScalarType(v.y))
+  }
+  init(_ v: V4U8) {
     self.init(ScalarType(v.x), ScalarType(v.y))
   }
   static let zero = CGPoint(0, 0)

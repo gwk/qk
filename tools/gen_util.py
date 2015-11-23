@@ -9,10 +9,11 @@ dims = [2, 3, 4]
 all_v_comps = ['x', 'y', 'z', 'w']
 ops = ['+', '-', '*', '/']
 
-types = [ # s_type, suffix, fs_type, f_suffix, simd_type_prefix.
-  ('F32', 'S', 'F32', 'S', 'float'),
-  ('F64', 'D', 'F64', 'D', 'double'),
-  ('Int', 'I', 'F64', 'D', None),
+types = [ # s_type, suffix, fs_type, f_suffix, simd_type_prefix, is_novel.
+  ('F32', 'S', 'F32', 'S', 'float', False),
+  ('F64', 'D', 'F64', 'D', 'double', False),
+  ('Int', 'I', 'F64', 'D', None, True),
+  ('U8', 'U8', 'F32', 'S', None, True),
 ]
 
 def fmt(f, *items):

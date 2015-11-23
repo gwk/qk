@@ -12,7 +12,9 @@ class AreaBuffer<T>: ArrayRef<T> {
   }
   
   var size: V2I { return _size }
-  
+
+  var allCoords: AreaIterator { return AreaIterator(size: _size) }
+
   override func resize(count: Int, val: T) { fatalError("use resize(size: V2I, val: T)") }
 
   func resize(size: V2I, val: T) {

@@ -12,7 +12,7 @@ extension CGContext {
   func scaleCTM(x: Flt, _ y: Flt) { CGContextScaleCTM(self, x, y) }
   func translateCTM(x: Flt, _ y: Flt) { CGContextTranslateCTM(self, x, y) }
 
-  func flipHCTM() {
+  func flipCTMHori() {
     translateCTM(Flt(w), 0)
     scaleCTM(-1, 1)
   }

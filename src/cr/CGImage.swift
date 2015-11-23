@@ -41,7 +41,7 @@ extension CGImage {
 
   func flipH() -> CGImage {
     let ctx = CGBitmapContextCreate(nil, w, h, bitsPerComponent, 0, colorSpace, bitmapInfo.rawValue)!
-    ctx.flipHCTM()
+    ctx.flipCTMHori()
     ctx.drawImage(self)
     return ctx.createImage()
   }

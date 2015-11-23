@@ -3,50 +3,47 @@
 import AppKit
 
 
-let initWindowSize = CGSize(512, 256)
+let viewSize = CGSize(512, 512)
 
 class AppDelegate: NSObject, NSApplicationDelegate {
-  
-  weak var window: NSWindow!
+
+  var window: NSWindow!
   var viewController: NSViewController!
 
+  override init() {}
+
   func applicationDidFinishLaunching(note: NSNotification) {
-    
+
     let processInfo = NSProcessInfo.processInfo()
-    
+
     // menu bar.
     let quitItem = NSMenuItem(
       title: "Quit " + processInfo.processName,
       action: Selector("terminate:"),
       keyEquivalent:"q")
-    
+
     let appMenu = NSMenu()
     appMenu.addItem(quitItem)
-    
+
     let appMenuBarItem = NSMenuItem()
     appMenuBarItem.submenu = appMenu
-    
+
     let menuBar = NSMenu()
     menuBar.addItem(appMenuBarItem)
-    
+
     let app = NSApplication.sharedApplication()
     app.mainMenu = menuBar
-    
+
     viewController = NSViewController()
     viewController.title = processInfo.processName
-    
+
     window = NSWindow(
-      contentRect: CGRectZero, // arbitrary; gets clobbered by controller view initial size.
-      styleMask: NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask | NSResizableWindowMask,
-      backing: NSBackingStoreType.Buffered,
-      `defer`: false)
-    window.contentViewController = viewController
-    window.bind(NSTitleBinding, toObject:viewController, withKeyPath:"title", options:nil)
-    //viewController.updateWindowObserver()
-    
-    window.origin = CGPoint(8, 48)
-    window.size = initWindowSize
+      origin: CGPoint(0, 0),
+      viewSize: viewSize,
+      fixedAspect: true,
+      viewController: viewController)
+    window.contentMinSize = viewSize
+    window.contentMaxSize = viewSize
     window.makeKeyAndOrderFront(nil)
   }
 }
-

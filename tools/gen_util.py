@@ -12,7 +12,7 @@ ops = ['+', '-', '*', '/']
 types = [ # s_type, suffix, fs_type, f_suffix, simd_type_prefix.
   ('F32', 'S', 'F32', 'S', 'float'),
   ('F64', 'D', 'F64', 'D', 'double'),
-  ('I32', 'I', 'F64', 'D', 'int'),
+  ('Int', 'I', 'F64', 'D', None),
 ]
 
 def fmt(f, *items):

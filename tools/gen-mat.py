@@ -114,6 +114,6 @@ import simd.matrix
 
   for d in dims:
     for s_type, suffix, fs_type, f_suffix, simd_type in types:
-      if suffix == 'I': continue
+      if not simd_type: continue
       gen_mat(d, s_type, suffix, simd_type)
 

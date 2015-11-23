@@ -9,7 +9,7 @@ def gen_vec(orig_type, dim, s_type, fs_type, v_type, v_prev, is_simd):
   # s_type: T type var or concrete numeric type.
   # fs_type: the appropriate float scalar type, where returning an int makes no sense.
   # v_type: the full type name being generated.
-  # v_prev: lower dimension vector type, e.g. v_type=V3S, v_prev=V2S.
+  # v_prev: lower dimension vector type, e.g. v_type=V3S, v_prev=V2S. None for dim == 2.
   comps = all_v_comps[:dim]
   comps_a = ['a.' + c for c in comps]
   comps_b = ['b.' + c for c in comps]
@@ -17,18 +17,20 @@ def gen_vec(orig_type, dim, s_type, fs_type, v_type, v_prev, is_simd):
   comps_colors = list(zip('la' if dim == 2 else 'rgba', comps))
   public = 'public ' if not is_simd else ''
   is_float = s_type.startswith('F')
+  needs_eq = is_simd or not is_float
 
   protocols = [fmt('VecType$', dim)]
   if is_float:
     protocols.append('FloatVecType')
   else:
     protocols.append('IntVecType')
+  if needs_eq:
+    protocols.append('Equatable')
 
   protocols.append('CustomStringConvertible')
 
   if is_simd:
     outL('public typealias $ = $\n', v_type, orig_type)
-    protocols.append('Equatable')
 
   outL('extension $ : $ {', v_type, jc(protocols))
 
@@ -37,9 +39,10 @@ def gen_vec(orig_type, dim, s_type, fs_type, v_type, v_prev, is_simd):
   outL('  typealias VSType = V$S', dim)
   outL('  typealias VDType = V$D', dim)
 
-  if s_type == 'I32':
+  if s_type == 'Int':
+    outL('  init() { self.init($) }',  jcf('$: 0', comps))
     outL('  init($) {', jcf('_ $: Int', comps))
-    outL('    self.init($)', jcf('ScalarType($)', comps))
+    outL('    self.init($)', jcft('$: $', zip(comps, comps)))
     outL('  }')
 
   for d in range(dim, 5):
@@ -51,7 +54,7 @@ def gen_vec(orig_type, dim, s_type, fs_type, v_type, v_prev, is_simd):
       outL('    self.init($)', jcf('ScalarType(v.$)', comps))
       outL('  }')
   
-  if dim > 2:
+  if v_prev:
     outL('  init(_ v: $, _ s: ScalarType) {', v_prev)
     outL('    self.init($)', jc(fmt('v.$', c) if i < dim - 1 else 's' for i, c in enumerate(comps)))
     outL('  }')
@@ -121,14 +124,14 @@ def gen_vec(orig_type, dim, s_type, fs_type, v_type, v_prev, is_simd):
 
   outL('')
 
-  if is_simd:
+  if needs_eq:
     outL('public func ==(a: $, b: $) -> Bool {', v_type, v_type)
     outL('  return $', ' && '.join(fmt('a.$ == b.$', c, c) for c in comps))
     outL('}\n')
 
 if __name__ == '__main__':
   args = sys.argv[1:]
-  expected = ['orig_type', 'dimension', 'import_name']
+  expected = ['orig_type', 'dimension', 'scalar_type', 'float_scalar_type', 'import_name']
   if args and len(args) != len(expected):
     errL('error: found $ args; expected $: $', len(args), len(expected), jc(expected))
     sys.exit(1)
@@ -141,12 +144,11 @@ if __name__ == '__main__':
   outL('import Darwin')
 
   if args:
-    (orig_type, dim_string, import_name) = args
+    (orig_type, dim_string, s_type, fs_type, import_name) = args
     dim = int(dim_string)
     v_type = orig_type
-    v_prev = None
     outL('import $\n\n', import_name)
-    gen_vec(orig_type, dim, 'Flt', 'Flt', v_type, v_prev, is_simd=False)
+    gen_vec(orig_type, dim, s_type, fs_type, v_type, v_prev=None, is_simd=False)
 
   else:
     outL('import simd\n')
@@ -155,6 +157,6 @@ if __name__ == '__main__':
         outL('')
         simd_type = fmt('$$', simd_type_prefix, d)
         v_type = fmt('V$$', d, suffix)
-        v_prev = fmt('V$$', d - 1, suffix)
-        gen_vec(simd_type, d, s_type, fs_type, v_type, v_prev, is_simd=True)
+        v_prev = fmt('V$$', d - 1, suffix) if d > 2 else None
+        gen_vec(simd_type, d, s_type, fs_type, v_type, v_prev, is_simd=bool(simd_type_prefix))
 

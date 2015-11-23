@@ -7,7 +7,7 @@ import simd
 
 public typealias V2S = float2
 
-extension V2S : VecType2, FloatVecType, CustomStringConvertible, Equatable {
+extension V2S : VecType2, FloatVecType, Equatable, CustomStringConvertible {
   typealias ScalarType = F32
   typealias FloatType = F32
   typealias VSType = V2S
@@ -80,7 +80,7 @@ public func ==(a: V2S, b: V2S) -> Bool {
 
 public typealias V2D = double2
 
-extension V2D : VecType2, FloatVecType, CustomStringConvertible, Equatable {
+extension V2D : VecType2, FloatVecType, Equatable, CustomStringConvertible {
   typealias ScalarType = F64
   typealias FloatType = F64
   typealias VSType = V2S
@@ -151,15 +151,14 @@ public func ==(a: V2D, b: V2D) -> Bool {
 }
 
 
-public typealias V2I = int2
-
-extension V2I : VecType2, IntVecType, CustomStringConvertible, Equatable {
-  typealias ScalarType = I32
+extension V2I : IntVecType, Equatable, CustomStringConvertible {
+  typealias ScalarType = Int
   typealias FloatType = F64
   typealias VSType = V2S
   typealias VDType = V2D
+  init() { self.init(x: 0, y: 0) }
   init(_ x: Int, _ y: Int) {
-    self.init(ScalarType(x), ScalarType(y))
+    self.init(x: x, y: y)
   }
   init(_ v: V2S) {
     self.init(ScalarType(v.x), ScalarType(v.y))
@@ -203,10 +202,10 @@ func +(a: V2I, b: V2I) -> V2I { return V2I(a.x + b.x, a.y + b.y) }
 func -(a: V2I, b: V2I) -> V2I { return V2I(a.x - b.x, a.y - b.y) }
 func *(a: V2I, b: V2I) -> V2I { return V2I(a.x * b.x, a.y * b.y) }
 func /(a: V2I, b: V2I) -> V2I { return V2I(a.x / b.x, a.y / b.y) }
-func +(a: V2I, s: I32) -> V2I { return V2I(a.x + s, a.y + s) }
-func -(a: V2I, s: I32) -> V2I { return V2I(a.x - s, a.y - s) }
-func *(a: V2I, s: I32) -> V2I { return V2I(a.x * s, a.y * s) }
-func /(a: V2I, s: I32) -> V2I { return V2I(a.x / s, a.y / s) }
+func +(a: V2I, s: Int) -> V2I { return V2I(a.x + s, a.y + s) }
+func -(a: V2I, s: Int) -> V2I { return V2I(a.x - s, a.y - s) }
+func *(a: V2I, s: Int) -> V2I { return V2I(a.x * s, a.y * s) }
+func /(a: V2I, s: Int) -> V2I { return V2I(a.x / s, a.y / s) }
 
 public func ==(a: V2I, b: V2I) -> Bool {
   return a.x == b.x && a.y == b.y
@@ -215,7 +214,7 @@ public func ==(a: V2I, b: V2I) -> Bool {
 
 public typealias V3S = float3
 
-extension V3S : VecType3, FloatVecType, CustomStringConvertible, Equatable {
+extension V3S : VecType3, FloatVecType, Equatable, CustomStringConvertible {
   typealias ScalarType = F32
   typealias FloatType = F32
   typealias VSType = V3S
@@ -290,7 +289,7 @@ public func ==(a: V3S, b: V3S) -> Bool {
 
 public typealias V3D = double3
 
-extension V3D : VecType3, FloatVecType, CustomStringConvertible, Equatable {
+extension V3D : VecType3, FloatVecType, Equatable, CustomStringConvertible {
   typealias ScalarType = F64
   typealias FloatType = F64
   typealias VSType = V3S
@@ -363,15 +362,14 @@ public func ==(a: V3D, b: V3D) -> Bool {
 }
 
 
-public typealias V3I = int3
-
-extension V3I : VecType3, IntVecType, CustomStringConvertible, Equatable {
-  typealias ScalarType = I32
+extension V3I : VecType3, IntVecType, Equatable, CustomStringConvertible {
+  typealias ScalarType = Int
   typealias FloatType = F64
   typealias VSType = V3S
   typealias VDType = V3D
+  init() { self.init(x: 0, y: 0, z: 0) }
   init(_ x: Int, _ y: Int, _ z: Int) {
-    self.init(ScalarType(x), ScalarType(y), ScalarType(z))
+    self.init(x: x, y: y, z: z)
   }
   init(_ v: V3S) {
     self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z))
@@ -411,10 +409,10 @@ func +(a: V3I, b: V3I) -> V3I { return V3I(a.x + b.x, a.y + b.y, a.z + b.z) }
 func -(a: V3I, b: V3I) -> V3I { return V3I(a.x - b.x, a.y - b.y, a.z - b.z) }
 func *(a: V3I, b: V3I) -> V3I { return V3I(a.x * b.x, a.y * b.y, a.z * b.z) }
 func /(a: V3I, b: V3I) -> V3I { return V3I(a.x / b.x, a.y / b.y, a.z / b.z) }
-func +(a: V3I, s: I32) -> V3I { return V3I(a.x + s, a.y + s, a.z + s) }
-func -(a: V3I, s: I32) -> V3I { return V3I(a.x - s, a.y - s, a.z - s) }
-func *(a: V3I, s: I32) -> V3I { return V3I(a.x * s, a.y * s, a.z * s) }
-func /(a: V3I, s: I32) -> V3I { return V3I(a.x / s, a.y / s, a.z / s) }
+func +(a: V3I, s: Int) -> V3I { return V3I(a.x + s, a.y + s, a.z + s) }
+func -(a: V3I, s: Int) -> V3I { return V3I(a.x - s, a.y - s, a.z - s) }
+func *(a: V3I, s: Int) -> V3I { return V3I(a.x * s, a.y * s, a.z * s) }
+func /(a: V3I, s: Int) -> V3I { return V3I(a.x / s, a.y / s, a.z / s) }
 
 public func ==(a: V3I, b: V3I) -> Bool {
   return a.x == b.x && a.y == b.y && a.z == b.z
@@ -423,7 +421,7 @@ public func ==(a: V3I, b: V3I) -> Bool {
 
 public typealias V4S = float4
 
-extension V4S : VecType4, FloatVecType, CustomStringConvertible, Equatable {
+extension V4S : VecType4, FloatVecType, Equatable, CustomStringConvertible {
   typealias ScalarType = F32
   typealias FloatType = F32
   typealias VSType = V4S
@@ -492,7 +490,7 @@ public func ==(a: V4S, b: V4S) -> Bool {
 
 public typealias V4D = double4
 
-extension V4D : VecType4, FloatVecType, CustomStringConvertible, Equatable {
+extension V4D : VecType4, FloatVecType, Equatable, CustomStringConvertible {
   typealias ScalarType = F64
   typealias FloatType = F64
   typealias VSType = V4S
@@ -559,15 +557,14 @@ public func ==(a: V4D, b: V4D) -> Bool {
 }
 
 
-public typealias V4I = int4
-
-extension V4I : VecType4, IntVecType, CustomStringConvertible, Equatable {
-  typealias ScalarType = I32
+extension V4I : IntVecType, Equatable, CustomStringConvertible {
+  typealias ScalarType = Int
   typealias FloatType = F64
   typealias VSType = V4S
   typealias VDType = V4D
+  init() { self.init(x: 0, y: 0, z: 0, w: 0) }
   init(_ x: Int, _ y: Int, _ z: Int, _ w: Int) {
-    self.init(ScalarType(x), ScalarType(y), ScalarType(z), ScalarType(w))
+    self.init(x: x, y: y, z: z, w: w)
   }
   init(_ v: V4S) {
     self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z), ScalarType(v.w))
@@ -600,10 +597,10 @@ func +(a: V4I, b: V4I) -> V4I { return V4I(a.x + b.x, a.y + b.y, a.z + b.z, a.w 
 func -(a: V4I, b: V4I) -> V4I { return V4I(a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w) }
 func *(a: V4I, b: V4I) -> V4I { return V4I(a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w) }
 func /(a: V4I, b: V4I) -> V4I { return V4I(a.x / b.x, a.y / b.y, a.z / b.z, a.w / b.w) }
-func +(a: V4I, s: I32) -> V4I { return V4I(a.x + s, a.y + s, a.z + s, a.w + s) }
-func -(a: V4I, s: I32) -> V4I { return V4I(a.x - s, a.y - s, a.z - s, a.w - s) }
-func *(a: V4I, s: I32) -> V4I { return V4I(a.x * s, a.y * s, a.z * s, a.w * s) }
-func /(a: V4I, s: I32) -> V4I { return V4I(a.x / s, a.y / s, a.z / s, a.w / s) }
+func +(a: V4I, s: Int) -> V4I { return V4I(a.x + s, a.y + s, a.z + s, a.w + s) }
+func -(a: V4I, s: Int) -> V4I { return V4I(a.x - s, a.y - s, a.z - s, a.w - s) }
+func *(a: V4I, s: Int) -> V4I { return V4I(a.x * s, a.y * s, a.z * s, a.w * s) }
+func /(a: V4I, s: Int) -> V4I { return V4I(a.x / s, a.y / s, a.z / s, a.w / s) }
 
 public func ==(a: V4I, b: V4I) -> Bool {
   return a.x == b.x && a.y == b.y && a.z == b.z && a.w == b.w

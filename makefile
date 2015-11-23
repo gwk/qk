@@ -14,10 +14,10 @@ src/core/vec-generated.swift: tools/gen-vec.py
 	$^ > $@
 
 src/cr/CGPoint-generated.swift: tools/gen-vec.py
-	$^ CGPoint 2 CoreGraphics > $@
+	$^ CGPoint 2 Flt Flt CoreGraphics > $@
 
 src/cr/CGVector-generated.swift: tools/gen-vec.py
-	$^ CGVector 2 CoreGraphics > $@
+	$^ CGVector 2 Flt Flt CoreGraphics > $@
 
 _bld/gen-cd-entities: src/core/*.swift src/cd/*.swift src/foundation/*.swift src/std/*.swift tools/gen-cd-entities.swift tools/main.swift
 	mkdir -p _bld
@@ -26,10 +26,12 @@ _bld/gen-cd-entities: src/core/*.swift src/cd/*.swift src/foundation/*.swift src
 .PHONY: default clean gen all cd core cr foundation geom gl img ios scn std parse
 
 clean:
-	rm -f src/core/mat-generated.swift
-	rm -f src/core/vec-generated.swift
-	rm -f src/cr/CGPoint-generated.swift
 	rm -rf _bld
+	rm \
+	src/core/mat-generated.swift \
+	src/core/vec-generated.swift \
+	src/cr/CGPoint-generated.swift \
+	src/cr/CGVector-generated.swift
 
 # all generated source targets.
 gen: \

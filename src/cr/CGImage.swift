@@ -30,38 +30,45 @@ extension CGImage {
     }
   }
 
-  class func with(buffer buffer: AreaBuffer<U8>, shouldInterpolate: Bool = false, intent: CGColorRenderingIntent = .RenderingIntentDefault) -> CGImage {
-    return buffer.withUnsafeBufferPointer() {
-      p in
-      let size = buffer.size
-      let bitsPerComponent = 8
-      let bitsPerPixel = bitsPerComponent
-      let bytesPerRow = Int(size.x) * (bitsPerPixel / 8)
-      let colorSpace = CGColorSpaceCreateDeviceGray()
-      let bitmapInfo: CGBitmapInfo = [.ByteOrderDefault]
-      let data = NSData(bytes: p.baseAddress, length: p.count * sizeof(U8))
+  class func with<T: PixelType>(bufferPointer bufferPointer: UnsafeBufferPointer<T>, size: V2I, colorSpace: CGColorSpace,
+    bitmapInfo: CGBitmapInfo, shouldInterpolate: Bool, intent: CGColorRenderingIntent) -> CGImage {
+      typealias ScalarType = T.ScalarType
+      let bytesPerComponent = sizeof(ScalarType) // BUG: xc7b4 does not understand T.ScalarType; typealias above works around.
+      let bytesPerPixel = sizeof(T)
+      let bitsPerComponent = 8 * bytesPerComponent
+      let bitsPerPixel = 8 * bytesPerPixel
+      let bytesPerRow = bytesPerPixel * size.x
+      let data = NSData(bytes: bufferPointer.baseAddress, length: bufferPointer.count * bytesPerPixel)
       let provider = CGDataProviderCreateWithCFData(data)
       let decodeArray: UnsafePointer<Flt> = nil
-      return CGImageCreate(Int(size.x), Int(size.y),
+      return CGImageCreate(size.x, size.y,
         bitsPerComponent, bitsPerPixel, bytesPerRow, colorSpace, bitmapInfo, provider, decodeArray, shouldInterpolate, intent)!
-    }
   }
 
-  class func with(buffer buffer: AreaBuffer<F32>, shouldInterpolate: Bool = false, intent: CGColorRenderingIntent = .RenderingIntentDefault) -> CGImage {
-    return buffer.withUnsafeBufferPointer() {
-      p in
-      let size = buffer.size
-      let bitsPerComponent = 32
-      let bitsPerPixel = bitsPerComponent
-      let bytesPerRow = Int(size.x) * (bitsPerPixel / 8)
-      let colorSpace = CGColorSpaceCreateDeviceGray()
-      let bitmapInfo: CGBitmapInfo = [.FloatComponents, .ByteOrder32Little]
-      let data = NSData(bytes: p.baseAddress, length: p.count * sizeof(F32))
-      let provider = CGDataProviderCreateWithCFData(data)
-      let decodeArray: UnsafePointer<Flt> = nil
-      return CGImageCreate(Int(size.x), Int(size.y),
-        bitsPerComponent, bitsPerPixel, bytesPerRow, colorSpace, bitmapInfo, provider, decodeArray, shouldInterpolate, intent)!
-    }
+  class func with<T: PixelType>(areaBuffer areaBuffer: AreaBuffer<T>, shouldInterpolate: Bool = false,
+    intent: CGColorRenderingIntent = .RenderingIntentDefault) -> CGImage {
+      return areaBuffer.withUnsafeBufferPointer() {
+        typealias ScalarType = T.ScalarType
+        let isRGB = T.numComponents >= 3
+        let isFloat = (sizeof(ScalarType) == 4)
+        let hasAlpha = (T.numComponents % 2 == 0)
+        let colorSpace = isRGB ? CGColorSpaceCreateDeviceRGB()! : CGColorSpaceCreateDeviceGray()!
+        let byteOrder: CGBitmapInfo
+        switch sizeof(ScalarType) {
+        case 1: byteOrder = .ByteOrderDefault
+        case 2: byteOrder = .ByteOrder16Little
+        case 4: byteOrder = .ByteOrder32Little
+        default: fatalError("unsupported PixelType.ScalarType: \(T.self)")
+        }
+        var bitmapInfo: CGBitmapInfo = byteOrder
+        if isFloat {
+          bitmapInfo.insert(.FloatComponents)
+        }
+        if hasAlpha {
+          bitmapInfo.insert(CGBitmapInfo(rawValue: CGImageAlphaInfo.PremultipliedLast.rawValue)) // TODO: explore if non-premultiplied is supported.
+        }
+        return with(bufferPointer: $0, size: areaBuffer.size, colorSpace: colorSpace, bitmapInfo: bitmapInfo, shouldInterpolate: shouldInterpolate, intent: intent)
+      }
   }
 
 

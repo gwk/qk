@@ -1,45 +1,53 @@
 // © 2015 George King. Permission to use this file is granted in license-qk.txt.
 
 
-class ArrayRef<T>: CollectionType {
+class ArrayRef<Element>: CollectionType {
   // pass-by-reference Array type.
   
-  typealias Generator = ContiguousArray<T>.Generator
-  typealias Index = ContiguousArray<T>.Index
+  typealias Generator = Array<Element>.Generator
+  typealias Index = Array<Element>.Index
   
-  private var _array: ContiguousArray<T>
+  var array: Array<Element> = []
   
-  init() {
-    _array = ContiguousArray<T>()
+  init() {}
+
+  convenience init(count: Int, val: Element) {
+    self.init()
+    resize(count, val: val)
   }
 
-  var count: Int { return _array.count }
-  
-  func generate() -> Generator { return _array.generate() }
-  
-  var startIndex: Index { return _array.startIndex }
+  convenience init<S: SequenceType where S.Generator.Element == Element>(seq: S) {
+    self.init()
+    array = Array(seq)
+  }
 
-  var endIndex: Index { return _array.endIndex }
+  var count: Int { return array.count }
+  
+  func generate() -> Generator { return array.generate() }
+  
+  var startIndex: Index { return array.startIndex }
 
-  subscript (i: Int) -> T {
-    get { return _array[i] }
-    set { _array[i] = newValue }
+  var endIndex: Index { return array.endIndex }
+
+  subscript (i: Int) -> Element {
+    get { return array[i] }
+    set { array[i] = newValue }
   }
   
-  subscript (range: Range<Index>) -> ArraySlice<T> {
-    get { return _array[range] }
-    set { _array[range] = newValue }
+  subscript (range: Range<Index>) -> ArraySlice<Element> {
+    get { return array[range] }
+    set { array[range] = newValue }
   }
   
-  func resize(count: Int, val: T) {
-    _array.removeAll(keepCapacity: true)
+  func resize(count: Int, val: Element) {
+    array.removeAll(keepCapacity: true)
     for _ in 0..<count {
-      _array.append(val)
+      array.append(val)
     }
   }
   
-  func withUnsafeBufferPointer<R>(@noescape body: (UnsafeBufferPointer<T>) -> R) -> R {
-    return _array.withUnsafeBufferPointer(body)
+  func withUnsafeBufferPointer<R>(@noescape body: (UnsafeBufferPointer<Element>) -> R) -> R {
+    return array.withUnsafeBufferPointer(body)
   }
 }
 

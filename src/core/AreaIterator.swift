@@ -5,21 +5,25 @@ struct AreaIterator: SequenceType, GeneratorType {
   typealias Element = V2I
   typealias Generator = AreaIterator
 
-  var size: V2I
-  var coord = V2I()
+  var start: V2I
+  var end: V2I
+  var step: V2I
+  var coord: V2I
 
-  init(size: V2I) {
-    self.size = size
+  init(start: V2I, end: V2I, step: V2I) {
+    self.start = start
+    self.end = end
+    self.step = step
+    self.coord = start
   }
 
   mutating func next() -> Element? {
-    if size.x <= 0 || coord.y >= size.y { return nil }
+    if end.x <= 0 || coord.y >= end.y { return nil }
     let c = coord
-    if coord.x < size.x - 1 {
-      coord.x++
-    } else {
-    coord.x = 0
-    coord.y += 1
+    coord.x += step.x
+    if coord.x >= end.x {
+      coord.x = start.x
+      coord.y += step.y
     }
     return c
   }

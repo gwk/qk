@@ -7,7 +7,14 @@ extension CGVector {
 
   init(_ dx: Flt, _ dy: Flt) { self.init(dx: dx, dy: dy) }
 
-  var x: Flt { return dx }
-  var y: Flt { return dy }
+  var x: Flt {
+    get { return dx }
+    set { dx = newValue }
+  }
+
+  var y: Flt {
+    get { return dy }
+    set { dy = newValue }
+  }
 }
 

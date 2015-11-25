@@ -10,6 +10,7 @@ extension CGVector : VecType2, FloatVecType, CustomStringConvertible {
   typealias FloatType = Flt
   typealias VSType = V2S
   typealias VDType = V2D
+  typealias VU8Type = V2U8
   init(_ v: V2S) {
     self.init(ScalarType(v.x), ScalarType(v.y))
   }
@@ -56,8 +57,14 @@ extension CGVector : VecType2, FloatVecType, CustomStringConvertible {
   var len: FloatType { return sqrLen.sqrt }
   var aspect: FloatType { return FloatType(x) / FloatType(y) }
   func dist(b: CGVector) -> FloatType { return (b - self).len }
-  var l: ScalarType { return x }
-  var a: ScalarType { return y }
+  var l: ScalarType {
+    get { return x }
+    set { x = newValue }
+  }
+  var a: ScalarType {
+    get { return y }
+    set { y = newValue }
+  }
 
   var allNormal: Bool { return x.isNormal && y.isNormal }
   var allFinite: Bool { return x.isFinite && y.isFinite }
@@ -65,9 +72,10 @@ extension CGVector : VecType2, FloatVecType, CustomStringConvertible {
   var anySubnormal: Bool { return x.isSubnormal || y.isSubnormal}
   var anyInfite: Bool { return x.isInfinite || y.isInfinite}
   var anyNaN: Bool { return x.isNaN || y.isNaN}
-
   var norm: CGVector { return self / self.len }
   var clampToUnit: CGVector { return CGVector(clamp(x, min: 0, max: 1), clamp(y, min: 0, max: 1)) }
+  var toU8Pixel: VU8Type { return VU8Type(U8(clamp(x * 255, min: 0, max: 255)), U8(clamp(y * 255, min: 0, max: 255))) }
+
   func dot(b: CGVector) -> ScalarType { return (x * b.x) + (y * b.y) }
   func angle(b: CGVector) -> ScalarType { return acos(self.dot(b) / (self.len * b.len)) }
   func lerp(b: CGVector, _ t: ScalarType) -> CGVector { return self * (1 - t) + b * t }

@@ -38,6 +38,7 @@ def gen_vec(orig_type, dim, s_type, fs_type, v_type, v_prev, is_simd, is_novel):
   outL('  typealias FloatType = $', fs_type)
   outL('  typealias VSType = V$S', dim)
   outL('  typealias VDType = V$D', dim)
+  outL('  typealias VU8Type = V$U8', dim)
 
   if is_novel:
     for c in comps:
@@ -79,10 +80,16 @@ def gen_vec(orig_type, dim, s_type, fs_type, v_type, v_prev, is_simd, is_novel):
   outL('  var aspect: FloatType { return FloatType(x) / FloatType(y) }')
   outL('  func dist(b: $) -> FloatType { return (b - self).len }', v_type)
 
-  for c, c_orig in comps_colors:
-    outL('  var $: ScalarType { return $ }', c, c_orig)
-
+  for c_col, c in comps_colors:
+    outL('  var $: ScalarType {', c_col)
+    outL('    get { return $ }', c)
+    outL('    set { $ = newValue }', c)
+    outL('  }')
+  
   # TODO: swizzles.
+
+  if s_type == 'U8':
+    outL('  var toSPixel: VSType { return VSType($) }', jcf('F32($) / F32(0xFF)', comps))
 
   if is_float:
     outL('')
@@ -92,9 +99,10 @@ def gen_vec(orig_type, dim, s_type, fs_type, v_type, v_prev, is_simd, is_novel):
     outL('  var anySubnormal: Bool { return $}', jf(' || ', '$.isSubnormal', comps))
     outL('  var anyInfite: Bool { return $}', jf(' || ', '$.isInfinite', comps))
     outL('  var anyNaN: Bool { return $}', jf(' || ', '$.isNaN', comps))
-    outL('')
     outL('  var norm: $ { return self / self.len }', v_type)
     outL('  var clampToUnit: $ { return $($) }', v_type, v_type, jcf('clamp($, min: 0, max: 1)', comps))
+    outL('  var toU8Pixel: VU8Type { return VU8Type($) }', jcf('U8(clamp($ * 255, min: 0, max: 255))', comps))
+    outL('')
     outL('  func dot(b: $) -> ScalarType { return $ }',
       v_type, ' + '.join(fmt('($ * b.$)', c, c) for c in comps))
     outL('  func angle(b: $) -> ScalarType { return acos(self.dot(b) / (self.len * b.len)) }',

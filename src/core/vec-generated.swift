@@ -12,6 +12,7 @@ extension V2S : VecType2, FloatVecType, Equatable, CustomStringConvertible {
   typealias FloatType = F32
   typealias VSType = V2S
   typealias VDType = V2D
+  typealias VU8Type = V2U8
   init(_ v: V2D) {
     self.init(ScalarType(v.x), ScalarType(v.y))
   }
@@ -55,8 +56,14 @@ extension V2S : VecType2, FloatVecType, Equatable, CustomStringConvertible {
   var len: FloatType { return sqrLen.sqrt }
   var aspect: FloatType { return FloatType(x) / FloatType(y) }
   func dist(b: V2S) -> FloatType { return (b - self).len }
-  var l: ScalarType { return x }
-  var a: ScalarType { return y }
+  var l: ScalarType {
+    get { return x }
+    set { x = newValue }
+  }
+  var a: ScalarType {
+    get { return y }
+    set { y = newValue }
+  }
 
   var allNormal: Bool { return x.isNormal && y.isNormal }
   var allFinite: Bool { return x.isFinite && y.isFinite }
@@ -64,9 +71,10 @@ extension V2S : VecType2, FloatVecType, Equatable, CustomStringConvertible {
   var anySubnormal: Bool { return x.isSubnormal || y.isSubnormal}
   var anyInfite: Bool { return x.isInfinite || y.isInfinite}
   var anyNaN: Bool { return x.isNaN || y.isNaN}
-
   var norm: V2S { return self / self.len }
   var clampToUnit: V2S { return V2S(clamp(x, min: 0, max: 1), clamp(y, min: 0, max: 1)) }
+  var toU8Pixel: VU8Type { return VU8Type(U8(clamp(x * 255, min: 0, max: 255)), U8(clamp(y * 255, min: 0, max: 255))) }
+
   func dot(b: V2S) -> ScalarType { return (x * b.x) + (y * b.y) }
   func angle(b: V2S) -> ScalarType { return acos(self.dot(b) / (self.len * b.len)) }
   func lerp(b: V2S, _ t: ScalarType) -> V2S { return self * (1 - t) + b * t }
@@ -94,6 +102,7 @@ extension V2D : VecType2, FloatVecType, Equatable, CustomStringConvertible {
   typealias FloatType = F64
   typealias VSType = V2S
   typealias VDType = V2D
+  typealias VU8Type = V2U8
   init(_ v: V2S) {
     self.init(ScalarType(v.x), ScalarType(v.y))
   }
@@ -137,8 +146,14 @@ extension V2D : VecType2, FloatVecType, Equatable, CustomStringConvertible {
   var len: FloatType { return sqrLen.sqrt }
   var aspect: FloatType { return FloatType(x) / FloatType(y) }
   func dist(b: V2D) -> FloatType { return (b - self).len }
-  var l: ScalarType { return x }
-  var a: ScalarType { return y }
+  var l: ScalarType {
+    get { return x }
+    set { x = newValue }
+  }
+  var a: ScalarType {
+    get { return y }
+    set { y = newValue }
+  }
 
   var allNormal: Bool { return x.isNormal && y.isNormal }
   var allFinite: Bool { return x.isFinite && y.isFinite }
@@ -146,9 +161,10 @@ extension V2D : VecType2, FloatVecType, Equatable, CustomStringConvertible {
   var anySubnormal: Bool { return x.isSubnormal || y.isSubnormal}
   var anyInfite: Bool { return x.isInfinite || y.isInfinite}
   var anyNaN: Bool { return x.isNaN || y.isNaN}
-
   var norm: V2D { return self / self.len }
   var clampToUnit: V2D { return V2D(clamp(x, min: 0, max: 1), clamp(y, min: 0, max: 1)) }
+  var toU8Pixel: VU8Type { return VU8Type(U8(clamp(x * 255, min: 0, max: 255)), U8(clamp(y * 255, min: 0, max: 255))) }
+
   func dot(b: V2D) -> ScalarType { return (x * b.x) + (y * b.y) }
   func angle(b: V2D) -> ScalarType { return acos(self.dot(b) / (self.len * b.len)) }
   func lerp(b: V2D, _ t: ScalarType) -> V2D { return self * (1 - t) + b * t }
@@ -174,6 +190,7 @@ public struct V2I : VecType2, IntVecType, Equatable, CustomStringConvertible {
   typealias FloatType = F64
   typealias VSType = V2S
   typealias VDType = V2D
+  typealias VU8Type = V2U8
   var x: ScalarType
   var y: ScalarType
   init(_ x: ScalarType, _ y: ScalarType) {
@@ -224,8 +241,14 @@ public struct V2I : VecType2, IntVecType, Equatable, CustomStringConvertible {
   var len: FloatType { return sqrLen.sqrt }
   var aspect: FloatType { return FloatType(x) / FloatType(y) }
   func dist(b: V2I) -> FloatType { return (b - self).len }
-  var l: ScalarType { return x }
-  var a: ScalarType { return y }
+  var l: ScalarType {
+    get { return x }
+    set { x = newValue }
+  }
+  var a: ScalarType {
+    get { return y }
+    set { y = newValue }
+  }
 }
 
 func +(a: V2I, b: V2I) -> V2I { return V2I(a.x + b.x, a.y + b.y) }
@@ -247,6 +270,7 @@ public struct V2U8 : VecType2, IntVecType, Equatable, CustomStringConvertible {
   typealias FloatType = F32
   typealias VSType = V2S
   typealias VDType = V2D
+  typealias VU8Type = V2U8
   var x: ScalarType
   var y: ScalarType
   init(_ x: ScalarType, _ y: ScalarType) {
@@ -297,8 +321,15 @@ public struct V2U8 : VecType2, IntVecType, Equatable, CustomStringConvertible {
   var len: FloatType { return sqrLen.sqrt }
   var aspect: FloatType { return FloatType(x) / FloatType(y) }
   func dist(b: V2U8) -> FloatType { return (b - self).len }
-  var l: ScalarType { return x }
-  var a: ScalarType { return y }
+  var l: ScalarType {
+    get { return x }
+    set { x = newValue }
+  }
+  var a: ScalarType {
+    get { return y }
+    set { y = newValue }
+  }
+  var toSPixel: VSType { return VSType(F32(x) / F32(0xFF), F32(y) / F32(0xFF)) }
 }
 
 func +(a: V2U8, b: V2U8) -> V2U8 { return V2U8(a.x + b.x, a.y + b.y) }
@@ -322,6 +353,7 @@ extension V3S : VecType3, FloatVecType, Equatable, CustomStringConvertible {
   typealias FloatType = F32
   typealias VSType = V3S
   typealias VDType = V3D
+  typealias VU8Type = V3U8
   init(_ v: V3D) {
     self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z))
   }
@@ -357,9 +389,18 @@ extension V3S : VecType3, FloatVecType, Equatable, CustomStringConvertible {
   var len: FloatType { return sqrLen.sqrt }
   var aspect: FloatType { return FloatType(x) / FloatType(y) }
   func dist(b: V3S) -> FloatType { return (b - self).len }
-  var r: ScalarType { return x }
-  var g: ScalarType { return y }
-  var b: ScalarType { return z }
+  var r: ScalarType {
+    get { return x }
+    set { x = newValue }
+  }
+  var g: ScalarType {
+    get { return y }
+    set { y = newValue }
+  }
+  var b: ScalarType {
+    get { return z }
+    set { z = newValue }
+  }
 
   var allNormal: Bool { return x.isNormal && y.isNormal && z.isNormal }
   var allFinite: Bool { return x.isFinite && y.isFinite && z.isFinite }
@@ -367,9 +408,10 @@ extension V3S : VecType3, FloatVecType, Equatable, CustomStringConvertible {
   var anySubnormal: Bool { return x.isSubnormal || y.isSubnormal || z.isSubnormal}
   var anyInfite: Bool { return x.isInfinite || y.isInfinite || z.isInfinite}
   var anyNaN: Bool { return x.isNaN || y.isNaN || z.isNaN}
-
   var norm: V3S { return self / self.len }
   var clampToUnit: V3S { return V3S(clamp(x, min: 0, max: 1), clamp(y, min: 0, max: 1), clamp(z, min: 0, max: 1)) }
+  var toU8Pixel: VU8Type { return VU8Type(U8(clamp(x * 255, min: 0, max: 255)), U8(clamp(y * 255, min: 0, max: 255)), U8(clamp(z * 255, min: 0, max: 255))) }
+
   func dot(b: V3S) -> ScalarType { return (x * b.x) + (y * b.y) + (z * b.z) }
   func angle(b: V3S) -> ScalarType { return acos(self.dot(b) / (self.len * b.len)) }
   func lerp(b: V3S, _ t: ScalarType) -> V3S { return self * (1 - t) + b * t }
@@ -403,6 +445,7 @@ extension V3D : VecType3, FloatVecType, Equatable, CustomStringConvertible {
   typealias FloatType = F64
   typealias VSType = V3S
   typealias VDType = V3D
+  typealias VU8Type = V3U8
   init(_ v: V3S) {
     self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z))
   }
@@ -438,9 +481,18 @@ extension V3D : VecType3, FloatVecType, Equatable, CustomStringConvertible {
   var len: FloatType { return sqrLen.sqrt }
   var aspect: FloatType { return FloatType(x) / FloatType(y) }
   func dist(b: V3D) -> FloatType { return (b - self).len }
-  var r: ScalarType { return x }
-  var g: ScalarType { return y }
-  var b: ScalarType { return z }
+  var r: ScalarType {
+    get { return x }
+    set { x = newValue }
+  }
+  var g: ScalarType {
+    get { return y }
+    set { y = newValue }
+  }
+  var b: ScalarType {
+    get { return z }
+    set { z = newValue }
+  }
 
   var allNormal: Bool { return x.isNormal && y.isNormal && z.isNormal }
   var allFinite: Bool { return x.isFinite && y.isFinite && z.isFinite }
@@ -448,9 +500,10 @@ extension V3D : VecType3, FloatVecType, Equatable, CustomStringConvertible {
   var anySubnormal: Bool { return x.isSubnormal || y.isSubnormal || z.isSubnormal}
   var anyInfite: Bool { return x.isInfinite || y.isInfinite || z.isInfinite}
   var anyNaN: Bool { return x.isNaN || y.isNaN || z.isNaN}
-
   var norm: V3D { return self / self.len }
   var clampToUnit: V3D { return V3D(clamp(x, min: 0, max: 1), clamp(y, min: 0, max: 1), clamp(z, min: 0, max: 1)) }
+  var toU8Pixel: VU8Type { return VU8Type(U8(clamp(x * 255, min: 0, max: 255)), U8(clamp(y * 255, min: 0, max: 255)), U8(clamp(z * 255, min: 0, max: 255))) }
+
   func dot(b: V3D) -> ScalarType { return (x * b.x) + (y * b.y) + (z * b.z) }
   func angle(b: V3D) -> ScalarType { return acos(self.dot(b) / (self.len * b.len)) }
   func lerp(b: V3D, _ t: ScalarType) -> V3D { return self * (1 - t) + b * t }
@@ -482,6 +535,7 @@ public struct V3I : VecType3, IntVecType, Equatable, CustomStringConvertible {
   typealias FloatType = F64
   typealias VSType = V3S
   typealias VDType = V3D
+  typealias VU8Type = V3U8
   var x: ScalarType
   var y: ScalarType
   var z: ScalarType
@@ -526,9 +580,18 @@ public struct V3I : VecType3, IntVecType, Equatable, CustomStringConvertible {
   var len: FloatType { return sqrLen.sqrt }
   var aspect: FloatType { return FloatType(x) / FloatType(y) }
   func dist(b: V3I) -> FloatType { return (b - self).len }
-  var r: ScalarType { return x }
-  var g: ScalarType { return y }
-  var b: ScalarType { return z }
+  var r: ScalarType {
+    get { return x }
+    set { x = newValue }
+  }
+  var g: ScalarType {
+    get { return y }
+    set { y = newValue }
+  }
+  var b: ScalarType {
+    get { return z }
+    set { z = newValue }
+  }
 }
 
 func +(a: V3I, b: V3I) -> V3I { return V3I(a.x + b.x, a.y + b.y, a.z + b.z) }
@@ -550,6 +613,7 @@ public struct V3U8 : VecType3, IntVecType, Equatable, CustomStringConvertible {
   typealias FloatType = F32
   typealias VSType = V3S
   typealias VDType = V3D
+  typealias VU8Type = V3U8
   var x: ScalarType
   var y: ScalarType
   var z: ScalarType
@@ -594,9 +658,19 @@ public struct V3U8 : VecType3, IntVecType, Equatable, CustomStringConvertible {
   var len: FloatType { return sqrLen.sqrt }
   var aspect: FloatType { return FloatType(x) / FloatType(y) }
   func dist(b: V3U8) -> FloatType { return (b - self).len }
-  var r: ScalarType { return x }
-  var g: ScalarType { return y }
-  var b: ScalarType { return z }
+  var r: ScalarType {
+    get { return x }
+    set { x = newValue }
+  }
+  var g: ScalarType {
+    get { return y }
+    set { y = newValue }
+  }
+  var b: ScalarType {
+    get { return z }
+    set { z = newValue }
+  }
+  var toSPixel: VSType { return VSType(F32(x) / F32(0xFF), F32(y) / F32(0xFF), F32(z) / F32(0xFF)) }
 }
 
 func +(a: V3U8, b: V3U8) -> V3U8 { return V3U8(a.x + b.x, a.y + b.y, a.z + b.z) }
@@ -620,6 +694,7 @@ extension V4S : VecType4, FloatVecType, Equatable, CustomStringConvertible {
   typealias FloatType = F32
   typealias VSType = V4S
   typealias VDType = V4D
+  typealias VU8Type = V4U8
   init(_ v: V4D) {
     self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z), ScalarType(v.w))
   }
@@ -644,10 +719,22 @@ extension V4S : VecType4, FloatVecType, Equatable, CustomStringConvertible {
   var len: FloatType { return sqrLen.sqrt }
   var aspect: FloatType { return FloatType(x) / FloatType(y) }
   func dist(b: V4S) -> FloatType { return (b - self).len }
-  var r: ScalarType { return x }
-  var g: ScalarType { return y }
-  var b: ScalarType { return z }
-  var a: ScalarType { return w }
+  var r: ScalarType {
+    get { return x }
+    set { x = newValue }
+  }
+  var g: ScalarType {
+    get { return y }
+    set { y = newValue }
+  }
+  var b: ScalarType {
+    get { return z }
+    set { z = newValue }
+  }
+  var a: ScalarType {
+    get { return w }
+    set { w = newValue }
+  }
 
   var allNormal: Bool { return x.isNormal && y.isNormal && z.isNormal && w.isNormal }
   var allFinite: Bool { return x.isFinite && y.isFinite && z.isFinite && w.isFinite }
@@ -655,9 +742,10 @@ extension V4S : VecType4, FloatVecType, Equatable, CustomStringConvertible {
   var anySubnormal: Bool { return x.isSubnormal || y.isSubnormal || z.isSubnormal || w.isSubnormal}
   var anyInfite: Bool { return x.isInfinite || y.isInfinite || z.isInfinite || w.isInfinite}
   var anyNaN: Bool { return x.isNaN || y.isNaN || z.isNaN || w.isNaN}
-
   var norm: V4S { return self / self.len }
   var clampToUnit: V4S { return V4S(clamp(x, min: 0, max: 1), clamp(y, min: 0, max: 1), clamp(z, min: 0, max: 1), clamp(w, min: 0, max: 1)) }
+  var toU8Pixel: VU8Type { return VU8Type(U8(clamp(x * 255, min: 0, max: 255)), U8(clamp(y * 255, min: 0, max: 255)), U8(clamp(z * 255, min: 0, max: 255)), U8(clamp(w * 255, min: 0, max: 255))) }
+
   func dot(b: V4S) -> ScalarType { return (x * b.x) + (y * b.y) + (z * b.z) + (w * b.w) }
   func angle(b: V4S) -> ScalarType { return acos(self.dot(b) / (self.len * b.len)) }
   func lerp(b: V4S, _ t: ScalarType) -> V4S { return self * (1 - t) + b * t }
@@ -692,6 +780,7 @@ extension V4D : VecType4, FloatVecType, Equatable, CustomStringConvertible {
   typealias FloatType = F64
   typealias VSType = V4S
   typealias VDType = V4D
+  typealias VU8Type = V4U8
   init(_ v: V4S) {
     self.init(ScalarType(v.x), ScalarType(v.y), ScalarType(v.z), ScalarType(v.w))
   }
@@ -716,10 +805,22 @@ extension V4D : VecType4, FloatVecType, Equatable, CustomStringConvertible {
   var len: FloatType { return sqrLen.sqrt }
   var aspect: FloatType { return FloatType(x) / FloatType(y) }
   func dist(b: V4D) -> FloatType { return (b - self).len }
-  var r: ScalarType { return x }
-  var g: ScalarType { return y }
-  var b: ScalarType { return z }
-  var a: ScalarType { return w }
+  var r: ScalarType {
+    get { return x }
+    set { x = newValue }
+  }
+  var g: ScalarType {
+    get { return y }
+    set { y = newValue }
+  }
+  var b: ScalarType {
+    get { return z }
+    set { z = newValue }
+  }
+  var a: ScalarType {
+    get { return w }
+    set { w = newValue }
+  }
 
   var allNormal: Bool { return x.isNormal && y.isNormal && z.isNormal && w.isNormal }
   var allFinite: Bool { return x.isFinite && y.isFinite && z.isFinite && w.isFinite }
@@ -727,9 +828,10 @@ extension V4D : VecType4, FloatVecType, Equatable, CustomStringConvertible {
   var anySubnormal: Bool { return x.isSubnormal || y.isSubnormal || z.isSubnormal || w.isSubnormal}
   var anyInfite: Bool { return x.isInfinite || y.isInfinite || z.isInfinite || w.isInfinite}
   var anyNaN: Bool { return x.isNaN || y.isNaN || z.isNaN || w.isNaN}
-
   var norm: V4D { return self / self.len }
   var clampToUnit: V4D { return V4D(clamp(x, min: 0, max: 1), clamp(y, min: 0, max: 1), clamp(z, min: 0, max: 1), clamp(w, min: 0, max: 1)) }
+  var toU8Pixel: VU8Type { return VU8Type(U8(clamp(x * 255, min: 0, max: 255)), U8(clamp(y * 255, min: 0, max: 255)), U8(clamp(z * 255, min: 0, max: 255)), U8(clamp(w * 255, min: 0, max: 255))) }
+
   func dot(b: V4D) -> ScalarType { return (x * b.x) + (y * b.y) + (z * b.z) + (w * b.w) }
   func angle(b: V4D) -> ScalarType { return acos(self.dot(b) / (self.len * b.len)) }
   func lerp(b: V4D, _ t: ScalarType) -> V4D { return self * (1 - t) + b * t }
@@ -762,6 +864,7 @@ public struct V4I : VecType4, IntVecType, Equatable, CustomStringConvertible {
   typealias FloatType = F64
   typealias VSType = V4S
   typealias VDType = V4D
+  typealias VU8Type = V4U8
   var x: ScalarType
   var y: ScalarType
   var z: ScalarType
@@ -797,10 +900,22 @@ public struct V4I : VecType4, IntVecType, Equatable, CustomStringConvertible {
   var len: FloatType { return sqrLen.sqrt }
   var aspect: FloatType { return FloatType(x) / FloatType(y) }
   func dist(b: V4I) -> FloatType { return (b - self).len }
-  var r: ScalarType { return x }
-  var g: ScalarType { return y }
-  var b: ScalarType { return z }
-  var a: ScalarType { return w }
+  var r: ScalarType {
+    get { return x }
+    set { x = newValue }
+  }
+  var g: ScalarType {
+    get { return y }
+    set { y = newValue }
+  }
+  var b: ScalarType {
+    get { return z }
+    set { z = newValue }
+  }
+  var a: ScalarType {
+    get { return w }
+    set { w = newValue }
+  }
 }
 
 func +(a: V4I, b: V4I) -> V4I { return V4I(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w) }
@@ -822,6 +937,7 @@ public struct V4U8 : VecType4, IntVecType, Equatable, CustomStringConvertible {
   typealias FloatType = F32
   typealias VSType = V4S
   typealias VDType = V4D
+  typealias VU8Type = V4U8
   var x: ScalarType
   var y: ScalarType
   var z: ScalarType
@@ -857,10 +973,23 @@ public struct V4U8 : VecType4, IntVecType, Equatable, CustomStringConvertible {
   var len: FloatType { return sqrLen.sqrt }
   var aspect: FloatType { return FloatType(x) / FloatType(y) }
   func dist(b: V4U8) -> FloatType { return (b - self).len }
-  var r: ScalarType { return x }
-  var g: ScalarType { return y }
-  var b: ScalarType { return z }
-  var a: ScalarType { return w }
+  var r: ScalarType {
+    get { return x }
+    set { x = newValue }
+  }
+  var g: ScalarType {
+    get { return y }
+    set { y = newValue }
+  }
+  var b: ScalarType {
+    get { return z }
+    set { z = newValue }
+  }
+  var a: ScalarType {
+    get { return w }
+    set { w = newValue }
+  }
+  var toSPixel: VSType { return VSType(F32(x) / F32(0xFF), F32(y) / F32(0xFF), F32(z) / F32(0xFF), F32(w) / F32(0xFF)) }
 }
 
 func +(a: V4U8, b: V4U8) -> V4U8 { return V4U8(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w) }

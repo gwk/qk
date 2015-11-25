@@ -15,7 +15,7 @@ extension CGImage {
 
   static let missing = try! CGImageRef.with(path: pathForResource("missing.png")) // TODO: move into resource bundle or render.
 
-  class func with(path path: String, shouldInterpolate: Bool = false, intent: CGColorRenderingIntent = .RenderingIntentDefault) throws -> CGImage {
+  class func with(path path: String, shouldInterpolate: Bool = true, intent: CGColorRenderingIntent = .RenderingIntentDefault) throws -> CGImage {
     guard let provider = CGDataProviderCreateWithFilename(path) else {
       throw Error.Path(path: path)
     }
@@ -45,7 +45,7 @@ extension CGImage {
         bitsPerComponent, bitsPerPixel, bytesPerRow, colorSpace, bitmapInfo, provider, decodeArray, shouldInterpolate, intent)!
   }
 
-  class func with<T: PixelType>(areaBuffer areaBuffer: AreaBuffer<T>, shouldInterpolate: Bool = false,
+  class func with<T: PixelType>(areaBuffer areaBuffer: AreaBuffer<T>, shouldInterpolate: Bool = true,
     intent: CGColorRenderingIntent = .RenderingIntentDefault) -> CGImage {
       return areaBuffer.withUnsafeBufferPointer() {
         typealias ScalarType = T.ScalarType

@@ -6,7 +6,13 @@ import CoreGraphics
 extension CGSize {
   
   init(_ w: Flt, _ h: Flt) { self.init(width: w, height: h) }
-    
+
+  // TODO: init<V: VecType2>(_ v: V) // requires that ScalarType be FloatingPointConvertible or something.
+
+  init(_ v: V2I) {
+    self.init(width: Flt(v.x), height: Flt(v.y))
+  }
+
   var w: Flt {
     get { return width }
     set { width = newValue }

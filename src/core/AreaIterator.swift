@@ -13,16 +13,15 @@ struct AreaIterator: SequenceType, GeneratorType {
   }
 
   mutating func next() -> Element? {
-    if size.x <= 0 { return nil }
-    coord.x += 1
-    if coord.x >= size.x {
-      coord.x = 0
-      coord.y += 1
-      if coord.y >= size.y {
-        return nil
-      }
+    if size.x <= 0 || coord.y >= size.y { return nil }
+    let c = coord
+    if coord.x < size.x - 1 {
+      coord.x++
+    } else {
+    coord.x = 0
+    coord.y += 1
     }
-    return coord
+    return c
   }
 }
 

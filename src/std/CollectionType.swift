@@ -3,10 +3,6 @@
 
 extension CollectionType where Generator.Element : Equatable {
 
-  func contains(element: Generator.Element) -> Bool {
-    return indexOf(element) != nil
-  }
-
   func rangeOf(query: Self, start: Index? = nil, end: Index? = nil) -> Range<Index>? {
     var i = start.or(startIndex)
     let e = end.or(endIndex)

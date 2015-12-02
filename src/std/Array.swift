@@ -1,5 +1,7 @@
 // © 2014 George King. Permission to use this file is granted in license-qk.txt.
 
+import Darwin
+
 
 extension Array: DefaultInitializable {
   
@@ -34,5 +36,21 @@ extension Array: DefaultInitializable {
     } else {
       return last
     }
+  }
+
+  mutating func permuteInPlace(random: Random) {
+    let c = count
+    for i in 1..<c {
+      let j = c - i
+      let k = random.nextInt(j + 1)
+      if j == k { continue }
+      swap(&self[j], &self[k])
+    }
+  }
+
+  func permute(random: Random) -> Array {
+    var a = self
+    a.permuteInPlace(random)
+    return a
   }
 }

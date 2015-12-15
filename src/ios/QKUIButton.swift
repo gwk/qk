@@ -28,9 +28,9 @@ class QKUIButton : UIButton {
     layer.cornerRadius = stdButtonCornerRadius
   }
   
-  convenience init(n: String, p: UIView?, title: String? = nil) {
+  convenience init(name: String, parent: UIView?, title: String? = nil) {
     self.init(frame: frameInit)
-    helpInit(name: n, parent: p)
+    helpInit(name: name, parent: parent, flex: nil)
     self.title = title
   }
   

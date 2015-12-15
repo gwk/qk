@@ -3,8 +3,8 @@
 import Foundation
 
 
-let symbolHeadChars = [Character]("_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".characters)
-let symbolTailChars = symbolHeadChars + [Character]("0123456789".characters)
+let symbolHeadChars = Set<Character>("_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".characters)
+let symbolTailChars = symbolHeadChars.union("0123456789".characters)
 
 let symbolHeadCharsSet = Set(symbolHeadChars)
 let symbolTailCharsSet = Set(symbolTailChars)

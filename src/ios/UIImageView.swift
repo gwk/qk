@@ -5,9 +5,9 @@ import UIKit
 
 extension UIImageView {
 
-  convenience init(n: String, p: UIView? = nil, _ imageName: String, _ litImageName: String? = nil) {
+  convenience init(name: String, parent: UIView? = nil, _ imageName: String, _ litImageName: String? = nil) {
     self.init(image: UIImage(imageName))
-    helpInit(name: n, parent: p)
+    helpInit(name: name, parent: parent, flex: nil)
     if let lin = litImageName {
       self.highlightedImage = UIImage(lin)
     }

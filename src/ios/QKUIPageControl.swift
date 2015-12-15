@@ -15,9 +15,9 @@ class QKUIPageControl: UIPageControl {
     helpInit()
   }
   
-  convenience init(n: String, p: UIView? = nil, numberOfPages: Int = 5, currentPage: Int = 0) {
+  convenience init(name: String, parent: UIView? = nil, numberOfPages: Int = 5, currentPage: Int = 0) {
     self.init(frame: frameInit)
-    helpInit(name: n, parent: p)
+    helpInit(name: name, parent: parent, flex: nil)
     self.numberOfPages = numberOfPages
     self.currentPage = currentPage
   }

@@ -15,9 +15,9 @@ class QKUISwitch: UISwitch {
     helpInit()
   }
   
-  convenience init(n: String, p: UIView? = nil, isOn: Bool = false) {
+  convenience init(name: String, parent: UIView? = nil, isOn: Bool = false) {
     self.init(frame: frameInit)
-    helpInit(name: n, parent: p)
+    helpInit(name: name, parent: parent, flex: nil)
     self.on = isOn
   }
   

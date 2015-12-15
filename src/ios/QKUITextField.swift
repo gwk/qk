@@ -33,9 +33,9 @@ class QKUITextField: UITextField, UITextFieldDelegate {
     textInset = stdTextFieldInset
   }
   
-  convenience init(n: String, p: UIView?, placeholder: String? = nil) {
+  convenience init(name: String, parent: UIView?, placeholder: String? = nil) {
     self.init(frame: frameInit)
-    helpInit(name: n, parent: p)
+    helpInit(name: name, parent: parent, flex: nil)
     self.placeholder = placeholder
   }
   

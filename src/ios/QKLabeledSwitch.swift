@@ -14,17 +14,17 @@ class QKLabeledSwitch: UIView {
   
   override init(frame: CGRect) {
     super.init(frame: frame)
-    label = UILabel(n: "label", p: self)
-    switch_ = QKUISwitch(n: "switch", p: self, isOn: false)
+    label = UILabel(name: "label", parent: self)
+    switch_ = QKUISwitch(name: "switch", parent: self, isOn: false)
     constrain([label, switch_],
       "H:|[label]-[switch]|",
       "V:|[label]|",
       "V:|[switch]|")
   }
   
-  convenience init(n: String, p: UIView?, title: String? = nil, isOn: Bool = false) {
+  convenience init(name: String, parent: UIView?, title: String? = nil, isOn: Bool = false) {
     self.init(frame: frameInit)
-    helpInit(name: n, parent: p)
+    helpInit(name: name, parent: parent, flex: nil)
     label.text = title
     switch_.on = isOn
   }

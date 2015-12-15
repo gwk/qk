@@ -15,16 +15,16 @@ class QKUISegmentedControl: UISegmentedControl {
     helpInit()
   }
   
-  convenience init(n: String, p: UIView?, titles: [String]) {
+  convenience init(name: String, parent: UIView?, titles: [String]) {
     self.init(frame: frameInit)
-    helpInit(name: n, parent: p)
+    helpInit(name: name, parent: parent, flex: nil)
     for (i, t) in titles.enumerate() {
       self.insertSegmentWithTitle(t, atIndex: i, animated: false)
     }
   }
   
-  convenience init(n: String, p: UIView?, titles: String...) {
-    self.init(n: n, p: p, titles: titles)
+  convenience init(name: String, parent: UIView?, titles: String...) {
+    self.init(name: name, parent: parent, titles: titles)
   }
   
   // MARK: - QKUISegmentedControl

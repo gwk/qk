@@ -47,31 +47,35 @@ extension CRFlex {
 extension CRView {
 
   
-  convenience init(frame: CGRect, n: String, p: CRView? = nil) {
+  convenience init(frame: CGRect, name: String, parent: CRView? = nil, flex: CRFlex? = nil) {
     self.init(frame: frame)
-    helpInit(name: n, parent: p)
+    helpInit(name: name, parent: parent, flex: flex)
   }
-  convenience init(frame: CGRect, p: CRView?) {
+
+  convenience init(frame: CGRect, parent: CRView, flex: CRFlex? = nil) {
     self.init(frame: frame)
-    helpInit(name: nil, parent: p)
+    helpInit(name: nil, parent: parent, flex: flex)
   }
   
-  convenience init(size: CGSize, n: String? = nil, p: CRView? = nil) {
+  convenience init(size: CGSize, name: String? = nil, parent: CRView? = nil, flex: CRFlex? = nil) {
     self.init(frame: CGRect(size))
-    helpInit(name: n, parent: p)
+    helpInit(name: name, parent: parent, flex: flex)
   }
   
-  convenience init(n: String, p: CRView? = nil) {
+  convenience init(name: String, parent: CRView? = nil, flex: CRFlex? = nil) {
     self.init(frame: frameInit)
-    helpInit(name: n, parent: p)
+    helpInit(name: name, parent: parent, flex: flex)
   }
   
-  func helpInit(name name: String?, parent: CRView?) {
-    if let n = name {
-      self.name = n
+  func helpInit(name name: String?, parent: CRView?, flex: CRFlex?) {
+    if let name = name {
+      self.name = name
     }
-    if let p = parent {
-      p.addSubview(self)
+    if let parent = parent {
+      parent.addSubview(self)
+    }
+    if let flex = flex {
+      self.flex = flex
     }
   }
   

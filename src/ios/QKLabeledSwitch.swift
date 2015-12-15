@@ -10,14 +10,12 @@ class QKLabeledSwitch: UIView {
   
   // MARK: - UIView
   
-  required init(coder: NSCoder) {
-    super.init(coder: coder)
-  }
+  required init(coder: NSCoder) { fatalError() }
   
   override init(frame: CGRect) {
     super.init(frame: frame)
     label = UILabel(n: "label", p: self)
-    switch_ = QKUISwitch(n: "switch", p: self)
+    switch_ = QKUISwitch(n: "switch", p: self, isOn: false)
     constrain([label, switch_],
       "H:|[label]-[switch]|",
       "V:|[label]|",

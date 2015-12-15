@@ -9,11 +9,7 @@ class QKUIBarButtonItem: UIBarButtonItem {
   
   // MARK: - UIView
   
-  required init(coder: NSCoder) {
-    // WARNING: archived instances do not preserve any action closures, so we expect them to be set up after decode.
-    super.init(coder: coder)
-    helpInit()
-  }
+  required init(coder: NSCoder) { fatalError() }
   
   init(style: UIBarButtonItemStyle = .Plain, title: String? = nil, image: UIImage? = nil, landscapeImage: UIImage? = nil, touchAction: Action? = nil) {
     super.init()

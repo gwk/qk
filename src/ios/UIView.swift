@@ -18,7 +18,7 @@ extension UIView {
     }
     let subviews = UIView.fromNib(name!, owner: owner!)
     for v in subviews {
-      addSubview(v as UIView)
+      addSubview(v as! UIView)
     }
   }
 }

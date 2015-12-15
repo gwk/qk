@@ -17,7 +17,7 @@ class QKUIPanRecognizer: UIPanGestureRecognizer {
     }
     
     func handleGesture(gestureRecognizer: UIGestureRecognizer) {
-      action(gestureRecognizer as QKUIPanRecognizer)
+      action(gestureRecognizer as! QKUIPanRecognizer)
     }
   }
   
@@ -28,8 +28,8 @@ class QKUIPanRecognizer: UIPanGestureRecognizer {
     handler = Handler(action: action)
     // since we cannot pass self as the target, we need the proxy Handler.
     super.init(target: handler, action: "handleGesture:")
-    if let v = view {
-      view?.addGestureRecognizer(self)
+    if let view = view {
+      view.addGestureRecognizer(self)
     }
     self.delegate = delegate
     self.minimumNumberOfTouches = minTouches

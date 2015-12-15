@@ -9,7 +9,7 @@ extension UIViewController {
   
   class func fromStoryboard() -> UIViewController {
     let board = UIStoryboard(name: dynamicClassName, bundle: nil)
-    return board.instantiateInitialViewController() as UIViewController
+    return board.instantiateInitialViewController()! as UIViewController
   }
   
   func present(c: UIViewController, animated: Bool = true, completion: Action? = nil) {
@@ -31,15 +31,15 @@ extension UIViewController {
       present(n, animated: animated, completion: completion)
   }
   
-  func dismissPresented(animated: Bool = true, completion: Action? = nil) {
+  func dismissPresented(animated animated: Bool = true, completion: Action? = nil) {
     dismissViewControllerAnimated(animated, completion: completion)
   }
   
-  func dismissSelf(animated: Bool = true, completion: Action? = nil) {
+  func dismissSelf(animated animated: Bool = true, completion: Action? = nil) {
     if let c = presentingViewController {
       c.dismissPresented(animated: animated, completion: completion)
     } else {
-      println("dismissSelf: no presenting controller: \(self)")
+      print("dismissSelf: no presenting controller: \(self)")
     }
   }
   

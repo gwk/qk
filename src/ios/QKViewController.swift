@@ -9,7 +9,7 @@ var stdViewColor: CRColor = CRColor(l: 0.85)
 
 class QKViewController: UIViewController {
   
-  required init(coder: NSCoder) { super.init(coder: coder) }
+  required init(coder: NSCoder) { fatalError() }
   
   override init(nibName: String? = nil, bundle: NSBundle? = nil) {
     super.init(nibName: nibName, bundle: bundle)

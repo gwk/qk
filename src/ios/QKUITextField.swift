@@ -21,11 +21,7 @@ class QKUITextField: UITextField, UITextFieldDelegate {
   
   // MARK: - UIView
   
-  required init(coder: NSCoder) {
-    // WARNING: archived instances do not preserve any action closures, so we expect them to be set up after decode.
-    super.init(coder: coder)
-    helpInit()
-  }
+  required init(coder: NSCoder) { fatalError() }
   
   override init(frame: CGRect) {
     super.init(frame: frame)

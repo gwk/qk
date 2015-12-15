@@ -17,7 +17,7 @@ class QKUISwipeRecognizer: UISwipeGestureRecognizer {
     }
     
     func handleGesture(gestureRecognizer: UIGestureRecognizer) {
-      action(gestureRecognizer as QKUISwipeRecognizer)
+      action(gestureRecognizer as! QKUISwipeRecognizer)
     }
   }
   
@@ -27,8 +27,8 @@ class QKUISwipeRecognizer: UISwipeGestureRecognizer {
     handler = Handler(action: action)
     // since we cannot pass self as the target, we need the proxy Handler.
     super.init(target: handler, action: "handleGesture:")
-    if let v = view {
-      view?.addGestureRecognizer(self)
+    if let view = view {
+      view.addGestureRecognizer(self)
     }
     self.delegate = delegate
     self.direction = direction

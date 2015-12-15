@@ -17,7 +17,7 @@ class QKUITapRecognizer: UITapGestureRecognizer {
     }
     
     func handleGesture(gestureRecognizer: UIGestureRecognizer) {
-      action(gestureRecognizer as QKUITapRecognizer)
+      action(gestureRecognizer as! QKUITapRecognizer)
     }
   }
   
@@ -27,8 +27,8 @@ class QKUITapRecognizer: UITapGestureRecognizer {
     handler = Handler(action: action)
     // since we cannot pass self as the target, we need the proxy Handler.
     super.init(target: handler, action: "handleGesture:")
-    if let v = view {
-      view?.addGestureRecognizer(self)
+    if let view = view {
+      view.addGestureRecognizer(self)
     }
     self.delegate = delegate
     self.numberOfTapsRequired = numTaps

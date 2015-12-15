@@ -5,7 +5,7 @@ import UIKit
 
 extension UINavigationItem {
   
-  func addBackItem(title: NSString = "Back") {
+  func addBackItem(title: String = "Back") {
     backBarButtonItem = UIBarButtonItem(title: title, style: .Plain, target: nil, action: nil)
   }
 }

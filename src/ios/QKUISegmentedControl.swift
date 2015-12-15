@@ -8,12 +8,8 @@ class QKUISegmentedControl: UISegmentedControl {
   
   // MARK: - UIView
   
-  required init(coder: NSCoder) {
-    // WARNING: archived instances do not preserve any action closures, so we expect them to be set up after decode.
-    super.init(coder: coder)
-    helpInit()
-  }
-  
+  required init(coder: NSCoder) { fatalError() }
+
   override init(frame: CGRect) {
     super.init(frame: frame)
     helpInit()
@@ -22,7 +18,7 @@ class QKUISegmentedControl: UISegmentedControl {
   convenience init(n: String, p: UIView?, titles: [String]) {
     self.init(frame: frameInit)
     helpInit(name: n, parent: p)
-    for (i, t) in enumerate(titles) {
+    for (i, t) in titles.enumerate() {
       self.insertSegmentWithTitle(t, atIndex: i, animated: false)
     }
   }

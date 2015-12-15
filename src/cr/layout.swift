@@ -227,7 +227,7 @@ func constrain(views: [CRView], metrics: [String: NSNumber] = [:], opts: NSLayou
   #endif
 }
 
-func constrain(views: [CRView], metrics: [String: NSNumber] = [:], opts: NSLayoutFormatOptions = NSLayoutFormatOptions(rawValue: 0), constraints: QKLayoutConstraining...) {
+func constrain(views: [CRView], metrics: [String: NSNumber] = [:], opts: NSLayoutFormatOptions = NSLayoutFormatOptions(rawValue: 0), _ constraints: QKLayoutConstraining...) {
   // variadic variant.
   constrain(views, metrics: metrics, opts: opts, constraints: constraints)
 }

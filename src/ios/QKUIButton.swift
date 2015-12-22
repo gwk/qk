@@ -3,7 +3,7 @@
 import UIKit
 
 
-var stdButtonColor = CRColor.w
+var stdButtonColor = CRColor(l: 0.9)
 var stdButtonTitleColor = CRColor(l: 0.1)
 var stdButtonLitTitleColor = CRColor(0.25, 0.5, 1)
 var stdButtonCornerRadius = Flt(4)

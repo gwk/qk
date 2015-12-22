@@ -3,7 +3,7 @@
 import UIKit
 
 
-var stdTextFieldColor = CRColor.w
+var stdTextFieldColor = CRColor(l:0.95)
 var stdTextFieldTextColor = CRColor(l: 0.1)
 var stdTextFieldFont = UIFont.systemFontOfSize(16)
 var stdTextFieldCornerRadius = Flt(4)

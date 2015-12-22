@@ -11,8 +11,8 @@ class QKViewController: UIViewController {
   
   required init(coder: NSCoder) { fatalError() }
   
-  override init(nibName: String? = nil, bundle: NSBundle? = nil) {
-    super.init(nibName: nibName, bundle: bundle)
+  init() {
+    super.init(nibName: nil, bundle: nil)
     if title == nil {
       #if DEBUG
         title = dynamicTypeName // set the title to the class name as a convenience while prototyping.

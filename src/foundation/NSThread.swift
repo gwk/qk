@@ -7,5 +7,8 @@ func assertMainThread() {
   assert(NSThread.isMainThread())
 }
 
+func assertChildThread() {
+  assert(!NSThread.isMainThread())
+}
 
 extension NSThread {}

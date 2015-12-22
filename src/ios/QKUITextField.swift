@@ -25,7 +25,7 @@ class QKUITextField: UITextField, UITextFieldDelegate {
   
   override init(frame: CGRect) {
     super.init(frame: frame)
-    helpInit()
+    delegate = self
     backgroundColor = stdTextFieldColor
     textColor = stdTextFieldTextColor
     font = stdTextFieldFont
@@ -49,11 +49,8 @@ class QKUITextField: UITextField, UITextFieldDelegate {
     // TODO: the default accounts for overlay rectangles; handling of this case has not been tested.
     return CGRectIntersection(super.editingRectForBounds(bounds), self.textRectForBounds(bounds))
   }
+
   // MARK: QKUITextField
-  
-  func helpInit() {
-    delegate = self
-  }
   
   func setNext(nextControl: UIControl) {
     returnKeyType = .Next

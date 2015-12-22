@@ -6,8 +6,8 @@ import UIKit
 var stdTextFieldColor = CRColor.w
 var stdTextFieldTextColor = CRColor(l: 0.1)
 var stdTextFieldFont = UIFont.systemFontOfSize(16)
-var stdTextFieldCornerRadius: Flt = 4
-var stdTextFieldInset: V2 = V2(8 ,8)
+var stdTextFieldCornerRadius = Flt(4)
+var stdTextFieldInset = V2(8 ,8)
 
 class QKUITextField: UITextField, UITextFieldDelegate {
   var shouldBegin: Predicate = always
@@ -17,7 +17,7 @@ class QKUITextField: UITextField, UITextFieldDelegate {
   var shouldChange: (NSRange, String) -> Bool = { (r, s) in return true }
   var shouldClear: Predicate = always
   var shouldReturn: Predicate = always
-  var textInset: V2 = V2(0, 0)
+  var textInset = V2(0, 0)
   
   // MARK: - UIView
   

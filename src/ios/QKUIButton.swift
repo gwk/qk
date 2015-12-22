@@ -6,7 +6,7 @@ import UIKit
 var stdButtonColor = CRColor.w
 var stdButtonTitleColor = CRColor(l: 0.1)
 var stdButtonLitTitleColor = CRColor(0.25, 0.5, 1)
-var stdButtonCornerRadius: Flt = 4
+var stdButtonCornerRadius = Flt(4)
 
 
 class QKUIButton : UIButton {

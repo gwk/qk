@@ -59,6 +59,13 @@ extension SequenceType {
     }
     return false
   }
+
+  var first: Generator.Element? {
+    for first in self {
+      return first
+    }
+    return nil
+  }
 }
 
 

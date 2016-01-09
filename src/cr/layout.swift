@@ -156,7 +156,7 @@ extension String: QKLayoutConstraining {
 }
 
 
-// MARK: layout relations.
+// MARK: layout relations
 
 struct QKLayoutRel: QKLayoutConstraining {
   // a relation between two operands; this translates into one or two constraints,
@@ -209,7 +209,7 @@ func c_eq(l: QKLayoutOperand, _ r: QKLayoutOperand? = nil, c: Flt, p: LOP = LOPR
 // TODO: lt, gt, le, ge.
 
 
-// MARK: constrain variants.
+// MARK: constrain variants
 
 func constrain(views: [CRView], metrics: [String: NSNumber] = [:], opts: NSLayoutFormatOptions = NSLayoutFormatOptions(rawValue: 0), constraints: [QKLayoutConstraining]) {
   // main variant.

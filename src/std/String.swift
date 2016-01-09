@@ -21,7 +21,7 @@ extension String {
     self.init(count: indent * 2, char: " ")
   }
   
-  // MARK: paths.
+  // MARK: paths
 
   var pathExtDotRange: Range<Index>?    { return rangeOfString(".", options: .BackwardsSearch) }
   var pathDirSlashRange: Range<Index>?  { return rangeOfString("/", options: .BackwardsSearch) }
@@ -70,13 +70,13 @@ extension String {
     }
   }
 
-  // MARK: urls.
+  // MARK: urls
   
   var fileUrl: NSURL? { return NSURL(fileURLWithPath: self, isDirectory: false) }
 
   var dirUrl: NSURL? { return NSURL(fileURLWithPath: self, isDirectory: true) }
 
-  // MARK: utilities.
+  // MARK: utilities
   
   func contains(c: Character) -> Bool {
     for e in self.characters {
@@ -125,7 +125,7 @@ extension String {
   
   var dashToUnder: String { return replace(Character("-"), with: Character("_")) }
   
-  // MARK: symbols.
+  // MARK: symbols
   
   var asSym: String { // TODO: decide if this should be strict; currently quite lax.
     for c0 in self.characters { // do not actually iterate; just get first element.
@@ -157,7 +157,7 @@ extension String {
     return true
   }
   
-  // MARK: lines.
+  // MARK: lines
   
   init(lines: [String]) {
     self = lines.joinWithSeparator("\n")
@@ -188,12 +188,12 @@ extension String {
   var numberedLines: [String] { return numberedLinesFrom(1) }
     
   
-  // MARK: unicode.
+  // MARK: unicode
   
   var codes: UnicodeScalarView { return unicodeScalars }
   
   
-  // MARK: utf8.
+  // MARK: utf8
   
   func asUtf8<R>(@noescape body: (UnsafeBufferPointer<UTF8.CodeUnit>) -> R) -> R {
     return nulTerminatedUTF8.withUnsafeBufferPointer(body)
@@ -206,7 +206,7 @@ extension String {
     }
   }
   
-  // MARK: partition.
+  // MARK: partition
   
   func part(sep: String) -> (String, String)? {
     if let (a, b) = characters.part(sep.characters) {

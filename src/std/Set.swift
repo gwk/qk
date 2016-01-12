@@ -22,4 +22,19 @@ extension Set {
     }
     return set
   }
+
+  @warn_unused_result
+  func setByRemoving(member: Element) -> Set<Element> {
+    var set = self
+    set.remove(member)
+    return set
+  }
+
+  func setByReplacing(old: Element, with replacement: Element) -> Set<Element> {
+    var set = self
+    let removed = set.remove(old)
+    assert(removed != nil)
+    set.insert(replacement)
+    return set
+  }
 }

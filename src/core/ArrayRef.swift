@@ -29,9 +29,9 @@ class ArrayRef<Element>: CollectionType {
 
   var endIndex: Index { return array.endIndex }
 
-  subscript (i: Int) -> Element {
-    get { return array[i] }
-    set { array[i] = newValue }
+  subscript (index: Index) -> Element {
+    get { return array[index] }
+    set { array[index] = newValue }
   }
   
   subscript (range: Range<Index>) -> ArraySlice<Element> {

@@ -25,6 +25,7 @@ enum Json {
     case UnexpectedType(exp: Any.Type, json: JsonType)
   }
 
+  @warn_unused_result
   static func fromData<T: JsonType>(data: NSData, options: NSJSONReadingOptions = []) throws -> T {
     do {
       let json = try NSJSONSerialization.JSONObjectWithData(data, options: options) as! JsonType
@@ -36,6 +37,7 @@ enum Json {
     }
   }
 
+  @warn_unused_result
   static func fromStream<T: JsonType>(stream: NSInputStream, options: NSJSONReadingOptions = []) throws -> T {
     do {
       if stream.streamStatus == .NotOpen {
@@ -50,6 +52,7 @@ enum Json {
     }
   }
 
+  @warn_unused_result
   static func fromPath<T: JsonType>(path: String, options: NSJSONReadingOptions = []) throws -> T {
     var data: NSData
     do {

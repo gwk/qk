@@ -3,6 +3,7 @@
 
 extension CollectionType where Generator.Element : Equatable {
 
+  @warn_unused_result
   func rangeOf(query: Self, start: Index? = nil, end: Index? = nil) -> Range<Index>? {
     var i = start.or(startIndex)
     let e = end.or(endIndex)
@@ -27,6 +28,7 @@ extension CollectionType where Generator.Element : Equatable {
     return nil
   }
   
+  @warn_unused_result
   func has(query: Self, atIndex: Index) -> Bool {
     var i = atIndex
     for e in query {
@@ -38,12 +40,14 @@ extension CollectionType where Generator.Element : Equatable {
     return true
   }
 
+  @warn_unused_result
   func part(range: Range<Index>) -> (SubSequence, SubSequence) {
     let ra = startIndex..<range.startIndex
     let rb = range.endIndex..<endIndex
     return (self[ra], self[rb])
   }
   
+  @warn_unused_result
   func part(sep: Self, start: Index? = nil, end: Index? = nil) -> (SubSequence, SubSequence)? {
       if let range = rangeOf(sep, start: start, end: end) {
         return part(range)

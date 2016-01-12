@@ -19,6 +19,7 @@ extension Array: DefaultInitializable {
     }
   }
 
+  @warn_unused_result
   func get(index: Int) -> Element? {
     if index >= 0 && index < count {
       return self[index]
@@ -48,6 +49,7 @@ extension Array: DefaultInitializable {
     }
   }
 
+  @warn_unused_result
   func permute(random: Random) -> Array {
     var a = self
     a.permuteInPlace(random)

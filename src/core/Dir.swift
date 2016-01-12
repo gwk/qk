@@ -22,6 +22,7 @@ class Dir {
     }
   }
 
+  @warn_unused_result
   func listNames(prefix prefix: String? = nil, suffix: String? = nil, includeHidden: Bool = false) -> [String] {
     var names = [String]()
     while true {
@@ -48,6 +49,7 @@ class Dir {
     return names
   }
 
+  @warn_unused_result
   func listPaths(prefix prefix: String? = nil, suffix: String? = nil) -> [String] {
     return listNames(prefix: prefix, suffix: suffix).map() { "\(path)/\($0)" }
   }

@@ -4,6 +4,8 @@ import Dispatch
 
 
 extension File {
+
+  @warn_unused_result
   func createDispatchSource(modes: DispatchFileModes, queue: DispatchQueue = dispatchMainQueue,
     registerFn: Action? = nil, cancelFn: Action? = nil, eventFn: Action) -> DispatchSource {
       let source = dispatch_source_create(DISPATCH_SOURCE_TYPE_VNODE, _dispatchSourceHandle, modes.rawValue, queue)!

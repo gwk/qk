@@ -19,6 +19,7 @@ struct JsonArray {
 
   init(path: String) throws { self.init(array: try Json.fromPath(path)) }
 
+  @warn_unused_result
   func el<T: JsonConvertible>(index: Int) throws -> T {
     return try T.init(json: array[index] as! JsonType)
   }

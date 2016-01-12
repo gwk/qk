@@ -5,6 +5,7 @@ import Foundation
 
 typealias Time = F64
 
+@warn_unused_result
 func sysTime() -> Time {
   return NSProcessInfo.processInfo().systemUptime
 }
@@ -16,6 +17,7 @@ func initAppLaunchSysTime() -> Time {
   return appLaunchSysTime
 }
 
+@warn_unused_result
 func appTime() -> Time {
   return sysTime() - appLaunchSysTime
 }

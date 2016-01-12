@@ -15,6 +15,7 @@ let resourceRootDir: String = {
 }()
 
 
+@warn_unused_result
 func pathForResource(resPath: String) -> String {
   return "\(resourceRootDir)/\(resPath)"
 }

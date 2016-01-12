@@ -44,6 +44,7 @@ extension String {
     }
   }
   
+  @warn_unused_result
   func replacePathExt(ext: String) -> String {
     var pre: String
     if let r = pathExtDotRange {
@@ -78,6 +79,7 @@ extension String {
 
   // MARK: utilities
   
+  @warn_unused_result
   func contains(c: Character) -> Bool {
     for e in self.characters {
       if e == c {
@@ -87,10 +89,12 @@ extension String {
     return false
   }
   
+  @warn_unused_result
   func has(query: String, atIndex: Index) -> Bool {
     return characters.has(query.characters, atIndex: atIndex)
   }
 
+  @warn_unused_result
   func beforeSuffix(suffix: String) -> String? {
     if hasSuffix(suffix) {
       return String(self.characters.dropLast(suffix.characters.count))
@@ -99,6 +103,7 @@ extension String {
     }
   }
 
+  @warn_unused_result
   func mapChars(transform: (Character) -> Character) -> String {
     var s = ""
     for c in self.characters {
@@ -107,6 +112,7 @@ extension String {
     return s
   }
   
+  @warn_unused_result
   func mapChars(transform: (Character) -> String) -> String {
     var s = ""
     for c in self.characters {
@@ -115,10 +121,12 @@ extension String {
     return s
   }
   
+  @warn_unused_result
   func replace(query: Character, with: Character) -> String {
     return String(characters.replace(query, with: with))
   }
   
+  @warn_unused_result
   func replace(query: String, with: String) -> String {
     return String(characters.replace(query.characters, with: with.characters))
   }
@@ -181,6 +189,7 @@ extension String {
     return self.characters.split(allowEmptySlices: true) { $0 == "\n" }.map { String($0) }
   }
   
+  @warn_unused_result
   func numberedLinesFrom(from: Int) -> [String] {
     return lines.enumerate().map() { (i, line) in " \(line)" }
   }
@@ -208,6 +217,7 @@ extension String {
   
   // MARK: partition
   
+  @warn_unused_result
   func part(sep: String) -> (String, String)? {
     if let (a, b) = characters.part(sep.characters) {
       return (String(a), String(b))
@@ -215,6 +225,7 @@ extension String {
     return nil
   }
 
+  @warn_unused_result
   func split(separator: Character) -> [String] {
     return characters.split(separator).map() { String($0) }
   }

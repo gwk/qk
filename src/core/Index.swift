@@ -18,8 +18,10 @@ class Index<T: Hashable> {
   
   func val(i: Int) -> T { return vals[i] }
   
+  @warn_unused_result
   func index(val: T) -> Int? { return indexes[val] }
   
+  @warn_unused_result
   func reg(val: T) -> Int {
     let oi = indexes[val]
     if let i = oi {

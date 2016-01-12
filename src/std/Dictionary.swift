@@ -3,11 +3,13 @@
 
 extension Dictionary {
   
+  @warn_unused_result
   func contains(key: Key) -> Bool {
     return self[key] != nil
   }
 
-  func mapVals<V>(transform: (Value) -> V) -> [Key:V] {
+  @warn_unused_result
+  func mapVals<V>(@noescape transform: (Value) -> V) -> [Key:V] {
     var d: [Key:V] = [:]
     for (k, v) in self {
       d[k] = transform(v)
@@ -15,7 +17,8 @@ extension Dictionary {
     return d
   }
 
-  mutating func getDefault(key: Key, dflt: () -> Value) -> Value {
+  @warn_unused_result
+  mutating func getDefault(key: Key, @noescape dflt: () -> Value) -> Value {
     if let v = self[key] {
       return v
     } else {
@@ -25,6 +28,7 @@ extension Dictionary {
     }
   }
 
+  @warn_unused_result
   mutating func getDefault(key: Key, dflt: Value) -> Value {
     if let v = self[key] {
       return v
@@ -38,6 +42,8 @@ extension Dictionary {
 
 
 extension Dictionary where Value: DefaultInitializable {
+
+  @warn_unused_result
   mutating func getDefault(key: Key) -> Value {
     if let v = self[key] {
       return v

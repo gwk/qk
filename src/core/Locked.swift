@@ -29,6 +29,7 @@ class Locked<T: AnyObject> {
     return ret
   }
   
+  @warn_unused_result
   func statsDesc() -> String {
     return "frac: \(Float(blockedCount) / Float(accessCount)); blocked: \(blockedCount); total: \(accessCount)."
   }

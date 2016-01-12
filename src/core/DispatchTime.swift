@@ -10,6 +10,7 @@ extension DispatchTime {
   static var now: DispatchTime = DISPATCH_TIME_NOW
   static var forever: DispatchTime = DISPATCH_TIME_FOREVER
 
+  @warn_unused_result
   static func fromNow(seconds: Double) -> DispatchTime {
     return dispatch_time(now, Int64(seconds * 1e9))
   }

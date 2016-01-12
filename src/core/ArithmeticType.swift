@@ -75,17 +75,20 @@ extension Double {
 }
 
 
+@warn_unused_result
 func sum<S: SequenceType where S.Generator.Element: ArithmeticType>(s: S) -> S.Generator.Element {
   typealias E = S.Generator.Element
   return s.reduce(0) { (accum: E, item: E) in return accum + item }
 }
 
+@warn_unused_result
 func prod<S: SequenceType where S.Generator.Element: ArithmeticType>(s: S) -> S.Generator.Element {
   typealias E = S.Generator.Element
   return s.reduce(1) { (accum: E, item: E) in return accum * item }
 }
 
 
+@warn_unused_result
 func clamp<T: ArithmeticType>(a: T, min: T, max: T) -> T {
   if a < min { return min }
   if a > max { return max }
@@ -93,10 +96,12 @@ func clamp<T: ArithmeticType>(a: T, min: T, max: T) -> T {
 }
 
 
+@warn_unused_result
 func sign<T: ArithmeticType>(b: Bool) -> T {
   return b ? 1 : -1
 }
 
+@warn_unused_result
 func sign<T: ArithmeticType>(x: T) -> T {
   if x < 0 { return -1 }
   if x > 0 { return 1 }

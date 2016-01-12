@@ -11,6 +11,7 @@ extension Set {
     self = set
   }
 
+  @warn_unused_result
   static func fromUniqueSeq<S: SequenceType where S.Generator.Element == Element>(seq: S) throws -> Set {
     var set: Set = []
     for el in seq {

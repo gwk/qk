@@ -22,6 +22,7 @@ class Thread: NSThread {
 }
 
 
+@warn_unused_result
 func spawnThread(name: String, action: Action) -> Thread {
   let thread = Thread(name: name, action: action)
   thread.start()

@@ -11,7 +11,7 @@ protocol Reloadable {
 
 let resourceRootDir: String = {
   // TODO: if in release mode or flag not present, return bundle resource directory.
-  return Process.environment["RALLY_RES"]!
+  return Process.environment["RALLY_RES"]! // TODO: change to RALLY_RESOURCE_DIR.
 }()
 
 

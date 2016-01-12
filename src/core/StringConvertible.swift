@@ -13,7 +13,7 @@ final class StringConversionError: ErrorType {
   }
 }
 
-protocol StringConvertible {
+protocol StringConvertible { // TODO: rename!! Convertible is wrong word
   // note: as of swift 2.1b3, the following signature does not work:
   // init?(_ text: String)
   // the problem seems to be that Int already declares init?(_text: Sting, radix: Int = 10)

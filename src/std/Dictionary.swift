@@ -73,14 +73,18 @@ extension Dictionary where Key: Comparable {
 }
 
 
+// TODO: remove in favor of ArrayDict class?
+
 protocol AppendableValueType {
   typealias Element
   mutating func append(element: Element)
 }
 
+
 extension Array: AppendableValueType {}
 
 extension Dictionary where Value: AppendableValueType, Value: DefaultInitializable {
+
   mutating func appendToVal(key: Key, _ el: Value.Element) {
     var v: Value
     if let ov = removeValueForKey(key) {

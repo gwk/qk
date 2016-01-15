@@ -9,6 +9,18 @@ extension Dictionary {
   }
 
   @warn_unused_result
+  mutating func insertNew(key: Key, value: Value) {
+    assert(!contains(key), "insertNew: key already inserted: \(key); value: \(value)")
+    self[key] = value
+  }
+
+  @warn_unused_result
+  mutating func updateExisting(key: Key, value: Value) {
+    assert(contains(key), "updateExisting: key not yet inserted: \(key); value: \(value)")
+    self[key] = value
+  }
+
+  @warn_unused_result
   func mapVals<V>(@noescape transform: (Value) -> V) -> [Key:V] {
     var d: [Key:V] = [:]
     for (k, v) in self {

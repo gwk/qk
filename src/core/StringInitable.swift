@@ -13,18 +13,18 @@ final class StringConversionError: ErrorType {
   }
 }
 
-protocol StringConvertible { // TODO: rename!! Convertible is wrong word
+protocol StringInitable { // TODO: rename!! Convertible is wrong word
   // note: as of swift 2.1b3, the following signature does not work:
   // init?(_ text: String)
   // the problem seems to be that Int already declares init?(_text: Sting, radix: Int = 10)
   init(string: String) throws
 }
 
-extension String: StringConvertible {
+extension String: StringInitable {
   init(string: String) { self = string }
 }
 
-extension Int: StringConvertible {
+extension Int: StringInitable {
   init(string: String) throws {
     if let i = Int(string) {
       self = i
@@ -32,7 +32,7 @@ extension Int: StringConvertible {
   }
 }
 
-extension UInt: StringConvertible {
+extension UInt: StringInitable {
   init(string: String) throws {
     if let u = UInt(string) {
       self = u
@@ -40,7 +40,7 @@ extension UInt: StringConvertible {
   }
 }
 
-extension Float: StringConvertible {
+extension Float: StringInitable {
   init(string: String) throws {
     if let f = Float(string) {
       self = f
@@ -48,7 +48,7 @@ extension Float: StringConvertible {
   }
 }
 
-extension Double: StringConvertible {
+extension Double: StringInitable {
   init(string: String) throws {
     if let d = Double(string) {
       self = d
@@ -56,7 +56,7 @@ extension Double: StringConvertible {
   }
 }
 
-extension Bool: StringConvertible {
+extension Bool: StringInitable {
 
   init?(_ text: String) {
     switch text {

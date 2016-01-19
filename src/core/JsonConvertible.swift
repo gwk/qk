@@ -85,10 +85,10 @@ extension Array: JsonConvertible {
 }
 
 extension Dictionary: JsonConvertible {
-  // note: the signature should include `where Key: StringConvertible, Value: JsonConvertible`.
+  // note: the signature should include `where Key: StringInitable, Value: JsonConvertible`.
   // swift 2.1b3 does not support this.
   init(json: JsonType) throws {
-    guard let K = Key.self as? StringConvertible.Type else { fatalError("Dictionary.Key type \(Key.self) is not StringConvertible") }
+    guard let K = Key.self as? StringInitable.Type else { fatalError("Dictionary.Key type \(Key.self) is not StringInitable") }
     guard let V = Value.self as? JsonConvertible.Type else { fatalError("Dictionary.Value type \(Value.self) is not JsonConvertible") }
     guard let dict = json as? [String:JsonType] else { throw Json.Error.UnexpectedType(exp: [Key:Value].self, json: json) }
     var d: [Key:Value] = [:]

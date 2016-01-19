@@ -75,8 +75,8 @@ extension String: JsonInitable {
 }
 
 extension Array: JsonInitable {
-  // note: the signature should include `where Element: JsonInitable`.
-  // swift 2.1b3 does not support this.
+  // note: the signature should include `where Generator.Element: JsonInitable`.
+  // swift 2.1.1 does not support this.
   init(json: JsonType) throws {
     guard let E = Element.self as? JsonInitable.Type else { fatalError("Array.Element type \(Element.self) is not JsonInitable") }
     guard let array = json as? [JsonType] else { throw Json.Error.UnexpectedType(exp: [Element].self, json: json) }
@@ -86,7 +86,7 @@ extension Array: JsonInitable {
 
 extension Dictionary: JsonInitable {
   // note: the signature should include `where Key: StringInitable, Value: JsonInitable`.
-  // swift 2.1b3 does not support this.
+  // swift 2.1.1 does not support this.
   init(json: JsonType) throws {
     guard let K = Key.self as? StringInitable.Type else { fatalError("Dictionary.Key type \(Key.self) is not StringInitable") }
     guard let V = Value.self as? JsonInitable.Type else { fatalError("Dictionary.Value type \(Value.self) is not JsonInitable") }

@@ -18,8 +18,9 @@ extension NSNull: JsonLeafType {}
 enum Json {
 
   enum Error: ErrorType {
-    case Conversion(exp: Any.Type, json: JsonType)
+    case Conversion(exp: Any.Type, json: JsonType) // error in converting the json value to the expected type.
     case Key(key: String, exp: Any.Type, json: JsonType)
+    case MissingEl(index: Int, exp: Any.Type, json: JsonType) // array is too short.
     case Other(ErrorType)
     case Path(String, ErrorType)
     case UnexpectedType(exp: Any.Type, json: JsonType)

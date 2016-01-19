@@ -3,15 +3,21 @@
 import Foundation
 
 
-protocol JsonArrayConvertible {
-  init(json: JsonArray) throws
+protocol JsonArrayInitable {
+  init(jsonArray: JsonArray) throws
 }
 
 
-struct JsonArray {
+struct JsonArray: JsonInitable {
   let array: NSArray
 
   init(array: NSArray) { self.array = array }
+
+  init(json: JsonType) throws {
+    if let array = json as? NSArray {
+      self.init(array: array)
+    } else { throw Json.Error.UnexpectedType(exp: NSArray.self, json: json) }
+  }
 
   init(data: NSData) throws { self.init(array: try Json.fromData(data)) }
 
@@ -21,25 +27,19 @@ struct JsonArray {
 
   @warn_unused_result
   func el<T: JsonInitable>(index: Int) throws -> T {
+    if index >= array.count { throw Json.Error.MissingEl(index: index, exp: T.self, json: array) }
     return try T.init(json: array[index] as! JsonType)
   }
-}
 
-/*
+  func convert<T: JsonInitable>() throws -> [T] {
+    return try array.map { try T.init(json: $0 as! JsonType) }
+  }
 
-extension NSArray {
-func json<T: JsonInitable>(index: Int) throws -> T {
-return try T.init(json: self[index] as! JsonType)
-}
+  func convert<T: JsonArrayInitable>() throws -> [T] {
+    return try array.map { try T.init(jsonArray: try JsonArray(json: $0 as! JsonType)) }
+  }
 
-func mapJson<T: JsonInitable>() throws -> [T] {
-return try self.map() { try T.init(json: $0 as! JsonType) }
+  func map<T: JsonInitable, R>(transform: (T) throws -> R) rethrows -> [R] {
+    return try array.map { try transform(try T.init(json: $0 as! JsonType)) }
+  }
 }
-
-func forEachJson<T: JsonInitable>(body: (T)->()) throws {
-for el in self {
-try body(T.init(json: el as! JsonType))
-}
-}
-}
-*/

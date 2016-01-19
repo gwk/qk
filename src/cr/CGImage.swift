@@ -32,8 +32,8 @@ extension CGImage {
 
   class func with<T: PixelType>(bufferPointer bufferPointer: UnsafeBufferPointer<T>, size: V2I, colorSpace: CGColorSpace,
     bitmapInfo: CGBitmapInfo, shouldInterpolate: Bool, intent: CGColorRenderingIntent) -> CGImage {
-      typealias ScalarType = T.ScalarType
-      let bytesPerComponent = sizeof(ScalarType) // BUG: xc7b4 does not understand T.ScalarType; typealias above works around.
+      typealias Scalar = T.Scalar
+      let bytesPerComponent = sizeof(Scalar) // BUG: xc7b4 does not understand T.Scalar; typealias above works around.
       let bytesPerPixel = sizeof(T)
       let bitsPerComponent = 8 * bytesPerComponent
       let bitsPerPixel = 8 * bytesPerPixel
@@ -48,17 +48,17 @@ extension CGImage {
   class func with<T: PixelType>(areaBuffer areaBuffer: AreaBuffer<T>, shouldInterpolate: Bool = true,
     intent: CGColorRenderingIntent = .RenderingIntentDefault) -> CGImage {
       return areaBuffer.withUnsafeBufferPointer() {
-        typealias ScalarType = T.ScalarType
+        typealias Scalar = T.Scalar
         let isRGB = T.numComponents >= 3
-        let isFloat = (sizeof(ScalarType) == 4)
+        let isFloat = (sizeof(Scalar) == 4)
         let hasAlpha = (T.numComponents % 2 == 0)
         let colorSpace = isRGB ? CGColorSpaceCreateDeviceRGB()! : CGColorSpaceCreateDeviceGray()!
         let byteOrder: CGBitmapInfo
-        switch sizeof(ScalarType) {
+        switch sizeof(Scalar) {
         case 1: byteOrder = .ByteOrderDefault
         case 2: byteOrder = .ByteOrder16Little
         case 4: byteOrder = .ByteOrder32Little
-        default: fatalError("unsupported PixelType.ScalarType: \(T.self)")
+        default: fatalError("unsupported PixelType.Scalar: \(T.self)")
         }
         var bitmapInfo: CGBitmapInfo = byteOrder
         if isFloat {

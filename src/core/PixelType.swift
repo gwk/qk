@@ -2,17 +2,17 @@
 
 
 protocol PixelType {
-  typealias ScalarType
+  typealias Scalar
   static var numComponents: Int { get }
 }
 
 extension U8: PixelType {
-  typealias ScalarType = U8
+  typealias Scalar = U8
   static var numComponents: Int { return 1 }
 }
 
 extension F32: PixelType {
-  typealias ScalarType = F32
+  typealias Scalar = F32
   static var numComponents: Int { return 1 }
 }
 

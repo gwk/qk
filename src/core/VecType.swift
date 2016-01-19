@@ -2,8 +2,8 @@
 
 
 protocol VecType: Equatable, CustomStringConvertible {
-  typealias ScalarType
-  typealias FloatType
+  typealias Scalar: ArithmeticType
+  typealias FloatType: FloatingPointType
   typealias VSType
   typealias VDType
   
@@ -13,35 +13,36 @@ protocol VecType: Equatable, CustomStringConvertible {
   var len: FloatType { get }
 }
 
+protocol VecType2: VecType {
+  typealias Scalar
+  var x: Scalar { get }
+  var y: Scalar { get }
+}
+
+protocol VecType3: VecType {
+  typealias Scalar
+  var x: Scalar { get }
+  var y: Scalar { get }
+  var z: Scalar { get }
+}
+
+protocol VecType4: VecType {
+  typealias Scalar
+  var x: Scalar { get }
+  var y: Scalar { get }
+  var z: Scalar { get }
+  var w: Scalar { get }
+}
+
 protocol FloatVecType: VecType {
   var norm: Self { get }
   var clampToUnit: Self { get }
-  func dist(b: Self) -> ScalarType
-  func dot(b: Self) -> ScalarType
-  func angle(b: Self) -> ScalarType
+  func dist(b: Self) -> Scalar
+  func dot(b: Self) -> Scalar
+  func angle(b: Self) -> Scalar
 }
 
 protocol IntVecType: VecType {
 
 }
 
-protocol VecType2: VecType {
-  typealias ScalarType
-  var x: ScalarType { get }
-  var y: ScalarType { get }
-}
-
-protocol VecType3: VecType {
-  typealias ScalarType
-  var x: ScalarType { get }
-  var y: ScalarType { get }
-  var z: ScalarType { get }
-}
-
-protocol VecType4: VecType {
-  typealias ScalarType
-  var x: ScalarType { get }
-  var y: ScalarType { get }
-  var z: ScalarType { get }
-  var w: ScalarType { get }
-}

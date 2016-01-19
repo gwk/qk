@@ -6,46 +6,46 @@ import CoreGraphics
 
 
 extension CGVector : VecType2, FloatVecType, CustomStringConvertible {
-  typealias ScalarType = Flt
+  typealias Scalar = Flt
   typealias FloatType = Flt
   typealias VSType = V2S
   typealias VDType = V2D
   typealias VU8Type = V2U8
   init(_ v: V2S) {
-    self.init(ScalarType(v.x), ScalarType(v.y))
+    self.init(Scalar(v.x), Scalar(v.y))
   }
   init(_ v: V2D) {
-    self.init(ScalarType(v.x), ScalarType(v.y))
+    self.init(Scalar(v.x), Scalar(v.y))
   }
   init(_ v: V2I) {
-    self.init(ScalarType(v.x), ScalarType(v.y))
+    self.init(Scalar(v.x), Scalar(v.y))
   }
   init(_ v: V2U8) {
-    self.init(ScalarType(v.x), ScalarType(v.y))
+    self.init(Scalar(v.x), Scalar(v.y))
   }
   init(_ v: V3S) {
-    self.init(ScalarType(v.x), ScalarType(v.y))
+    self.init(Scalar(v.x), Scalar(v.y))
   }
   init(_ v: V3D) {
-    self.init(ScalarType(v.x), ScalarType(v.y))
+    self.init(Scalar(v.x), Scalar(v.y))
   }
   init(_ v: V3I) {
-    self.init(ScalarType(v.x), ScalarType(v.y))
+    self.init(Scalar(v.x), Scalar(v.y))
   }
   init(_ v: V3U8) {
-    self.init(ScalarType(v.x), ScalarType(v.y))
+    self.init(Scalar(v.x), Scalar(v.y))
   }
   init(_ v: V4S) {
-    self.init(ScalarType(v.x), ScalarType(v.y))
+    self.init(Scalar(v.x), Scalar(v.y))
   }
   init(_ v: V4D) {
-    self.init(ScalarType(v.x), ScalarType(v.y))
+    self.init(Scalar(v.x), Scalar(v.y))
   }
   init(_ v: V4I) {
-    self.init(ScalarType(v.x), ScalarType(v.y))
+    self.init(Scalar(v.x), Scalar(v.y))
   }
   init(_ v: V4U8) {
-    self.init(ScalarType(v.x), ScalarType(v.y))
+    self.init(Scalar(v.x), Scalar(v.y))
   }
   static let zero = CGVector(0, 0)
   static let unitX = CGVector(1, 0)
@@ -57,11 +57,11 @@ extension CGVector : VecType2, FloatVecType, CustomStringConvertible {
   var len: FloatType { return sqrLen.sqrt }
   var aspect: FloatType { return FloatType(x) / FloatType(y) }
   func dist(b: CGVector) -> FloatType { return (b - self).len }
-  var l: ScalarType {
+  var l: Scalar {
     get { return x }
     set { x = newValue }
   }
-  var a: ScalarType {
+  var a: Scalar {
     get { return y }
     set { y = newValue }
   }
@@ -76,9 +76,9 @@ extension CGVector : VecType2, FloatVecType, CustomStringConvertible {
   var clampToUnit: CGVector { return CGVector(clamp(x, min: 0, max: 1), clamp(y, min: 0, max: 1)) }
   var toU8Pixel: VU8Type { return VU8Type(U8(clamp(x * 255, min: 0, max: 255)), U8(clamp(y * 255, min: 0, max: 255))) }
 
-  func dot(b: CGVector) -> ScalarType { return (x * b.x) + (y * b.y) }
-  func angle(b: CGVector) -> ScalarType { return acos(self.dot(b) / (self.len * b.len)) }
-  func lerp(b: CGVector, _ t: ScalarType) -> CGVector { return self * (1 - t) + b * t }
+  func dot(b: CGVector) -> Scalar { return (x * b.x) + (y * b.y) }
+  func angle(b: CGVector) -> Scalar { return acos(self.dot(b) / (self.len * b.len)) }
+  func lerp(b: CGVector, _ t: Scalar) -> CGVector { return self * (1 - t) + b * t }
 
 }
 

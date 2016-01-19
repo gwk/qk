@@ -34,7 +34,7 @@ def gen_vec(orig_type, dim, s_type, fs_type, v_type, v_prev, is_simd, is_novel):
 
   decl_keyword = 'public struct' if is_novel else 'extension'
   outL('$ $ : $ {', decl_keyword, v_type, jc(protocols))
-  outL('  typealias ScalarType = $', s_type)
+  outL('  typealias Scalar = $', s_type)
   outL('  typealias FloatType = $', fs_type)
   outL('  typealias VSType = V$S', dim)
   outL('  typealias VDType = V$D', dim)
@@ -42,8 +42,8 @@ def gen_vec(orig_type, dim, s_type, fs_type, v_type, v_prev, is_simd, is_novel):
 
   if is_novel:
     for c in comps:
-      outL('  var $: ScalarType', c)
-    outL('  init($) {', jcf('_ $: ScalarType', comps))
+      outL('  var $: Scalar', c)
+    outL('  init($) {', jcf('_ $: Scalar', comps))
     for c in comps:
       outL('    self.$ = $', c, c)
     outL('  }')
@@ -55,11 +55,11 @@ def gen_vec(orig_type, dim, s_type, fs_type, v_type, v_prev, is_simd, is_novel):
         continue
       vt = fmt('V$$', d, suffix)
       outL('  init(_ v: $) {', vt)
-      outL('    self.init($)', jcf('ScalarType(v.$)', comps))
+      outL('    self.init($)', jcf('Scalar(v.$)', comps))
       outL('  }')
   
   if v_prev:
-    outL('  init(_ v: $, _ s: ScalarType) {', v_prev)
+    outL('  init(_ v: $, _ s: Scalar) {', v_prev)
     outL('    self.init($)', jc(fmt('v.$', c) if i < dim - 1 else 's' for i, c in enumerate(comps)))
     outL('  }')
   
@@ -81,7 +81,7 @@ def gen_vec(orig_type, dim, s_type, fs_type, v_type, v_prev, is_simd, is_novel):
   outL('  func dist(b: $) -> FloatType { return (b - self).len }', v_type)
 
   for c_col, c in comps_colors:
-    outL('  var $: ScalarType {', c_col)
+    outL('  var $: Scalar {', c_col)
     outL('    get { return $ }', c)
     outL('    set { $ = newValue }', c)
     outL('  }')
@@ -103,11 +103,11 @@ def gen_vec(orig_type, dim, s_type, fs_type, v_type, v_prev, is_simd, is_novel):
     outL('  var clampToUnit: $ { return $($) }', v_type, v_type, jcf('clamp($, min: 0, max: 1)', comps))
     outL('  var toU8Pixel: VU8Type { return VU8Type($) }', jcf('U8(clamp($ * 255, min: 0, max: 255))', comps))
     outL('')
-    outL('  func dot(b: $) -> ScalarType { return $ }',
+    outL('  func dot(b: $) -> Scalar { return $ }',
       v_type, ' + '.join(fmt('($ * b.$)', c, c) for c in comps))
-    outL('  func angle(b: $) -> ScalarType { return acos(self.dot(b) / (self.len * b.len)) }',
+    outL('  func angle(b: $) -> Scalar { return acos(self.dot(b) / (self.len * b.len)) }',
       v_type)
-    outL('  func lerp(b: $, _ t: ScalarType) -> $ { return self * (1 - t) + b * t }',
+    outL('  func lerp(b: $, _ t: Scalar) -> $ { return self * (1 - t) + b * t }',
       v_type, v_type)
 
     if dim >= 3:

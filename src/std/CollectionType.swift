@@ -4,7 +4,34 @@
 extension CollectionType where Generator.Element : Equatable {
 
   @warn_unused_result
-  func rangeOf(query: Self, start: Index? = nil, end: Index? = nil) -> Range<Index>? {
+  func has<C: CollectionType where C.Generator.Element == Generator.Element>(query: C, atIndex: Index) -> Bool {
+    var i = atIndex
+    for e in query {
+      if i == endIndex || e != self[i] {
+        return false
+      }
+      i = i.successor()
+    }
+    return true
+  }
+
+  @warn_unused_result
+  func part(range: Range<Index>) -> (SubSequence, SubSequence) {
+    let ra = startIndex..<range.startIndex
+    let rb = range.endIndex..<endIndex
+    return (self[ra], self[rb])
+  }
+
+  @warn_unused_result
+  func part(separator: Self, start: Index? = nil, end: Index? = nil) -> (SubSequence, SubSequence)? {
+    if let range = rangeOf(separator, start: start, end: end) {
+      return part(range)
+    }
+    return nil
+  }
+
+  @warn_unused_result
+  func rangeOf<C: CollectionType where C.Generator.Element == Generator.Element>(query: C, start: Index? = nil, end: Index? = nil) -> Range<Index>? {
     var i = start.or(startIndex)
     let e = end.or(endIndex)
     while i != e {
@@ -29,30 +56,24 @@ extension CollectionType where Generator.Element : Equatable {
   }
   
   @warn_unused_result
-  func has(query: Self, atIndex: Index) -> Bool {
-    var i = atIndex
-    for e in query {
-      if i == endIndex || e != self[i] {
-        return false
+  func split<C: CollectionType where C.Generator.Element == Generator.Element>(sub sub: C, maxSplit: Int = Int.max, allowEmptySlices: Bool = false) -> [Self.SubSequence] {
+    var result: [Self.SubSequence] = []
+    var prev = startIndex
+    var range = rangeOf(sub)
+    while let r = range {
+      if allowEmptySlices || prev != r.startIndex {
+        result.append(self[prev..<r.startIndex])
       }
-      i = i.successor()
+      prev = r.endIndex
+      range = rangeOf(sub, start: prev)
+      if result.count == maxSplit {
+        break
+      }
     }
-    return true
-  }
-
-  @warn_unused_result
-  func part(range: Range<Index>) -> (SubSequence, SubSequence) {
-    let ra = startIndex..<range.startIndex
-    let rb = range.endIndex..<endIndex
-    return (self[ra], self[rb])
-  }
-  
-  @warn_unused_result
-  func part(sep: Self, start: Index? = nil, end: Index? = nil) -> (SubSequence, SubSequence)? {
-      if let range = rangeOf(sep, start: start, end: end) {
-        return part(range)
-      }
-      return nil
+    if allowEmptySlices || prev != endIndex {
+      result.append(self[prev..<endIndex])
+    }
+    return result
   }
 }
 

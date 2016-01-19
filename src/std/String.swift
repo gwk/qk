@@ -229,5 +229,9 @@ extension String {
   func split(separator: Character) -> [String] {
     return characters.split(separator).map() { String($0) }
   }
+
+  func split(sub sub: String) -> [String] {
+    return characters.split(sub: sub.characters).map() { String($0) }
+  }
 }
 

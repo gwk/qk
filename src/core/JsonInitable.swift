@@ -3,11 +3,11 @@
 import Foundation
 
 
-protocol JsonConvertible {
+protocol JsonInitable {
   init(json: JsonType) throws
 }
 
-extension Int: JsonConvertible {
+extension Int: JsonInitable {
   init(json: JsonType) throws {
     if let n = json as? NSNumber {
       self = n as Int
@@ -19,7 +19,7 @@ extension Int: JsonConvertible {
   }
 }
 
-extension UInt: JsonConvertible {
+extension UInt: JsonInitable {
   init(json: JsonType) throws {
     if let n = json as? NSNumber {
       self = n as UInt
@@ -31,7 +31,7 @@ extension UInt: JsonConvertible {
   }
 }
 
-extension Float: JsonConvertible {
+extension Float: JsonInitable {
   init(json: JsonType) throws {
     if let n = json as? NSNumber {
       self = n as Float
@@ -43,7 +43,7 @@ extension Float: JsonConvertible {
   }
 }
 
-extension Double: JsonConvertible {
+extension Double: JsonInitable {
   init(json: JsonType) throws {
     if let n = json as? NSNumber {
       self = n as Double
@@ -55,7 +55,7 @@ extension Double: JsonConvertible {
   }
 }
 
-extension Bool: JsonConvertible {
+extension Bool: JsonInitable {
   init(json: JsonType) throws {
     if let n = json as? NSNumber {
       self = n as Bool
@@ -66,7 +66,7 @@ extension Bool: JsonConvertible {
   }
 }
 
-extension String: JsonConvertible {
+extension String: JsonInitable {
   init(json: JsonType) throws {
     if let s = json as? String {
       self = s
@@ -74,22 +74,22 @@ extension String: JsonConvertible {
   }
 }
 
-extension Array: JsonConvertible {
-  // note: the signature should include `where Element: JsonConvertible`.
+extension Array: JsonInitable {
+  // note: the signature should include `where Element: JsonInitable`.
   // swift 2.1b3 does not support this.
   init(json: JsonType) throws {
-    guard let E = Element.self as? JsonConvertible.Type else { fatalError("Array.Element type \(Element.self) is not JsonConvertible") }
+    guard let E = Element.self as? JsonInitable.Type else { fatalError("Array.Element type \(Element.self) is not JsonInitable") }
     guard let array = json as? [JsonType] else { throw Json.Error.UnexpectedType(exp: [Element].self, json: json) }
     self = try array.map() { try E.init(json: $0) as! Element }
   }
 }
 
-extension Dictionary: JsonConvertible {
-  // note: the signature should include `where Key: StringInitable, Value: JsonConvertible`.
+extension Dictionary: JsonInitable {
+  // note: the signature should include `where Key: StringInitable, Value: JsonInitable`.
   // swift 2.1b3 does not support this.
   init(json: JsonType) throws {
     guard let K = Key.self as? StringInitable.Type else { fatalError("Dictionary.Key type \(Key.self) is not StringInitable") }
-    guard let V = Value.self as? JsonConvertible.Type else { fatalError("Dictionary.Value type \(Value.self) is not JsonConvertible") }
+    guard let V = Value.self as? JsonInitable.Type else { fatalError("Dictionary.Value type \(Value.self) is not JsonInitable") }
     guard let dict = json as? [String:JsonType] else { throw Json.Error.UnexpectedType(exp: [Key:Value].self, json: json) }
     var d: [Key:Value] = [:]
     for (k, v) in dict {

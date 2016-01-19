@@ -20,7 +20,7 @@ struct JsonArray {
   init(path: String) throws { self.init(array: try Json.fromPath(path)) }
 
   @warn_unused_result
-  func el<T: JsonConvertible>(index: Int) throws -> T {
+  func el<T: JsonInitable>(index: Int) throws -> T {
     return try T.init(json: array[index] as! JsonType)
   }
 }
@@ -28,15 +28,15 @@ struct JsonArray {
 /*
 
 extension NSArray {
-func json<T: JsonConvertible>(index: Int) throws -> T {
+func json<T: JsonInitable>(index: Int) throws -> T {
 return try T.init(json: self[index] as! JsonType)
 }
 
-func mapJson<T: JsonConvertible>() throws -> [T] {
+func mapJson<T: JsonInitable>() throws -> [T] {
 return try self.map() { try T.init(json: $0 as! JsonType) }
 }
 
-func forEachJson<T: JsonConvertible>(body: (T)->()) throws {
+func forEachJson<T: JsonInitable>(body: (T)->()) throws {
 for el in self {
 try body(T.init(json: el as! JsonType))
 }

@@ -20,13 +20,13 @@ struct JsonDict {
   init(path: String) throws { self.init(dict: try Json.fromPath(path)) }
 
   @warn_unused_result
-  func get<T: JsonConvertible>(key: String) throws -> T {
+  func get<T: JsonInitable>(key: String) throws -> T {
   guard let val = dict[key] else { throw Json.Error.Key(key: key, exp: T.self, json: dict) }
   return try T.init(json: val as! JsonType)
   }
 
   @warn_unused_result
-  func array<T: JsonConvertible>(key: String) throws -> [T] {
+  func array<T: JsonInitable>(key: String) throws -> [T] {
     guard let val = dict[key] else { throw Json.Error.Key(key: key, exp: Array<T>.self, json: dict) }
     guard let array = val as? NSArray else { throw Json.Error.UnexpectedType(exp: Array<T>.self, json: val as! JsonType) }
     return try array.map() { try T.init(json: $0 as! JsonType) }
@@ -45,7 +45,7 @@ struct JsonDict {
 extension NSDictionary {
 }
 
-func jsonOrNil<T: JsonConvertible>(key: NSString) throws -> T? {
+func jsonOrNil<T: JsonInitable>(key: NSString) throws -> T? {
 guard let val = self[key] as? T else { return nil }
 return try T.init(json: val as! JsonType)
 }

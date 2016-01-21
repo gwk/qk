@@ -7,7 +7,7 @@ import simd
 
 public typealias V2S = float2
 
-extension V2S : VecType2, FloatVecType, Equatable, CustomStringConvertible {
+extension V2S : VecType2, FloatVecType, Equatable, CustomStringConvertible, JsonArrayInitable {
   typealias Scalar = F32
   typealias FloatType = F32
   typealias VSType = V2S
@@ -46,6 +46,13 @@ extension V2S : VecType2, FloatVecType, Equatable, CustomStringConvertible {
   init(_ v: V4U8) {
     self.init(Scalar(v.x), Scalar(v.y))
   }
+  init(jsonArray: JsonArray) throws {
+    if jsonArray.count > 2 {
+      throw Json.Error.ExcessEl(index: 2, exp: V2S.self, json: jsonArray.array)
+    }
+    self.init(try jsonArray.el(0), try jsonArray.el(1))
+  }
+
   static let zero = V2S(0, 0)
   static let unitX = V2S(1, 0)
   static let unitY = V2S(0, 1)
@@ -53,9 +60,7 @@ extension V2S : VecType2, FloatVecType, Equatable, CustomStringConvertible {
   var vs: V2S { return V2S(F32(x), F32(y)) }
   var vd: V2D { return V2D(F64(x), F64(y)) }
   var sqrLen: FloatType { return (FloatType(x).sqr + FloatType(y).sqr) }
-  var len: FloatType { return sqrLen.sqrt }
   var aspect: FloatType { return FloatType(x) / FloatType(y) }
-  func dist(b: V2S) -> FloatType { return (b - self).len }
   var l: Scalar {
     get { return x }
     set { x = newValue }
@@ -97,7 +102,7 @@ public func ==(a: V2S, b: V2S) -> Bool {
 
 public typealias V2D = double2
 
-extension V2D : VecType2, FloatVecType, Equatable, CustomStringConvertible {
+extension V2D : VecType2, FloatVecType, Equatable, CustomStringConvertible, JsonArrayInitable {
   typealias Scalar = F64
   typealias FloatType = F64
   typealias VSType = V2S
@@ -136,6 +141,13 @@ extension V2D : VecType2, FloatVecType, Equatable, CustomStringConvertible {
   init(_ v: V4U8) {
     self.init(Scalar(v.x), Scalar(v.y))
   }
+  init(jsonArray: JsonArray) throws {
+    if jsonArray.count > 2 {
+      throw Json.Error.ExcessEl(index: 2, exp: V2D.self, json: jsonArray.array)
+    }
+    self.init(try jsonArray.el(0), try jsonArray.el(1))
+  }
+
   static let zero = V2D(0, 0)
   static let unitX = V2D(1, 0)
   static let unitY = V2D(0, 1)
@@ -143,9 +155,7 @@ extension V2D : VecType2, FloatVecType, Equatable, CustomStringConvertible {
   var vs: V2S { return V2S(F32(x), F32(y)) }
   var vd: V2D { return V2D(F64(x), F64(y)) }
   var sqrLen: FloatType { return (FloatType(x).sqr + FloatType(y).sqr) }
-  var len: FloatType { return sqrLen.sqrt }
   var aspect: FloatType { return FloatType(x) / FloatType(y) }
-  func dist(b: V2D) -> FloatType { return (b - self).len }
   var l: Scalar {
     get { return x }
     set { x = newValue }
@@ -185,7 +195,7 @@ public func ==(a: V2D, b: V2D) -> Bool {
 }
 
 
-public struct V2I : VecType2, IntVecType, Equatable, CustomStringConvertible {
+public struct V2I : VecType2, IntVecType, Equatable, CustomStringConvertible, JsonArrayInitable {
   typealias Scalar = Int
   typealias FloatType = F64
   typealias VSType = V2S
@@ -231,6 +241,13 @@ public struct V2I : VecType2, IntVecType, Equatable, CustomStringConvertible {
   init(_ v: V4U8) {
     self.init(Scalar(v.x), Scalar(v.y))
   }
+  init(jsonArray: JsonArray) throws {
+    if jsonArray.count > 2 {
+      throw Json.Error.ExcessEl(index: 2, exp: V2I.self, json: jsonArray.array)
+    }
+    self.init(try jsonArray.el(0), try jsonArray.el(1))
+  }
+
   static let zero = V2I(0, 0)
   static let unitX = V2I(1, 0)
   static let unitY = V2I(0, 1)
@@ -238,9 +255,7 @@ public struct V2I : VecType2, IntVecType, Equatable, CustomStringConvertible {
   var vs: V2S { return V2S(F32(x), F32(y)) }
   var vd: V2D { return V2D(F64(x), F64(y)) }
   var sqrLen: FloatType { return (FloatType(x).sqr + FloatType(y).sqr) }
-  var len: FloatType { return sqrLen.sqrt }
   var aspect: FloatType { return FloatType(x) / FloatType(y) }
-  func dist(b: V2I) -> FloatType { return (b - self).len }
   var l: Scalar {
     get { return x }
     set { x = newValue }
@@ -265,7 +280,7 @@ public func ==(a: V2I, b: V2I) -> Bool {
 }
 
 
-public struct V2U8 : VecType2, IntVecType, Equatable, CustomStringConvertible {
+public struct V2U8 : VecType2, IntVecType, Equatable, CustomStringConvertible, JsonArrayInitable {
   typealias Scalar = U8
   typealias FloatType = F32
   typealias VSType = V2S
@@ -311,6 +326,13 @@ public struct V2U8 : VecType2, IntVecType, Equatable, CustomStringConvertible {
   init(_ v: V4U8) {
     self.init(Scalar(v.x), Scalar(v.y))
   }
+  init(jsonArray: JsonArray) throws {
+    if jsonArray.count > 2 {
+      throw Json.Error.ExcessEl(index: 2, exp: V2U8.self, json: jsonArray.array)
+    }
+    self.init(try jsonArray.el(0), try jsonArray.el(1))
+  }
+
   static let zero = V2U8(0, 0)
   static let unitX = V2U8(1, 0)
   static let unitY = V2U8(0, 1)
@@ -318,9 +340,7 @@ public struct V2U8 : VecType2, IntVecType, Equatable, CustomStringConvertible {
   var vs: V2S { return V2S(F32(x), F32(y)) }
   var vd: V2D { return V2D(F64(x), F64(y)) }
   var sqrLen: FloatType { return (FloatType(x).sqr + FloatType(y).sqr) }
-  var len: FloatType { return sqrLen.sqrt }
   var aspect: FloatType { return FloatType(x) / FloatType(y) }
-  func dist(b: V2U8) -> FloatType { return (b - self).len }
   var l: Scalar {
     get { return x }
     set { x = newValue }
@@ -348,7 +368,7 @@ public func ==(a: V2U8, b: V2U8) -> Bool {
 
 public typealias V3S = float3
 
-extension V3S : VecType3, FloatVecType, Equatable, CustomStringConvertible {
+extension V3S : VecType3, FloatVecType, Equatable, CustomStringConvertible, JsonArrayInitable {
   typealias Scalar = F32
   typealias FloatType = F32
   typealias VSType = V3S
@@ -378,6 +398,13 @@ extension V3S : VecType3, FloatVecType, Equatable, CustomStringConvertible {
   init(_ v: V2S, _ s: Scalar) {
     self.init(v.x, v.y, s)
   }
+  init(jsonArray: JsonArray) throws {
+    if jsonArray.count > 3 {
+      throw Json.Error.ExcessEl(index: 3, exp: V3S.self, json: jsonArray.array)
+    }
+    self.init(try jsonArray.el(0), try jsonArray.el(1), try jsonArray.el(2))
+  }
+
   static let zero = V3S(0, 0, 0)
   static let unitX = V3S(1, 0, 0)
   static let unitY = V3S(0, 1, 0)
@@ -386,9 +413,7 @@ extension V3S : VecType3, FloatVecType, Equatable, CustomStringConvertible {
   var vs: V3S { return V3S(F32(x), F32(y), F32(z)) }
   var vd: V3D { return V3D(F64(x), F64(y), F64(z)) }
   var sqrLen: FloatType { return (FloatType(x).sqr + FloatType(y).sqr + FloatType(z).sqr) }
-  var len: FloatType { return sqrLen.sqrt }
   var aspect: FloatType { return FloatType(x) / FloatType(y) }
-  func dist(b: V3S) -> FloatType { return (b - self).len }
   var r: Scalar {
     get { return x }
     set { x = newValue }
@@ -440,7 +465,7 @@ public func ==(a: V3S, b: V3S) -> Bool {
 
 public typealias V3D = double3
 
-extension V3D : VecType3, FloatVecType, Equatable, CustomStringConvertible {
+extension V3D : VecType3, FloatVecType, Equatable, CustomStringConvertible, JsonArrayInitable {
   typealias Scalar = F64
   typealias FloatType = F64
   typealias VSType = V3S
@@ -470,6 +495,13 @@ extension V3D : VecType3, FloatVecType, Equatable, CustomStringConvertible {
   init(_ v: V2D, _ s: Scalar) {
     self.init(v.x, v.y, s)
   }
+  init(jsonArray: JsonArray) throws {
+    if jsonArray.count > 3 {
+      throw Json.Error.ExcessEl(index: 3, exp: V3D.self, json: jsonArray.array)
+    }
+    self.init(try jsonArray.el(0), try jsonArray.el(1), try jsonArray.el(2))
+  }
+
   static let zero = V3D(0, 0, 0)
   static let unitX = V3D(1, 0, 0)
   static let unitY = V3D(0, 1, 0)
@@ -478,9 +510,7 @@ extension V3D : VecType3, FloatVecType, Equatable, CustomStringConvertible {
   var vs: V3S { return V3S(F32(x), F32(y), F32(z)) }
   var vd: V3D { return V3D(F64(x), F64(y), F64(z)) }
   var sqrLen: FloatType { return (FloatType(x).sqr + FloatType(y).sqr + FloatType(z).sqr) }
-  var len: FloatType { return sqrLen.sqrt }
   var aspect: FloatType { return FloatType(x) / FloatType(y) }
-  func dist(b: V3D) -> FloatType { return (b - self).len }
   var r: Scalar {
     get { return x }
     set { x = newValue }
@@ -530,7 +560,7 @@ public func ==(a: V3D, b: V3D) -> Bool {
 }
 
 
-public struct V3I : VecType3, IntVecType, Equatable, CustomStringConvertible {
+public struct V3I : VecType3, IntVecType, Equatable, CustomStringConvertible, JsonArrayInitable {
   typealias Scalar = Int
   typealias FloatType = F64
   typealias VSType = V3S
@@ -569,6 +599,13 @@ public struct V3I : VecType3, IntVecType, Equatable, CustomStringConvertible {
   init(_ v: V2I, _ s: Scalar) {
     self.init(v.x, v.y, s)
   }
+  init(jsonArray: JsonArray) throws {
+    if jsonArray.count > 3 {
+      throw Json.Error.ExcessEl(index: 3, exp: V3I.self, json: jsonArray.array)
+    }
+    self.init(try jsonArray.el(0), try jsonArray.el(1), try jsonArray.el(2))
+  }
+
   static let zero = V3I(0, 0, 0)
   static let unitX = V3I(1, 0, 0)
   static let unitY = V3I(0, 1, 0)
@@ -577,9 +614,7 @@ public struct V3I : VecType3, IntVecType, Equatable, CustomStringConvertible {
   var vs: V3S { return V3S(F32(x), F32(y), F32(z)) }
   var vd: V3D { return V3D(F64(x), F64(y), F64(z)) }
   var sqrLen: FloatType { return (FloatType(x).sqr + FloatType(y).sqr + FloatType(z).sqr) }
-  var len: FloatType { return sqrLen.sqrt }
   var aspect: FloatType { return FloatType(x) / FloatType(y) }
-  func dist(b: V3I) -> FloatType { return (b - self).len }
   var r: Scalar {
     get { return x }
     set { x = newValue }
@@ -608,7 +643,7 @@ public func ==(a: V3I, b: V3I) -> Bool {
 }
 
 
-public struct V3U8 : VecType3, IntVecType, Equatable, CustomStringConvertible {
+public struct V3U8 : VecType3, IntVecType, Equatable, CustomStringConvertible, JsonArrayInitable {
   typealias Scalar = U8
   typealias FloatType = F32
   typealias VSType = V3S
@@ -647,6 +682,13 @@ public struct V3U8 : VecType3, IntVecType, Equatable, CustomStringConvertible {
   init(_ v: V2U8, _ s: Scalar) {
     self.init(v.x, v.y, s)
   }
+  init(jsonArray: JsonArray) throws {
+    if jsonArray.count > 3 {
+      throw Json.Error.ExcessEl(index: 3, exp: V3U8.self, json: jsonArray.array)
+    }
+    self.init(try jsonArray.el(0), try jsonArray.el(1), try jsonArray.el(2))
+  }
+
   static let zero = V3U8(0, 0, 0)
   static let unitX = V3U8(1, 0, 0)
   static let unitY = V3U8(0, 1, 0)
@@ -655,9 +697,7 @@ public struct V3U8 : VecType3, IntVecType, Equatable, CustomStringConvertible {
   var vs: V3S { return V3S(F32(x), F32(y), F32(z)) }
   var vd: V3D { return V3D(F64(x), F64(y), F64(z)) }
   var sqrLen: FloatType { return (FloatType(x).sqr + FloatType(y).sqr + FloatType(z).sqr) }
-  var len: FloatType { return sqrLen.sqrt }
   var aspect: FloatType { return FloatType(x) / FloatType(y) }
-  func dist(b: V3U8) -> FloatType { return (b - self).len }
   var r: Scalar {
     get { return x }
     set { x = newValue }
@@ -689,7 +729,7 @@ public func ==(a: V3U8, b: V3U8) -> Bool {
 
 public typealias V4S = float4
 
-extension V4S : VecType4, FloatVecType, Equatable, CustomStringConvertible {
+extension V4S : VecType4, FloatVecType, Equatable, CustomStringConvertible, JsonArrayInitable {
   typealias Scalar = F32
   typealias FloatType = F32
   typealias VSType = V4S
@@ -707,6 +747,13 @@ extension V4S : VecType4, FloatVecType, Equatable, CustomStringConvertible {
   init(_ v: V3S, _ s: Scalar) {
     self.init(v.x, v.y, v.z, s)
   }
+  init(jsonArray: JsonArray) throws {
+    if jsonArray.count > 4 {
+      throw Json.Error.ExcessEl(index: 4, exp: V4S.self, json: jsonArray.array)
+    }
+    self.init(try jsonArray.el(0), try jsonArray.el(1), try jsonArray.el(2), try jsonArray.el(3))
+  }
+
   static let zero = V4S(0, 0, 0, 0)
   static let unitX = V4S(1, 0, 0, 0)
   static let unitY = V4S(0, 1, 0, 0)
@@ -716,9 +763,7 @@ extension V4S : VecType4, FloatVecType, Equatable, CustomStringConvertible {
   var vs: V4S { return V4S(F32(x), F32(y), F32(z), F32(w)) }
   var vd: V4D { return V4D(F64(x), F64(y), F64(z), F64(w)) }
   var sqrLen: FloatType { return (FloatType(x).sqr + FloatType(y).sqr + FloatType(z).sqr + FloatType(w).sqr) }
-  var len: FloatType { return sqrLen.sqrt }
   var aspect: FloatType { return FloatType(x) / FloatType(y) }
-  func dist(b: V4S) -> FloatType { return (b - self).len }
   var r: Scalar {
     get { return x }
     set { x = newValue }
@@ -775,7 +820,7 @@ public func ==(a: V4S, b: V4S) -> Bool {
 
 public typealias V4D = double4
 
-extension V4D : VecType4, FloatVecType, Equatable, CustomStringConvertible {
+extension V4D : VecType4, FloatVecType, Equatable, CustomStringConvertible, JsonArrayInitable {
   typealias Scalar = F64
   typealias FloatType = F64
   typealias VSType = V4S
@@ -793,6 +838,13 @@ extension V4D : VecType4, FloatVecType, Equatable, CustomStringConvertible {
   init(_ v: V3D, _ s: Scalar) {
     self.init(v.x, v.y, v.z, s)
   }
+  init(jsonArray: JsonArray) throws {
+    if jsonArray.count > 4 {
+      throw Json.Error.ExcessEl(index: 4, exp: V4D.self, json: jsonArray.array)
+    }
+    self.init(try jsonArray.el(0), try jsonArray.el(1), try jsonArray.el(2), try jsonArray.el(3))
+  }
+
   static let zero = V4D(0, 0, 0, 0)
   static let unitX = V4D(1, 0, 0, 0)
   static let unitY = V4D(0, 1, 0, 0)
@@ -802,9 +854,7 @@ extension V4D : VecType4, FloatVecType, Equatable, CustomStringConvertible {
   var vs: V4S { return V4S(F32(x), F32(y), F32(z), F32(w)) }
   var vd: V4D { return V4D(F64(x), F64(y), F64(z), F64(w)) }
   var sqrLen: FloatType { return (FloatType(x).sqr + FloatType(y).sqr + FloatType(z).sqr + FloatType(w).sqr) }
-  var len: FloatType { return sqrLen.sqrt }
   var aspect: FloatType { return FloatType(x) / FloatType(y) }
-  func dist(b: V4D) -> FloatType { return (b - self).len }
   var r: Scalar {
     get { return x }
     set { x = newValue }
@@ -859,7 +909,7 @@ public func ==(a: V4D, b: V4D) -> Bool {
 }
 
 
-public struct V4I : VecType4, IntVecType, Equatable, CustomStringConvertible {
+public struct V4I : VecType4, IntVecType, Equatable, CustomStringConvertible, JsonArrayInitable {
   typealias Scalar = Int
   typealias FloatType = F64
   typealias VSType = V4S
@@ -888,6 +938,13 @@ public struct V4I : VecType4, IntVecType, Equatable, CustomStringConvertible {
   init(_ v: V3I, _ s: Scalar) {
     self.init(v.x, v.y, v.z, s)
   }
+  init(jsonArray: JsonArray) throws {
+    if jsonArray.count > 4 {
+      throw Json.Error.ExcessEl(index: 4, exp: V4I.self, json: jsonArray.array)
+    }
+    self.init(try jsonArray.el(0), try jsonArray.el(1), try jsonArray.el(2), try jsonArray.el(3))
+  }
+
   static let zero = V4I(0, 0, 0, 0)
   static let unitX = V4I(1, 0, 0, 0)
   static let unitY = V4I(0, 1, 0, 0)
@@ -897,9 +954,7 @@ public struct V4I : VecType4, IntVecType, Equatable, CustomStringConvertible {
   var vs: V4S { return V4S(F32(x), F32(y), F32(z), F32(w)) }
   var vd: V4D { return V4D(F64(x), F64(y), F64(z), F64(w)) }
   var sqrLen: FloatType { return (FloatType(x).sqr + FloatType(y).sqr + FloatType(z).sqr + FloatType(w).sqr) }
-  var len: FloatType { return sqrLen.sqrt }
   var aspect: FloatType { return FloatType(x) / FloatType(y) }
-  func dist(b: V4I) -> FloatType { return (b - self).len }
   var r: Scalar {
     get { return x }
     set { x = newValue }
@@ -932,7 +987,7 @@ public func ==(a: V4I, b: V4I) -> Bool {
 }
 
 
-public struct V4U8 : VecType4, IntVecType, Equatable, CustomStringConvertible {
+public struct V4U8 : VecType4, IntVecType, Equatable, CustomStringConvertible, JsonArrayInitable {
   typealias Scalar = U8
   typealias FloatType = F32
   typealias VSType = V4S
@@ -961,6 +1016,13 @@ public struct V4U8 : VecType4, IntVecType, Equatable, CustomStringConvertible {
   init(_ v: V3U8, _ s: Scalar) {
     self.init(v.x, v.y, v.z, s)
   }
+  init(jsonArray: JsonArray) throws {
+    if jsonArray.count > 4 {
+      throw Json.Error.ExcessEl(index: 4, exp: V4U8.self, json: jsonArray.array)
+    }
+    self.init(try jsonArray.el(0), try jsonArray.el(1), try jsonArray.el(2), try jsonArray.el(3))
+  }
+
   static let zero = V4U8(0, 0, 0, 0)
   static let unitX = V4U8(1, 0, 0, 0)
   static let unitY = V4U8(0, 1, 0, 0)
@@ -970,9 +1032,7 @@ public struct V4U8 : VecType4, IntVecType, Equatable, CustomStringConvertible {
   var vs: V4S { return V4S(F32(x), F32(y), F32(z), F32(w)) }
   var vd: V4D { return V4D(F64(x), F64(y), F64(z), F64(w)) }
   var sqrLen: FloatType { return (FloatType(x).sqr + FloatType(y).sqr + FloatType(z).sqr + FloatType(w).sqr) }
-  var len: FloatType { return sqrLen.sqrt }
   var aspect: FloatType { return FloatType(x) / FloatType(y) }
-  func dist(b: V4U8) -> FloatType { return (b - self).len }
   var r: Scalar {
     get { return x }
     set { x = newValue }

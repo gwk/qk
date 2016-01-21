@@ -31,6 +31,19 @@ extension UInt: JsonInitable {
   }
 }
 
+extension U8: JsonInitable {
+  init(json: JsonType) throws {
+    if let n = json as? NSNumber {
+      self = U8(n as UInt)
+    } else if let s = json as? NSString {
+      if let n = UInt(s as String) {
+        if n > UInt(U8.max) { throw Json.Error.Conversion(exp: U8.self, json: json) }
+        self = U8(n)
+      } else { throw Json.Error.Conversion(exp: UInt.self, json: json) }
+    } else { throw Json.Error.UnexpectedType(exp: UInt.self, json: json) }
+  }
+}
+
 extension Float: JsonInitable {
   init(json: JsonType) throws {
     if let n = json as? NSNumber {

@@ -31,6 +31,13 @@ protocol ArithmeticType: IntegerLiteralConvertible, Equatable, Comparable {
   func >=(l: Self, r: Self) -> Bool
 }
 
+protocol ArithmeticFloatType: ArithmeticType, FloatingPointType {
+  var sqr: Self { get }
+  var sqrt: Self { get }
+  var ceil: Self { get }
+  var floor: Self { get }
+  var round: Self { get }
+}
 
 extension Int: ArithmeticType {}
 extension I8: ArithmeticType {}
@@ -44,9 +51,6 @@ extension U16: ArithmeticType {}
 extension U32: ArithmeticType {}
 extension U64: ArithmeticType {}
 
-extension Float: ArithmeticType {}
-extension Double: ArithmeticType {}
-
 // wrappers around float/double math functions so that we can use overloading properly.
 func sqrt_f(f: Float) -> Float { return sqrtf(f) }
 func ceil_f(f: Float) -> Float { return ceilf(f) }
@@ -58,7 +62,7 @@ func ceil_f(d: Double) -> Double { return ceil(d) }
 func floor_f(d: Double) -> Double { return floor(d) }
 func round_f(d: Double) -> Double { return round(d) }
 
-extension Float {
+extension Float: ArithmeticFloatType {
   var sqr: Float { return self * self }
   var sqrt: Float { return sqrt_f(self) }
   var ceil: Float { return ceil_f(self) }
@@ -66,7 +70,7 @@ extension Float {
   var round: Float { return round_f(self) }
 }
 
-extension Double {
+extension Double: ArithmeticFloatType {
   var sqr: Double { return self * self }
   var sqrt: Double { return sqrt_f(self) }
   var ceil: Double { return ceil_f(self) }

@@ -28,6 +28,7 @@ def gen_vec(orig_type, dim, s_type, fs_type, v_type, v_prev, is_simd, is_novel):
     protocols.append('Equatable')
 
   protocols.append('CustomStringConvertible')
+  protocols.append('JsonArrayInitable')
 
   if is_simd:
     outL('public typealias $ = $\n', v_type, orig_type)
@@ -63,6 +64,14 @@ def gen_vec(orig_type, dim, s_type, fs_type, v_type, v_prev, is_simd, is_novel):
     outL('    self.init($)', jc(fmt('v.$', c) if i < dim - 1 else 's' for i, c in enumerate(comps)))
     outL('  }')
   
+  outL('  init(jsonArray: JsonArray) throws {')
+  outL('    if jsonArray.count > $ {', dim)
+  outL('      throw Json.Error.ExcessEl(index: $, exp: $.self, json: jsonArray.array)', dim, v_type)
+  outL('    }')
+  outL('    self.init($)', jc(fmt('try jsonArray.el($)', i) for i in range(dim)))
+  outL('  }')
+  outL('')
+
   outL('  static let zero = $($)', v_type, jc('0' for comp in comps))
 
   for c in comps:
@@ -76,9 +85,7 @@ def gen_vec(orig_type, dim, s_type, fs_type, v_type, v_prev, is_simd, is_novel):
   outL('  var vd: V$D { return V$D($) }', dim, dim, jcf('F64($)', comps))
 
   outL('  var sqrLen: FloatType { return ($) }', jf(' + ', 'FloatType($).sqr', comps))
-  outL('  var len: FloatType { return sqrLen.sqrt }')
   outL('  var aspect: FloatType { return FloatType(x) / FloatType(y) }')
-  outL('  func dist(b: $) -> FloatType { return (b - self).len }', v_type)
 
   for c_col, c in comps_colors:
     outL('  var $: Scalar {', c_col)

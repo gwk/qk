@@ -5,7 +5,7 @@ import Darwin
 import CoreGraphics
 
 
-extension CGVector : VecType2, FloatVecType, CustomStringConvertible {
+extension CGVector : VecType2, FloatVecType, CustomStringConvertible, JsonArrayInitable {
   typealias Scalar = Flt
   typealias FloatType = Flt
   typealias VSType = V2S
@@ -47,6 +47,13 @@ extension CGVector : VecType2, FloatVecType, CustomStringConvertible {
   init(_ v: V4U8) {
     self.init(Scalar(v.x), Scalar(v.y))
   }
+  init(jsonArray: JsonArray) throws {
+    if jsonArray.count > 2 {
+      throw Json.Error.ExcessEl(index: 2, exp: CGVector.self, json: jsonArray.array)
+    }
+    self.init(try jsonArray.el(0), try jsonArray.el(1))
+  }
+
   static let zero = CGVector(0, 0)
   static let unitX = CGVector(1, 0)
   static let unitY = CGVector(0, 1)
@@ -54,9 +61,7 @@ extension CGVector : VecType2, FloatVecType, CustomStringConvertible {
   var vs: V2S { return V2S(F32(x), F32(y)) }
   var vd: V2D { return V2D(F64(x), F64(y)) }
   var sqrLen: FloatType { return (FloatType(x).sqr + FloatType(y).sqr) }
-  var len: FloatType { return sqrLen.sqrt }
   var aspect: FloatType { return FloatType(x) / FloatType(y) }
-  func dist(b: CGVector) -> FloatType { return (b - self).len }
   var l: Scalar {
     get { return x }
     set { x = newValue }

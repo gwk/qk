@@ -25,21 +25,27 @@ struct JsonArray: JsonInitable {
 
   init(path: String) throws { self.init(array: try Json.fromPath(path)) }
 
+  var count: Int { return array.count }
+
   @warn_unused_result
   func el<T: JsonInitable>(index: Int) throws -> T {
-    if index >= array.count { throw Json.Error.MissingEl(index: index, exp: T.self, json: array) }
+    if index >= count { throw Json.Error.MissingEl(index: index, exp: T.self, json: array) }
     return try T.init(json: array[index] as! JsonType)
   }
 
+  @warn_unused_result
+  func el<T: JsonArrayInitable>(index: Int) throws -> T {
+    if index >= count { throw Json.Error.MissingEl(index: index, exp: T.self, json: array) }
+    return try T.init(jsonArray: JsonArray(json: array[index] as! JsonType))
+  }
+
+  @warn_unused_result
   func convert<T: JsonInitable>() throws -> [T] {
     return try array.map { try T.init(json: $0 as! JsonType) }
   }
 
+  @warn_unused_result
   func convert<T: JsonArrayInitable>() throws -> [T] {
     return try array.map { try T.init(jsonArray: try JsonArray(json: $0 as! JsonType)) }
-  }
-
-  func map<T: JsonInitable, R>(transform: (T) throws -> R) rethrows -> [R] {
-    return try array.map { try transform(try T.init(json: $0 as! JsonType)) }
   }
 }

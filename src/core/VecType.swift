@@ -3,31 +3,43 @@
 
 protocol VecType: Equatable, CustomStringConvertible {
   typealias Scalar: ArithmeticType
-  typealias FloatType: FloatingPointType
+  typealias FloatType: ArithmeticFloatType
   typealias VSType
   typealias VDType
   
+  var x: Scalar { get }
+  var y: Scalar { get }
   var vs: VSType { get }
   var vd: VDType { get }
   var sqrLen: FloatType { get }
   var len: FloatType { get }
+
+  func +(l: Self, r: Self) -> Self
+  func -(l: Self, r: Self) -> Self
+  func *(l: Self, r: Scalar) -> Self
+  func /(l: Self, r: Scalar) -> Self
+}
+
+extension VecType {
+  var len: FloatType { return sqrLen.sqrt }
+  func dist(b: Self) -> FloatType { return (b - self).len }
 }
 
 protocol VecType2: VecType {
-  typealias Scalar
+  init(_ x: Scalar, _ y: Scalar)
   var x: Scalar { get }
   var y: Scalar { get }
 }
 
 protocol VecType3: VecType {
-  typealias Scalar
+  init(_ x: Scalar, _ y: Scalar, _ z: Scalar)
   var x: Scalar { get }
   var y: Scalar { get }
   var z: Scalar { get }
 }
 
 protocol VecType4: VecType {
-  typealias Scalar
+  init(_ x: Scalar, _ y: Scalar, _ z: Scalar, _ w: Scalar)
   var x: Scalar { get }
   var y: Scalar { get }
   var z: Scalar { get }

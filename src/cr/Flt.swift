@@ -1,11 +1,12 @@
 // © 2014 George King. Permission to use this file is granted in license-qk.txt.
 
 import CoreGraphics
+import Foundation
 
 
 typealias Flt = CGFloat
 
-extension Flt: ArithmeticType {
+extension Flt: ArithmeticFloatType {
   var sqr: Flt { return self * self }
   var sqrt: Flt { return Flt(native.sqrt) }
   var ceil: Flt { return Flt(native.ceil) }
@@ -18,8 +19,8 @@ extension Flt: JsonInitable {
     if let n = json as? NSNumber {
       self = n as Flt
     } else if let s = json as? NSString {
-      if let n = Flt(s as String) {
-        self = n
+      if let n = NativeType(s as String) {
+        self = Flt(n)
       } else { throw Json.Error.Conversion(exp: Flt.self, json: json) }
     } else { throw Json.Error.UnexpectedType(exp: Flt.self, json: json) }
   }

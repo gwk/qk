@@ -49,7 +49,7 @@ extension CGPoint : VecType2, FloatVecType, CustomStringConvertible, JsonArrayIn
   }
   init(jsonArray: JsonArray) throws {
     if jsonArray.count > 2 {
-      throw Json.Error.ExcessEl(index: 2, exp: CGPoint.self, json: jsonArray.array)
+      throw Json.Error.ExcessEl(index: 2, exp: CGPoint.self, json: jsonArray.raw)
     }
     self.init(try jsonArray.el(0), try jsonArray.el(1))
   }

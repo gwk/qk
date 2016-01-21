@@ -9,6 +9,7 @@ extension SKAction {
     return SKAction.moveBy(delta * speed, duration: 1).forever
   }
 
+  func delay(duration: Time) -> SKAction { return SKAction.sequence([SKAction.waitForDuration(duration), self]) }
   func repeated(count: Int) -> SKAction { return SKAction.repeatAction(self, count: count) }
 
   var forever: SKAction { return SKAction.repeatActionForever(self) }

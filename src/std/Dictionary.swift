@@ -8,13 +8,11 @@ extension Dictionary {
     return self[key] != nil
   }
 
-  @warn_unused_result
   mutating func insertNew(key: Key, value: Value) {
     assert(!contains(key), "insertNew: key already inserted: \(key); value: \(value)")
     self[key] = value
   }
 
-  @warn_unused_result
   mutating func updateExisting(key: Key, value: Value) {
     assert(contains(key), "updateExisting: key not yet inserted: \(key); value: \(value)")
     self[key] = value

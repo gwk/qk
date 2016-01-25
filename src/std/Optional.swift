@@ -4,11 +4,11 @@
 extension Optional {
 
   @warn_unused_result
-  func or(@autoclosure alt: () -> Wrapped) -> Wrapped {
+  func or(@autoclosure alt: () throws -> Wrapped) rethrows -> Wrapped {
     if let val = self {
       return val
     } else {
-      return alt()
+      return try alt()
     }
   }
 }

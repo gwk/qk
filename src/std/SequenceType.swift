@@ -15,10 +15,10 @@ extension SequenceType {
   }
 
   @warn_unused_result
-  func filterMap<E>(@noescape transform: ((Generator.Element) -> E?)) -> [E] {
+  func filterMap<E>(@noescape transform: ((Generator.Element) throws -> E?)) rethrows -> [E] {
     var a: [E] = []
     for e in self {
-      if let t = transform(e) {
+      if let t = try transform(e) {
         a.append(t)
       }
     }

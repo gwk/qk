@@ -9,6 +9,13 @@ extension SKAction {
     return SKAction.moveBy(delta * speed, duration: 1).forever
   }
 
+  class func runNodeBlock(block: (SKNode)->()) -> SKAction {
+    return SKAction.customActionWithDuration(0) { // TODO: verify that passing 0 causes this to fire exactly once.
+      (node: SKNode, elapsedTime: CGFloat) in
+      block(node)
+    }
+  }
+
   func delay(duration: Time) -> SKAction { return SKAction.sequence([SKAction.waitForDuration(duration), self]) }
   func repeated(count: Int) -> SKAction { return SKAction.repeatAction(self, count: count) }
 

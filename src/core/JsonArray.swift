@@ -7,6 +7,13 @@ protocol JsonArrayInitable {
   init(jsonArray: JsonArray) throws
 }
 
+extension JsonArrayInitable {
+  init(json: JsonType) throws {
+    let jsonArray = try JsonArray(json: json)
+    try self.init(jsonArray: jsonArray)
+  }
+}
+
 
 struct JsonArray: JsonInitable {
   let raw: NSArray
@@ -63,17 +70,20 @@ struct JsonArray: JsonInitable {
   }
 
   @warn_unused_result
-  func convert<T: JsonInitable>() throws -> [T] {
-    return try raw.map { try T.init(json: $0 as! JsonType) }
+  func convert<T: JsonInitable>(start start: Int = 0, end: Int? = nil) throws -> [T] {
+    let range = start..<end.or(raw.count)
+    return try raw[range].map { try T.init(json: $0 as! JsonType) }
   }
 
   @warn_unused_result
-  func convert<T: JsonArrayInitable>() throws -> [T] {
-    return try raw.map { try T.init(jsonArray: try JsonArray(json: $0 as! JsonType)) }
+  func convertArrays<T: JsonArrayInitable>(start start: Int = 0, end: Int? = nil) throws -> [T] {
+    let range = start..<end.or(raw.count)
+    return try raw[range].map { try T.init(json: $0 as! JsonType) }
   }
 
   @warn_unused_result
-  func convert<T: JsonDictInitable>() throws -> [T] {
-    return try raw.map { try T.init(jsonDict: try JsonDict(json: $0 as! JsonType)) }
+  func convertDicts<T: JsonDictInitable>(start start: Int = 0, end: Int? = nil) throws -> [T] {
+    let range = start..<end.or(raw.count)
+    return try raw[range].map { try T.init(jsonDict: try JsonDict(json: $0 as! JsonType)) }
   }
 }

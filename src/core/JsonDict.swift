@@ -7,6 +7,18 @@ protocol JsonDictInitable {
   init(jsonDict: JsonDict) throws
 }
 
+extension JsonDictInitable {
+  init(json: JsonType) throws {
+    let jsonDict = try JsonDict(json: json)
+    try self.init(jsonDict: jsonDict)
+  }
+}
+
+
+protocol JsonDictItemInitable {
+  init(key: String, json: JsonType) throws
+}
+
 
 struct JsonDict: JsonInitable {
   let raw: NSDictionary
@@ -54,5 +66,10 @@ struct JsonDict: JsonInitable {
   func get<T: JsonDictInitable>(key: String) throws -> T {
     return try T.init(jsonDict: try dict(key))
   }
-  
+
+  @warn_unused_result
+  func convertItems<T: JsonDictItemInitable>() throws -> [T] {
+    return try raw.map { try T.init(key: $0.0 as! String, json: $0.1 as! JsonType) }
+  }
+
 }

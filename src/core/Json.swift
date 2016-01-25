@@ -17,15 +17,22 @@ extension NSNull: JsonLeafType {}
 
 enum Json {
 
+  typealias _String = Swift.String
   enum Error: ErrorType {
     case Conversion(exp: Any.Type, json: JsonType) // error in converting the json value to the expected type.
     case ExcessEl(index: Int, exp: Any.Type, json: JsonType) // array is too long.
-    case Key(key: String, exp: Any.Type, json: JsonType)
+    case Key(key: _String, exp: Any.Type, json: JsonType)
     case MissingEl(index: Int, exp: Any.Type, json: JsonType) // array is too short.
     case Other(ErrorType)
-    case Path(String, ErrorType)
+    case Path(_String, ErrorType)
     case UnexpectedType(exp: Any.Type, json: JsonType)
   }
+
+  //case Null
+  //case Number(NSNumber)
+  //case String(NSString)
+  //case Array(NSArray)
+  //case Dictionary(NSDictionary)
 
   @warn_unused_result
   static func fromData<T: JsonType>(data: NSData, options: NSJSONReadingOptions = []) throws -> T {
@@ -55,7 +62,7 @@ enum Json {
   }
 
   @warn_unused_result
-  static func fromPath<T: JsonType>(path: String, options: NSJSONReadingOptions = []) throws -> T {
+  static func fromPath<T: JsonType>(path: _String, options: NSJSONReadingOptions = []) throws -> T {
     var data: NSData
     do {
       data = try NSData(contentsOfFile: path, options: [.DataReadingUncached])

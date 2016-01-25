@@ -79,6 +79,7 @@ extension V2S : VecType2, FloatVecType, Equatable, CustomStringConvertible, Json
   var norm: V2S { return self / self.len }
   var clampToUnit: V2S { return V2S(clamp(x, min: 0, max: 1), clamp(y, min: 0, max: 1)) }
   var toU8Pixel: VU8Type { return VU8Type(U8(clamp(x * 255, min: 0, max: 255)), U8(clamp(y * 255, min: 0, max: 255))) }
+  var heading: Scalar { return atan2(y, x) }
 
   func dot(b: V2S) -> Scalar { return (x * b.x) + (y * b.y) }
   func angle(b: V2S) -> Scalar { return acos(self.dot(b) / (self.len * b.len)) }
@@ -174,6 +175,7 @@ extension V2D : VecType2, FloatVecType, Equatable, CustomStringConvertible, Json
   var norm: V2D { return self / self.len }
   var clampToUnit: V2D { return V2D(clamp(x, min: 0, max: 1), clamp(y, min: 0, max: 1)) }
   var toU8Pixel: VU8Type { return VU8Type(U8(clamp(x * 255, min: 0, max: 255)), U8(clamp(y * 255, min: 0, max: 255))) }
+  var heading: Scalar { return atan2(y, x) }
 
   func dot(b: V2D) -> Scalar { return (x * b.x) + (y * b.y) }
   func angle(b: V2D) -> Scalar { return acos(self.dot(b) / (self.len * b.len)) }
@@ -436,6 +438,7 @@ extension V3S : VecType3, FloatVecType, Equatable, CustomStringConvertible, Json
   var norm: V3S { return self / self.len }
   var clampToUnit: V3S { return V3S(clamp(x, min: 0, max: 1), clamp(y, min: 0, max: 1), clamp(z, min: 0, max: 1)) }
   var toU8Pixel: VU8Type { return VU8Type(U8(clamp(x * 255, min: 0, max: 255)), U8(clamp(y * 255, min: 0, max: 255)), U8(clamp(z * 255, min: 0, max: 255))) }
+  var heading: Scalar { return atan2(y, x) }
 
   func dot(b: V3S) -> Scalar { return (x * b.x) + (y * b.y) + (z * b.z) }
   func angle(b: V3S) -> Scalar { return acos(self.dot(b) / (self.len * b.len)) }
@@ -533,6 +536,7 @@ extension V3D : VecType3, FloatVecType, Equatable, CustomStringConvertible, Json
   var norm: V3D { return self / self.len }
   var clampToUnit: V3D { return V3D(clamp(x, min: 0, max: 1), clamp(y, min: 0, max: 1), clamp(z, min: 0, max: 1)) }
   var toU8Pixel: VU8Type { return VU8Type(U8(clamp(x * 255, min: 0, max: 255)), U8(clamp(y * 255, min: 0, max: 255)), U8(clamp(z * 255, min: 0, max: 255))) }
+  var heading: Scalar { return atan2(y, x) }
 
   func dot(b: V3D) -> Scalar { return (x * b.x) + (y * b.y) + (z * b.z) }
   func angle(b: V3D) -> Scalar { return acos(self.dot(b) / (self.len * b.len)) }
@@ -790,6 +794,7 @@ extension V4S : VecType4, FloatVecType, Equatable, CustomStringConvertible, Json
   var norm: V4S { return self / self.len }
   var clampToUnit: V4S { return V4S(clamp(x, min: 0, max: 1), clamp(y, min: 0, max: 1), clamp(z, min: 0, max: 1), clamp(w, min: 0, max: 1)) }
   var toU8Pixel: VU8Type { return VU8Type(U8(clamp(x * 255, min: 0, max: 255)), U8(clamp(y * 255, min: 0, max: 255)), U8(clamp(z * 255, min: 0, max: 255)), U8(clamp(w * 255, min: 0, max: 255))) }
+  var heading: Scalar { return atan2(y, x) }
 
   func dot(b: V4S) -> Scalar { return (x * b.x) + (y * b.y) + (z * b.z) + (w * b.w) }
   func angle(b: V4S) -> Scalar { return acos(self.dot(b) / (self.len * b.len)) }
@@ -881,6 +886,7 @@ extension V4D : VecType4, FloatVecType, Equatable, CustomStringConvertible, Json
   var norm: V4D { return self / self.len }
   var clampToUnit: V4D { return V4D(clamp(x, min: 0, max: 1), clamp(y, min: 0, max: 1), clamp(z, min: 0, max: 1), clamp(w, min: 0, max: 1)) }
   var toU8Pixel: VU8Type { return VU8Type(U8(clamp(x * 255, min: 0, max: 255)), U8(clamp(y * 255, min: 0, max: 255)), U8(clamp(z * 255, min: 0, max: 255)), U8(clamp(w * 255, min: 0, max: 255))) }
+  var heading: Scalar { return atan2(y, x) }
 
   func dot(b: V4D) -> Scalar { return (x * b.x) + (y * b.y) + (z * b.z) + (w * b.w) }
   func angle(b: V4D) -> Scalar { return acos(self.dot(b) / (self.len * b.len)) }

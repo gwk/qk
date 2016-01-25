@@ -80,6 +80,7 @@ extension CGPoint : VecType2, FloatVecType, CustomStringConvertible, JsonArrayIn
   var norm: CGPoint { return self / self.len }
   var clampToUnit: CGPoint { return CGPoint(clamp(x, min: 0, max: 1), clamp(y, min: 0, max: 1)) }
   var toU8Pixel: VU8Type { return VU8Type(U8(clamp(x * 255, min: 0, max: 255)), U8(clamp(y * 255, min: 0, max: 255))) }
+  var heading: Scalar { return atan2(y, x) }
 
   func dot(b: CGPoint) -> Scalar { return (x * b.x) + (y * b.y) }
   func angle(b: CGPoint) -> Scalar { return acos(self.dot(b) / (self.len * b.len)) }

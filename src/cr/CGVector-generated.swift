@@ -80,6 +80,7 @@ extension CGVector : VecType2, FloatVecType, CustomStringConvertible, JsonArrayI
   var norm: CGVector { return self / self.len }
   var clampToUnit: CGVector { return CGVector(clamp(x, min: 0, max: 1), clamp(y, min: 0, max: 1)) }
   var toU8Pixel: VU8Type { return VU8Type(U8(clamp(x * 255, min: 0, max: 255)), U8(clamp(y * 255, min: 0, max: 255))) }
+  var heading: Scalar { return atan2(y, x) }
 
   func dot(b: CGVector) -> Scalar { return (x * b.x) + (y * b.y) }
   func angle(b: CGVector) -> Scalar { return acos(self.dot(b) / (self.len * b.len)) }

@@ -109,6 +109,7 @@ def gen_vec(orig_type, dim, s_type, fs_type, v_type, v_prev, is_simd, is_novel):
     outL('  var norm: $ { return self / self.len }', v_type)
     outL('  var clampToUnit: $ { return $($) }', v_type, v_type, jcf('clamp($, min: 0, max: 1)', comps))
     outL('  var toU8Pixel: VU8Type { return VU8Type($) }', jcf('U8(clamp($ * 255, min: 0, max: 255))', comps))
+    outL('  var heading: Scalar { return atan2(y, x) }')
     outL('')
     outL('  func dot(b: $) -> Scalar { return $ }',
       v_type, ' + '.join(fmt('($ * b.$)', c, c) for c in comps))

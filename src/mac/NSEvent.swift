@@ -8,6 +8,7 @@ let unicodeArrowDown  = UnicodeScalar(0xF701)
 let unicodeArrowLeft  = UnicodeScalar(0xF702)
 let unicodeArrowRight = UnicodeScalar(0xF703)
 
+
 extension NSEvent {
 
   var unicodeScalar: UnicodeScalar {

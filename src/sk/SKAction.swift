@@ -25,4 +25,17 @@ extension SKAction {
   func repeated(count: Int) -> SKAction { return SKAction.repeatAction(self, count: count) }
 
   var forever: SKAction { return SKAction.repeatActionForever(self) }
+
+  class func showTexts(texts: [String], durationPerItem: Time) -> SKAction {
+    var actions: [SKAction] = [SKAction.unhide()]
+    for text in texts {
+      actions.append(SKAction.runNodeBlock {
+        (node: SKLabelNode) in
+        node.text = text
+      })
+      actions.append(SKAction.waitForDuration(durationPerItem))
+    }
+    actions.append(SKAction.hide())
+    return SKAction.sequence(actions)
+  }
 }

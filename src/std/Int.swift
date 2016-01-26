@@ -25,7 +25,7 @@ extension Int {
     }
     while pad_len > 0 {
       a.append(pad)
-      pad_len--
+      pad_len -= 1
     }
     return String(Array(a.reverse()))
   }

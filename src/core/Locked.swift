@@ -23,9 +23,9 @@ class Locked<T: AnyObject> {
     let ret = accessor(_protected)
     let didAwakeBlocked = dispatch_semaphore_signal(_semaphore)
     if (didAwakeBlocked != 0) {
-      blockedCount++
+      blockedCount += 1
     }
-    accessCount++
+    accessCount += 1
     return ret
   }
   

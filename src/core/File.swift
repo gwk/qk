@@ -131,7 +131,7 @@ class InFile: File {
   
   func copyTo(outFile: OutFile) throws {
     let attrs: Int32 = COPYFILE_ACL|COPYFILE_STAT|COPYFILE_XATTR|COPYFILE_DATA
-    guard Darwin.fcopyfile(self.descriptor, outFile.descriptor, copyfile_state_t(), copyfile_flags_t(attrs)) == 0 else {
+    guard Darwin.fcopyfile(self.descriptor, outFile.descriptor, nil, copyfile_flags_t(attrs)) == 0 else {
       throw Error.Copy(from: path, to: outFile.path)
     }
   }

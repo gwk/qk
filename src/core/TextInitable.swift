@@ -26,7 +26,7 @@ extension TextInitableIntegerType {
       if !textDecChars.contains(text[p]) {
         break
       }
-      p++
+      p = p.successor()
     }
     let t = text[pos..<p]
     if let result = Self(t, radix: 10) {

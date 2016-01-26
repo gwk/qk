@@ -18,7 +18,7 @@ extension NSWindow {
         contentRect: CGRectZero, // gets clobbered by controller view initial size.
         styleMask: styleMask,
         backing: NSBackingStoreType.Buffered, // the only modern mode.
-        `defer`: deferred,
+        defer: deferred,
         screen: screen)
 
       contentViewController = viewController

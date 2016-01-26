@@ -179,7 +179,7 @@ extension String {
     var count = 0
     for c in self.characters {
       if c == "\n" {
-        count++
+        count += 1
       }
     }
     return count

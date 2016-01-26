@@ -26,6 +26,10 @@ struct JsonArray: JsonInitable {
     } else { throw Json.Error.UnexpectedType(exp: NSArray.self, json: json) }
   }
 
+  init(anyJson: JsonType) {
+    self.init(raw: (anyJson as? NSArray).or(NSArray(object: anyJson)))
+  }
+
   init(data: NSData) throws { self.init(raw: try Json.fromData(data)) }
 
   init(stream: NSInputStream) throws { self.init(raw: try Json.fromStream(stream)) }

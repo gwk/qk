@@ -5,6 +5,11 @@ import SpriteKit
 
 extension SKNode {
 
+  convenience init(name: String) {
+    self.init()
+    self.name = name
+  }
+  
   func add<T: SKNode>(child: T) -> T {
     addChild(child)
     return child

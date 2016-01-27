@@ -5,6 +5,13 @@ import Foundation
 
 typealias Time = F64
 
+extension Time {
+ static var distantFuture: Time {
+    return 1e300
+  }
+}
+
+
 @warn_unused_result
 func sysTime() -> Time {
   return NSProcessInfo.processInfo().systemUptime

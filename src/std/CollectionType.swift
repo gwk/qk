@@ -3,6 +3,8 @@
 
 extension CollectionType where Generator.Element : Equatable {
 
+  var range: Range<Index> { return startIndex..<endIndex }
+
   @warn_unused_result
   func has<C: CollectionType where C.Generator.Element == Generator.Element>(query: C, atIndex: Index) -> Bool {
     var i = atIndex

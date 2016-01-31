@@ -8,5 +8,6 @@ protocol DenseEnumType {
 }
 
 extension DenseEnumType {
-  static var all: [Self] { return (0..<count).map { Self(rawValue: $0)! } }
+  static var range: Range<Int> { return 0..<count }
+  static var all: [Self] { return range.map { Self(rawValue: $0)! } }
 }

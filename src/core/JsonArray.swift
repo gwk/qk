@@ -26,7 +26,7 @@ struct JsonArray: JsonInitable {
     } else { throw Json.Error.UnexpectedType(exp: NSArray.self, json: json) }
   }
 
-  init(anyJson: JsonType) {
+  init(anyJson: JsonType) { // for non-array input, create an array of one element.
     self.init(raw: (anyJson as? NSArray).or(NSArray(object: anyJson)))
   }
 

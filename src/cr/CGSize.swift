@@ -28,5 +28,8 @@ extension CGSize {
   var aspect: Flt { return w / h }
 }
 
-func *(a: CGSize, s: Flt) -> CGSize { return CGSize(a.w * s, a.h * s) }
-func /(a: CGSize, s: Flt) -> CGSize { return CGSize(a.w / s, a.h / s) }
+func *(l: CGSize, r: Flt) -> CGSize { return CGSize(l.w * r, l.h * r) }
+func /(l: CGSize, r: Flt) -> CGSize { return CGSize(l.w / r, l.h / r) }
+
+func *(l: CGSize, r: CGSize) -> CGSize { return CGSize(l.w * r.w, l.h * r.h) }
+func /(l: CGSize, r: CGSize) -> CGSize { return CGSize(l.w / r.w, l.h / r.h) }

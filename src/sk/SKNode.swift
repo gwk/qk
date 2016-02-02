@@ -9,7 +9,13 @@ extension SKNode {
     self.init()
     self.name = name
   }
-  
+
+  var pos: V2 {
+    get { return position }
+    set { position = newValue }
+  }
+
+
   func add<T: SKNode>(child: T) -> T {
     addChild(child)
     return child

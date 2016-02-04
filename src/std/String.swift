@@ -71,6 +71,10 @@ extension String {
     }
   }
 
+  var pathNameStem: String {
+    return withoutPathDir.withoutPathExt
+  }
+  
   // MARK: urls
   
   var fileUrl: NSURL? { return NSURL(fileURLWithPath: self, isDirectory: false) }

@@ -15,7 +15,7 @@ extension SKTexture {
     do {
       image = try CGImageRef.with(path: path)
     } catch let e {
-      warn("texture resource load failed: \(e)")
+      warn("texture resource load failed: \(String(reflecting: e.dynamicType)).\(e)")
       image = CoreGraphics.CGImage.missing
     }
     self.init(CGImage: image)

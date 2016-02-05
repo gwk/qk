@@ -80,25 +80,11 @@ extension Double: ArithmeticFloatType {
 
 
 @warn_unused_result
-func sum<S: SequenceType where S.Generator.Element: ArithmeticType>(s: S) -> S.Generator.Element {
-  typealias E = S.Generator.Element
-  return s.reduce(0) { (accum: E, item: E) in return accum + item }
-}
-
-@warn_unused_result
-func prod<S: SequenceType where S.Generator.Element: ArithmeticType>(s: S) -> S.Generator.Element {
-  typealias E = S.Generator.Element
-  return s.reduce(1) { (accum: E, item: E) in return accum * item }
-}
-
-
-@warn_unused_result
 func clamp<T: ArithmeticType>(a: T, min: T, max: T) -> T {
   if a < min { return min }
   if a > max { return max }
   return a
 }
-
 
 @warn_unused_result
 func sign<T: ArithmeticType>(b: Bool) -> T {
@@ -111,3 +97,18 @@ func sign<T: ArithmeticType>(x: T) -> T {
   if x > 0 { return 1 }
   return 0
 }
+
+
+extension SequenceType where Generator.Element: ArithmeticType {
+
+  @warn_unused_result
+  func sum() -> Generator.Element {
+    return reduce(0) { (accum: Generator.Element, item: Generator.Element) in return accum + item }
+  }
+
+  @warn_unused_result
+  func prod() -> Generator.Element {
+    return reduce(1) { (accum: Generator.Element, item: Generator.Element) in return accum * item }
+  }
+}
+

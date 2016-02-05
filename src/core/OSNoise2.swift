@@ -173,7 +173,7 @@ class OSNoise2 {
 
   @warn_unused_result
   func multiVal(x: Flt, _ y: Flt, octaveWeights: [Flt]) -> Flt {
-    let totalWeight = sum(octaveWeights)
+    let totalWeight = octaveWeights.sum()
     var v = 0.0
     for (i, weight) in octaveWeights.enumerate() {
       let scale = Flt(1 << i)

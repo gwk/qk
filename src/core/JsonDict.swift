@@ -72,4 +72,19 @@ struct JsonDict: JsonInitable {
     return try raw.map { try T.init(key: $0.0 as! String, json: $0.1 as! JsonType) }
   }
 
+  @warn_unused_result
+  func convertToPairs<T: JsonInitable>() throws -> [(String, T)] {
+    return try raw.map { ($0.0 as! String, try T.init(json: $0.1 as! JsonType)) }
+  }
+
+  @warn_unused_result
+  func convertArraysToPairs<T: JsonArrayInitable>() throws -> [(String, T)] {
+    return try raw.map { ($0.0 as! String, try T.init(jsonArray: try JsonArray(json: $0.1 as! JsonType))) }
+  }
+
+  @warn_unused_result
+  func convertDictsToPairs<T: JsonDictInitable>() throws -> [(String, T)] {
+    return try raw.map { ($0.0 as! String, try T.init(jsonDict: try JsonDict(json: $0.1 as! JsonType))) }
+  }
+
 }

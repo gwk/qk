@@ -13,7 +13,7 @@ extension SKTexture {
   convenience init(path: String, filteringMode: SKTextureFilteringMode = .Linear) {
     let image: CGImageRef
     do {
-      image = try CGImageRef.with(path: path)
+      image = try CGImageRef.from(path: path)
     } catch let e {
       warn("texture resource load failed: \(String(reflecting: e.dynamicType)).\(e)")
       image = CoreGraphics.CGImage.missing

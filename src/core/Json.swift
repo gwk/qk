@@ -36,29 +36,33 @@ enum Json {
 
   @warn_unused_result
   static func fromData<T: JsonType>(data: NSData, options: NSJSONReadingOptions = []) throws -> T {
+    let json: JsonType
     do {
-      let json = try NSJSONSerialization.JSONObjectWithData(data, options: options) as! JsonType
-      if let json = json as? T {
-        return json
-      } else { throw Error.UnexpectedType(exp: T.self, json: json) }
+      json = try NSJSONSerialization.JSONObjectWithData(data, options: options) as! JsonType
     } catch let e {
       throw Error.Other(e)
     }
+    if let json = json as? T {
+      return json
+    }
+    throw Error.UnexpectedType(exp: T.self, json: json)
   }
 
   @warn_unused_result
   static func fromStream<T: JsonType>(stream: NSInputStream, options: NSJSONReadingOptions = []) throws -> T {
+    let json: JsonType
     do {
       if stream.streamStatus == .NotOpen {
         stream.open()
       }
-      let json = try NSJSONSerialization.JSONObjectWithStream(stream, options: options) as! JsonType
-      if let json = json as? T {
-        return json
-      } else { throw Error.UnexpectedType(exp: T.self, json: json) }
+      json = try NSJSONSerialization.JSONObjectWithStream(stream, options: options) as! JsonType
     } catch let e {
       throw Error.Other(e)
     }
+    if let json = json as? T {
+      return json
+    }
+    throw Error.UnexpectedType(exp: T.self, json: json)
   }
 
   @warn_unused_result

@@ -37,6 +37,18 @@ extension CRColor {
   convenience init(g: CGFloat, a: CGFloat=1) { self.init(0, g, 0, a) }
   convenience init(b: CGFloat, a: CGFloat=1) { self.init(0, 0, b, a) }
 
+  convenience init(v2S v: V2S) {
+    self.init(l: Flt(v.x), a: Flt(v.y))
+  }
+
+  convenience init(v3S v: V3S) {
+    self.init(red: Flt(v.x), green: Flt(v.y), blue: Flt(v.z), alpha: 1)
+  }
+
+  convenience init(v4S v: V4S) {
+    self.init(red: Flt(v.x), green: Flt(v.y), blue: Flt(v.z), alpha: Flt(v.w))
+  }
+
   var a: Flt {
     var l: Flt = 0, a: Flt = 0
     #if os(OSX)

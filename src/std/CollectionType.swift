@@ -96,3 +96,9 @@ extension CollectionType where Generator.Element: Comparable {
   }
 }
 
+
+func zipExact<C0: CollectionType, C1: CollectionType where C0.Index.Distance == C1.Index.Distance>(c0: C0, _ c1: C1) ->
+  Zip2Sequence<C0, C1> {
+  assert(c0.count == c1.count)
+  return zip(c0, c1)
+}

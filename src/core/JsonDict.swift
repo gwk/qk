@@ -38,6 +38,11 @@ struct JsonDict: JsonInitable {
   init(path: String) throws { self.init(raw: try Json.fromPath(path)) }
 
   @warn_unused_result
+  func contains(key: String) -> Bool {
+    return raw[key] != nil
+  }
+  
+  @warn_unused_result
   func array(key: String) throws -> JsonArray {
     guard let val = raw[key] else { throw Json.Error.Key(key: key, exp: JsonArray.self, json: raw) }
     guard let array = val as? NSArray else { throw Json.Error.UnexpectedType(exp: JsonArray.self, json: val as! JsonType) }

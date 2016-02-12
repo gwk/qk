@@ -9,8 +9,11 @@ extension SKPhysicsBody {
     self.init(edgeLoopFromPath: CGPath.with(loopPoints: edgeLoopPoints))
   }
 
+  convenience init(size: CGSize, anchorPoint: CGPoint) {
+    self.init(rectangleOfSize: size, center: V2(size) * (V2(0.5, 0.5) - anchorPoint))
+  }
 
   class func matching(spriteNode spriteNode: SKSpriteNode) -> SKPhysicsBody {
-    return SKPhysicsBody(rectangleOfSize: spriteNode.size, center: V2(spriteNode.size) * (V2(0.5, 0.5) - spriteNode.anchorPoint))
+    return SKPhysicsBody(size: spriteNode.size, anchorPoint: spriteNode.anchorPoint)
   }
 }

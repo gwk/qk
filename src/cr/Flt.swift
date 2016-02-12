@@ -25,3 +25,16 @@ extension Flt: JsonInitable {
     } else { throw Json.Error.UnexpectedType(exp: Flt.self, json: json) }
   }
 }
+
+extension Random {
+  @warn_unused_result
+  func flt(max: Flt) -> Flt {
+    return Flt(f64(F64(max)))
+  }
+
+  @warn_unused_result
+  func flt(min min: Flt, max: Flt) -> Flt {
+    return Flt(f64(min: F64(min), max: F64(max)))
+  }
+
+}

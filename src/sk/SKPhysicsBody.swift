@@ -5,15 +5,25 @@ import SpriteKit
 
 extension SKPhysicsBody {
 
+  convenience init(polygonPoints: [CGPoint]) {
+    self.init(polygonFromPath: CGPath.with(loopPoints: polygonPoints))
+  }
+
   convenience init(edgeLoopPoints: [CGPoint]) {
     self.init(edgeLoopFromPath: CGPath.with(loopPoints: edgeLoopPoints))
   }
 
-  convenience init(size: CGSize, anchorPoint: CGPoint) {
-    self.init(rectangleOfSize: size, center: V2(size) * (V2(0.5, 0.5) - anchorPoint))
+  #if false // this compiles and links but results in unrecognized selector.
+  convenience init(size: CGSize, anchor: CGPoint) {
+    self.init(rectangleOfSize: size, center: V2(size) * (V2(0.5, 0.5) - anchor))
+  }
+  #endif
+
+  class func with(size size: CGSize, anchor: CGPoint) -> SKPhysicsBody { // workaround for above.
+    return SKPhysicsBody(rectangleOfSize: size, center: V2(size) * (V2(0.5, 0.5) - anchor))
   }
 
   class func matching(spriteNode spriteNode: SKSpriteNode) -> SKPhysicsBody {
-    return SKPhysicsBody(size: spriteNode.size, anchorPoint: spriteNode.anchorPoint)
+    return SKPhysicsBody.with(size: spriteNode.size, anchor: spriteNode.anchorPoint)
   }
 }

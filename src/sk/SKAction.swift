@@ -5,10 +5,6 @@ import SpriteKit
 
 extension SKAction {
 
-  class func move(delta: CGVector, speed: Flt) -> SKAction {
-    return SKAction.moveBy(delta * speed, duration: 1).forever
-  }
-
   class func runNodeBlock<Node: SKNode>(block: (Node)->()) -> SKAction {
     return SKAction.customActionWithDuration(0) {
       (node: SKNode, elapsedTime: CGFloat) in

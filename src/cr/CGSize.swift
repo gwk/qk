@@ -26,6 +26,8 @@ extension CGSize {
   }
   
   var aspect: Flt { return w / h }
+
+  var isPositive: Bool { return w > 0 && h > 0 }
 }
 
 func *(l: CGSize, r: Flt) -> CGSize { return CGSize(l.w * r, l.h * r) }

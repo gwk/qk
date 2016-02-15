@@ -117,6 +117,11 @@ extension SequenceType where Generator.Element: Equatable {
     }
     return result
   }
+
+  @warn_unused_result
+  func countOccurrencesOf(el: Generator.Element) -> Int {
+    return reduce(0) { $1 == el ? $0 + 1 : $0 }
+  }
 }
 
 

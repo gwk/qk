@@ -7,6 +7,7 @@ protocol JsonDictInitable {
   init(jsonDict: JsonDict) throws
 }
 
+
 extension JsonDictInitable {
   init(json: JsonType) throws {
     let jsonDict = try JsonDict(json: json)
@@ -17,6 +18,20 @@ extension JsonDictInitable {
 
 protocol JsonDictItemInitable {
   init(key: String, json: JsonType) throws
+}
+
+
+extension JsonType {
+  func asDict() throws -> JsonDict {
+    guard let d = self as? NSDictionary else {
+      throw Json.Error.UnexpectedType(exp: JsonDict.self, json: self)
+    }
+    return JsonDict(raw: d)
+  }
+
+  func convDict<T: JsonDictInitable>() throws -> T {
+    return try T(jsonDict: try asDict())
+  }
 }
 
 
@@ -37,59 +52,32 @@ struct JsonDict: JsonInitable {
 
   init(path: String) throws { self.init(raw: try Json.fromPath(path)) }
 
+  subscript(key: String) -> JsonType? {
+    return raw[key] as! JsonType?
+  }
+
   @warn_unused_result
   func contains(key: String) -> Bool {
     return raw[key] != nil
   }
-  
+
   @warn_unused_result
-  func array(key: String) throws -> JsonArray {
-    guard let val = raw[key] else { throw Json.Error.Key(key: key, exp: JsonArray.self, json: raw) }
-    guard let array = val as? NSArray else { throw Json.Error.UnexpectedType(exp: JsonArray.self, json: val as! JsonType) }
-    return JsonArray(raw: array)
+  func get(key: String) throws -> JsonType {
+    guard let val = raw[key] else { throw Json.Error.Key(key: key, json: raw) }
+    return val as! JsonType
   }
 
   @warn_unused_result
-  func dict(key: String) throws -> JsonDict {
-    guard let val = raw[key] else { throw Json.Error.Key(key: key, exp: JsonDict.self, json: raw) }
-    guard let raw = val as? NSDictionary else { throw Json.Error.UnexpectedType(exp: JsonDict.self, json: val as! JsonType) }
-    return JsonDict(raw: raw)
-  }
-
-  @warn_unused_result
-  func get<T: JsonInitable>(key: String) throws -> T {
-    guard let val = raw[key] else { throw Json.Error.Key(key: key, exp: T.self, json: raw) }
-    return try T.init(json: val as! JsonType)
-  }
-  
-  @warn_unused_result
-  func get<T: JsonArrayInitable>(key: String) throws -> T {
-    return try T.init(jsonArray: try array(key))
-  }
-  
-  @warn_unused_result
-  func get<T: JsonDictInitable>(key: String) throws -> T {
-    return try T.init(jsonDict: try dict(key))
-  }
-
-  @warn_unused_result
-  func convertItems<T: JsonDictItemInitable>() throws -> [T] {
+  func convItems<T: JsonDictItemInitable>() throws -> [T] {
     return try raw.map { try T.init(key: $0.0 as! String, json: $0.1 as! JsonType) }
   }
 
   @warn_unused_result
-  func convertToPairs<T: JsonInitable>() throws -> [(String, T)] {
-    return try raw.map { ($0.0 as! String, try T.init(json: $0.1 as! JsonType)) }
+  func mapVals<V>(transform: (JsonType) throws -> V) rethrows -> [String:V] {
+    var d: [String:V] = [:]
+    for (k, v) in raw {
+      d[k as! String] = try transform(v as! JsonType)
+    }
+    return d
   }
-
-  @warn_unused_result
-  func convertArraysToPairs<T: JsonArrayInitable>() throws -> [(String, T)] {
-    return try raw.map { ($0.0 as! String, try T.init(jsonArray: try JsonArray(json: $0.1 as! JsonType))) }
-  }
-
-  @warn_unused_result
-  func convertDictsToPairs<T: JsonDictInitable>() throws -> [(String, T)] {
-    return try raw.map { ($0.0 as! String, try T.init(jsonDict: try JsonDict(json: $0.1 as! JsonType))) }
-  }
-
 }

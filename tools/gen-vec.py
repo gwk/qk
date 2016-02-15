@@ -68,7 +68,7 @@ def gen_vec(orig_type, dim, s_type, fs_type, v_type, v_prev, is_simd, is_novel):
   outL('    if jsonArray.count > $ {', dim)
   outL('      throw Json.Error.ExcessEl(index: $, exp: $.self, json: jsonArray.raw)', dim, v_type)
   outL('    }')
-  outL('    self.init($)', jc(fmt('try jsonArray.el($)', i) for i in range(dim)))
+  outL('    self.init($)', jc(fmt('try jsonArray.el($).conv()', i) for i in range(dim)))
   outL('  }')
   outL('')
 

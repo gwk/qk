@@ -7,6 +7,10 @@ protocol JsonInitable {
   init(json: JsonType) throws
 }
 
+extension JsonType {
+  func conv<T: JsonInitable>() throws -> T { return try T(json: self) }
+}
+
 extension Int: JsonInitable {
   init(json: JsonType) throws {
     if let n = json as? NSNumber {

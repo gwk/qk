@@ -51,7 +51,7 @@ extension CGPoint : VecType2, FloatVecType, CustomStringConvertible, JsonArrayIn
     if jsonArray.count > 2 {
       throw Json.Error.ExcessEl(index: 2, exp: CGPoint.self, json: jsonArray.raw)
     }
-    self.init(try jsonArray.el(0), try jsonArray.el(1))
+    self.init(try jsonArray.el(0).conv(), try jsonArray.el(1).conv())
   }
 
   static let zero = CGPoint(0, 0)

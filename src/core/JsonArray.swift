@@ -7,10 +7,25 @@ protocol JsonArrayInitable {
   init(jsonArray: JsonArray) throws
 }
 
+
 extension JsonArrayInitable {
   init(json: JsonType) throws {
     let jsonArray = try JsonArray(json: json)
     try self.init(jsonArray: jsonArray)
+  }
+}
+
+
+extension JsonType {
+  func asArray() throws -> JsonArray {
+    guard let a = self as? NSArray else {
+      throw Json.Error.UnexpectedType(exp: JsonArray.self, json: self)
+    }
+    return JsonArray(raw: a)
+  }
+
+  func convArray<T: JsonArrayInitable>() throws -> T {
+    return try T(jsonArray: try asArray())
   }
 }
 
@@ -38,56 +53,32 @@ struct JsonArray: JsonInitable {
 
   var count: Int { return raw.count }
 
-  
-  @warn_unused_result
-  func array(index: Int) throws -> JsonArray {
-    if index >= count { throw Json.Error.MissingEl(index: index, exp: JsonArray.self, json: raw) }
-    guard let a = raw[index] as? NSArray else {
-      throw Json.Error.UnexpectedType(exp: JsonArray.self, json: raw[index] as! JsonType)
-    }
-    return JsonArray(raw: a)
+  subscript(index: Int) -> JsonType {
+    return raw[index] as! JsonType
   }
 
   @warn_unused_result
-  func dict(index: Int) throws -> JsonDict {
-    if index >= count { throw Json.Error.MissingEl(index: index, exp: JsonDict.self, json: raw) }
-    guard let d = raw[index] as? NSDictionary else {
-      throw Json.Error.UnexpectedType(exp: JsonDict.self, json: raw[index] as! JsonType)
-    }
-    return JsonDict(raw: d)
+  func el(index: Int) throws -> JsonType {
+    if index >= count { throw Json.Error.MissingEl(index: index, json: raw) }
+    return raw[index] as! JsonType
   }
 
   @warn_unused_result
-  func el<T: JsonInitable>(index: Int) throws -> T {
-    if index >= count { throw Json.Error.MissingEl(index: index, exp: T.self, json: raw) }
-    return try T.init(json: raw[index] as! JsonType)
-  }
-
-  @warn_unused_result
-  func el<T: JsonArrayInitable>(index: Int) throws -> T {
-    return try T.init(jsonArray: try array(index))
-  }
-
-  @warn_unused_result
-  func el<T: JsonDictInitable>(index: Int) throws -> T {
-    return try T.init(jsonDict: try dict(index))
-  }
-
-  @warn_unused_result
-  func convert<T: JsonInitable>(start start: Int = 0, end: Int? = nil) throws -> [T] {
+  func convEls<T: JsonInitable>(start start: Int = 0, end: Int? = nil) throws -> [T] {
     let range = start..<end.or(raw.count)
     return try raw[range].map { try T.init(json: $0 as! JsonType) }
   }
 
   @warn_unused_result
-  func convertArrays<T: JsonArrayInitable>(start start: Int = 0, end: Int? = nil) throws -> [T] {
+  func convArrays<T: JsonArrayInitable>(start start: Int = 0, end: Int? = nil) throws -> [T] {
     let range = start..<end.or(raw.count)
     return try raw[range].map { try T.init(jsonArray: try JsonArray(json: $0 as! JsonType)) }
   }
 
   @warn_unused_result
-  func convertDicts<T: JsonDictInitable>(start start: Int = 0, end: Int? = nil) throws -> [T] {
+  func convDicts<T: JsonDictInitable>(start start: Int = 0, end: Int? = nil) throws -> [T] {
     let range = start..<end.or(raw.count)
     return try raw[range].map { try T.init(jsonDict: try JsonDict(json: $0 as! JsonType)) }
   }
+
 }

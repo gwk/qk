@@ -40,6 +40,7 @@ extension Array: DefaultInitializable {
   }
 
   mutating func permuteInPlace(random: Random) {
+    if isEmpty { return }
     let c = count
     for i in 1..<c {
       let j = c - i

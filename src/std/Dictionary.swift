@@ -19,10 +19,10 @@ extension Dictionary {
   }
 
   @warn_unused_result
-  func mapVals<V>(@noescape transform: (Value) -> V) -> [Key:V] {
+  func mapVals<V>(@noescape transform: (Value) throws -> V) rethrows -> [Key:V] {
     var d: [Key:V] = [:]
     for (k, v) in self {
-      d[k] = transform(v)
+      d[k] = try transform(v)
     }
     return d
   }

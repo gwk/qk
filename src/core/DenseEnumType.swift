@@ -14,7 +14,7 @@ extension DenseEnumType {
 
 
 struct EnumSetU32<Element: DenseEnumType>: ArrayLiteralConvertible {
-  let rawValue: U32
+  var rawValue: U32
 
   init() {
     self.rawValue = 0
@@ -26,5 +26,9 @@ struct EnumSetU32<Element: DenseEnumType>: ArrayLiteralConvertible {
 
   init(arrayLiteral elements: Element...) {
     self.rawValue = elements.reduce(0) { $0 | 1 << U32($1.rawValue) }
+  }
+
+  mutating func add(element: Element) {
+    rawValue |= U32(1 << element.rawValue)
   }
 }

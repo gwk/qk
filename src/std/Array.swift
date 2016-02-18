@@ -44,7 +44,7 @@ extension Array: DefaultInitializable {
     let c = count
     for i in 1..<c {
       let j = c - i
-      let k = random.nextInt(j + 1)
+      let k = random.int(j + 1)
       if j == k { continue }
       swap(&self[j], &self[k])
     }

@@ -47,7 +47,7 @@ class Random {
   }
 
   @warn_unused_result
-  func nextInt(end: Int) -> Int {
+  func int(end: Int) -> Int {
     // unbiased random.
     return Int(u64(U64(end)))
   }
@@ -75,5 +75,10 @@ class Random {
       return min
     }
     return f64(max - min) + min
+  }
+
+  @warn_unused_result
+  func bool() -> Bool {
+    return raw() >= 0x8000000000000000
   }
 }

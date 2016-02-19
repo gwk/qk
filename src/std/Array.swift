@@ -56,4 +56,8 @@ extension Array: DefaultInitializable {
     a.permuteInPlace(random)
     return a
   }
+
+  func randomElement(random: Random) -> Element {
+    return self[random.int(count)]
+  }
 }

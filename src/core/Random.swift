@@ -14,6 +14,14 @@ class Random {
     self.state1 = state1
   }
 
+  convenience init(arc4Seeded: Bool) {
+    var states: [U64] = [0x123456789ABCDEF, 0x123456789ABCDEF]
+    if arc4Seeded {
+      states.withUnsafeMutableBufferPointer { arc4random_buf($0.baseAddress, 16) }
+    }
+    self.init(state0: states[0], state1: states[1])
+  }
+
   @warn_unused_result
   func raw() -> U64 {
     let s1 = state0

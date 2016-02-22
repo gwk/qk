@@ -3,19 +3,12 @@
 import SceneKit
 
 
-// hack for the busted type system.
-func ptr_id(p: UnsafePointer<F32>) -> UnsafePointer<F32> { return p }
-func ptr_id(p: UnsafePointer<V2S>) -> UnsafePointer<V2S> { return p }
-func ptr_id(p: UnsafePointer<V3S>) -> UnsafePointer<V3S> { return p }
-func ptr_id(p: UnsafePointer<V4S>) -> UnsafePointer<V4S> { return p }
-
-
 extension NSMutableData {
 
-  func append(f32 f: F32) { var f = f; appendBytes(ptr_id(&f), length: sizeof(F32)) }
-  func append(v2S v: V2S) { var v = v; appendBytes(ptr_id(&v), length: sizeof(V2S)) }
-  func append(v3S v: V3S) { var v = v; appendBytes(ptr_id(&v), length: sizeof(V3S)) }
-  func append(v4S v: V4S) { var v = v; appendBytes(ptr_id(&v), length: sizeof(V4S)) }
+  func append(f32 f: F32) { var f = f; appendBytes(&f, length: sizeof(F32)) }
+  func append(v2S v: V2S) { var v = v; appendBytes(&v, length: sizeof(V2S)) }
+  func append(v3S v: V3S) { var v = v; appendBytes(&v, length: sizeof(V3S)) }
+  func append(v4S v: V4S) { var v = v; appendBytes(&v, length: sizeof(V4S)) }
   
   func bytesF32(offset: Int = 0, index: Int = 0) -> UnsafePointer<F32> {
     return UnsafePointer<F32>(self.bytes + offset) + index

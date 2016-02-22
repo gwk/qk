@@ -7,19 +7,19 @@ import SceneKit
 func tetrahedron() -> Mesh {
   let r: Flt = sqrt(1.0 / 3.0); // radius of insphere.
   let m = Mesh()
-  m.p = [
+  m.positions = [
     V3(-r, -r, -r), // cube 0.
     V3(-r,  r,  r), // cube 3.
     V3( r, -r,  r), // cube 5.
     V3( r,  r, -r), // cube 6.
   ]
-  m.tri = [
+  m.triangles = [
     Tri(0, 1, 3),
     Tri(0, 2, 1),
     Tri(0, 3, 2),
     Tri(1, 2, 3),
   ]
-  m.adj = [
+  m.adjacencies = [
     Adj(0, 1),
     Adj(0, 2),
     Adj(0, 3),
@@ -33,7 +33,7 @@ func tetrahedron() -> Mesh {
 func cube() -> Mesh {
   let r: Flt = sqrt(1.0 / 3.0); // radius of insphere.
   let m = Mesh()
-  m.p = [
+  m.positions = [
     V3(-r, -r, -r),
     V3(-r, -r,  r),
     V3(-r,  r, -r),
@@ -43,7 +43,7 @@ func cube() -> Mesh {
     V3(+r,  r, -r),
     V3(+r,  r,  r),
   ]
-  m.seg = [
+  m.segments = [
     Seg(0, 1),
     Seg(0, 2),
     Seg(0, 4),
@@ -57,7 +57,7 @@ func cube() -> Mesh {
     Seg(5, 7),
     Seg(6, 7),
   ]
-  m.tri = [
+  m.triangles = [
     Tri(0, 1, 3),
     Tri(0, 2, 6),
     Tri(0, 3, 2),
@@ -76,7 +76,7 @@ func cube() -> Mesh {
 
 func octahedron() -> Mesh {
   let m = Mesh()
-  m.p = [
+  m.positions = [
     V3(-1, -0,  0),
     V3( 0, -1,  0),
     V3( 0,  0, -1),
@@ -84,7 +84,7 @@ func octahedron() -> Mesh {
     V3( 0,  1,  0),
     V3( 1,  0,  0),
   ]
-  m.tri = [
+  m.triangles = [
     Tri(0, 1, 3),
     Tri(0, 2, 1),
     Tri(0, 3, 4),
@@ -94,7 +94,7 @@ func octahedron() -> Mesh {
     Tri(2, 4, 5),
     Tri(3, 5, 4),
   ]
-  m.adj = [
+  m.adjacencies = [
     Adj(0, 1),
     Adj(0, 2),
     Adj(0, 5),
@@ -119,7 +119,7 @@ func dodecahedron() -> Mesh {
   let m: Flt = r * phi // major.
   let n: Flt = r / phi // minor.
   let mesh = Mesh()
-  mesh.p = [
+  mesh.positions = [
     V3(-m, -n,  0),
     V3(-m,  n,  0),
     V3(-r, -r, -r),
@@ -141,7 +141,7 @@ func dodecahedron() -> Mesh {
     V3(+m, -n,  0),
     V3(+m,  n,  0),
   ]
-  mesh.seg = [
+  mesh.segments = [
     Seg(0, 1),
     Seg(0, 2),
     Seg(0, 3),
@@ -173,7 +173,7 @@ func dodecahedron() -> Mesh {
     Seg(17, 19),
     Seg(18, 19),
   ]
-  mesh.tri = [
+  mesh.triangles = [
     Tri(0, 1, 4),
     Tri(0, 2, 8),
     Tri(0, 3, 7),
@@ -222,7 +222,7 @@ func icosahedron() -> Mesh {
   let m: Flt = phi / r // major.
   let n: Flt = 1.0 / r // minor.
   let mesh = Mesh()
-  mesh.p = [
+  mesh.positions = [
     V3(-m, -n,  0),
     V3(-m,  n,  0),
     V3(-n,  0, -m),
@@ -236,7 +236,7 @@ func icosahedron() -> Mesh {
     V3(+m, -n,  0),
     V3(+m,  n,  0),
   ]
-  mesh.tri = [
+  mesh.triangles = [
     Tri(0, 1, 2),
     Tri(0, 2, 4),
     Tri(0, 3, 1),
@@ -258,7 +258,7 @@ func icosahedron() -> Mesh {
     Tri(8, 11, 10),
     Tri(9, 10, 11),
   ]
-  mesh.adj = [
+  mesh.adjacencies = [
     Adj(0, 1),
     Adj(0, 2),
     Adj(0, 6),

@@ -35,71 +35,71 @@ enum GeomKind {
 
 class Mesh {
   
-  var p: [V3] = [] // position.
-  var n: [V3] = [] // normal.
-  var c: [V4] = [] // color.
-  var t0: [V2] = [] // texcoord.
-  var vc: [F32] = [] // vertexCrease.
-  var ec: [F32] = [] // edgeCrease.
-  //var bw: [V4] = [] // boneWeights.
-  //var bi: [BoneIndices] = [] // boneIndices.
+  var positions: [V3] = []
+  var normals: [V3] = []
+  var colors: [V4] = []
+  var texture0s: [V2] = []
+  var vertexCreases: [F32] = []
+  var edgeCreases: [F32] = []
+  //var boneWeights: [V4] = []
+  //var boneIndices: [BoneIndices] = []
   
-  var point: [U16] = []
-  var seg: [Seg] = []
-  var tri: [Tri] = []
-  var adj: [Adj] = []
+  var points: [U16] = []
+  var segments: [Seg] = []
+  var triangles: [Tri] = []
+  var adjacencies: [Adj] = []
   
   func printContents() {
     print("Mesh:")
-    for (i, pos) in p.enumerate() {
+    for (i, pos) in positions.enumerate() {
       print("  p[\(i)] = \(pos)")
     }
   }
   
   func addNormFromPos() {
-    assert(n.isEmpty)
-    for pos in p {
-      n.append(pos.norm)
+    assert(normals.isEmpty)
+    for pos in positions {
+      normals.append(pos.norm)
     }
   }
   
   func addColFromPos() {
-    assert(c.isEmpty)
-    for pos in p {
+    assert(colors.isEmpty)
+    for pos in positions {
       let color3 = (pos * 0.5 + 0.5).clampToUnit
-      c.append(V4(color3, w: 1))
+      colors.append(V4(color3, w: 1))
     }
   }
   
   func addAllPoints() {
-    for i in 0..<p.count {
-      point.append(U16(i))
+    for i in 0..<positions.count {
+      points.append(U16(i))
     }
   }
   
   func addAllSegs() {
-    for i in 0..<p.count {
-      for j in (i + 1)..<p.count {
-        seg.append(Seg(U16(i), U16(j)))
+    for i in 0..<positions.count {
+      for j in (i + 1)..<positions.count {
+        segments.append(Seg(U16(i), U16(j)))
       }
     }
   }
   
   func addSeg(a: V3, _ b: V3) {
-    let i = U16(p.count)
-    p.appendContentsOf([a, b])
-    seg.append(Seg(i, i + 1))
+    let i = U16(positions.count)
+    positions.appendContentsOf([a, b])
+    segments.append(Seg(i, i + 1))
   }
   
   func addQuad(a: V3, _ b: V3, _ c: V3, _ d: V3) {
-    let i = U16(p.count)
-    p.appendContentsOf([a, b, c, d])
-    tri.appendContentsOf([Tri(i, i + 1, i + 2), Tri(i, i + 2, i + 3)])
+    let i = U16(positions.count)
+    positions.appendContentsOf([a, b, c, d])
+    triangles.appendContentsOf([Tri(i, i + 1, i + 2), Tri(i, i + 2, i + 3)])
   }
   
   func geometry(kind: GeomKind = .Tri) -> SCNGeometry {
     
-    let len = p.count
+    let len = positions.count
 
     // data offsets.
     let op = 0 // position data is required.
@@ -112,23 +112,43 @@ class Mesh {
     //var obi = 0
 
     var stride = sizeof(V3S)
-    if !n.isEmpty   { assert(n.count == len); on = stride; stride += sizeof(V3S) }
-    if !c.isEmpty   { assert(c.count == len); oc = stride; stride += sizeof(V4S) }
-    if !t0.isEmpty  { assert(t0.count == len); ot0 = stride; stride += sizeof(V2S) }
-    if !vc.isEmpty  { assert(vc.count == len); ovc = stride; stride += sizeof(F32) }
-    if !ec.isEmpty  { assert(ec.count == len); oec = stride; stride += sizeof(F32) }
-    //if !bw.isEmpty  { assert(bw.count == len); obw = stride; stride += sizeof(V4) }
-    //if !bi.isEmpty  { assert(bi.count == len); obi = stride; stride += sizeof(BoneIndices) }
+    if !normals.isEmpty {
+      assert(normals.count == len)
+      on = stride
+      stride += sizeof(V3S)
+    }
+    if !colors.isEmpty {
+      assert(colors.count == len)
+      oc = stride
+      stride += sizeof(V4S)
+    }
+    if !texture0s.isEmpty {
+      assert(texture0s.count == len)
+      ot0 = stride
+      stride += sizeof(V2S)
+    }
+    if !vertexCreases.isEmpty {
+      assert(vertexCreases.count == len)
+      ovc = stride
+      stride += sizeof(F32)
+    }
+    if !edgeCreases.isEmpty {
+      assert(edgeCreases.count == len)
+      oec = stride
+      stride += sizeof(F32)
+    }
+    //if !bw.isEmpty { assert(boneWeights.count == len); obw = stride; stride += sizeof(V4) }
+    //if !bi.isEmpty { assert(boneIndices.count == len); obi = stride; stride += sizeof(BoneIndices) }
     
     let d = NSMutableData(capacity: len * stride)!
     
     for i in 0..<len {
-      d.append(v3S: p[i].vs)
-      if !n.isEmpty   { d.append(v3S: n[i].vs) }
-      if !c.isEmpty   { d.append(v4S: c[i].vs) }
-      if !t0.isEmpty  { d.append(v2S: t0[i].vs) }
-      if !vc.isEmpty  { d.append(f32: vc[i]) }
-      if !ec.isEmpty  { d.append(f32: ec[i]) }
+      d.append(v3S: positions[i].vs)
+      if !normals.isEmpty         { d.append(v3S: normals[i].vs) }
+      if !colors.isEmpty          { d.append(v4S: colors[i].vs) }
+      if !texture0s.isEmpty       { d.append(v2S: texture0s[i].vs) }
+      if !vertexCreases.isEmpty   { d.append(f32: vertexCreases[i]) }
+      if !edgeCreases.isEmpty     { d.append(f32: edgeCreases[i]) }
       //if !bw.isEmpty  { d.append(bw[i]) }
       //if !bi.isEmpty  { d.append(bi[i]) }
     }
@@ -145,7 +165,7 @@ class Mesh {
       dataOffset: op,
       dataStride: stride))
 
-    if !n.isEmpty {
+    if !normals.isEmpty {
       sources.append(SCNGeometrySource(
         data: d,
         semantic: SCNGeometrySourceSemanticNormal,
@@ -156,7 +176,7 @@ class Mesh {
         dataOffset: on,
         dataStride: stride))
     }
-    if !c.isEmpty {
+    if !colors.isEmpty {
       sources.append(SCNGeometrySource(
         data: d,
         semantic: SCNGeometrySourceSemanticColor,
@@ -172,21 +192,21 @@ class Mesh {
     switch kind {
       case GeomKind.Point:
         elements.append(SCNGeometryElement(
-          data: NSData(bytes: point, length: point.count * sizeof(U16)),
+          data: NSData(bytes: points, length: points.count * sizeof(U16)),
           primitiveType: SCNGeometryPrimitiveType.Point,
-          primitiveCount: point.count,
+          primitiveCount: points.count,
           bytesPerIndex: sizeof(U16)))
       case GeomKind.Seg:
         elements.append(SCNGeometryElement(
-          data: NSData(bytes: seg, length: seg.count * sizeof(Seg)),
+          data: NSData(bytes: segments, length: segments.count * sizeof(Seg)),
           primitiveType: SCNGeometryPrimitiveType.Line,
-          primitiveCount: seg.count,
+          primitiveCount: segments.count,
           bytesPerIndex: sizeof(U16)))
       case GeomKind.Tri:
         elements.append(SCNGeometryElement(
-          data: NSData(bytes: tri, length: tri.count * sizeof(Tri)),
+          data: NSData(bytes: triangles, length: triangles.count * sizeof(Tri)),
           primitiveType: SCNGeometryPrimitiveType.Triangles,
-          primitiveCount: tri.count,
+          primitiveCount: triangles.count,
           bytesPerIndex: sizeof(U16)))
     }
 
@@ -196,12 +216,12 @@ class Mesh {
   class func triangle() -> Mesh {
     let r: Flt = sqrt(1.0 / 3.0) // radius of insphere.
     let m = Mesh()
-    m.p = [
+    m.positions = [
       V3(-r, -r, -r),
       V3(-r,  r,  r),
       V3( r,  r, -r),
     ]
-    m.tri = [
+    m.triangles = [
       Tri(0, 1, 2),
       Tri(0, 2, 1),
     ]

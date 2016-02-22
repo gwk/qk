@@ -42,7 +42,7 @@ struct GLTextPage: CustomStringConvertible {
     self.chars = chars
     self.strike = font.strikeForSize(fontSize, chars: chars.vals)
     
-    let wMax = GLTexture_maxSize // maxSize is a bad choice because it may leave lots of empty space left over on the final row.
+    let wMax = Int(GLTexture_maxSize) // maxSize is a bad choice because it may leave lots of empty space left over on the final row.
     var w = 0
     var x = 0 // current pos in image.
     var y = 0
@@ -53,7 +53,7 @@ struct GLTextPage: CustomStringConvertible {
       if x + g.size.x > wMax { // spill to next line.
         x = 0
         y += strike.metrics.maxGlyphHeight
-        rows++
+        rows += 1
       }
       let glyph = GLGlyph(char: g.char, adv: g.adv, orig: g.orig, size: g.size, texOrig: V2I(x, y))
       glyphs.append(glyph)

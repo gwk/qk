@@ -10,11 +10,7 @@ let dispatchMainQueue: DispatchQueue = dispatch_get_main_queue()
 
 // MARK: async
 
-func async(action: Action) {
-  dispatch_async(dispatchMainQueue, action)
-}
-
-func async(queue: DispatchQueue, action: Action) {
+func async(queue: DispatchQueue = dispatchMainQueue, action: Action) {
   dispatch_async(queue, action)
 }
 
@@ -22,11 +18,15 @@ func async(qos: DispatchQOS, action: Action) {
   dispatch_async(qos.queue, action)
 }
 
+func async_after(delay: Time, queue: DispatchQueue = dispatchMainQueue, action: Action) {
+  let nanoseconds = delay * 1000000000
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, I64(nanoseconds)), queue, action)
+}
 
 // MARK: sync
 
-func sync(action: Action) {
-  dispatch_sync(dispatchMainQueue, action);
+func sync(queue: DispatchQueue = dispatchMainQueue, action: Action) {
+  dispatch_sync(queue, action);
 }
 
 

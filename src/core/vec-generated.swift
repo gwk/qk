@@ -50,7 +50,7 @@ extension V2S : VecType2, FloatVecType, Equatable, CustomStringConvertible, Json
     if jsonArray.count > 2 {
       throw Json.Error.ExcessEl(index: 2, exp: V2S.self, json: jsonArray.raw)
     }
-    self.init(try jsonArray.el(0).conv(), try jsonArray.el(1).conv())
+    self.init(try jsonArray.el(0).conv() as F32, try jsonArray.el(1).conv() as F32)
   }
 
   static let zero = V2S(0, 0)
@@ -146,7 +146,7 @@ extension V2D : VecType2, FloatVecType, Equatable, CustomStringConvertible, Json
     if jsonArray.count > 2 {
       throw Json.Error.ExcessEl(index: 2, exp: V2D.self, json: jsonArray.raw)
     }
-    self.init(try jsonArray.el(0).conv(), try jsonArray.el(1).conv())
+    self.init(try jsonArray.el(0).conv() as F64, try jsonArray.el(1).conv() as F64)
   }
 
   static let zero = V2D(0, 0)
@@ -247,7 +247,7 @@ public struct V2I : VecType2, IntVecType, Equatable, CustomStringConvertible, Js
     if jsonArray.count > 2 {
       throw Json.Error.ExcessEl(index: 2, exp: V2I.self, json: jsonArray.raw)
     }
-    self.init(try jsonArray.el(0).conv(), try jsonArray.el(1).conv())
+    self.init(try jsonArray.el(0).conv() as Int, try jsonArray.el(1).conv() as Int)
   }
 
   static let zero = V2I(0, 0)
@@ -332,7 +332,7 @@ public struct V2U8 : VecType2, IntVecType, Equatable, CustomStringConvertible, J
     if jsonArray.count > 2 {
       throw Json.Error.ExcessEl(index: 2, exp: V2U8.self, json: jsonArray.raw)
     }
-    self.init(try jsonArray.el(0).conv(), try jsonArray.el(1).conv())
+    self.init(try jsonArray.el(0).conv() as U8, try jsonArray.el(1).conv() as U8)
   }
 
   static let zero = V2U8(0, 0)
@@ -397,14 +397,14 @@ extension V3S : VecType3, FloatVecType, Equatable, CustomStringConvertible, Json
   init(_ v: V4U8) {
     self.init(Scalar(v.x), Scalar(v.y), Scalar(v.z))
   }
-  init(_ v: V2S, _ s: Scalar) {
-    self.init(v.x, v.y, s)
+  init(_ v: V2S, z: Scalar) {
+    self.init(v.x, v.y, z)
   }
   init(jsonArray: JsonArray) throws {
     if jsonArray.count > 3 {
       throw Json.Error.ExcessEl(index: 3, exp: V3S.self, json: jsonArray.raw)
     }
-    self.init(try jsonArray.el(0).conv(), try jsonArray.el(1).conv(), try jsonArray.el(2).conv())
+    self.init(try jsonArray.el(0).conv() as F32, try jsonArray.el(1).conv() as F32, try jsonArray.el(2).conv() as F32)
   }
 
   static let zero = V3S(0, 0, 0)
@@ -495,14 +495,14 @@ extension V3D : VecType3, FloatVecType, Equatable, CustomStringConvertible, Json
   init(_ v: V4U8) {
     self.init(Scalar(v.x), Scalar(v.y), Scalar(v.z))
   }
-  init(_ v: V2D, _ s: Scalar) {
-    self.init(v.x, v.y, s)
+  init(_ v: V2D, z: Scalar) {
+    self.init(v.x, v.y, z)
   }
   init(jsonArray: JsonArray) throws {
     if jsonArray.count > 3 {
       throw Json.Error.ExcessEl(index: 3, exp: V3D.self, json: jsonArray.raw)
     }
-    self.init(try jsonArray.el(0).conv(), try jsonArray.el(1).conv(), try jsonArray.el(2).conv())
+    self.init(try jsonArray.el(0).conv() as F64, try jsonArray.el(1).conv() as F64, try jsonArray.el(2).conv() as F64)
   }
 
   static let zero = V3D(0, 0, 0)
@@ -600,14 +600,14 @@ public struct V3I : VecType3, IntVecType, Equatable, CustomStringConvertible, Js
   init(_ v: V4U8) {
     self.init(Scalar(v.x), Scalar(v.y), Scalar(v.z))
   }
-  init(_ v: V2I, _ s: Scalar) {
-    self.init(v.x, v.y, s)
+  init(_ v: V2I, z: Scalar) {
+    self.init(v.x, v.y, z)
   }
   init(jsonArray: JsonArray) throws {
     if jsonArray.count > 3 {
       throw Json.Error.ExcessEl(index: 3, exp: V3I.self, json: jsonArray.raw)
     }
-    self.init(try jsonArray.el(0).conv(), try jsonArray.el(1).conv(), try jsonArray.el(2).conv())
+    self.init(try jsonArray.el(0).conv() as Int, try jsonArray.el(1).conv() as Int, try jsonArray.el(2).conv() as Int)
   }
 
   static let zero = V3I(0, 0, 0)
@@ -683,14 +683,14 @@ public struct V3U8 : VecType3, IntVecType, Equatable, CustomStringConvertible, J
   init(_ v: V4U8) {
     self.init(Scalar(v.x), Scalar(v.y), Scalar(v.z))
   }
-  init(_ v: V2U8, _ s: Scalar) {
-    self.init(v.x, v.y, s)
+  init(_ v: V2U8, z: Scalar) {
+    self.init(v.x, v.y, z)
   }
   init(jsonArray: JsonArray) throws {
     if jsonArray.count > 3 {
       throw Json.Error.ExcessEl(index: 3, exp: V3U8.self, json: jsonArray.raw)
     }
-    self.init(try jsonArray.el(0).conv(), try jsonArray.el(1).conv(), try jsonArray.el(2).conv())
+    self.init(try jsonArray.el(0).conv() as U8, try jsonArray.el(1).conv() as U8, try jsonArray.el(2).conv() as U8)
   }
 
   static let zero = V3U8(0, 0, 0)
@@ -748,14 +748,14 @@ extension V4S : VecType4, FloatVecType, Equatable, CustomStringConvertible, Json
   init(_ v: V4U8) {
     self.init(Scalar(v.x), Scalar(v.y), Scalar(v.z), Scalar(v.w))
   }
-  init(_ v: V3S, _ s: Scalar) {
-    self.init(v.x, v.y, v.z, s)
+  init(_ v: V3S, w: Scalar) {
+    self.init(v.x, v.y, v.z, w)
   }
   init(jsonArray: JsonArray) throws {
     if jsonArray.count > 4 {
       throw Json.Error.ExcessEl(index: 4, exp: V4S.self, json: jsonArray.raw)
     }
-    self.init(try jsonArray.el(0).conv(), try jsonArray.el(1).conv(), try jsonArray.el(2).conv(), try jsonArray.el(3).conv())
+    self.init(try jsonArray.el(0).conv() as F32, try jsonArray.el(1).conv() as F32, try jsonArray.el(2).conv() as F32, try jsonArray.el(3).conv() as F32)
   }
 
   static let zero = V4S(0, 0, 0, 0)
@@ -840,14 +840,14 @@ extension V4D : VecType4, FloatVecType, Equatable, CustomStringConvertible, Json
   init(_ v: V4U8) {
     self.init(Scalar(v.x), Scalar(v.y), Scalar(v.z), Scalar(v.w))
   }
-  init(_ v: V3D, _ s: Scalar) {
-    self.init(v.x, v.y, v.z, s)
+  init(_ v: V3D, w: Scalar) {
+    self.init(v.x, v.y, v.z, w)
   }
   init(jsonArray: JsonArray) throws {
     if jsonArray.count > 4 {
       throw Json.Error.ExcessEl(index: 4, exp: V4D.self, json: jsonArray.raw)
     }
-    self.init(try jsonArray.el(0).conv(), try jsonArray.el(1).conv(), try jsonArray.el(2).conv(), try jsonArray.el(3).conv())
+    self.init(try jsonArray.el(0).conv() as F64, try jsonArray.el(1).conv() as F64, try jsonArray.el(2).conv() as F64, try jsonArray.el(3).conv() as F64)
   }
 
   static let zero = V4D(0, 0, 0, 0)
@@ -941,14 +941,14 @@ public struct V4I : VecType4, IntVecType, Equatable, CustomStringConvertible, Js
   init(_ v: V4U8) {
     self.init(Scalar(v.x), Scalar(v.y), Scalar(v.z), Scalar(v.w))
   }
-  init(_ v: V3I, _ s: Scalar) {
-    self.init(v.x, v.y, v.z, s)
+  init(_ v: V3I, w: Scalar) {
+    self.init(v.x, v.y, v.z, w)
   }
   init(jsonArray: JsonArray) throws {
     if jsonArray.count > 4 {
       throw Json.Error.ExcessEl(index: 4, exp: V4I.self, json: jsonArray.raw)
     }
-    self.init(try jsonArray.el(0).conv(), try jsonArray.el(1).conv(), try jsonArray.el(2).conv(), try jsonArray.el(3).conv())
+    self.init(try jsonArray.el(0).conv() as Int, try jsonArray.el(1).conv() as Int, try jsonArray.el(2).conv() as Int, try jsonArray.el(3).conv() as Int)
   }
 
   static let zero = V4I(0, 0, 0, 0)
@@ -1019,14 +1019,14 @@ public struct V4U8 : VecType4, IntVecType, Equatable, CustomStringConvertible, J
   init(_ v: V4I) {
     self.init(Scalar(v.x), Scalar(v.y), Scalar(v.z), Scalar(v.w))
   }
-  init(_ v: V3U8, _ s: Scalar) {
-    self.init(v.x, v.y, v.z, s)
+  init(_ v: V3U8, w: Scalar) {
+    self.init(v.x, v.y, v.z, w)
   }
   init(jsonArray: JsonArray) throws {
     if jsonArray.count > 4 {
       throw Json.Error.ExcessEl(index: 4, exp: V4U8.self, json: jsonArray.raw)
     }
-    self.init(try jsonArray.el(0).conv(), try jsonArray.el(1).conv(), try jsonArray.el(2).conv(), try jsonArray.el(3).conv())
+    self.init(try jsonArray.el(0).conv() as U8, try jsonArray.el(1).conv() as U8, try jsonArray.el(2).conv() as U8, try jsonArray.el(3).conv() as U8)
   }
 
   static let zero = V4U8(0, 0, 0, 0)

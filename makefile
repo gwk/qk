@@ -19,6 +19,13 @@ src/cr/CGPoint-generated.swift: tools/gen-vec.py
 src/cr/CGVector-generated.swift: tools/gen-vec.py
 	$^ CGVector 2 Flt Flt CoreGraphics > $@
 
+src/scn/V3-generated.swift: tools/gen-vec.py
+	$^ V3 3 Flt Flt SceneKit > $@
+
+src/scn/V4-generated.swift: tools/gen-vec.py
+	$^ V4 4 Flt Flt SceneKit > $@
+
+
 _bld/gen-cd-entities: src/core/*.swift src/cd/*.swift src/foundation/*.swift src/std/*.swift tools/gen-cd-entities.swift tools/main.swift
 	mkdir -p _bld
 	xcrun -sdk macosx swiftc $^ -o $@
@@ -38,7 +45,9 @@ gen: \
 	src/core/mat-generated.swift \
 	src/core/vec-generated.swift \
 	src/cr/CGPoint-generated.swift \
-	src/cr/CGVector-generated.swift
+	src/cr/CGVector-generated.swift \
+	src/scn/V3-generated.swift \
+	src/scn/V4-generated.swift
 
 # all real targets.
 all: _bld/gen-cd-entities gen

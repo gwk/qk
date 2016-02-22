@@ -60,15 +60,16 @@ def gen_vec(orig_type, dim, s_type, fs_type, v_type, v_prev, is_simd, is_novel):
       outL('  }')
   
   if v_prev:
-    outL('  init(_ v: $, _ s: Scalar) {', v_prev)
-    outL('    self.init($)', jc(fmt('v.$', c) if i < dim - 1 else 's' for i, c in enumerate(comps)))
+    last_comp = comps[dim - 1]
+    outL('  init(_ v: $, $: Scalar) {', v_prev, last_comp)
+    outL('    self.init($)', jc(fmt('v.$', c) if i < dim - 1 else last_comp for i, c in enumerate(comps)))
     outL('  }')
   
   outL('  init(jsonArray: JsonArray) throws {')
   outL('    if jsonArray.count > $ {', dim)
   outL('      throw Json.Error.ExcessEl(index: $, exp: $.self, json: jsonArray.raw)', dim, v_type)
   outL('    }')
-  outL('    self.init($)', jc(fmt('try jsonArray.el($).conv()', i) for i in range(dim)))
+  outL('    self.init($)', jc(fmt('try jsonArray.el($).conv() as $', i, s_type) for i in range(dim)))
   outL('  }')
   outL('')
 
@@ -164,10 +165,15 @@ if __name__ == '__main__':
 
   if args:
     (orig_type, dim_string, s_type, fs_type, import_name) = args
+    last = orig_type[-1]
+    if last in ('3', '4'):
+      v_prev = orig_type[:-1] + str(int(last) - 1)
+    else:
+      v_prev = None
     dim = int(dim_string)
     v_type = orig_type
     outL('import $\n\n', import_name)
-    gen_vec(orig_type, dim, s_type, fs_type, v_type, v_prev=None, is_simd=False, is_novel=False)
+    gen_vec(orig_type, dim, s_type, fs_type, v_type, v_prev=v_prev, is_simd=False, is_novel=False)
 
   else:
     outL('import simd\n')

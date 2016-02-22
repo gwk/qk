@@ -2,7 +2,7 @@
 
 import Foundation
 
-struct Tri: Printable {
+struct Tri: CustomStringConvertible {
   var a, b, c: U16
   
   init(_ a: U16, _ b: U16, _ c: U16) {
@@ -15,7 +15,7 @@ struct Tri: Printable {
   var description: String { return "Tri(\(a), \(b), \(c))" }
 }
 
-struct Seg: Printable {
+struct Seg: CustomStringConvertible {
   var a, b: U16
 
   init(_ a: U16, _ b: U16) {

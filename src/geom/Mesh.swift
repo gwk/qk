@@ -9,12 +9,13 @@ func ptr_id(p: UnsafePointer<V2S>) -> UnsafePointer<V2S> { return p }
 func ptr_id(p: UnsafePointer<V3S>) -> UnsafePointer<V3S> { return p }
 func ptr_id(p: UnsafePointer<V4S>) -> UnsafePointer<V4S> { return p }
 
+
 extension NSMutableData {
 
-  func append(var f: F32) { appendBytes(ptr_id(&f), length: sizeof(F32)) }
-  func append(var v: V2S) { appendBytes(ptr_id(&v), length: sizeof(V2S)) }
-  func append(var v: V3S) { appendBytes(ptr_id(&v), length: sizeof(V3S)) }
-  func append(var v: V4S) { appendBytes(ptr_id(&v), length: sizeof(V4S)) }
+  func append(f32 f: F32) { var f = f; appendBytes(ptr_id(&f), length: sizeof(F32)) }
+  func append(v2S v: V2S) { var v = v; appendBytes(ptr_id(&v), length: sizeof(V2S)) }
+  func append(v3S v: V3S) { var v = v; appendBytes(ptr_id(&v), length: sizeof(V3S)) }
+  func append(v4S v: V4S) { var v = v; appendBytes(ptr_id(&v), length: sizeof(V4S)) }
   
   func bytesF32(offset: Int = 0, index: Int = 0) -> UnsafePointer<F32> {
     return UnsafePointer<F32>(self.bytes + offset) + index
@@ -55,24 +56,25 @@ class Mesh {
   var tri: [Tri] = []
   var adj: [Adj] = []
   
-  func print() {
-    println("Mesh:")
-    for (i, pos) in enumerate(p) {
-      println("  p[\(i)] = \(pos)")
+  func printContents() {
+    print("Mesh:")
+    for (i, pos) in p.enumerate() {
+      print("  p[\(i)] = \(pos)")
     }
   }
   
   func addNormFromPos() {
     assert(n.isEmpty)
     for pos in p {
-      n.append(pos.norm);
+      n.append(pos.norm)
     }
   }
   
   func addColFromPos() {
     assert(c.isEmpty)
     for pos in p {
-      c.append(V4((pos * 0.5 + 0.5).clampToUnit, 1))
+      let color3 = (pos * 0.5 + 0.5).clampToUnit
+      c.append(V4(color3, w: 1))
     }
   }
   
@@ -92,14 +94,14 @@ class Mesh {
   
   func addSeg(a: V3, _ b: V3) {
     let i = U16(p.count)
-    p.extend([a, b])
+    p.appendContentsOf([a, b])
     seg.append(Seg(i, i + 1))
   }
   
   func addQuad(a: V3, _ b: V3, _ c: V3, _ d: V3) {
     let i = U16(p.count)
-    p.extend([a, b, c, d])
-    tri.extend([Tri(i, i + 1, i + 2), Tri(i, i + 2, i + 3)])
+    p.appendContentsOf([a, b, c, d])
+    tri.appendContentsOf([Tri(i, i + 1, i + 2), Tri(i, i + 2, i + 3)])
   }
   
   func geometry(kind: GeomKind = .Tri) -> SCNGeometry {
@@ -128,12 +130,12 @@ class Mesh {
     let d = NSMutableData(capacity: len * stride)!
     
     for i in 0..<len {
-      d.append(p[i].vs)
-      if !n.isEmpty   { d.append(n[i].vs) }
-      if !c.isEmpty   { d.append(c[i].vs) }
-      if !t0.isEmpty  { d.append(t0[i].vs) }
-      if !vc.isEmpty  { d.append(vc[i]) }
-      if !ec.isEmpty  { d.append(ec[i]) }
+      d.append(v3S: p[i].vs)
+      if !n.isEmpty   { d.append(v3S: n[i].vs) }
+      if !c.isEmpty   { d.append(v4S: c[i].vs) }
+      if !t0.isEmpty  { d.append(v2S: t0[i].vs) }
+      if !vc.isEmpty  { d.append(f32: vc[i]) }
+      if !ec.isEmpty  { d.append(f32: ec[i]) }
       //if !bw.isEmpty  { d.append(bw[i]) }
       //if !bi.isEmpty  { d.append(bi[i]) }
     }

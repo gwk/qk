@@ -51,7 +51,7 @@ extension CGVector : VecType2, FloatVecType, CustomStringConvertible, JsonArrayI
     if jsonArray.count > 2 {
       throw Json.Error.ExcessEl(index: 2, exp: CGVector.self, json: jsonArray.raw)
     }
-    self.init(try jsonArray.el(0).conv(), try jsonArray.el(1).conv())
+    self.init(try jsonArray.el(0).conv() as Flt, try jsonArray.el(1).conv() as Flt)
   }
 
   static let zero = CGVector(0, 0)

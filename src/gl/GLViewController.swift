@@ -23,18 +23,10 @@ class GLViewController: CRViewController {
     view = GLView(n: "GLView", pixFmt: _initPixFmt)
   }
   
+
   #if os(OSX)
-  func updateWindowObserver() {
-    noteCenter().removeObserver(self, name: NSWindowDidChangeBackingPropertiesNotification, object: nil)
-    noteCenter().addObserver(self,
-      selector: #selector(screenDidChange),
-      name: NSWindowDidChangeBackingPropertiesNotification,
-      object: view.window!)
-    screenDidChange(nil)
-  }
-  
-  func screenDidChange(note: NSNotification?) {
-    let screen: NSScreen = view.window!.screen!
+  override func screenDidChange(note: NSNotification?) {
+  let screen: NSScreen = view.window!.screen!
     scaleFactor = screen.backingScaleFactor
     //println("screenDidChange: \(scaleFactor)")
     view.layer?.contentsScale = scaleFactor

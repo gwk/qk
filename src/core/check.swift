@@ -10,7 +10,7 @@ func check(condition: Bool, @autoclosure _ message: () -> String) {
   }
 }
 
-func check(condition: Bool, file: StaticString = __FILE__, line: UInt = __LINE__) {
+func check(condition: Bool, file: StaticString = #file, line: UInt = #line) {
   if !condition {
     fatalError("check failure", file: file, line: line)
   }

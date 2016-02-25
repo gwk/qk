@@ -2,7 +2,7 @@
 
 
 protocol PixelType {
-  typealias Scalar
+  associatedtype Scalar
   static var numComponents: Int { get }
 }
 

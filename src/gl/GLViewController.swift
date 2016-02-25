@@ -27,7 +27,7 @@ class GLViewController: CRViewController {
   func updateWindowObserver() {
     noteCenter().removeObserver(self, name: NSWindowDidChangeBackingPropertiesNotification, object: nil)
     noteCenter().addObserver(self,
-      selector: "screenDidChange:",
+      selector: #selector(screenDidChange),
       name: NSWindowDidChangeBackingPropertiesNotification,
       object: view.window!)
     screenDidChange(nil)

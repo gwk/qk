@@ -100,7 +100,7 @@ class GLLayer: CRGLLayer {
   }
   
   override func releaseCGLPixelFormat(pf: CGLPixelFormatObj) {
-    print(__FUNCTION__)
+    print(#function)
     super.releaseCGLPixelFormat(pf)
   }
   
@@ -109,7 +109,7 @@ class GLLayer: CRGLLayer {
   }
 
   override func releaseCGLContext(ctx: CGLContextObj) {
-    print(__FUNCTION__)
+    print(#function)
     super.releaseCGLContext(ctx)
   }
   

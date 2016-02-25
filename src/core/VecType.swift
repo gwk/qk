@@ -2,10 +2,10 @@
 
 
 protocol VecType: Equatable, CustomStringConvertible {
-  typealias Scalar: ArithmeticType
-  typealias FloatType: ArithmeticFloatType
-  typealias VSType
-  typealias VDType
+  associatedtype Scalar: ArithmeticType
+  associatedtype FloatType: ArithmeticFloatType
+  associatedtype VSType
+  associatedtype VDType
   
   var x: Scalar { get }
   var y: Scalar { get }

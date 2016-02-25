@@ -86,7 +86,7 @@ extension Dictionary where Key: Comparable {
 // TODO: remove in favor of ArrayDict class?
 
 protocol AppendableValueType {
-  typealias Element
+  associatedtype Element
   mutating func append(element: Element)
 }
 

@@ -6,7 +6,7 @@ import SceneKit
 
 func tetrahedron() -> Mesh {
   let r: Flt = sqrt(1.0 / 3.0); // radius of insphere.
-  let m = Mesh()
+  let m = Mesh(name: "tetrahedron")
   m.positions = [
     V3(-r, -r, -r), // cube 0.
     V3(-r,  r,  r), // cube 3.
@@ -32,7 +32,7 @@ func tetrahedron() -> Mesh {
 
 func cube() -> Mesh {
   let r: Flt = sqrt(1.0 / 3.0); // radius of insphere.
-  let m = Mesh()
+  let m = Mesh(name: "cube")
   m.positions = [
     V3(-r, -r, -r),
     V3(-r, -r,  r),
@@ -75,7 +75,7 @@ func cube() -> Mesh {
 }
 
 func octahedron() -> Mesh {
-  let m = Mesh()
+  let m = Mesh(name: "octahedron")
   m.positions = [
     V3(-1, -0,  0),
     V3( 0, -1,  0),
@@ -118,7 +118,7 @@ func dodecahedron() -> Mesh {
   // rect major and minor are (phi, 1 / phi) for unit cube; must normalize by x.
   let m: Flt = r * phi // major.
   let n: Flt = r / phi // minor.
-  let mesh = Mesh()
+  let mesh = Mesh(name: "dodecahedron")
   mesh.positions = [
     V3(-m, -n,  0),
     V3(-m,  n,  0),
@@ -221,7 +221,7 @@ func icosahedron() -> Mesh {
   let r: Flt = sqrt(phi * phi + 1)
   let m: Flt = phi / r // major.
   let n: Flt = 1.0 / r // minor.
-  let mesh = Mesh()
+  let mesh = Mesh(name: "icosahedron")
   mesh.positions = [
     V3(-m, -n,  0),
     V3(-m,  n,  0),

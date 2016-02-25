@@ -34,7 +34,7 @@ enum GeomKind {
 }
 
 class Mesh {
-  
+  var name: String? = nil
   var positions: [V3] = []
   var normals: [V3] = []
   var colors: [V4] = []
@@ -48,7 +48,11 @@ class Mesh {
   var segments: [Seg] = []
   var triangles: [Tri] = []
   var adjacencies: [Adj] = []
-  
+
+  init(name: String? = nil) {
+    self.name = name
+  }
+
   func printContents() {
     print("Mesh:")
     for (i, pos) in positions.enumerate() {
@@ -215,7 +219,7 @@ class Mesh {
   
   class func triangle() -> Mesh {
     let r: Flt = sqrt(1.0 / 3.0) // radius of insphere.
-    let m = Mesh()
+    let m = Mesh(name: "triangle")
     m.positions = [
       V3(-r, -r, -r),
       V3(-r,  r,  r),

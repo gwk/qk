@@ -3,30 +3,6 @@
 import SceneKit
 
 
-extension NSMutableData {
-
-  func append(f32 f: F32) { var f = f; appendBytes(&f, length: sizeof(F32)) }
-  func append(v2S v: V2S) { var v = v; appendBytes(&v, length: sizeof(V2S)) }
-  func append(v3S v: V3S) { var v = v; appendBytes(&v, length: sizeof(V3S)) }
-  func append(v4S v: V4S) { var v = v; appendBytes(&v, length: sizeof(V4S)) }
-  
-  func bytesF32(offset: Int = 0, index: Int = 0) -> UnsafePointer<F32> {
-    return UnsafePointer<F32>(self.bytes + offset) + index
-  }
-  
-  func bytesV2(offset: Int = 0, index: Int = 0) -> UnsafePointer<V2S> {
-    return UnsafePointer<V2S>(self.bytes + offset) + index
-  }
-  
-  func bytesV3(offset: Int = 0, index: Int = 0) -> UnsafePointer<V3S> {
-    return UnsafePointer<V3S>(self.bytes + offset) + index
-  }
-  
-  func bytesV4(offset: Int = 0, index: Int = 0) -> UnsafePointer<V4S> {
-    return UnsafePointer<V4S>(self.bytes + offset) + index
-  }
-}
-
 enum GeomKind {
   case Point
   case Seg
@@ -147,12 +123,12 @@ class Mesh {
     let d = NSMutableData(capacity: len * stride)!
     
     for i in 0..<len {
-      d.append(v3S: positions[i].vs)
-      if !normals.isEmpty         { d.append(v3S: normals[i].vs) }
-      if !colors.isEmpty          { d.append(v4S: colors[i].vs) }
-      if !texture0s.isEmpty       { d.append(v2S: texture0s[i].vs) }
-      if !vertexCreases.isEmpty   { d.append(f32: vertexCreases[i]) }
-      if !edgeCreases.isEmpty     { d.append(f32: edgeCreases[i]) }
+      d.append(positions[i].vs)
+      if !normals.isEmpty         { d.append(normals[i].vs) }
+      if !colors.isEmpty          { d.append(colors[i].vs) }
+      if !texture0s.isEmpty       { d.append(texture0s[i].vs) }
+      if !vertexCreases.isEmpty   { d.append(vertexCreases[i]) }
+      if !edgeCreases.isEmpty     { d.append(edgeCreases[i]) }
       //if !bw.isEmpty  { d.append(bw[i]) }
       //if !bi.isEmpty  { d.append(bi[i]) }
     }

@@ -8,7 +8,7 @@ extension SequenceType {
     var d: [K:[Generator.Element]] = [:]
     for e in self {
       if let k = fn(e) {
-        d.appendToVal(k, e)
+        d.appendToValue(k, e)
       }
     }
     return d

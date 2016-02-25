@@ -95,7 +95,7 @@ extension Array: AppendableValueType {}
 
 extension Dictionary where Value: AppendableValueType, Value: DefaultInitializable {
 
-  mutating func appendToVal(key: Key, _ el: Value.Element) {
+  mutating func appendToValue(key: Key, _ el: Value.Element) {
     var v: Value
     if let ov = removeValueForKey(key) {
       v = ov

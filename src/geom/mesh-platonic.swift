@@ -7,6 +7,7 @@ import SceneKit
 extension Mesh {
 
   class func tetrahedron() -> Mesh {
+    // returns a tetrahedron with vertex radius of 1.
     let r: Flt = sqrt(1.0 / 3.0); // radius of insphere.
     let m = Mesh(name: "tetrahedron")
     m.positions = [
@@ -33,6 +34,7 @@ extension Mesh {
   }
 
   class func cube() -> Mesh {
+    // returns a cube with vertex radius of 1.
     let r: Flt = sqrt(1.0 / 3.0); // radius of insphere.
     let m = Mesh(name: "cube")
     m.positions = [
@@ -40,10 +42,10 @@ extension Mesh {
       V3(-r, -r,  r),
       V3(-r,  r, -r),
       V3(-r,  r,  r),
-      V3(+r, -r, -r),
-      V3(+r, -r,  r),
-      V3(+r,  r, -r),
-      V3(+r,  r,  r),
+      V3( r, -r, -r),
+      V3( r, -r,  r),
+      V3( r,  r, -r),
+      V3( r,  r,  r),
     ]
     m.segments = [
       Seg(0, 1),
@@ -77,6 +79,7 @@ extension Mesh {
   }
 
   class func octahedron() -> Mesh {
+    // returns an octahedron with vertex radius of 1.
     let m = Mesh(name: "octahedron")
     m.positions = [
       V3(-1, -0,  0),
@@ -114,6 +117,7 @@ extension Mesh {
   }
 
   class func dodecahedron() -> Mesh {
+    // returns a dodecahedron with vertex radius of 1.
     let r: Flt = sqrt(1.0 / 3.0) // radius of cube insphere.
     let phi: Flt = (1 + sqrt(5)) * 0.5 // golden ratio.
     // two types of vertices: cubic and axis-aligned rect.
@@ -130,18 +134,18 @@ extension Mesh {
       V3(-r,  r,  r),
       V3(-n,  0, -m),
       V3(-n,  0,  m),
-      V3(+0, -m, -n),
-      V3(+0, -m,  n),
-      V3(+0,  m, -n),
-      V3(+0,  m , n),
-      V3(+n,  0, -m),
-      V3(+n,  0,  m),
-      V3(+r, -r, -r),
-      V3(+r, -r,  r),
-      V3(+r,  r, -r),
-      V3(+r,  r,  r),
-      V3(+m, -n,  0),
-      V3(+m,  n,  0),
+      V3( 0, -m, -n),
+      V3( 0, -m,  n),
+      V3( 0,  m, -n),
+      V3( 0,  m , n),
+      V3( n,  0, -m),
+      V3( n,  0,  m),
+      V3( r, -r, -r),
+      V3( r, -r,  r),
+      V3( r,  r, -r),
+      V3( r,  r,  r),
+      V3( m, -n,  0),
+      V3( m,  n,  0),
     ]
     mesh.segments = [
       Seg(0, 1),
@@ -217,26 +221,27 @@ extension Mesh {
   }
 
   class func icosahedron() -> Mesh {
+    // returns an icosahedron with vertex radius of 1.
     let phi: Flt = (1 + sqrt(5)) * 0.5 // golden ratio.
     // each vertex is also the vertex of an axis-aligned golden rectangle.
     // compute the radius and normalize major and minor lengths.
-    let r: Flt = sqrt(phi * phi + 1)
-    let m: Flt = phi / r // major.
-    let n: Flt = 1.0 / r // minor.
+    let r = sqrt(phi * phi + 1)
+    let m = phi / r // major.
+    let n = 1.0 / r // minor.
     let mesh = Mesh(name: "icosahedron")
     mesh.positions = [
       V3(-m, -n,  0), // south.
       V3(-m,  n,  0), // southwest.
       V3(-n,  0, -m),
       V3(-n,  0,  m),
-      V3(+0, -m, -n),
-      V3(+0, -m,  n),
-      V3(+0,  m, -n), // northern hemisphere.
-      V3(+0,  m,  n),
-      V3(+n,  0, -m),
-      V3(+n,  0, +m),
-      V3(+m, -n,  0), // northeast.
-      V3(+m,  n,  0), // north.
+      V3( 0, -m, -n),
+      V3( 0, -m,  n),
+      V3( 0,  m, -n), // northern hemisphere.
+      V3( 0,  m,  n),
+      V3( n,  0, -m),
+      V3( n,  0,  m),
+      V3( m, -n,  0), // northeast.
+      V3( m,  n,  0), // north.
     ]
     mesh.triangles = [
       Tri(0, 1, 2),

@@ -223,18 +223,18 @@ func icosahedron() -> Mesh {
   let n: Flt = 1.0 / r // minor.
   let mesh = Mesh(name: "icosahedron")
   mesh.positions = [
-    V3(-m, -n,  0),
-    V3(-m,  n,  0),
+    V3(-m, -n,  0), // south.
+    V3(-m,  n,  0), // southwest.
     V3(-n,  0, -m),
     V3(-n,  0,  m),
     V3(+0, -m, -n),
     V3(+0, -m,  n),
-    V3(+0,  m, -n),
+    V3(+0,  m, -n), // northern hemisphere.
     V3(+0,  m,  n),
     V3(+n,  0, -m),
     V3(+n,  0, +m),
-    V3(+m, -n,  0),
-    V3(+m,  n,  0),
+    V3(+m, -n,  0), // northeast.
+    V3(+m,  n,  0), // north.
   ]
   mesh.triangles = [
     Tri(0, 1, 2),

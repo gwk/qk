@@ -15,11 +15,15 @@ class Mesh {
   var normals: [V3] = []
   var colors: [V4] = []
   var texture0s: [V2] = []
+  #if false // TODO: implement creases.
   var vertexCreases: [F32] = []
   var edgeCreases: [F32] = []
-  //var boneWeights: [V4] = []
-  //var boneIndices: [BoneIndices] = []
-  
+  #endif
+  #if false // TODO: implement BoneIndices.
+  var boneWeights: [V4] = []
+  var boneIndices: [BoneIndices] = []
+  #endif
+
   var points: [U16] = []
   var segments: [Seg] = []
   var triangles: [Tri] = []
@@ -86,10 +90,14 @@ class Mesh {
     var on = 0
     var oc = 0
     var ot0 = 0
-    var ovc = 0
-    var oec = 0
-    //var obw = 0
-    //var obi = 0
+    #if false // TODO: creases.
+      var ovc = 0
+      var oec = 0
+    #endif
+    #if false // TODO: bones.
+      var obw = 0
+    var obi = 0
+    #endif
 
     var stride = sizeof(V3S)
     if !normals.isEmpty {
@@ -107,6 +115,7 @@ class Mesh {
       ot0 = stride
       stride += sizeof(V2S)
     }
+    #if false // TODO: creases.
     if !vertexCreases.isEmpty {
       assert(vertexCreases.count == len)
       ovc = stride
@@ -117,9 +126,19 @@ class Mesh {
       oec = stride
       stride += sizeof(F32)
     }
-    //if !bw.isEmpty { assert(boneWeights.count == len); obw = stride; stride += sizeof(V4) }
-    //if !bi.isEmpty { assert(boneIndices.count == len); obi = stride; stride += sizeof(BoneIndices) }
-    
+    #endif
+    #if false // TODO: bones.
+      if !bw.isEmpty {
+        assert(boneWeights.count == len)
+        obw = stride
+        stride += sizeof(V4)
+      }
+      if !bi.isEmpty {
+        assert(boneIndices.count == len)
+        obi = stride
+        stride += sizeof(BoneIndices)
+      }
+    #endif
     let d = NSMutableData(capacity: len * stride)!
     
     for i in 0..<len {
@@ -127,10 +146,14 @@ class Mesh {
       if !normals.isEmpty         { d.append(normals[i].vs) }
       if !colors.isEmpty          { d.append(colors[i].vs) }
       if !texture0s.isEmpty       { d.append(texture0s[i].vs) }
-      if !vertexCreases.isEmpty   { d.append(vertexCreases[i]) }
-      if !edgeCreases.isEmpty     { d.append(edgeCreases[i]) }
-      //if !bw.isEmpty  { d.append(bw[i]) }
-      //if !bi.isEmpty  { d.append(bi[i]) }
+      #if false // TODO: creases.
+        if !vertexCreases.isEmpty   { d.append(vertexCreases[i]) }
+        if !edgeCreases.isEmpty     { d.append(edgeCreases[i]) }
+      #endif
+      #if false // TODO: bones.
+        if !bw.isEmpty  { d.append(bw[i]) }
+        if !bi.isEmpty  { d.append(bi[i]) }
+      #endif
     }
     
     var sources: [SCNGeometrySource] = []
@@ -165,6 +188,17 @@ class Mesh {
         componentsPerVector: 4,
         bytesPerComponent: sizeof(F32),
         dataOffset: oc,
+        dataStride: stride))
+    }
+    if !texture0s.isEmpty {
+      sources.append(SCNGeometrySource(
+        data: d,
+        semantic: SCNGeometrySourceSemanticTexcoord,
+        vectorCount: len,
+        floatComponents: true,
+        componentsPerVector: 2,
+        bytesPerComponent: sizeof(F32),
+        dataOffset: ot0,
         dataStride: stride))
     }
     

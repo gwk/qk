@@ -96,4 +96,5 @@ func +(a: CGPoint, s: Flt) -> CGPoint { return CGPoint(a.x + s, a.y + s) }
 func -(a: CGPoint, s: Flt) -> CGPoint { return CGPoint(a.x - s, a.y - s) }
 func *(a: CGPoint, s: Flt) -> CGPoint { return CGPoint(a.x * s, a.y * s) }
 func /(a: CGPoint, s: Flt) -> CGPoint { return CGPoint(a.x / s, a.y / s) }
+prefix func -(a: CGPoint) -> CGPoint { return a * -1 }
 

@@ -17,6 +17,7 @@ def gen_vec(orig_type, dim, s_type, fs_type, v_type, v_prev, is_simd, is_novel):
   comps_colors = list(zip('la' if dim == 2 else 'rgba', comps))
   public = 'public ' if not is_simd else ''
   is_float = s_type.startswith('F')
+  is_signed = not s_type.startswith('U')
   needs_eq = is_simd or is_novel
 
   protocols = [fmt('VecType$', dim)]
@@ -141,6 +142,9 @@ def gen_vec(orig_type, dim, s_type, fs_type, v_type, v_prev, is_simd, is_novel):
   for op in ops:
     cons_comps_s = jc(fmt('$ $ s', a, op) for a in comps_a) # e.g. 'a.x + s'.
     outL('func $(a: $, s: $) -> $ { return $($) }', op, v_type, s_type, v_type, v_type, cons_comps_s)
+
+  if is_signed:
+    outL('prefix func -(a: $) -> $ { return a * -1 }', v_type, v_type)
 
   outL('')
 

@@ -95,6 +95,7 @@ func +(a: V2S, s: F32) -> V2S { return V2S(a.x + s, a.y + s) }
 func -(a: V2S, s: F32) -> V2S { return V2S(a.x - s, a.y - s) }
 func *(a: V2S, s: F32) -> V2S { return V2S(a.x * s, a.y * s) }
 func /(a: V2S, s: F32) -> V2S { return V2S(a.x / s, a.y / s) }
+prefix func -(a: V2S) -> V2S { return a * -1 }
 
 public func ==(a: V2S, b: V2S) -> Bool {
   return a.x == b.x && a.y == b.y
@@ -191,6 +192,7 @@ func +(a: V2D, s: F64) -> V2D { return V2D(a.x + s, a.y + s) }
 func -(a: V2D, s: F64) -> V2D { return V2D(a.x - s, a.y - s) }
 func *(a: V2D, s: F64) -> V2D { return V2D(a.x * s, a.y * s) }
 func /(a: V2D, s: F64) -> V2D { return V2D(a.x / s, a.y / s) }
+prefix func -(a: V2D) -> V2D { return a * -1 }
 
 public func ==(a: V2D, b: V2D) -> Bool {
   return a.x == b.x && a.y == b.y
@@ -276,6 +278,7 @@ func +(a: V2I, s: Int) -> V2I { return V2I(a.x + s, a.y + s) }
 func -(a: V2I, s: Int) -> V2I { return V2I(a.x - s, a.y - s) }
 func *(a: V2I, s: Int) -> V2I { return V2I(a.x * s, a.y * s) }
 func /(a: V2I, s: Int) -> V2I { return V2I(a.x / s, a.y / s) }
+prefix func -(a: V2I) -> V2I { return a * -1 }
 
 public func ==(a: V2I, b: V2I) -> Bool {
   return a.x == b.x && a.y == b.y
@@ -460,6 +463,7 @@ func +(a: V3S, s: F32) -> V3S { return V3S(a.x + s, a.y + s, a.z + s) }
 func -(a: V3S, s: F32) -> V3S { return V3S(a.x - s, a.y - s, a.z - s) }
 func *(a: V3S, s: F32) -> V3S { return V3S(a.x * s, a.y * s, a.z * s) }
 func /(a: V3S, s: F32) -> V3S { return V3S(a.x / s, a.y / s, a.z / s) }
+prefix func -(a: V3S) -> V3S { return a * -1 }
 
 public func ==(a: V3S, b: V3S) -> Bool {
   return a.x == b.x && a.y == b.y && a.z == b.z
@@ -558,6 +562,7 @@ func +(a: V3D, s: F64) -> V3D { return V3D(a.x + s, a.y + s, a.z + s) }
 func -(a: V3D, s: F64) -> V3D { return V3D(a.x - s, a.y - s, a.z - s) }
 func *(a: V3D, s: F64) -> V3D { return V3D(a.x * s, a.y * s, a.z * s) }
 func /(a: V3D, s: F64) -> V3D { return V3D(a.x / s, a.y / s, a.z / s) }
+prefix func -(a: V3D) -> V3D { return a * -1 }
 
 public func ==(a: V3D, b: V3D) -> Bool {
   return a.x == b.x && a.y == b.y && a.z == b.z
@@ -641,6 +646,7 @@ func +(a: V3I, s: Int) -> V3I { return V3I(a.x + s, a.y + s, a.z + s) }
 func -(a: V3I, s: Int) -> V3I { return V3I(a.x - s, a.y - s, a.z - s) }
 func *(a: V3I, s: Int) -> V3I { return V3I(a.x * s, a.y * s, a.z * s) }
 func /(a: V3I, s: Int) -> V3I { return V3I(a.x / s, a.y / s, a.z / s) }
+prefix func -(a: V3I) -> V3I { return a * -1 }
 
 public func ==(a: V3I, b: V3I) -> Bool {
   return a.x == b.x && a.y == b.y && a.z == b.z
@@ -817,6 +823,7 @@ func +(a: V4S, s: F32) -> V4S { return V4S(a.x + s, a.y + s, a.z + s, a.w + s) }
 func -(a: V4S, s: F32) -> V4S { return V4S(a.x - s, a.y - s, a.z - s, a.w - s) }
 func *(a: V4S, s: F32) -> V4S { return V4S(a.x * s, a.y * s, a.z * s, a.w * s) }
 func /(a: V4S, s: F32) -> V4S { return V4S(a.x / s, a.y / s, a.z / s, a.w / s) }
+prefix func -(a: V4S) -> V4S { return a * -1 }
 
 public func ==(a: V4S, b: V4S) -> Bool {
   return a.x == b.x && a.y == b.y && a.z == b.z && a.w == b.w
@@ -909,6 +916,7 @@ func +(a: V4D, s: F64) -> V4D { return V4D(a.x + s, a.y + s, a.z + s, a.w + s) }
 func -(a: V4D, s: F64) -> V4D { return V4D(a.x - s, a.y - s, a.z - s, a.w - s) }
 func *(a: V4D, s: F64) -> V4D { return V4D(a.x * s, a.y * s, a.z * s, a.w * s) }
 func /(a: V4D, s: F64) -> V4D { return V4D(a.x / s, a.y / s, a.z / s, a.w / s) }
+prefix func -(a: V4D) -> V4D { return a * -1 }
 
 public func ==(a: V4D, b: V4D) -> Bool {
   return a.x == b.x && a.y == b.y && a.z == b.z && a.w == b.w
@@ -987,6 +995,7 @@ func +(a: V4I, s: Int) -> V4I { return V4I(a.x + s, a.y + s, a.z + s, a.w + s) }
 func -(a: V4I, s: Int) -> V4I { return V4I(a.x - s, a.y - s, a.z - s, a.w - s) }
 func *(a: V4I, s: Int) -> V4I { return V4I(a.x * s, a.y * s, a.z * s, a.w * s) }
 func /(a: V4I, s: Int) -> V4I { return V4I(a.x / s, a.y / s, a.z / s, a.w / s) }
+prefix func -(a: V4I) -> V4I { return a * -1 }
 
 public func ==(a: V4I, b: V4I) -> Bool {
   return a.x == b.x && a.y == b.y && a.z == b.z && a.w == b.w

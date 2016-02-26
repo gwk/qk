@@ -96,4 +96,5 @@ func +(a: CGVector, s: Flt) -> CGVector { return CGVector(a.x + s, a.y + s) }
 func -(a: CGVector, s: Flt) -> CGVector { return CGVector(a.x - s, a.y - s) }
 func *(a: CGVector, s: Flt) -> CGVector { return CGVector(a.x * s, a.y * s) }
 func /(a: CGVector, s: Flt) -> CGVector { return CGVector(a.x / s, a.y / s) }
+prefix func -(a: CGVector) -> CGVector { return a * -1 }
 

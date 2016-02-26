@@ -98,4 +98,5 @@ func +(a: V3, s: Flt) -> V3 { return V3(a.x + s, a.y + s, a.z + s) }
 func -(a: V3, s: Flt) -> V3 { return V3(a.x - s, a.y - s, a.z - s) }
 func *(a: V3, s: Flt) -> V3 { return V3(a.x * s, a.y * s, a.z * s) }
 func /(a: V3, s: Flt) -> V3 { return V3(a.x / s, a.y / s, a.z / s) }
+prefix func -(a: V3) -> V3 { return a * -1 }
 

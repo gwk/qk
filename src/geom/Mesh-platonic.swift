@@ -9,20 +9,20 @@ extension Mesh {
   class func tetrahedron() -> Mesh {
     // returns a tetrahedron with vertex radius of 1.
     let r: Flt = sqrt(1.0 / 3.0); // radius of insphere.
-    let m = Mesh(name: "tetrahedron")
-    m.positions = [
+    let mesh = Mesh(name: "tetrahedron")
+    mesh.positions = [
       V3(-r, -r, -r), // cube 0.
       V3(-r,  r,  r), // cube 3.
       V3( r, -r,  r), // cube 5.
       V3( r,  r, -r), // cube 6.
     ]
-    m.triangles = [
+    mesh.triangles = [
       Tri(0, 1, 3),
       Tri(0, 2, 1),
       Tri(0, 3, 2),
       Tri(1, 2, 3),
     ]
-    m.adjacencies = [
+    mesh.adjacencies = [
       Adj(0, 1),
       Adj(0, 2),
       Adj(0, 3),
@@ -30,14 +30,15 @@ extension Mesh {
       Adj(1, 3),
       Adj(2, 3),
     ]
-    return m
+    mesh.addNormalsFromOriginToPositions()
+    return mesh
   }
 
   class func cube() -> Mesh {
     // returns a cube with vertex radius of 1.
     let r: Flt = sqrt(1.0 / 3.0); // radius of insphere.
-    let m = Mesh(name: "cube")
-    m.positions = [
+    let mesh = Mesh(name: "cube")
+    mesh.positions = [
       V3(-r, -r, -r),
       V3(-r, -r,  r),
       V3(-r,  r, -r),
@@ -47,7 +48,7 @@ extension Mesh {
       V3( r,  r, -r),
       V3( r,  r,  r),
     ]
-    m.segments = [
+    mesh.segments = [
       Seg(0, 1),
       Seg(0, 2),
       Seg(0, 4),
@@ -61,7 +62,7 @@ extension Mesh {
       Seg(5, 7),
       Seg(6, 7),
     ]
-    m.triangles = [
+    mesh.triangles = [
       Tri(0, 1, 3),
       Tri(0, 2, 6),
       Tri(0, 3, 2),
@@ -75,13 +76,14 @@ extension Mesh {
       Tri(4, 6, 7),
       Tri(4, 7, 5),
     ]
-    return m
+    mesh.addNormalsFromOriginToPositions()
+    return mesh
   }
 
   class func octahedron() -> Mesh {
     // returns an octahedron with vertex radius of 1.
-    let m = Mesh(name: "octahedron")
-    m.positions = [
+    let mesh = Mesh(name: "octahedron")
+    mesh.positions = [
       V3(-1, -0,  0),
       V3( 0, -1,  0),
       V3( 0,  0, -1),
@@ -89,7 +91,7 @@ extension Mesh {
       V3( 0,  1,  0),
       V3( 1,  0,  0),
     ]
-    m.triangles = [
+    mesh.triangles = [
       Tri(0, 1, 3),
       Tri(0, 2, 1),
       Tri(0, 3, 4),
@@ -99,7 +101,7 @@ extension Mesh {
       Tri(2, 4, 5),
       Tri(3, 5, 4),
     ]
-    m.adjacencies = [
+    mesh.adjacencies = [
       Adj(0, 1),
       Adj(0, 2),
       Adj(0, 5),
@@ -113,7 +115,8 @@ extension Mesh {
       Adj(5, 7),
       Adj(6, 7),
     ]
-    return m
+    mesh.addNormalsFromOriginToPositions()
+    return mesh
   }
 
   class func dodecahedron() -> Mesh {
@@ -217,6 +220,7 @@ extension Mesh {
       Tri(13, 18, 19),
       Tri(13, 19, 17),
     ]
+    mesh.addNormalsFromOriginToPositions()
     return mesh
   }
 
@@ -297,6 +301,7 @@ extension Mesh {
       Adj(17, 19),
       Adj(18, 19),
     ]
+    mesh.addNormalsFromOriginToPositions()
     return mesh
   }
 }

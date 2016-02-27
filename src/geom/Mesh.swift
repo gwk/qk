@@ -24,9 +24,9 @@ class Mesh {
   var boneIndices: [BoneIndices] = []
   #endif
 
-  var points: [U16] = []
-  var segments: [Seg] = []
-  var triangles: [Tri] = []
+  var points: [Int] = []
+  var segments: [Seg<Int>] = []
+  var triangles: [Tri<Int>] = []
   var adjacencies: [Adj] = []
 
   init(name: String? = nil) {
@@ -40,14 +40,14 @@ class Mesh {
     }
   }
   
-  func addNormFromPos() {
+  func addNormalsFromOriginToPositions() {
     assert(normals.isEmpty)
     for pos in positions {
       normals.append(pos.norm)
     }
   }
   
-  func addColFromPos() {
+  func addColorsFromPositions() {
     assert(colors.isEmpty)
     for pos in positions {
       let color3 = (pos * 0.5 + 0.5).clampToUnit
@@ -57,26 +57,69 @@ class Mesh {
   
   func addAllPoints() {
     for i in 0..<positions.count {
-      points.append(U16(i))
+      points.append(i)
     }
   }
   
-  func addAllSegs() {
+  func addAllSegments() {
     for i in 0..<positions.count {
       for j in (i + 1)..<positions.count {
-        segments.append(Seg(U16(i), U16(j)))
+        segments.append(Seg(i, j))
       }
     }
   }
-  
+
+  func addAllSegmentsLessThan(len: Flt) {
+    for (i, a) in positions.enumerate() {
+      for j in (i + 1)..<positions.count {
+        let b = positions[j]
+        let d = a.dist(b)
+        if d > 0 && d < len {
+          print(d, a, b)
+          segments.append(Seg(i, j))
+        }
+      }
+    }
+  }
+
+  func addTrianglesFromSegments() {
+    for (i, s) in segments.enumerate() {
+      for j in (i + 1)..<segments.count {
+        let t = segments[j]
+        assert(s.a < t.a || (s.a == t.a && s.b < t.b))
+        for k in (j + 1)..<segments.count {
+          let u = segments[k]
+          assert(t.a < u.a || (t.a == u.a && t.b < u.b))
+          if s.a == t.a && s.b == u.a && t.b == u.b {
+            let a = s.a
+            let b = s.b
+            let c = t.b
+            var tri = Tri(a, b, c)
+            let va = positions[a]
+            let vb = positions[b]
+            let vc = positions[c]
+            let center = (va + vb + vc) / 3
+            let edge0 = vb - va
+            let edge1 = vc - va
+            let normal = edge0.cross(edge1)
+            if center.dot(normal) < 0 {
+              tri = tri.swizzled
+            }
+            triangles.append(tri)
+          }
+        }
+      }
+    }
+  }
+
   func addSeg(a: V3, _ b: V3) {
-    let i = U16(positions.count)
+    let i = positions.count
     positions.appendContentsOf([a, b])
     segments.append(Seg(i, i + 1))
   }
   
   func addQuad(a: V3, _ b: V3, _ c: V3, _ d: V3) {
-    let i = U16(positions.count)
+    let i = positions.count
     positions.appendContentsOf([a, b, c, d])
     triangles.appendContentsOf([Tri(i, i + 1, i + 2), Tri(i, i + 2, i + 3)])
   }
@@ -202,29 +245,24 @@ class Mesh {
         dataStride: stride))
     }
     
-    var elements: [SCNGeometryElement] = []
+    let element: SCNGeometryElement
+    let isSmall = (positions.count <= Int(U16.max))
     switch kind {
-      case GeomKind.Point:
-        elements.append(SCNGeometryElement(
-          data: NSData(bytes: points, length: points.count * sizeof(U16)),
-          primitiveType: SCNGeometryPrimitiveType.Point,
-          primitiveCount: points.count,
-          bytesPerIndex: sizeof(U16)))
-      case GeomKind.Seg:
-        elements.append(SCNGeometryElement(
-          data: NSData(bytes: segments, length: segments.count * sizeof(Seg)),
-          primitiveType: SCNGeometryPrimitiveType.Line,
-          primitiveCount: segments.count,
-          bytesPerIndex: sizeof(U16)))
-      case GeomKind.Tri:
-        elements.append(SCNGeometryElement(
-          data: NSData(bytes: triangles, length: triangles.count * sizeof(Tri)),
-          primitiveType: SCNGeometryPrimitiveType.Triangles,
-          primitiveCount: triangles.count,
-          bytesPerIndex: sizeof(U16)))
+    case GeomKind.Point:
+      element = isSmall
+        ? SCNGeometryElement(points: points.map { U16($0) })
+        : SCNGeometryElement(points: points.map { U32($0) })
+    case GeomKind.Seg:
+      element = isSmall
+        ? SCNGeometryElement(segments: segments.map { Seg<U16>($0) })
+        : SCNGeometryElement(segments: segments.map { Seg<U32>($0) })
+    case GeomKind.Tri:
+      element = isSmall
+        ? SCNGeometryElement(triangles: triangles.map { Tri<U16>($0) })
+        : SCNGeometryElement(triangles: triangles.map { Tri<U32>($0) })
     }
 
-    return SCNGeometry(sources: sources, elements: elements)
+    return SCNGeometry(sources: sources, elements: [element])
   }
   
   class func triangle() -> Mesh {
@@ -242,3 +280,4 @@ class Mesh {
     return m
   }
 }
+

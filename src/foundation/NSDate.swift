@@ -5,7 +5,9 @@ import Foundation
 
 let secPerDay: NSTimeInterval = 24 * 60 * 60
 
-extension NSDate {
+public func <(l: NSDate, r: NSDate) -> Bool { return l.compare(r) == .OrderedAscending }
+
+extension NSDate: Comparable {
   
   var refTime: NSTimeInterval { return timeIntervalSinceReferenceDate }
   var unixTime: NSTimeInterval { return timeIntervalSince1970 }

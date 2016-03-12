@@ -3,7 +3,10 @@
 import Foundation
 
 
-let secPerDay: NSTimeInterval = 24 * 60 * 60
+let secPerMin: Time = 60
+let secPerHour: Time = secPerMin * 60
+let secPerDay: Time = secPerHour * 24
+
 
 public func <(l: NSDate, r: NSDate) -> Bool { return l.compare(r) == .OrderedAscending }
 

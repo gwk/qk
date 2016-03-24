@@ -26,14 +26,14 @@ src/scn/V4-generated.swift: tools/gen-vec.py
 	$^ V4 4 Flt Flt SceneKit > $@
 
 
-_bld/gen-cd-entities: src/core/*.swift src/cd/*.swift src/foundation/*.swift src/std/*.swift tools/gen-cd-entities.swift tools/main.swift
-	mkdir -p _bld
+_build/gen-cd-entities: src/core/*.swift src/cd/*.swift src/foundation/*.swift src/std/*.swift tools/gen-cd-entities.swift tools/main.swift
+	mkdir -p _build
 	xcrun -sdk macosx swiftc $^ -o $@
 
 .PHONY: default clean gen all cd core cr foundation geom gl img ios scn std parse
 
 clean:
-	rm -rf _bld
+	rm -rf _build
 	rm -f \
 	src/core/mat-generated.swift \
 	src/core/vec-generated.swift \
@@ -50,7 +50,7 @@ gen: \
 	src/scn/V4-generated.swift
 
 # all real targets.
-all: _bld/gen-cd-entities gen
+all: _build/gen-cd-entities gen
 
 # parse targets ordered by dependency.
 

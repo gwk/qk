@@ -9,6 +9,9 @@ project.xcworkspace
 # python
 __pycache__
 
+# swift
+.build
+
 # qk
-_bld
+_build
 _misc

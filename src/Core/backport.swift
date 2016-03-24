@@ -2,8 +2,6 @@
 
 // backport swift 3.0 features to swift 2.0 wherever possible.
 
-import Foundation
-
 
 typealias BidirectionalIndex = BidirectionalIndexType
 typealias Collection = CollectionType
@@ -68,7 +66,7 @@ extension String {
   }
 
   init?(validatingUTF8: UnsafePointer<CChar>) {
-    guard let s = String(UTF8String: validatingUTF8) else { return nil }
+    guard let s = String.fromCString(validatingUTF8) else { return nil }
     self = s
   }
 }

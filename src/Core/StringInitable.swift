@@ -3,7 +3,7 @@
 import Foundation
 
 
-final class StringConversionError: ErrorType {
+final class StringConversionError: ErrorProtocol {
   let exp: Any.Type
   let string: String
 

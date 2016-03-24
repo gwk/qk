@@ -6,7 +6,7 @@ import CoreGraphics
 
 extension CGImage {
 
-  enum Error: ErrorType {
+  enum Error: ErrorProtocol {
     case JPEG(path: String)
     case Path(path: String)
     case PathExtension(path: String)

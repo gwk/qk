@@ -3,7 +3,7 @@
 import Dispatch
 
 
-struct DispatchFileModes: OptionSetType, CustomStringConvertible {
+struct DispatchFileModes: OptionSet, CustomStringConvertible {
   
   let rawValue: Uns
   

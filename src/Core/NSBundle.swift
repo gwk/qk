@@ -5,8 +5,10 @@ import Foundation
 
 extension NSBundle {
 
+  public class var main: NSBundle { return NSBundle.mainBundle() }
+  
   class func resPath(name: String) -> String {
-    return mainBundle().pathForResource(name, ofType: nil)!
+    return main.pathForResource(name, ofType: nil)!
   }
 
   class func textNamed(name: String) throws -> String {

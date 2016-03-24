@@ -11,7 +11,7 @@ class AtmCounters {
   private var _counters: Array<I64>
   
   init(count: Int) {
-    _counters = Array<I64>(count: count, repeatedValue: 0)
+    _counters = Array<I64>(repeating: 0, count: count)
   }
   
   var count: Int { return _counters.count }

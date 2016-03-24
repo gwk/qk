@@ -69,7 +69,7 @@ extension Dictionary where Value: DefaultInitializable {
 extension Dictionary where Key: Comparable {
 
   var pairsSortedByKey: [(Key, Value)] {
-    return sort() {
+    return sorted() {
       (a: (k: Key, v: Value), b: (k: Key, v: Value)) in
       return a.k < b.k
     }
@@ -97,7 +97,7 @@ extension Dictionary where Value: AppendableValueType, Value: DefaultInitializab
 
   mutating func appendToValue(key: Key, _ el: Value.Element) {
     var v: Value
-    if let ov = removeValueForKey(key) {
+    if let ov = removeValue(forKey: key) {
       v = ov
     } else {
       v = Value()

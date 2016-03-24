@@ -3,7 +3,7 @@
 import Foundation
 
 
-public struct NSArraySlice: CollectionType, GeneratorType {
+public struct NSArraySlice: Collection, IteratorProtocol {
   public typealias Generator = NSArraySlice
 
   public let array: NSArray

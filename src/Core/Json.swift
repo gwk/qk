@@ -17,13 +17,13 @@ extension NSNull: JsonLeafType {}
 enum Json {
 
   typealias _String = Swift.String
-  enum Error: ErrorType {
+  enum Error: ErrorProtocol {
     case Conversion(exp: Any.Type, json: JsonType) // error in converting the json value to the expected type.
     case ExcessEl(index: Int, exp: Any.Type, json: JsonType) // array is too long.
     case Key(key: _String, json: JsonType)
     case MissingEl(index: Int, json: JsonType) // array is too short.
-    case Other(ErrorType)
-    case Path(_String, ErrorType)
+    case Other(ErrorProtocol)
+    case Path(_String, ErrorProtocol)
     case UnexpectedType(exp: Any.Type, json: JsonType)
   }
 

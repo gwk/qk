@@ -31,7 +31,7 @@ protocol ArithmeticType: IntegerLiteralConvertible, Equatable, Comparable {
   func >=(l: Self, r: Self) -> Bool
 }
 
-protocol ArithmeticFloatType: ArithmeticType, FloatingPointType {
+protocol ArithmeticFloatType: ArithmeticType, FloatingPoint {
   var sqr: Self { get }
   var sqrt: Self { get }
   var ceil: Self { get }
@@ -99,7 +99,7 @@ func sign<T: ArithmeticType>(x: T) -> T {
 }
 
 
-extension SequenceType where Generator.Element: ArithmeticType {
+extension Sequence where Generator.Element: ArithmeticType {
 
   @warn_unused_result
   func sum() -> Generator.Element {

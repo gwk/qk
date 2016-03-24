@@ -3,6 +3,7 @@
 import GameKit
 
 
+@available(OSX 10.11, *)
 extension GKComponent {
   func onAdd() {}
 }

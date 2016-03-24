@@ -3,7 +3,7 @@
 import Foundation
 
 
-extension NSArray: CollectionType {
+extension NSArray: Collection {
   public typealias SubSequence = NSArraySlice
 
   public var startIndex: Int { return 0 }

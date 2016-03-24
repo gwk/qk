@@ -30,7 +30,7 @@ class OSNoise2 {
     s = next(s)
     s = next(s)
     var source = Array(0..<size)
-    var perm = Array(count: size, repeatedValue: 0)
+    var perm = Array(repeating: 0, count: size)
     for j in 0..<size {
       let i = size - (1 + j)
       s = next(s)
@@ -175,7 +175,7 @@ class OSNoise2 {
   func multiVal(x: Flt, _ y: Flt, octaveWeights: [Flt]) -> Flt {
     let totalWeight = octaveWeights.sum()
     var v = 0.0
-    for (i, weight) in octaveWeights.enumerate() {
+    for (i, weight) in octaveWeights.enumerated() {
       let scale = Flt(1 << i)
       v += val(x * scale, y * scale) * weight
     }

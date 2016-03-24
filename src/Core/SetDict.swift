@@ -1,7 +1,7 @@
 // © 2016 George King. Permission to use this file is granted in license-qk.txt.
 
 
-struct SetDict<Key: Hashable, SetElement: Hashable>: CollectionType {
+struct SetDict<Key: Hashable, SetElement: Hashable>: Collection {
 
   typealias SetType = SetRef<SetElement>
   typealias DictType = [Key:SetType]
@@ -31,15 +31,17 @@ struct SetDict<Key: Hashable, SetElement: Hashable>: CollectionType {
   func generate() -> Generator { return dict.generate() }
 
   @warn_unused_result
-  func indexForKey(key: Key) -> Index? { return dict.indexForKey(key) }
+  func index(forKey: Key) -> Index? { return dict.index(forKey: forKey) }
 
   mutating func popFirst() -> Element? { return dict.popFirst() }
 
-  mutating func removeAll(keepCapacity keepCapacity: Bool = false) { dict.removeAll(keepCapacity: keepCapacity) }
+  mutating func removeAll(keepCapacity keepCapacity: Bool = false) {
+    dict.removeAll(keepCapacity: keepCapacity)
+  }
 
-  mutating func removeAtIndex(index: Index) -> Element { return dict.removeAtIndex(index) }
+  mutating func remove(at: Index) -> Element { return dict.remove(at: at) }
 
-  mutating func removeValueForKey(key: Key) -> SetType? { return dict.removeValueForKey(key) }
+  mutating func removeValue(forKey: Key) -> SetType? { return dict.removeValue(forKey: forKey) }
 
   subscript (index: Index) -> Element { return dict[index] }
 

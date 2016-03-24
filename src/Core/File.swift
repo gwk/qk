@@ -14,7 +14,7 @@ class File: CustomStringConvertible {
   typealias Stats = Darwin.stat
   typealias Perms = mode_t
 
-  enum Error: ErrorType {
+  enum Error: ErrorProtocol {
     case ChangePerms(path: String, perms: Perms)
     case Copy(from: String, to: String)
     case Open(path: String, msg: String)
@@ -123,7 +123,7 @@ class InFile: File {
     guard len_act == len else { throw Error.Read(path: path, offset: 0, len: len) }
     let charBuffer = unsafeBitCast(buffer, UnsafeMutablePointer<CChar>.self)
     charBuffer[len] = 0 // null terminator.
-    let (s, _) = String.fromCStringRepairingIllFormedUTF8(charBuffer)
+    let s = String(validatingUTF8: charBuffer)
     free(buffer)
     guard let res = s else { throw Error.Utf8Decode(path: path) }
     return res
@@ -150,7 +150,7 @@ class InFile: File {
 }
 
 
-class OutFile: File, OutputStreamType {
+class OutFile: File, OutputStream {
   
   convenience init(path: String, create: Perms? = nil) throws {
     self.init(path: path, descriptor: try File.openDescriptor(path, mode: O_WRONLY | O_TRUNC, create: create))

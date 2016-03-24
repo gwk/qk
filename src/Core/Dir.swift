@@ -7,7 +7,7 @@ class Dir {
 
   typealias Descriptor = UnsafeMutablePointer<Darwin.DIR>
 
-  enum Error: ErrorType {
+  enum Error: ErrorProtocol {
     case Path(String)
   }
 
@@ -30,9 +30,10 @@ class Dir {
       if entryPtr == nil {
         break
       }
+      var d_name = entryPtr.pointee.d_name
       var name = ""
-      withUnsafePointer(&entryPtr.memory.d_name) {
-        name = String.fromCString(UnsafePointer<Int8>($0))!
+      withUnsafePointer(&d_name) {
+        name = String(cString: UnsafePointer<Int8>($0))
       }
       if !includeHidden {
         if name.hasPrefix(".") { continue }

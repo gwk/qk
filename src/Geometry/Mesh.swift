@@ -35,7 +35,7 @@ class Mesh {
 
   func printContents() {
     print("Mesh:")
-    for (i, pos) in positions.enumerate() {
+    for (i, pos) in positions.enumerated() {
       print("  p[\(i)] = \(pos)")
     }
   }
@@ -70,7 +70,7 @@ class Mesh {
   }
 
   func addAllSegmentsLessThan(len: Flt) {
-    for (i, a) in positions.enumerate() {
+    for (i, a) in positions.enumerated() {
       for j in (i + 1)..<positions.count {
         let b = positions[j]
         let d = a.dist(b)
@@ -83,7 +83,7 @@ class Mesh {
   }
 
   func addTrianglesFromSegments() {
-    for (i, s) in segments.enumerate() {
+    for (i, s) in segments.enumerated() {
       for j in (i + 1)..<segments.count {
         let t = segments[j]
         assert(s.a < t.a || (s.a == t.a && s.b < t.b))

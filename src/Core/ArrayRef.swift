@@ -1,7 +1,7 @@
 // © 2015 George King. Permission to use this file is granted in license-qk.txt.
 
 
-class ArrayRef<Element>: CollectionType {
+class ArrayRef<Element>: Collection {
   // pass-by-reference Array type.
   
   typealias Generator = Array<Element>.Generator
@@ -16,7 +16,7 @@ class ArrayRef<Element>: CollectionType {
     resize(count, val: val)
   }
 
-  convenience init<S: SequenceType where S.Generator.Element == Element>(seq: S) {
+  convenience init<S: Sequence where S.Generator.Element == Element>(seq: S) {
     self.init()
     array = Array(seq)
   }
@@ -24,7 +24,7 @@ class ArrayRef<Element>: CollectionType {
   var count: Int { return array.count }
   
   func generate() -> Generator { return array.generate() }
-  
+
   var startIndex: Index { return array.startIndex }
 
   var endIndex: Index { return array.endIndex }

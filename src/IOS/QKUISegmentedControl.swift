@@ -18,7 +18,7 @@ class QKUISegmentedControl: UISegmentedControl {
   convenience init(name: String, parent: UIView?, titles: [String]) {
     self.init(frame: frameInit)
     helpInit(name: name, parent: parent, flex: nil)
-    for (i, t) in titles.enumerate() {
+    for (i, t) in titles.enumerated() {
       self.insertSegmentWithTitle(t, atIndex: i, animated: false)
     }
   }

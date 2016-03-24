@@ -5,7 +5,7 @@ enum Chain<T> {
   case End
   indirect case Link(T, Chain)
   
-  init<C: CollectionType where C.Generator.Element == T, C.Index: BidirectionalIndexType>(_ collection: C) {
+  init<C: Collection where C.Generator.Element == T, C.Index: BidirectionalIndex>(_ collection: C) {
     var c: Chain<T> = .End
     for e in collection.reverse() {
       c = Chain.Link(e, c)

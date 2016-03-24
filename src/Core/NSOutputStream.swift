@@ -3,7 +3,7 @@
 import Foundation
 
 
-extension NSOutputStream: OutputStreamType {
+extension NSOutputStream: OutputStream {
   
   public func write(string: String) {
     string.asUtf8() {

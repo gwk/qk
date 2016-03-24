@@ -12,13 +12,13 @@ let symbolTailCharsSet = Set(symbolTailChars)
 
 extension String {
   
-  init(count: Int, char: Character) {
-    // count:repeatedValue: is overloaded, so character literals fail as ambiguous.
-    self.init(count: count, repeatedValue: char)
+  init(char: Character, count: Int) {
+    // repeating:count: is overloaded, so character literals fail as ambiguous.
+    self.init(repeating: char, count: count)
   }
   
   init(indent: Int) {
-    self.init(count: indent * 2, char: " ")
+    self.init(char: " ", count: indent * 2)
   }
   
   // MARK: paths
@@ -190,12 +190,13 @@ extension String {
   }
 
   var lines: [String] {
-    return self.characters.split(allowEmptySlices: true) { $0 == "\n" }.map { String($0) }
+    let charLines = self.characters.split("\n", allowEmptySlices: true)
+    return charLines.map { String($0) }
   }
   
   @warn_unused_result
   func numberedLinesFrom(from: Int) -> [String] {
-    return lines.enumerate().map() { (i, line) in " \(line)" }
+    return lines.enumerated().map() { (i, line) in " \(line)" }
   }
   
   var numberedLines: [String] { return numberedLinesFrom(1) }

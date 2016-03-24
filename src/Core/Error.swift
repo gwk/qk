@@ -5,10 +5,10 @@ import Darwin
 
 @warn_unused_result
 func stringForCurrentError() -> String {
-  return String.fromCString(strerror(errno))!
+  return String(cString: strerror(errno))
 }
 
-func checkError(error: ErrorType?) {
+func checkError(error: ErrorProtocol?) {
   if let error = error {
     fail("error: \(error)")
   }

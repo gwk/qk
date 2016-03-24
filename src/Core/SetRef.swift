@@ -1,7 +1,7 @@
 // © 2016 George King. Permission to use this file is granted in license-qk.txt.
 
 
-final class SetRef<Element: Hashable>: CollectionType {
+final class SetRef<Element: Hashable>: Collection {
   // pass-by-reference Set type.
 
   typealias Generator = Set<Element>.Generator
@@ -11,7 +11,7 @@ final class SetRef<Element: Hashable>: CollectionType {
 
   init() {}
 
-  convenience init<S: SequenceType where S.Generator.Element == Element>(_ sequence: S) {
+  convenience init<S: Sequence where S.Generator.Element == Element>(_ sequence: S) {
     self.init()
     set = Set(sequence)
   }
@@ -44,29 +44,29 @@ final class SetRef<Element: Hashable>: CollectionType {
 
   func contains(member: Element) -> Bool { return set.contains(member) }
 
-  func exclusiveOr<S: SequenceType where S.Generator.Element == Element>(sequence: S) -> Set<Element> {
+  func exclusiveOr<S: Sequence where S.Generator.Element == Element>(sequence: S) -> Set<Element> {
     return set.exclusiveOr(sequence)
   }
 
-  func exclusiveOrInPlace<S: SequenceType where S.Generator.Element == Element>(sequence: S) {
+  func exclusiveOrInPlace<S: Sequence where S.Generator.Element == Element>(sequence: S) {
     set.exclusiveOrInPlace(sequence)
   }
 
-  func indexOf(member: Element) -> Index? {
-    return set.indexOf(member)
+  func index(of: Element) -> Index? {
+    return set.index(of: of)
   }
 
   func insert(member: Element) { set.insert(member) }
 
-  func intersect<S : SequenceType where S.Generator.Element == Element>(sequence: S) -> Set<Element> {
+  func intersect<S : Sequence where S.Generator.Element == Element>(sequence: S) -> Set<Element> {
     return set.intersect(sequence)
   }
 
-  func intersectInPlace<S: SequenceType where S.Generator.Element == Element>(sequence: S) {
+  func intersectInPlace<S: Sequence where S.Generator.Element == Element>(sequence: S) {
     set.intersectInPlace(sequence)
   }
 
-  func isDisjointWith<S : SequenceType where S.Generator.Element == Element>(sequence: S) -> Bool {
+  func isDisjointWith<S : Sequence where S.Generator.Element == Element>(sequence: S) -> Bool {
     return set.isDisjointWith(sequence)
   }
 }

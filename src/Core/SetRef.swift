@@ -1,7 +1,7 @@
 // © 2016 George King. Permission to use this file is granted in license-qk.txt.
 
 
-final class SetRef<Element: Hashable>: Collection {
+final class SetRef<Element: Hashable>: Collection, ArrayLiteralConvertible {
   // pass-by-reference Set type.
 
   typealias Generator = Set<Element>.Generator
@@ -11,19 +11,16 @@ final class SetRef<Element: Hashable>: Collection {
 
   init() {}
 
-  convenience init<S: Sequence where S.Generator.Element == Element>(_ sequence: S) {
-    self.init()
-    set = Set(sequence)
+  init<S: Sequence where S.Generator.Element == Element>(_ sequence: S) {
+    self.set = Set(sequence)
   }
 
-  convenience init(arrayLiteral elements: Element...) {
-    self.init()
-    set = Set(elements)
+  init(arrayLiteral elements: Element...) {
+    self.set = Set(elements)
   }
 
-  convenience init(minimumCapacity: Int) {
-    self.init()
-    set = Set(minimumCapacity: minimumCapacity)
+  init(minimumCapacity: Int) {
+    self.set = Set(minimumCapacity: minimumCapacity)
   }
 
   var count: Int { return set.count }
@@ -69,5 +66,7 @@ final class SetRef<Element: Hashable>: Collection {
   func isDisjointWith<S : Sequence where S.Generator.Element == Element>(sequence: S) -> Bool {
     return set.isDisjointWith(sequence)
   }
+
+  func removeAll() { set.removeAll() }
 }
 

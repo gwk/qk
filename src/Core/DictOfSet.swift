@@ -1,7 +1,7 @@
 // © 2016 George King. Permission to use this file is granted in license-qk.txt.
 
 
-struct SetDict<Key: Hashable, SetElement: Hashable>: Collection {
+struct DictOfSet<Key: Hashable, SetElement: Hashable>: Collection {
 
   typealias SetType = SetRef<SetElement>
   typealias DictType = [Key:SetType]

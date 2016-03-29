@@ -17,19 +17,8 @@ extension Array {
   init(repeating: Element, count: Int) { self.init(count: count, repeatedValue: repeating) }
 }
 
-extension Dictionary {
-  func index(forKey key: Key) -> Index? { return indexForKey(key) }
-  mutating func remove(at index: Index) -> (Key, Value) { return removeAtIndex(index) }
-}
-
-extension Set {
-  func index(of el: Element) -> Index? { return indexOf(el) }
-  mutating func remove(at: Index) -> Element { return removeAtIndex(at) }
-}
-
 
 extension Collection {
-
   func sorted(@noescape isOrderedBefore: (Self.Generator.Element, Self.Generator.Element) -> Bool) -> [Generator.Element] {
     return sort(isOrderedBefore)
   }
@@ -41,6 +30,8 @@ extension Collection where Self.Generator.Element: Comparable {
 
 
 extension Dictionary {
+  func index(forKey key: Key) -> Index? { return indexForKey(key) }
+  mutating func remove(at index: Index) -> (Key, Value) { return removeAtIndex(index) }
   mutating func removeValue(forKey key: Key) -> Value? { return removeValueForKey(key) }
 }
 
@@ -49,6 +40,12 @@ extension Sequence {
   func makeIterator() -> Generator { return generate() }
 
   func enumerated() -> EnumerateSequence<Self> { return self.enumerate() }
+}
+
+
+extension Set {
+  func index(of el: Element) -> Index? { return indexOf(el) }
+  mutating func remove(at: Index) -> Element { return removeAtIndex(at) }
 }
 
 
@@ -62,6 +59,10 @@ extension String {
   init?(validatingUTF8: UnsafePointer<CChar>) {
     guard let s = String.fromCString(validatingUTF8) else { return nil }
     self = s
+  }
+
+  init(repeating: Character, count: Int) {
+    self.init(count: count, repeatedValue: repeating)
   }
 }
 

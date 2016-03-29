@@ -11,7 +11,7 @@ let symbolTailCharsSet = Set(symbolTailChars)
 
 
 extension String {
-  
+
   init(char: Character, count: Int) {
     // repeating:count: is overloaded, so character literals fail as ambiguous.
     self.init(repeating: char, count: count)

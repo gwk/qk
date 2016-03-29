@@ -14,13 +14,7 @@ typealias IteratorProtocol = GeneratorType
 
 
 extension Array {
-
-}
-
-
-extension Sequence where Generator.Element == String {
-
-
+  init(repeating: Element, count: Int) { self.init(count: count, repeatedValue: repeating) }
 }
 
 extension Dictionary {

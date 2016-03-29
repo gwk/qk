@@ -2,7 +2,7 @@
 
 
 protocol VecType: Equatable, CustomStringConvertible {
-  associatedtype Scalar: ArithmeticType
+  associatedtype Scalar: ArithmeticProtocol
   associatedtype FloatType: ArithmeticFloatType
   associatedtype VSType
   associatedtype VDType

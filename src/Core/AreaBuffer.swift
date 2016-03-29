@@ -137,7 +137,7 @@ class AreaBuffer<Element>: Collection {
 }
 
 
-extension AreaBuffer where Element: ArithmeticType {
+extension AreaBuffer where Element: ArithmeticProtocol {
 
   func addEl(coord: V2I, _ delta: Element) -> Element {
     var val = el(coord)

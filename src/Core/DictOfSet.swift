@@ -3,7 +3,7 @@
 
 struct DictOfSet<Key: Hashable, SetElement: Hashable>: Collection {
 
-  typealias SetType = SetRef<SetElement>
+  typealias SetType = Ref<Set<SetElement>>
   typealias DictType = [Key:SetType]
   typealias Index = DictType.Index
   typealias Element = DictType.Element
@@ -51,12 +51,12 @@ struct DictOfSet<Key: Hashable, SetElement: Hashable>: Collection {
   }
 
   mutating func insert(key: Key, member: SetElement) {
-    if let set = dict[key] {
-      set.insert(member)
+    if let ref = dict[key] {
+      ref.val.insert(member)
     } else {
-      let set = SetType()
-      set.insert(member)
-      dict[key] = set
+      let ref = SetType([])
+      ref.val.insert(member)
+      dict[key] = ref
     }
   }
 }

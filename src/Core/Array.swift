@@ -12,7 +12,7 @@ extension Array: DefaultInitializable {
     self.reserveCapacity(capacity)
   }
 
-  init<S: Sequence where S.Generator.Element == Generator.Element>(join sequences: S...) {
+  init<S: SequenceType where S.Generator.Element == Generator.Element>(join sequences: S...) {
     self = []
     for s in sequences {
       appendContentsOf(s)

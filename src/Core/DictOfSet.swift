@@ -1,7 +1,7 @@
 // © 2016 George King. Permission to use this file is granted in license-qk.txt.
 
 
-struct DictOfSet<Key: Hashable, SetElement: Hashable>: Collection {
+struct DictOfSet<Key: Hashable, SetElement: Hashable>: CollectionType {
 
   typealias SetType = Ref<Set<SetElement>>
   typealias DictType = [Key:SetType]
@@ -24,9 +24,9 @@ struct DictOfSet<Key: Hashable, SetElement: Hashable>: Collection {
 
   var isEmpty: Bool { return dict.isEmpty }
 
-  var keys: LazyMapCollection<DictType, Key> { return dict.keys }
+  var keys: LazyMapCollectionType<DictType, Key> { return dict.keys }
 
-  var values: LazyMapCollection<DictType, SetType> { return dict.values }
+  var values: LazyMapCollectionType<DictType, SetType> { return dict.values }
 
   func generate() -> Generator { return dict.generate() }
 

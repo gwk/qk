@@ -7,7 +7,7 @@ typealias F32 = Float
 typealias F64 = Double
 
 
-protocol ArithmeticFloat: ArithmeticProtocol, FloatingPoint {
+protocol ArithmeticFloat: ArithmeticProtocol, FloatingPointType {
   var sqr: Self { get }
   var sqrt: Self { get }
   var ceil: Self { get }

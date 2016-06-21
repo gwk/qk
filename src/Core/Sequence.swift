@@ -1,7 +1,7 @@
 // © 2015 George King. Permission to use this file is granted in license-qk.txt.
 
 
-extension Sequence {
+extension SequenceType {
 
   @warn_unused_result
   func group<K: Hashable>(@noescape fn: (Generator.Element) -> K?) -> [K:[Generator.Element]] {
@@ -75,7 +75,7 @@ extension Sequence {
 }
 
 
-extension Sequence where Generator.Element: Equatable {
+extension SequenceType where Generator.Element: Equatable {
 
   @warn_unused_result
   func replace(query: Generator.Element, with: Generator.Element) -> [Generator.Element] {
@@ -91,7 +91,7 @@ extension Sequence where Generator.Element: Equatable {
   }
 
   @warn_unused_result
-  func replace<Q: Collection, W: Collection where Q.Generator.Element == Generator.Element, W.Generator.Element == Generator.Element>(query: Q, with: W) -> [Generator.Element] {
+  func replace<Q: CollectionType, W: CollectionType where Q.Generator.Element == Generator.Element, W.Generator.Element == Generator.Element>(query: Q, with: W) -> [Generator.Element] {
     if query.isEmpty {
       return Array(self)
     }
@@ -125,16 +125,16 @@ extension Sequence where Generator.Element: Equatable {
 }
 
 
-extension Sequence where Generator.Element : Sequence {
+extension SequenceType where Generator.Element : SequenceType {
 
   @warn_unused_result
-  func join() -> JoinSequence<Self> {
+  func join() -> JoinSequenceType<Self> {
     return self.joinWithSeparator( [])
   }
 }
 
 
-extension Sequence where Generator.Element == String {
+extension SequenceType where Generator.Element == String {
 
   @warn_unused_result
   func join() -> String {
@@ -143,7 +143,7 @@ extension Sequence where Generator.Element == String {
 }
 
 
-extension Sequence where Generator.Element == Bool {
+extension SequenceType where Generator.Element == Bool {
 
   @warn_unused_result
   func all() -> Bool {
@@ -168,7 +168,7 @@ extension Sequence where Generator.Element == Bool {
 
 
 @warn_unused_result
-func allZip<S1: Sequence, S2: Sequence>(seq1: S1, _ seq2: S2, predicate: (S1.Generator.Element, S2.Generator.Element) -> Bool) -> Bool {
+func allZip<S1: SequenceType, S2: SequenceType>(seq1: S1, _ seq2: S2, predicate: (S1.Generator.Element, S2.Generator.Element) -> Bool) -> Bool {
   var g2 = seq2.generate()
   for e1 in seq1 {
     guard let e2 = g2.next() else { return false }

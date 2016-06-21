@@ -7,7 +7,7 @@ extension CGSize {
   
   init(_ w: Flt, _ h: Flt) { self.init(width: w, height: h) }
 
-  // TODO: init<V: VecType2>(_ v: V) // requires that Scalar be FloatingPointConvertible or something.
+  // TODO: init<V: VecType2>(_ v: V) // requires that Scalar be FloatingPointTypeConvertible or something.
 
   init(_ v: V2) { self.init(width: v.x, height: v.y) }
 

@@ -1,12 +1,12 @@
 // © 2015 George King. Permission to use this file is granted in license-qk.txt.
 
 
-enum Chain<Element>: IteratorProtocol, Sequence, ArrayLiteralConvertible {
+enum Chain<Element>: GeneratorType, SequenceType, ArrayLiteralConvertible {
 
   case end
   indirect case link(Element, Chain)
   
-  init<C: Collection where C.Generator.Element == Element, C.Index: BidirectionalIndex>(_ collection: C) {
+  init<C: CollectionType where C.Generator.Element == Element, C.Index: BidirectionalIndexType>(_ collection: C) {
     var c: Chain<Element> = .end
     for e in collection.reverse() {
       c = .link(e, c)

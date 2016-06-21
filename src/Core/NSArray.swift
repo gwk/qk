@@ -3,8 +3,8 @@
 import Foundation
 
 
-extension NSArray: Collection {
-  public typealias SubSequence = NSArraySlice
+extension NSArray: CollectionType {
+  public typealias SubSequenceType = NSArraySlice
 
   public var startIndex: Int { return 0 }
   public var endIndex: Int { return count }

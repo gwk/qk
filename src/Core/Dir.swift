@@ -7,7 +7,7 @@ class Dir {
 
   typealias Descriptor = UnsafeMutablePointer<Darwin.DIR>
 
-  enum Error: ErrorProtocol {
+  enum Error: ErrorType {
     case Path(String)
   }
 

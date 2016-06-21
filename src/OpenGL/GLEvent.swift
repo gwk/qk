@@ -10,7 +10,7 @@ enum GLTouchState {
   case Up
 }
 
-struct GLKeyMods: OptionSet {
+struct GLKeyMods: OptionSetType {
   let rawValue: Uns
   init(rawValue: Uns) { self.rawValue = rawValue }
 

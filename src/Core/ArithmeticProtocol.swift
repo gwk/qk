@@ -58,7 +58,7 @@ func sign<T: ArithmeticProtocol>(x: T) -> T {
 }
 
 
-extension Sequence where Generator.Element: ArithmeticProtocol {
+extension SequenceType where Generator.Element: ArithmeticProtocol {
 
   @warn_unused_result
   func sum() -> Generator.Element {

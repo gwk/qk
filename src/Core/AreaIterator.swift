@@ -1,7 +1,7 @@
 // © 2015 George King. Permission to use this file is granted in license.txt.
 
 
-struct AreaIterator: Sequence, IteratorProtocol {
+struct AreaIterator: SequenceType, GeneratorType {
   typealias Element = V2I
   typealias Generator = AreaIterator
 

@@ -1,7 +1,7 @@
 // © 2015 George King. Permission to use this file is granted in license-qk.txt.
 
 
-class AreaBuffer<Element>: Collection {
+class AreaBuffer<Element>: CollectionType {
 
   typealias Generator = Array<Element>.Generator
   typealias Index = Array<Element>.Index
@@ -12,7 +12,7 @@ class AreaBuffer<Element>: Collection {
 
   init() {}
 
-  convenience init<S: Sequence where S.Generator.Element == Element>(size: V2I, seq: S) {
+  convenience init<S: SequenceType where S.Generator.Element == Element>(size: V2I, seq: S) {
     self.init()
     self.size = size
     self.array = Array(seq)

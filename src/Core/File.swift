@@ -14,7 +14,7 @@ class File: CustomStringConvertible {
   typealias Stats = Darwin.stat
   typealias Perms = mode_t
 
-  enum Error: ErrorProtocol {
+  enum Error: ErrorType {
     case ChangePerms(path: String, perms: Perms)
     case Copy(from: String, to: String)
     case Open(path: String, msg: String)
@@ -150,7 +150,7 @@ class InFile: File {
 }
 
 
-class OutFile: File, OutputStream {
+class OutFile: File, OutputStreamType {
   
   convenience init(path: String, create: Perms? = nil) throws {
     self.init(path: path, descriptor: try File.openDescriptor(path, mode: O_WRONLY | O_TRUNC, create: create))

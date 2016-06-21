@@ -8,7 +8,7 @@ func stringForCurrentError() -> String {
   return String(cString: strerror(errno))
 }
 
-func checkError(error: ErrorProtocol?) {
+func checkError(error: ErrorType?) {
   if let error = error {
     fail("error: \(error)")
   }

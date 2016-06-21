@@ -3,7 +3,7 @@
 
 extension Set {
 
-  init<S: Sequence where S.Generator.Element: Sequence, S.Generator.Element.Generator.Element == Element>(seqs: S) {
+  init<S: SequenceType where S.Generator.Element: SequenceType, S.Generator.Element.Generator.Element == Element>(seqs: S) {
     var set = Set()
     for s in seqs {
       set.unionInPlace(s)
@@ -12,7 +12,7 @@ extension Set {
   }
 
   @warn_unused_result
-  static func fromUniqueSeq<S: Sequence where S.Generator.Element == Element>(seq: S) throws -> Set {
+  static func fromUniqueSeq<S: SequenceType where S.Generator.Element == Element>(seq: S) throws -> Set {
     var set: Set = []
     for el in seq {
       if set.contains(el) {

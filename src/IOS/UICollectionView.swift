@@ -3,8 +3,8 @@
 import UIKit
 
 
-extension UICollectionView {
-  convenience init(name: String, parent: UIView? = nil, layout: UICollectionViewLayout) {
+extension UICollectionTypeView {
+  convenience init(name: String, parent: UIView? = nil, layout: UICollectionTypeViewLayout) {
     self.init(frame: frameInit, collectionViewLayout: layout)
     helpInit(name: name, parent: parent, flex: nil)
   }

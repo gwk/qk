@@ -3,7 +3,7 @@
 import Foundation
 
 
-extension NSOutputStream: OutputStream {
+extension NSOutputStreamType: OutputStreamType {
   
   public func write(string: String) {
     string.asUtf8() {
@@ -30,9 +30,9 @@ extension NSOutputStream: OutputStream {
 }
 
 
-func streamTo(path: String, append: Bool = false) -> NSOutputStream? {
+func streamTo(path: String, append: Bool = false) -> NSOutputStreamType? {
   if let url = path.fileUrl {
-    if let s = NSOutputStream(URL: url, append: append) {
+    if let s = NSOutputStreamType(URL: url, append: append) {
       s.open()
       return s
     }

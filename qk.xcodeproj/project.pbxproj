@@ -73,8 +73,6 @@
 		ECD7CADE1D19F1330025E4D2 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD7CA611D19F1330025E4D2 /* Array.swift */; };
 		ECD7CADF1D19F1330025E4D2 /* atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD7CA621D19F1330025E4D2 /* atomic.swift */; };
 		ECD7CAE01D19F1330025E4D2 /* atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD7CA621D19F1330025E4D2 /* atomic.swift */; };
-		ECD7CAE11D19F1330025E4D2 /* backport.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD7CA631D19F1330025E4D2 /* backport.swift */; };
-		ECD7CAE21D19F1330025E4D2 /* backport.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD7CA631D19F1330025E4D2 /* backport.swift */; };
 		ECD7CAE31D19F1330025E4D2 /* Chain.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD7CA641D19F1330025E4D2 /* Chain.swift */; };
 		ECD7CAE41D19F1330025E4D2 /* Chain.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD7CA641D19F1330025E4D2 /* Chain.swift */; };
 		ECD7CAE51D19F1330025E4D2 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD7CA651D19F1330025E4D2 /* Character.swift */; };
@@ -379,7 +377,6 @@
 		ECD7CA601D19F1330025E4D2 /* ArithmeticProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArithmeticProtocol.swift; sourceTree = "<group>"; };
 		ECD7CA611D19F1330025E4D2 /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		ECD7CA621D19F1330025E4D2 /* atomic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = atomic.swift; sourceTree = "<group>"; };
-		ECD7CA631D19F1330025E4D2 /* backport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = backport.swift; sourceTree = "<group>"; };
 		ECD7CA641D19F1330025E4D2 /* Chain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chain.swift; sourceTree = "<group>"; };
 		ECD7CA651D19F1330025E4D2 /* Character.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
 		ECD7CA661D19F1330025E4D2 /* check.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = check.swift; sourceTree = "<group>"; };
@@ -663,7 +660,6 @@
 				ECD7CA601D19F1330025E4D2 /* ArithmeticProtocol.swift */,
 				ECD7CA611D19F1330025E4D2 /* Array.swift */,
 				ECD7CA621D19F1330025E4D2 /* atomic.swift */,
-				ECD7CA631D19F1330025E4D2 /* backport.swift */,
 				ECD7CA641D19F1330025E4D2 /* Chain.swift */,
 				ECD7CA651D19F1330025E4D2 /* Character.swift */,
 				ECD7CA661D19F1330025E4D2 /* check.swift */,
@@ -1126,7 +1122,6 @@
 				ECD7CB521D19F1330025E4D2 /* RotatedIndexIterator.swift in Sources */,
 				ECD7CB841D19F1330025E4D2 /* gl.swift in Sources */,
 				ECD7CB661D19F1330025E4D2 /* vec.swift in Sources */,
-				ECD7CAE21D19F1330025E4D2 /* backport.swift in Sources */,
 				ECD7CA351D19EFA00025E4D2 /* CGPoint-generated.swift in Sources */,
 				ECD7CB381D19F1330025E4D2 /* NSOutputStream.swift in Sources */,
 				ECD7CB6E1D19F1330025E4D2 /* GKEntity.swift in Sources */,
@@ -1286,7 +1281,6 @@
 				ECD7CB831D19F1330025E4D2 /* gl.swift in Sources */,
 				ECD7CB651D19F1330025E4D2 /* vec.swift in Sources */,
 				ECD7CBE71D19F16B0025E4D2 /* QKUITapRecognizer.swift in Sources */,
-				ECD7CAE11D19F1330025E4D2 /* backport.swift in Sources */,
 				ECD7CA341D19EFA00025E4D2 /* CGPoint-generated.swift in Sources */,
 				ECD7CBE01D19F16B0025E4D2 /* QKUIEdgePanRecognizer.swift in Sources */,
 				ECD7CB371D19F1330025E4D2 /* NSOutputStream.swift in Sources */,

@@ -1,7 +1,7 @@
 // © 2015 George King. Permission to use this file is granted in license-qk.txt.
 
 
-extension OutputStream {
+extension OutputStreamType {
 
   mutating func write(items: [Any], sep: String, end: String) {
     var first = true

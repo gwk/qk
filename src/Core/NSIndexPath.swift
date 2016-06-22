@@ -3,10 +3,10 @@
 import Foundation
 
 
-extension NSIndexPath {
+extension IndexPath {
 
-  convenience init(s: Int, r: Int) { self.init(indexes: [s, r], length: 2) }
+  //init(s: Int, r: Int) { init(indexes: [s, r]) }
   
-  convenience init(r: Int) { self.init(indexes: [0, r], length: 2) }
+  //init(r: Int) { init(indexes: [0, r]) }
   
 }

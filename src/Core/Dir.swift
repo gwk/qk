@@ -7,30 +7,30 @@ class Dir {
 
   typealias Descriptor = UnsafeMutablePointer<Darwin.DIR>
 
-  enum Error: ErrorType {
-    case Path(String)
+  enum Error: ErrorProtocol {
+    case path(String)
   }
 
   let path: String
-  private let descriptor: Descriptor
+  private let descriptor: Descriptor?
 
   init(_ path: String) throws {
     self.path = path
     self.descriptor = opendir(path)
     guard descriptor != nil else {
-      throw Error.Path(path)
+      throw Error.path(path)
     }
   }
 
   @warn_unused_result
-  func listNames(prefix prefix: String? = nil, suffix: String? = nil, includeHidden: Bool = false) -> [String] {
+  func listNames(prefix: String? = nil, suffix: String? = nil, includeHidden: Bool = false) -> [String] {
     var names = [String]()
     while true {
       let entryPtr = Darwin.readdir(descriptor)
       if entryPtr == nil {
         break
       }
-      var d_name = entryPtr.pointee.d_name
+      var d_name = entryPtr?.pointee.d_name
       var name = ""
       withUnsafePointer(&d_name) {
         name = String(cString: UnsafePointer<Int8>($0))
@@ -51,7 +51,7 @@ class Dir {
   }
 
   @warn_unused_result
-  func listPaths(prefix prefix: String? = nil, suffix: String? = nil) -> [String] {
+  func listPaths(prefix: String? = nil, suffix: String? = nil) -> [String] {
     return listNames(prefix: prefix, suffix: suffix).map() { "\(path)/\($0)" }
   }
 }

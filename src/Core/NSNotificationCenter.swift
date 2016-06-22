@@ -3,6 +3,6 @@
 import Foundation
 
 
-extension NSNotificationCenter {}
+extension NotificationCenter {}
 
-func noteCenter() -> NSNotificationCenter { return NSNotificationCenter.defaultCenter() }
+func noteCenter() -> NotificationCenter { return NotificationCenter.default() }

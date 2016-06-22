@@ -83,8 +83,8 @@ extension CGRect {
     set { y = newValue - h }
   }
   
-  func inset(dx dx: Flt, dy: Flt) -> CGRect {
-    return CGRectInset(self, dx, dy)
+  func inset(dx: Flt, dy: Flt) -> CGRect {
+    return self.insetBy(dx: dx, dy: dy)
   }
 }
 

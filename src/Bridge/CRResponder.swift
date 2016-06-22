@@ -12,7 +12,7 @@
 extension CRResponder {
   
   #if os(OSX)
-  func insertNextResponder(responder: CRResponder) {
+  func insertNextResponder(_ responder: CRResponder) {
     responder.nextResponder = self.nextResponder
     self.nextResponder = responder
   }

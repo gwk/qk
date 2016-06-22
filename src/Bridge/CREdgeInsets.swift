@@ -2,7 +2,7 @@
 
 #if os(OSX)
   import AppKit
-  typealias CREdgeInsets = NSEdgeInsets
+  typealias CREdgeInsets = EdgeInsets
   #else
   import UIKit
   typealias CREdgeInsets = UIEdgeInsets

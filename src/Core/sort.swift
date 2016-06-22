@@ -2,7 +2,7 @@
 
 
 @warn_unused_result
-func sortQuadIndices(a: Int, _ b: Int, _ c: Int, _ d: Int, cmp: (Int, Int) -> Bool) -> (Int, Int, Int, Int) {
+func sortQuadIndices(_ a: Int, _ b: Int, _ c: Int, _ d: Int, cmp: (Int, Int) -> Bool) -> (Int, Int, Int, Int) {
   let ab = cmp(a, b) ? (0, 1) : (1, 0)
   let cd = cmp(c, d) ? (2, 3) : (3, 2)
   var r0, r1, r2, r3: Int

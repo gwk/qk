@@ -1,13 +1,13 @@
 // © 2016 George King. Permission to use this file is granted in license-qk.txt.
 
 
-struct DictOfSet<Key: Hashable, SetElement: Hashable>: CollectionType {
+struct DictOfSet<Key: Hashable, SetElement: Hashable>: Collection {
 
   typealias SetType = Ref<Set<SetElement>>
   typealias DictType = [Key:SetType]
   typealias Index = DictType.Index
   typealias Element = DictType.Element
-  typealias Generator = DictType.Generator
+  typealias Iterator = DictType.Iterator
 
   private var dict: DictType = [:]
 
@@ -24,24 +24,24 @@ struct DictOfSet<Key: Hashable, SetElement: Hashable>: CollectionType {
 
   var isEmpty: Bool { return dict.isEmpty }
 
-  var keys: LazyMapCollectionType<DictType, Key> { return dict.keys }
+  var keys: LazyMapCollection<DictType, Key> { return dict.keys }
 
-  var values: LazyMapCollectionType<DictType, SetType> { return dict.values }
+  var values: LazyMapCollection<DictType, SetType> { return dict.values }
 
-  func generate() -> Generator { return dict.generate() }
+  func makeIterator() -> Iterator { return dict.makeIterator() }
 
   @warn_unused_result
-  func index(forKey: Key) -> Index? { return dict.index(forKey: forKey) }
+  func index(_ forKey: Key) -> Index? { return dict.index(forKey: forKey) }
 
   mutating func popFirst() -> Element? { return dict.popFirst() }
 
-  mutating func removeAll(keepCapacity keepCapacity: Bool = false) {
-    dict.removeAll(keepCapacity: keepCapacity)
+  mutating func removeAll(keepCapacity: Bool = false) {
+    dict.removeAll(keepingCapacity: keepCapacity)
   }
 
-  mutating func remove(at: Index) -> Element { return dict.remove(at: at) }
+  mutating func remove(_ at: Index) -> Element { return dict.remove(at: at) }
 
-  mutating func removeValue(forKey: Key) -> SetType? { return dict.removeValue(forKey: forKey) }
+  mutating func removeValue(_ forKey: Key) -> SetType? { return dict.removeValue(forKey: forKey) }
 
   subscript (index: Index) -> Element { return dict[index] }
 
@@ -50,7 +50,11 @@ struct DictOfSet<Key: Hashable, SetElement: Hashable>: CollectionType {
     set { dict[key] = newValue }
   }
 
-  mutating func insert(key: Key, member: SetElement) {
+  func index(after i: Index) -> Index {
+    return dict.index(after: i)
+  }
+
+  mutating func insert(_ key: Key, member: SetElement) {
     if let ref = dict[key] {
       ref.val.insert(member)
     } else {

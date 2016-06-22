@@ -3,7 +3,7 @@
 import Foundation
 
 
-func _ftCheck(code: FT_Error, @autoclosure _ message: () -> String = "") {
+func _ftCheck(_ code: FT_Error, _ message: @autoclosure () -> String = "") {
   if code != 0 {
     let s = message()
     fatalError("freetype error: \(s)\n  code: \(code)")
@@ -54,11 +54,11 @@ class Font {
     let metrics: Metrics
     let glyphs: [Glyph]
   }
-  
+
   private static let _fontLib: FT_Library = {
-    var l: FT_Library = nil
+    var l = FT_Library(bitPattern: 0)
     _ftCheck(FT_Init_FreeType(&l), "failed to load freetype library")
-    return l
+    return l!
     }()
   
   private let _face: FT_Face
@@ -72,14 +72,14 @@ class Font {
   
   init(name: String, path: String) {
     self.name = name
-    var f: FT_Face = nil
+    var f = FT_Face(bitPattern: 0)
     let fontEC = FT_New_Face(Font._fontLib, path, 0, &f)
     check(fontEC != FT_Error(FT_Err_Unknown_File_Format), "unsupported font format: \(path)")
     _ftCheck(fontEC, "could not read font: \(path)")
-    _face = f
-    isFixedWidth = Bool(_face.memory.face_flags & FT_FACE_FLAG_FIXED_WIDTH)
+    _face = f!
+    isFixedWidth = Bool(_face.pointee.face_flags & FT_FACE_FLAG_FIXED_WIDTH)
     //font.face_flags & FT_FACE_FLAG_KERNING FT_Get_Kerning
-    let fc = _face.memory
+    let fc = _face.pointee
     if fc.num_fixed_sizes > 0 {
       print("fixed sizes: \(fc.num_fixed_sizes)")
       for i in UnsafeBufferPointer(start: fc.available_sizes, count: Int(fc.num_fixed_sizes)) {
@@ -88,15 +88,15 @@ class Font {
     }
   }
   
-  func strikeForSize(size: F32, chars: [Character]) -> Strike {
+  func strikeForSize(_ size: F32, chars: [Character]) -> Strike {
     
-    func toInt<T: IntegerType>(val: T) -> Int { // convert the 26.6 fixed format to an Int, rounding up.
+    func toInt<T: Integer>(_ val: T) -> Int { // convert the 26.6 fixed format to an Int, rounding up.
       return (Int(val.toIntMax()) + 63) / 64
     }
     
     _ftCheck(FT_Set_Pixel_Sizes(_face, 0, FT_UInt(size)))
-    let f = _face.memory
-    let m = f.size.memory.metrics
+    let f = _face.pointee
+    let m = f.size.pointee.metrics
     assert(m.x_ppem == m.y_ppem)
     
     let lineHeight = toInt(m.height)
@@ -114,7 +114,7 @@ class Font {
       let glyphIndex = FT_Get_Char_Index(self._face, FT_ULong(c.code.value))
       _ftCheck(FT_Load_Glyph(self._face, glyphIndex, FT_Int32(FT_LOAD_RENDER)))
       
-      let g = f.glyph.memory
+      let g = f.glyph.pointee
       let w = Int(g.bitmap.width)
       let h = Int(g.bitmap.rows)
       maxH = max(maxH, h)
@@ -146,9 +146,9 @@ return Strike(metrics: metrics, glyphs: glyphs)
 }
 
 
-extension NSBundle {
+extension Bundle {
   
-  class func fontNamed(name: String) -> Font {
+  class func fontNamed(_ name: String) -> Font {
     let p = resPath(name)
     return Font(name: name, path: p)
   }

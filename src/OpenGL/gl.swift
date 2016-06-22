@@ -16,7 +16,7 @@ import Foundation
 typealias GLHandle = GLuint
 
 
-func glErrorString(code: GLenum) -> String {
+func glErrorString(_ code: GLenum) -> String {
   switch code {
   case GLenum(GL_NO_ERROR): return "GL_NO_ERROR"
   case GLenum(GL_INVALID_ENUM): return "GL_INVALID_ENUM"
@@ -38,8 +38,8 @@ func glCheck() {
   var s = String()
   while code != GLenum(GL_NO_ERROR) {
     let e = glErrorString(code)
-    s.appendContentsOf(" ")
-    s.appendContentsOf(e)
+    s.append(" ")
+    s.append(e)
     code = glGetError()
   }
   fatalError("glCheck: \(s)")
@@ -52,15 +52,15 @@ func glAssert() {
 }
 
 
-func glDeleteTextureHandles(textures: GLHandle...) {
+func glDeleteTextureHandles(_ textures: GLHandle...) {
   glDeleteTextures(GLint(textures.count), textures)
 }
 
 
-func glProvideShaderSource(shader: GLHandle, source: String) {
+func glProvideShaderSource(_ shader: GLHandle, source: String) {
   source.asUtf8() {
     (ptr, len) -> () in
-    let gp = unsafeBitCast(ptr, UnsafePointer<GLchar>.self)
+    let gp = unsafeBitCast(ptr, to: Optional<UnsafePointer<GLchar>>.self)
     let gl = GLint(len)
     let gpa = [gp]
     let gla = [gl]
@@ -70,7 +70,7 @@ func glProvideShaderSource(shader: GLHandle, source: String) {
 }
 
 
-func glContextEnable(ctx: CRGLContext) {
+func glContextEnable(_ ctx: CRGLContext) {
   var ok = false
   #if os(OSX)
     let error = CGLSetCurrentContext(ctx)
@@ -83,7 +83,7 @@ func glContextEnable(ctx: CRGLContext) {
   }
 }
 
-func viewportOriginLetterboxed(origin: CGPoint, contentAR: Flt, canvasAR: Flt) -> CGPoint {
+func viewportOriginLetterboxed(_ origin: CGPoint, contentAR: Flt, canvasAR: Flt) -> CGPoint {
   if contentAR <= 0 || canvasAR <= 0 {
     return origin
   }
@@ -96,7 +96,7 @@ func viewportOriginLetterboxed(origin: CGPoint, contentAR: Flt, canvasAR: Flt) -
 }
 
 
-func viewportScaleLetterboxed(scale: CGPoint, contentAR: Flt, canvasAR: Flt) -> CGPoint {
+func viewportScaleLetterboxed(_ scale: CGPoint, contentAR: Flt, canvasAR: Flt) -> CGPoint {
   if contentAR <= 0 || canvasAR <= 0 {
     return scale
   }
@@ -116,8 +116,8 @@ extension PixFmt {
     // GL_RED, GL_RED_INTEGER, GL_RG, GL_RG_INTEGER, GL_RGB, GL_RGB_INTEGER, GL_RGBA, GL_RGBA_INTEGER, GL_ALPHA,
     // GL_DEPTH_COMPONENT, GL_DEPTH_STENCIL, GL_LUMINANCE_ALPHA, GL_LUMINANCE.
     switch self {
-    case .RGBU8: return GLenum(GL_RGB)
-    case .RGBAU8: return GLenum(GL_RGBA)
+    case .rgbu8: return GLenum(GL_RGB)
+    case .rgbau8: return GLenum(GL_RGBA)
     default:
       fatalError("PixFmt is not mapped to OpenGL data format: \(self)")
     }
@@ -130,8 +130,8 @@ extension PixFmt {
     // GL_UNSIGNED_INT_2_10_10_10_REV, GL_UNSIGNED_INT_10F_11F_11F_REV, GL_UNSIGNED_INT_5_9_9_9_REV,
     // GL_UNSIGNED_INT_24_8, GL_FLOAT_32_UNSIGNED_INT_24_8_REV.
     switch self {
-    case .RGBU8: return GLenum(GL_UNSIGNED_BYTE)
-    case .RGBAU8: return GLenum(GL_UNSIGNED_BYTE)
+    case .rgbu8: return GLenum(GL_UNSIGNED_BYTE)
+    case .rgbau8: return GLenum(GL_UNSIGNED_BYTE)
     default:
       fatalError("PixFmt is not mapped to OpenGL data type: \(self)")
     }

@@ -8,58 +8,56 @@ let secPerHour: Time = secPerMin * 60
 let secPerDay: Time = secPerHour * 24
 
 
-public func <(l: NSDate, r: NSDate) -> Bool { return l.compare(r) == .OrderedAscending }
-
-extension NSDate: Comparable {
+extension Date {
   
-  var refTime: NSTimeInterval { return timeIntervalSinceReferenceDate }
-  var unixTime: NSTimeInterval { return timeIntervalSince1970 }
+  var refTime: TimeInterval { return timeIntervalSinceReferenceDate }
+  var unixTime: TimeInterval { return timeIntervalSince1970 }
   
-  convenience init(refTime: NSTimeInterval) { self.init(timeIntervalSinceReferenceDate: refTime) }
-  convenience init(unixTime: NSTimeInterval) { self.init(timeIntervalSince1970: unixTime) }
+  init(refTime: TimeInterval) { self.init(timeIntervalSinceReferenceDate: refTime) }
+  init(unixTime: TimeInterval) { self.init(timeIntervalSince1970: unixTime) }
     
-  func isSameDayAs(date: NSDate) -> Bool {
-    let units = NSCalendarUnit.preciseToDay
-    let s = NSCalendar.currentCalendar().components(units, fromDate: self)
-    let d = NSCalendar.currentCalendar().components(units, fromDate: date)
+  func isSameDayAs(_ date: Date) -> Bool {
+    let units = Calendar.Unit.preciseToDay
+    let s = Calendar.current().components(units, from: self)
+    let d = Calendar.current().components(units, from: date)
     return s.day == d.day && s.month == d.month && s.year == d.year && s.era == d.era
   }
   
-  var isToday: Bool { return isSameDayAs(NSDate()) }
+  var isToday: Bool { return isSameDayAs(Date()) }
   
-  func plusHours(hours: Double) -> NSDate {
-    return NSDate(timeIntervalSinceReferenceDate: refTime + hours * 60 * 60)
+  func plusHours(_ hours: Double) -> Date {
+    return Date(timeIntervalSinceReferenceDate: refTime + hours * 60 * 60)
   }
   
-  var dayDate: NSDate {
-    let cal = NSCalendar.currentCalendar()
-    let c = cal.components(NSCalendarUnit.preciseToDay, fromDate: self)
+  var dayDate: Date {
+    let cal = Calendar.current()
+    var c = cal.components(Calendar.Unit.preciseToDay, from: self)
     c.hour = 0
     c.minute = 0
     c.second = 0
     c.nanosecond = 0
-    return cal.dateFromComponents(c)!
+    return cal.date(from: c)!
   }
 
-  var nextDayDate: NSDate {
+  var nextDayDate: Date {
     return plusHours(24).dayDate
   }
   
-  func sameTimePlusDays(days: Int) -> NSDate {
-    let cal = NSCalendar.currentCalendar()
-    let t = cal.components(NSCalendarUnit.timeOfDay, fromDate: self)
-    let d = cal.components(NSCalendarUnit.preciseToDay, fromDate: plusHours(24))
+  func sameTimePlusDays(_ days: Int) -> Date {
+    let cal = Calendar.current()
+    let t = cal.components(Calendar.Unit.timeOfDay, from: self)
+    var d = cal.components(Calendar.Unit.preciseToDay, from: plusHours(24))
     d.hour = t.hour
     d.minute = t.minute
     d.second = t.second
     d.nanosecond = t.nanosecond
-    return cal.dateFromComponents(d)!
+    return cal.date(from: d)!
   }
   
   var weekdayFromSundayAs1: Int { // 1-indexed weekday beginning with sunday.
-    let cal = NSCalendar.currentCalendar()
-    let c = cal.components(NSCalendarUnit.Weekday, fromDate: self)
-    return c.weekday
+    let cal = Calendar.current()
+    let c = cal.components(Calendar.Unit.weekday, from: self)
+    return c.weekday!
   }
   
   var weekday: Int { // 0-indexed weekday beginning with monday.
@@ -67,8 +65,8 @@ extension NSDate: Comparable {
   }
   
   var dayAndWeekday: (Int, Int) {
-    let cal = NSCalendar.currentCalendar()
-    let c = cal.components(NSCalendarUnit.dayAndWeekday, fromDate: self)
-    return (c.day, (c.weekday + 5) % 7)
+    let cal = Calendar.current()
+    let c = cal.components(Calendar.Unit.dayAndWeekday, from: self)
+    return (c.day!, (c.weekday! + 5) % 7)
   }
 }

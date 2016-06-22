@@ -27,13 +27,13 @@ class GLTextAtlas {
       if f > maxSize * maxPxPerPt { break }
       sizes.append(f)
     }
-    self.font = NSBundle.fontNamed(fontName)
+    self.font = Bundle.fontNamed(fontName)
     self.chars = chars
     self.sizes = sizes
     self.pages = sizes.mapToDict { return ($0, GLTextPage(font: self.font, fontSize: $0, chars: chars)) }
   }
   
-  func page(size: F32, pxPerPt: F32) -> GLTextPage {
+  func page(_ size: F32, pxPerPt: F32) -> GLTextPage {
     return pages[size * pxPerPt]!
   }
 }

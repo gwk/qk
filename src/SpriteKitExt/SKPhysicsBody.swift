@@ -6,11 +6,11 @@ import SpriteKit
 extension SKPhysicsBody {
 
   convenience init(polygonPoints: [CGPoint]) {
-    self.init(polygonFromPath: CGPath.with(loopPoints: polygonPoints))
+    self.init(polygonFrom: CGPath.with(loopPoints: polygonPoints))
   }
 
   convenience init(edgeLoopPoints: [CGPoint]) {
-    self.init(edgeLoopFromPath: CGPath.with(loopPoints: edgeLoopPoints))
+    self.init(edgeLoopFrom: CGPath.with(loopPoints: edgeLoopPoints))
   }
 
   #if false // this compiles and links but results in unrecognized selector.
@@ -19,11 +19,11 @@ extension SKPhysicsBody {
   }
   #endif
 
-  class func with(size size: CGSize, anchor: CGPoint) -> SKPhysicsBody { // workaround for above.
-    return SKPhysicsBody(rectangleOfSize: size, center: V2(size) * (V2(0.5, 0.5) - anchor))
+  class func with(size: CGSize, anchor: CGPoint) -> SKPhysicsBody { // workaround for above.
+    return SKPhysicsBody(rectangleOf: size, center: V2(size) * (V2(0.5, 0.5) - anchor))
   }
 
-  class func matching(spriteNode spriteNode: SKSpriteNode) -> SKPhysicsBody {
+  class func matching(spriteNode: SKSpriteNode) -> SKPhysicsBody {
     return SKPhysicsBody.with(size: spriteNode.size, anchor: spriteNode.anchorPoint)
   }
 }

@@ -6,7 +6,7 @@ import CoreGraphics
 extension CGPath {
 
   static func with(loopPoints points: [CGPoint]) -> CGPath {
-    let path = CGPathCreateMutable()
+    let path = CGMutablePath()
     path.addLines(points)
     path.closeSubpath()
     return path
@@ -16,15 +16,15 @@ extension CGPath {
 
 extension CGMutablePath {
 
-  func moveToPoint(point: CGPoint) {
-    CGPathMoveToPoint(self, nil, point.x, point.y)
+  func moveToPoint(_ point: CGPoint) {
+    self.moveTo(nil, x: point.x, y: point.y)
   }
 
-  func addLines(points: [CGPoint]) {
-    CGPathAddLines(self, nil, points, points.count)
+  func addLines(_ points: [CGPoint]) {
+    self.addLines(nil, between: points, count: points.count)
   }
 
   func closeSubpath() {
-    CGPathCloseSubpath(self)
+    self.closeSubpath()
   }
 }

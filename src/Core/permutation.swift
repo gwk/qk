@@ -4,7 +4,7 @@ import Foundation
 
 
 @warn_unused_result
-func bitRevPermutation(powerOfTwo: Int) -> [Int] {
+func bitRevPermutation(_ powerOfTwo: Int) -> [Int] {
   var p = [0]
   for _ in 0..<powerOfTwo {
     let p2 = p.map { $0 * 2 }

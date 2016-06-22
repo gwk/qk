@@ -14,7 +14,7 @@ extension Time {
 
 @warn_unused_result
 func sysTime() -> Time {
-  return NSProcessInfo.processInfo().systemUptime
+  return ProcessInfo.processInfo().systemUptime
 }
 
 // note: this is lazily evaluated, so it must be accessed at launch time to initialize accurately.

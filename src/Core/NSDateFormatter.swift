@@ -3,22 +3,22 @@
 import Foundation
 
 
-extension NSDateFormatter {
+extension DateFormatter {
 
   convenience init(_ format: String) {
     self.init()
     dateFormat = format
   }
 
-  convenience init(dateStyle: NSDateFormatterStyle, timeStyle: NSDateFormatterStyle = .NoStyle) {
+  convenience init(dateStyle: DateFormatter.Style, timeStyle: DateFormatter.Style = .noStyle) {
     self.init()
     self.dateStyle = dateStyle
     self.timeStyle = timeStyle
   }
 
-  convenience init(timeStyle: NSDateFormatterStyle) {
+  convenience init(timeStyle: DateFormatter.Style) {
     self.init()
-    self.dateStyle = .NoStyle
+    self.dateStyle = .noStyle
     self.timeStyle = timeStyle
   }
 }

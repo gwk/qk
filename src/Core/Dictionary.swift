@@ -4,22 +4,22 @@
 extension Dictionary {
   
   @warn_unused_result
-  func contains(key: Key) -> Bool {
+  func contains(_ key: Key) -> Bool {
     return self[key] != nil
   }
 
-  mutating func insertNew(key: Key, value: Value) {
+  mutating func insertNew(_ key: Key, value: Value) {
     assert(!contains(key), "insertNew: key already inserted: \(key); value: \(value)")
     self[key] = value
   }
 
-  mutating func updateExisting(key: Key, value: Value) {
+  mutating func updateExisting(_ key: Key, value: Value) {
     assert(contains(key), "updateExisting: key not yet inserted: \(key); value: \(value)")
     self[key] = value
   }
 
   @warn_unused_result
-  func mapVals<V>(@noescape transform: (Value) throws -> V) rethrows -> [Key:V] {
+  func mapVals<V>(transform: @noescape (Value) throws -> V) rethrows -> [Key:V] {
     var d: [Key:V] = [:]
     for (k, v) in self {
       d[k] = try transform(v)
@@ -28,7 +28,7 @@ extension Dictionary {
   }
 
   @warn_unused_result
-  mutating func getDefault(key: Key, @noescape dflt: () -> Value) -> Value {
+  mutating func getDefault(_ key: Key, dflt: @noescape () -> Value) -> Value {
     if let v = self[key] {
       return v
     } else {
@@ -39,7 +39,7 @@ extension Dictionary {
   }
 
   @warn_unused_result
-  mutating func getDefault(key: Key, dflt: Value) -> Value {
+  mutating func getDefault(_ key: Key, dflt: Value) -> Value {
     if let v = self[key] {
       return v
     } else {
@@ -54,7 +54,7 @@ extension Dictionary {
 extension Dictionary where Value: DefaultInitializable {
 
   @warn_unused_result
-  mutating func getDefault(key: Key) -> Value {
+  mutating func getDefault(_ key: Key) -> Value {
     if let v = self[key] {
       return v
     } else {
@@ -68,10 +68,10 @@ extension Dictionary where Value: DefaultInitializable {
 
 extension Dictionary where Key: Comparable {
 
-  var pairsSortedByKey: [(Key, Value)] {
-    return sorted() {
-      (a: (k: Key, v: Value), b: (k: Key, v: Value)) in
-      return a.k < b.k
+  var pairsSortedByKey: [(key: Key, value: Value)] {
+    return self.sorted() {
+      (a, b) in
+      return a.key < b.key
     }
   }
 
@@ -87,7 +87,7 @@ extension Dictionary where Key: Comparable {
 
 protocol AppendableValueType {
   associatedtype Element
-  mutating func append(element: Element)
+  mutating func append(_ element: Element)
 }
 
 
@@ -95,7 +95,7 @@ extension Array: AppendableValueType {}
 
 extension Dictionary where Value: AppendableValueType, Value: DefaultInitializable {
 
-  mutating func appendToValue(key: Key, _ el: Value.Element) {
+  mutating func appendToValue(_ key: Key, _ el: Value.Element) {
     var v: Value
     if let ov = removeValue(forKey: key) {
       v = ov

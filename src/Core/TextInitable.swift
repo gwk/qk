@@ -8,7 +8,7 @@ let textSymHeadChars = Set("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
 let textSymTailChars = textSymHeadChars.union(textDecChars).union(["_"])
 let textFloatChars = textDecChars.union(["."])
 
-struct TextInitableError: ErrorType {
+struct TextInitableError: ErrorProtocol {
   let line: Int
   let col: Int
   let msg: String
@@ -26,7 +26,7 @@ extension TextInitableIntegerType {
       if !textDecChars.contains(text[p]) {
         break
       }
-      p = p.successor()
+      p = text.index(after: p)
     }
     let t = text[pos..<p]
     if let result = Self(t, radix: 10) {

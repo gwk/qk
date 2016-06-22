@@ -28,7 +28,7 @@ extension V4 : VecType4, FloatVecType, CustomStringConvertible, JsonArrayInitabl
   }
   init(jsonArray: JsonArray) throws {
     if jsonArray.count > 4 {
-      throw Json.Error.ExcessEl(index: 4, exp: V4.self, json: jsonArray.raw)
+      throw Json.Error.excessEl(index: 4, exp: V4.self, json: jsonArray.raw)
     }
     self.init(try jsonArray.el(0).conv() as Flt, try jsonArray.el(1).conv() as Flt, try jsonArray.el(2).conv() as Flt, try jsonArray.el(3).conv() as Flt)
   }
@@ -71,11 +71,11 @@ extension V4 : VecType4, FloatVecType, CustomStringConvertible, JsonArrayInitabl
   var toU8Pixel: VU8Type { return VU8Type(U8(clamp(x * 255, min: 0, max: 255)), U8(clamp(y * 255, min: 0, max: 255)), U8(clamp(z * 255, min: 0, max: 255)), U8(clamp(w * 255, min: 0, max: 255))) }
   var heading: Scalar { return atan2(y, x) }
 
-  func dot(b: V4) -> Scalar { return (x * b.x) + (y * b.y) + (z * b.z) + (w * b.w) }
-  func angle(b: V4) -> Scalar { return acos(self.dot(b) / (self.len * b.len)) }
-  func lerp(b: V4, _ t: Scalar) -> V4 { return self * (1 - t) + b * t }
+  func dot(_ b: V4) -> Scalar { return (x * b.x) + (y * b.y) + (z * b.z) + (w * b.w) }
+  func angle(_ b: V4) -> Scalar { return acos(self.dot(b) / (self.len * b.len)) }
+  func lerp(_ b: V4, _ t: Scalar) -> V4 { return self * (1 - t) + b * t }
 
-  func cross(b: V4) -> V4 { return V4(
+  func cross(_ b: V4) -> V4 { return V4(
   y * b.z - z * b.y,
   z * b.x - x * b.z,
   x * b.y - y * b.x,

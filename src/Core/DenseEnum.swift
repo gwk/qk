@@ -8,7 +8,7 @@ protocol DenseEnum {
 }
 
 extension DenseEnum {
-  static var range: Range<Int> { return 0..<count }
+  static var range: CountableRange<Int> { return 0..<count }
   static var allVariants: [Self] { return range.map { Self(rawValue: $0)! } }
 }
 
@@ -28,7 +28,7 @@ struct EnumSetU32<Element: DenseEnum>: ArrayLiteralConvertible {
     self.rawValue = elements.reduce(0) { $0 | 1 << U32($1.rawValue) }
   }
 
-  mutating func add(element: Element) {
+  mutating func add(_ element: Element) {
     rawValue |= U32(1 << element.rawValue)
   }
 }

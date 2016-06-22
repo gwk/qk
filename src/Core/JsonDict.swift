@@ -24,7 +24,7 @@ protocol JsonDictItemInitable {
 extension JsonType {
   func asDict() throws -> JsonDict {
     guard let d = self as? NSDictionary else {
-      throw Json.Error.UnexpectedType(exp: JsonDict.self, json: self)
+      throw Json.Error.unexpectedType(exp: JsonDict.self, json: self)
     }
     return JsonDict(raw: d)
   }
@@ -43,12 +43,12 @@ struct JsonDict: JsonInitable {
   init(json: JsonType) throws {
     if let raw = json as? NSDictionary {
       self.init(raw: raw)
-    } else { throw Json.Error.UnexpectedType(exp: NSDictionary.self, json: json) }
+    } else { throw Json.Error.unexpectedType(exp: NSDictionary.self, json: json) }
   }
 
-  init(data: NSData) throws { self.init(raw: try Json.fromData(data)) }
+  init(data: Data) throws { self.init(raw: try Json.fromData(data)) }
 
-  init(stream: NSInputStream) throws { self.init(raw: try Json.fromStream(stream)) }
+  init(stream: InputStream) throws { self.init(raw: try Json.fromStream(stream)) }
 
   init(path: String) throws { self.init(raw: try Json.fromPath(path)) }
 
@@ -57,13 +57,13 @@ struct JsonDict: JsonInitable {
   }
 
   @warn_unused_result
-  func contains(key: String) -> Bool {
+  func contains(_ key: String) -> Bool {
     return raw[key] != nil
   }
 
   @warn_unused_result
-  func get(key: String) throws -> JsonType {
-    guard let val = raw[key] else { throw Json.Error.Key(key: key, json: raw) }
+  func get(_ key: String) throws -> JsonType {
+    guard let val = raw[key] else { throw Json.Error.key(key: key, json: raw) }
     return val as! JsonType
   }
 

@@ -25,7 +25,7 @@ class GLViewController: CRViewController {
   
 
   #if os(OSX)
-  override func screenDidChange(note: NSNotification?) {
+  override func screenDidChange(_ note: Notification?) {
   let screen: NSScreen = view.window!.screen!
     scaleFactor = screen.backingScaleFactor
     //println("screenDidChange: \(scaleFactor)")

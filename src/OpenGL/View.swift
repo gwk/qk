@@ -74,12 +74,12 @@ class View {
   
   func layout() {}
   
-  func render(pxPerPt: F32, screenSizePt: V2S, offset: V2S) {
+  func render(_ pxPerPt: F32, screenSizePt: V2S, offset: V2S) {
     // glSpace has has range of (-1, 1), hence scaling by 2 from unit scale.
     let scale = V2S(2 / screenSizePt.x, -2 / screenSizePt.y) // scale from ptScale to glScale; flips y.
     let trans = V2S(-1, 1) // translate to glSpace origin; upper left of viewport  is (-1, 1).
     typealias Vertex = (V2S, V2S)
-    func v(x: F32, y: F32) -> Vertex { // transform from viewUnitSpace to glSpace.
+    func v(_ x: F32, y: F32) -> Vertex { // transform from viewUnitSpace to glSpace.
       return (
         ((V2S(x, y) * self.s) + offset) * scale + trans, // glPos.
         V2S( // cornerPos: distance in px from the corner. TODO: implement abs for vectors, use vector math.
@@ -99,7 +99,7 @@ class View {
     glAssert()
   }
   
-  func renderTree(pxPerPt: F32, screenSizePt: V2S, parentOffset: V2S = V2S()) {
+  func renderTree(_ pxPerPt: F32, screenSizePt: V2S, parentOffset: V2S = V2S()) {
     glEnable(GLenum(GL_BLEND))
     glBlendFunc(GLenum(GL_SRC_ALPHA), GLenum(GL_ONE_MINUS_SRC_ALPHA))
     if needsLayout {

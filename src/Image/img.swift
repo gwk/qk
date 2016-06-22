@@ -3,7 +3,7 @@
 import Foundation
 
 
-func lumRepr(img img: [U8], imgSize: V2I, offset: V2I, size: V2I, maxWidth: Int = 64) -> String {
+func lumRepr(img: [U8], imgSize: V2I, offset: V2I, size: V2I, maxWidth: Int = 64) -> String {
   var s = ""
   for j in 0..<size.y {
     let y = offset.y + j
@@ -13,7 +13,7 @@ func lumRepr(img img: [U8], imgSize: V2I, offset: V2I, size: V2I, maxWidth: Int 
       assert(y < imgSize.y)
       let val = Int(img[Int(y * imgSize.x + x)])
       let si = (val == 0) ? "--" : (val == 255 ? "||" : val.hex0(2))
-      s.appendContentsOf(si)
+      s.append(si)
     }
     if Int(size.x) > maxWidth {
       s.append(Character("~"))

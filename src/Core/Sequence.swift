@@ -1,11 +1,11 @@
 // © 2015 George King. Permission to use this file is granted in license-qk.txt.
 
 
-extension SequenceType {
+extension Sequence {
 
   @warn_unused_result
-  func group<K: Hashable>(@noescape fn: (Generator.Element) -> K?) -> [K:[Generator.Element]] {
-    var d: [K:[Generator.Element]] = [:]
+  func group<K: Hashable>(_ fn: @noescape (Iterator.Element) -> K?) -> [K:[Iterator.Element]] {
+    var d: [K:[Iterator.Element]] = [:]
     for e in self {
       if let k = fn(e) {
         d.appendToValue(k, e)
@@ -15,7 +15,7 @@ extension SequenceType {
   }
 
   @warn_unused_result
-  func filterMap<E>(@noescape transform: ((Generator.Element) throws -> E?)) rethrows -> [E] {
+  func filterMap<E>(transform: @noescape (Iterator.Element) throws -> E?) rethrows -> [E] {
     var a: [E] = []
     for e in self {
       if let t = try transform(e) {
@@ -26,7 +26,7 @@ extension SequenceType {
   }
 
   @warn_unused_result
-  func mapToDict<K: Hashable, V>(@noescape transform: (Generator.Element) -> (K, V)) -> [K:V] {
+  func mapToDict<K: Hashable, V>(_ transform: @noescape (Iterator.Element) -> (K, V)) -> [K:V] {
     var d: [K:V] = [:]
     for e in self {
       let (k, v) = transform(e)
@@ -36,7 +36,7 @@ extension SequenceType {
   }
 
   @warn_unused_result
-  func mapUniquesToDict<K: Hashable, V>(@noescape transform: (Generator.Element) -> (K, V)) throws -> [K:V] {
+  func mapUniquesToDict<K: Hashable, V>(_ transform: @noescape (Iterator.Element) -> (K, V)) throws -> [K:V] {
     var d: [K:V] = [:]
     for e in self {
       let (k, v) = transform(e)
@@ -47,7 +47,7 @@ extension SequenceType {
   }
 
   @warn_unused_result
-  func all(@noescape predicate: (Generator.Element) -> Bool) -> Bool {
+  func all(_ predicate: @noescape (Iterator.Element) -> Bool) -> Bool {
     for e in self {
       if !predicate(e) {
         return false
@@ -57,7 +57,7 @@ extension SequenceType {
   }
 
   @warn_unused_result
-  func any(@noescape predicate: (Generator.Element) -> Bool) -> Bool {
+  func any(_ predicate: @noescape (Iterator.Element) -> Bool) -> Bool {
     for e in self {
       if predicate(e) {
         return true
@@ -66,7 +66,7 @@ extension SequenceType {
     return false
   }
 
-  var first: Generator.Element? {
+  var first: Iterator.Element? {
     for first in self {
       return first
     }
@@ -75,11 +75,11 @@ extension SequenceType {
 }
 
 
-extension SequenceType where Generator.Element: Equatable {
+extension Sequence where Iterator.Element: Equatable {
 
   @warn_unused_result
-  func replace(query: Generator.Element, with: Generator.Element) -> [Generator.Element] {
-    var result: [Generator.Element] = []
+  func replace(_ query: Iterator.Element, with: Iterator.Element) -> [Iterator.Element] {
+    var result: [Iterator.Element] = []
     for e in self {
       if e == query {
         result.append(with)
@@ -91,25 +91,25 @@ extension SequenceType where Generator.Element: Equatable {
   }
 
   @warn_unused_result
-  func replace<Q: CollectionType, W: CollectionType where Q.Generator.Element == Generator.Element, W.Generator.Element == Generator.Element>(query: Q, with: W) -> [Generator.Element] {
+  func replace<Q: Collection, W: Collection where Q.Iterator.Element == Iterator.Element, W.Iterator.Element == Iterator.Element>(_ query: Q, with: W) -> [Iterator.Element] {
     if query.isEmpty {
       return Array(self)
     }
-    var buffer: [Generator.Element] = []
-    var result: [Generator.Element] = []
+    var buffer: [Iterator.Element] = []
+    var result: [Iterator.Element] = []
     var i = query.startIndex
     for e in self {
       if e == query[i] {
-        i = i.successor()
+        i = query.index(after: i)
         if i == query.endIndex {
-          result.appendContentsOf(with)
+          result.append(contentsOf: with)
           buffer.removeAll()
           i = query.startIndex
         } else {
           buffer.append(e)
         }
       } else {
-        result.appendContentsOf(buffer)
+        result.append(contentsOf: buffer)
         result.append(e)
         buffer.removeAll()
         i = query.startIndex
@@ -119,31 +119,31 @@ extension SequenceType where Generator.Element: Equatable {
   }
 
   @warn_unused_result
-  func countOccurrencesOf(el: Generator.Element) -> Int {
+  func countOccurrencesOf(_ el: Iterator.Element) -> Int {
     return reduce(0) { $1 == el ? $0 + 1 : $0 }
   }
 }
 
 
-extension SequenceType where Generator.Element : SequenceType {
+extension Sequence where Iterator.Element : Sequence {
 
   @warn_unused_result
-  func join() -> JoinSequenceType<Self> {
-    return self.joinWithSeparator( [])
+  func join() -> JoinedSequence<Self> {
+    return self.joined(separator: [])
   }
 }
 
 
-extension SequenceType where Generator.Element == String {
+extension Sequence where Iterator.Element == String {
 
   @warn_unused_result
   func join() -> String {
-    return joinWithSeparator( "")
+    return joined( separator: "")
   }
 }
 
 
-extension SequenceType where Generator.Element == Bool {
+extension Sequence where Iterator.Element == Bool {
 
   @warn_unused_result
   func all() -> Bool {
@@ -168,8 +168,8 @@ extension SequenceType where Generator.Element == Bool {
 
 
 @warn_unused_result
-func allZip<S1: SequenceType, S2: SequenceType>(seq1: S1, _ seq2: S2, predicate: (S1.Generator.Element, S2.Generator.Element) -> Bool) -> Bool {
-  var g2 = seq2.generate()
+func allZip<S1: Sequence, S2: Sequence>(_ seq1: S1, _ seq2: S2, predicate: (S1.Iterator.Element, S2.Iterator.Element) -> Bool) -> Bool {
+  var g2 = seq2.makeIterator()
   for e1 in seq1 {
     guard let e2 = g2.next() else { return false }
     if !predicate(e1, e2) {

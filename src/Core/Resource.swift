@@ -5,7 +5,7 @@ import Foundation
 
 protocol Reloadable {
   init()
-  mutating func reload(file: InFile) -> Bool
+  mutating func reload(_ file: InFile) -> Bool
 }
 
 
@@ -16,12 +16,12 @@ let resourceRootDir: String = {
     errL("resourceRootDir: using environment \(key): \(path)")
     return path
   }
-  return NSBundle.mainBundle().pathForResource("res", ofType: nil)!
+  return Bundle.main().pathForResource("res", ofType: nil)!
 }()
 
 
 @warn_unused_result
-func pathForResource(resPath: String) -> String {
+func pathForResource(_ resPath: String) -> String {
   return "\(resourceRootDir)/\(resPath)"
 }
 
@@ -69,7 +69,7 @@ class Resource<T: Reloadable> {
       enqueue()
     } catch let e {
       errL("resource file unavailable: \(resPath); error: \(e)")
-      dispatch_after(DispatchTime.fromNow(1), dispatchMainQueue) {
+      dispatchMainQueue.after(when: DispatchTime.fromNow(1)) {
         [weak self] in
         self?.retry()
       }
@@ -77,14 +77,13 @@ class Resource<T: Reloadable> {
   }
 
   func handleEvent() {
-    let m = source!.getData() as dispatch_source_vnode_flags_t
-    let modes = DispatchFileModes(rawValue: m)
-    if modes.contains(.Delete) || modes.contains(.Rename) || modes.contains(.Revoke) {
+    let modes = DispatchSource.FileSystemEvent(rawValue: source!.data)
+    if modes.contains(.delete) || modes.contains(.rename) || modes.contains(.revoke) {
       errL("resource removed (\(modes)): \(resPath)")
       cancelSource()
       return
     }
-    assert(modes == .Write, "unexpected modes: \(modes)")
+    assert(modes == .write, "unexpected modes: \(modes)")
     errL("resource modified: \(resPath)")
     if !file!.rewindMaybe() {
       errL("resource rewind failed: \(resPath)")
@@ -103,7 +102,7 @@ class Resource<T: Reloadable> {
   func enqueue() {
     let cancelFn: Action = { [weak self] in self?.handleCancel() }
     let eventFn: Action = { [weak self] in self?.handleEvent() }
-    source = file!.createDispatchSource([.Delete, .Rename, .Revoke, .Write], cancelFn: cancelFn, eventFn: eventFn)
+    source = file!.createDispatchSource([.delete, .rename, .revoke, .write], cancelFn: cancelFn, eventFn: eventFn)
     source!.resume()
   }
 }

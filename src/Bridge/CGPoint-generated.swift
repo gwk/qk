@@ -49,7 +49,7 @@ extension CGPoint : VecType2, FloatVecType, CustomStringConvertible, JsonArrayIn
   }
   init(jsonArray: JsonArray) throws {
     if jsonArray.count > 2 {
-      throw Json.Error.ExcessEl(index: 2, exp: CGPoint.self, json: jsonArray.raw)
+      throw Json.Error.excessEl(index: 2, exp: CGPoint.self, json: jsonArray.raw)
     }
     self.init(try jsonArray.el(0).conv() as Flt, try jsonArray.el(1).conv() as Flt)
   }
@@ -82,9 +82,9 @@ extension CGPoint : VecType2, FloatVecType, CustomStringConvertible, JsonArrayIn
   var toU8Pixel: VU8Type { return VU8Type(U8(clamp(x * 255, min: 0, max: 255)), U8(clamp(y * 255, min: 0, max: 255))) }
   var heading: Scalar { return atan2(y, x) }
 
-  func dot(b: CGPoint) -> Scalar { return (x * b.x) + (y * b.y) }
-  func angle(b: CGPoint) -> Scalar { return acos(self.dot(b) / (self.len * b.len)) }
-  func lerp(b: CGPoint, _ t: Scalar) -> CGPoint { return self * (1 - t) + b * t }
+  func dot(_ b: CGPoint) -> Scalar { return (x * b.x) + (y * b.y) }
+  func angle(_ b: CGPoint) -> Scalar { return acos(self.dot(b) / (self.len * b.len)) }
+  func lerp(_ b: CGPoint, _ t: Scalar) -> CGPoint { return self * (1 - t) + b * t }
 
 }
 

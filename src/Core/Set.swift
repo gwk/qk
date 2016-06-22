@@ -3,16 +3,16 @@
 
 extension Set {
 
-  init<S: SequenceType where S.Generator.Element: SequenceType, S.Generator.Element.Generator.Element == Element>(seqs: S) {
+  init<S: Sequence where S.Iterator.Element: Sequence, S.Iterator.Element.Iterator.Element == Element>(seqs: S) {
     var set = Set()
     for s in seqs {
-      set.unionInPlace(s)
+      set.formUnion(s)
     }
     self = set
   }
 
   @warn_unused_result
-  static func fromUniqueSeq<S: SequenceType where S.Generator.Element == Element>(seq: S) throws -> Set {
+  static func fromUniqueSeq<S: Sequence where S.Iterator.Element == Element>(_ seq: S) throws -> Set {
     var set: Set = []
     for el in seq {
       if set.contains(el) {
@@ -24,13 +24,13 @@ extension Set {
   }
 
   @warn_unused_result
-  func setByRemoving(member: Element) -> Set<Element> {
+  func setByRemoving(_ member: Element) -> Set<Element> {
     var set = self
     set.remove(member)
     return set
   }
 
-  func setByReplacing(old: Element, with replacement: Element) -> Set<Element> {
+  func setByReplacing(_ old: Element, with replacement: Element) -> Set<Element> {
     var set = self
     let removed = set.remove(old)
     assert(removed != nil)

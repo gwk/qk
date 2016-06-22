@@ -6,13 +6,13 @@ import AppKit
 extension NSViewController {
 
   func updateWindowObserver() {
-    noteCenter().removeObserver(self, name: NSWindowDidChangeBackingPropertiesNotification, object: nil)
+    noteCenter().removeObserver(self, name: NSNotification.Name.NSWindowDidChangeBackingProperties, object: nil)
     noteCenter().addObserver(self,
                              selector: #selector(screenDidChange),
-                             name: NSWindowDidChangeBackingPropertiesNotification,
+                             name: NSNotification.Name.NSWindowDidChangeBackingProperties,
                              object: view.window!)
     screenDidChange(nil)
   }
   
-  func screenDidChange(note: NSNotification?) {}
+  func screenDidChange(_ note: Notification?) {}
 }

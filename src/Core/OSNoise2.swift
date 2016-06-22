@@ -20,7 +20,7 @@ class OSNoise2 {
   let perm: [Int]
 
   init(seed: Int = 0x12345678) {
-    func next(i: Int) -> Int {
+    func next(_ i: Int) -> Int {
       // TODO: find the explanation for these constants.
       return i &* 6364136223846793005 &+ 1442695040888963407
     }
@@ -45,20 +45,20 @@ class OSNoise2 {
   }
 
   @warn_unused_result
-  func extrapolate2(xsb xsb: Int, ysb: Int, dx: Flt, dy: Flt) -> Flt {
+  func extrapolate2(xsb: Int, ysb: Int, dx: Flt, dy: Flt) -> Flt {
     let index = perm[(perm[xsb & 0xFF] + ysb) & 0xFF] & 0x0E
     return Flt(OSNoise2.gradients2D[index]) * dx + Flt(OSNoise2.gradients2D[index + 1]) * dy
   }
 
   @warn_unused_result
-  func fastFloor(x: Flt) -> Int {
+  func fastFloor(_ x: Flt) -> Int {
     let i = Int(x)
     return x < Flt(i) ? i - 1 : i
   }
 
 
   @warn_unused_result
-  func val(x: Flt, _ y: Flt) -> Flt {
+  func val(_ x: Flt, _ y: Flt) -> Flt {
 
     // Place input coordinates onto grid.
     let stretchOffset = (x + y) * OSNoise2.stretchFactor
@@ -172,7 +172,7 @@ class OSNoise2 {
   }
 
   @warn_unused_result
-  func multiVal(x: Flt, _ y: Flt, octaveWeights: [Flt]) -> Flt {
+  func multiVal(_ x: Flt, _ y: Flt, octaveWeights: [Flt]) -> Flt {
     let totalWeight = octaveWeights.sum()
     var v = 0.0
     for (i, weight) in octaveWeights.enumerated() {

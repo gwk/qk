@@ -3,9 +3,9 @@
 import Foundation
 
 
-extension NSOutputStreamType: OutputStreamType {
+extension NSOutputStream: OutputStream {
   
-  public func write(string: String) {
+  public func write(_ string: String) {
     string.asUtf8() {
       (ptr, len) -> () in
       if len > 0 {
@@ -17,12 +17,12 @@ extension NSOutputStreamType: OutputStreamType {
     }
   }
 
-  func writeLn(string: String) {
+  func writeLn(_ string: String) {
     write(string)
     write("\n")
   }
 
-  func writeLines(strings: String...) {
+  func writeLines(_ strings: String...) {
     for s in strings {
       writeLn(s)
     }
@@ -30,9 +30,9 @@ extension NSOutputStreamType: OutputStreamType {
 }
 
 
-func streamTo(path: String, append: Bool = false) -> NSOutputStreamType? {
+func streamTo(_ path: String, append: Bool = false) -> NSOutputStream? {
   if let url = path.fileUrl {
-    if let s = NSOutputStreamType(URL: url, append: append) {
+    if let s = NSOutputStream(url: url, append: append) {
       s.open()
       return s
     }

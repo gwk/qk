@@ -5,43 +5,43 @@ import CoreGraphics
 
 extension CGContext {
 
-  var w: Int { return CGBitmapContextGetWidth(self) }
-  var h: Int { return CGBitmapContextGetHeight(self) }
+  var w: Int { return self.width }
+  var h: Int { return self.height }
   var bounds: CGRect { return CGRect(0, 0, Flt(w), Flt(h)) }
 
-  func scaleCTM(x: Flt, _ y: Flt) { CGContextScaleCTM(self, x, y) }
-  func translateCTM(x: Flt, _ y: Flt) { CGContextTranslateCTM(self, x, y) }
+  func scaleCTM(_ x: Flt, _ y: Flt) { self.scale(x: x, y: y) }
+  func translateCTM(_ x: Flt, _ y: Flt) { self.translate(x: x, y: y) }
 
   func flipCTMHori() {
     translateCTM(Flt(w), 0)
     scaleCTM(-1, 1)
   }
 
-  func setFillColor(r r: Flt, g: Flt, b: Flt, a: Flt = 1) {
-    CGContextSetRGBFillColor(self, r, g, b, a)
+  func setFillColor(r: Flt, g: Flt, b: Flt, a: Flt = 1) {
+    self.setFillColor(red: r, green: g, blue: b, alpha: a)
   }
 
-  func setFillColor(color: V4S) {
-    CGContextSetRGBFillColor(self, Flt(color.r), Flt(color.g), Flt(color.b), Flt(color.a))
+  func setFillColor(_ color: V4S) {
+    self.setFillColor(red: Flt(color.r), green: Flt(color.g), blue: Flt(color.b), alpha: Flt(color.a))
   }
 
-  func setFillColor(color: V3S) {
-    CGContextSetRGBFillColor(self, Flt(color.r), Flt(color.g), Flt(color.b), 1)
+  func setFillColor(_ color: V3S) {
+    self.setFillColor(red: Flt(color.r), green: Flt(color.g), blue: Flt(color.b), alpha: 1)
   }
 
-  func clearRect(rect: CGRect?) {
-    CGContextClearRect(self, rect.or(bounds))
+  func clearRect(_ rect: CGRect?) {
+    self.clear(rect.or(bounds))
   }
 
-  func fillRect(rect: CGRect? = nil) {
-    CGContextFillRect(self, rect.or(bounds))
+  func fillRect(_ rect: CGRect? = nil) {
+    self.fill(rect.or(bounds))
   }
 
-  func drawImage(image: CGImage, rect: CGRect? = nil) {
-    CGContextDrawImage(self, rect.or(bounds), image)
+  func drawImage(_ image: CGImage, rect: CGRect? = nil) {
+    self.draw(in: rect.or(bounds), image: image)
   }
 
   func createImage() -> CGImage {
-    return CGBitmapContextCreateImage(self)!
+    return self.makeImage()!
   }
 }

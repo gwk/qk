@@ -14,13 +14,13 @@ import Foundation
 class GLShader: CustomStringConvertible {
   
   enum Kind: GLenum {
-    case Vert = 0x8B31 // GL_VERTEX_SHADER
-    case Frag = 0x8B30 // GL_FRAGMENT_SHADER
+    case vert = 0x8B31 // GL_VERTEX_SHADER
+    case frag = 0x8B30 // GL_FRAGMENT_SHADER
     
-    static func fromString(string: String) -> Kind? {
+    static func fromString(_ string: String) -> Kind? {
       switch string {
-      case "vert": return .Vert
-      case "frag": return .Frag
+      case "vert": return .vert
+      case "frag": return .frag
       default: return nil
       }
     }
@@ -50,7 +50,7 @@ class GLShader: CustomStringConvertible {
     glAssert()
   }
   
-  func getPar(par: GLenum) -> GLint {
+  func getPar(_ par: GLenum) -> GLint {
     var val: GLint = 0 // returned if error occurs.
     glGetShaderiv(handle, par, &val)
     glAssert()
@@ -59,11 +59,11 @@ class GLShader: CustomStringConvertible {
   
   var infoLog: String {
     let len = Int(getPar(GLenum(GL_INFO_LOG_LENGTH)))
-    var info: [GLchar] = Array(count: len, repeatedValue: 0)
+    var info: [GLchar] = Array(repeating: 0, count: len)
     var lenActual: GLsizei = 0
     glGetShaderInfoLog(handle, GLsizei(len), &lenActual, &info)
     glAssert()
-    return String(UTF8String:info)!
+    return String(validatingUTF8:info)!
   }
   
   init(kind: Kind, name: String, sources: [String]) {
@@ -80,13 +80,13 @@ class GLShader: CustomStringConvertible {
       "shader compile failed: \(name)\n\(infoLog)source:\n\(String(lines: source.numberedLines))\n")
   }
   
-  class func withResources(resources: [String]) throws -> GLShader {
+  class func withResources(_ resources: [String]) throws -> GLShader {
     let ext = NSString(string: resources.last!).pathExtension // TODO: implement pathExtension on String.
     let sources = try resources.map() {
       (name: String) throws -> String in
       let e = NSString(string: name).pathExtension as String // TODO: implement pathExtension on String.
       assert(e == ext, "mismatched shader name extension: \(name)")
-      return try NSBundle.textNamed(name)
+      return try Bundle.textNamed(name)
     }
     let kind = Kind.fromString(ext)!
     return GLShader(kind: kind, name: resources.last!, sources: sources)

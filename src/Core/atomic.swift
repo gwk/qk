@@ -3,8 +3,8 @@
 import Darwin
 
 
-func atmInc(ptr: UnsafeMutablePointer<I64>) { OSAtomicIncrement64(ptr) }
-func atmDec(ptr: UnsafeMutablePointer<I64>) { OSAtomicDecrement64(ptr) }
+func atmInc(_ ptr: UnsafeMutablePointer<I64>) { OSAtomicIncrement64(ptr) }
+func atmDec(_ ptr: UnsafeMutablePointer<I64>) { OSAtomicDecrement64(ptr) }
 
 
 class AtmCounters {
@@ -18,21 +18,21 @@ class AtmCounters {
   
   subscript (idx: Int) -> I64 { return _counters[idx] }
   
-  func withPtr(idx: Int, @noescape body: (UnsafeMutablePointer<I64>) -> ()) {
+  func withPtr(_ idx: Int, body: @noescape (UnsafeMutablePointer<I64>) -> ()) {
     assert(idx < count)
     self._counters.withUnsafeMutableBufferPointer() {
-      (inout buffer: UnsafeMutableBufferPointer<I64>) -> () in
-      body(buffer.baseAddress + idx)
+      (buffer: inout UnsafeMutableBufferPointer<I64>) -> () in
+      body(buffer.baseAddress! + idx)
     }
   }
   
-  func inc(idx: Int) {
+  func inc(_ idx: Int) {
     withPtr(idx) {
       atmInc($0)
     }
   }
   
-  func dec(idx: Int) {
+  func dec(_ idx: Int) {
     withPtr(idx) {
       atmDec($0)
     }

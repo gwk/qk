@@ -17,14 +17,14 @@ extension NSNull: JsonLeafType {}
 enum Json {
 
   typealias _String = Swift.String
-  enum Error: ErrorType {
-    case Conversion(exp: Any.Type, json: JsonType) // error in converting the json value to the expected type.
-    case ExcessEl(index: Int, exp: Any.Type, json: JsonType) // array is too long.
-    case Key(key: _String, json: JsonType)
-    case MissingEl(index: Int, json: JsonType) // array is too short.
-    case Other(ErrorType)
-    case Path(_String, ErrorType)
-    case UnexpectedType(exp: Any.Type, json: JsonType)
+  enum Error: ErrorProtocol {
+    case conversion(exp: Any.Type, json: JsonType) // error in converting the json value to the expected type.
+    case excessEl(index: Int, exp: Any.Type, json: JsonType) // array is too long.
+    case key(key: _String, json: JsonType)
+    case missingEl(index: Int, json: JsonType) // array is too short.
+    case other(ErrorProtocol)
+    case path(_String, ErrorProtocol)
+    case unexpectedType(exp: Any.Type, json: JsonType)
   }
 
   //case Null
@@ -34,42 +34,42 @@ enum Json {
   //case Dictionary(NSDictionary)
 
   @warn_unused_result
-  static func fromData<T: JsonType>(data: NSData, options: NSJSONReadingOptions = []) throws -> T {
+  static func fromData<T: JsonType>(_ data: Data, options: JSONSerialization.ReadingOptions = []) throws -> T {
     let json: JsonType
     do {
-      json = try NSJSONSerialization.JSONObjectWithData(data, options: options) as! JsonType
+      json = try JSONSerialization.jsonObject(with: data, options: options) as! JsonType
     } catch let e {
-      throw Error.Other(e)
+      throw Error.other(e)
     }
     if let json = json as? T {
       return json
     }
-    throw Error.UnexpectedType(exp: T.self, json: json)
+    throw Error.unexpectedType(exp: T.self, json: json)
   }
 
   @warn_unused_result
-  static func fromStream<T: JsonType>(stream: NSInputStream, options: NSJSONReadingOptions = []) throws -> T {
+  static func fromStream<T: JsonType>(_ stream: InputStream, options: JSONSerialization.ReadingOptions = []) throws -> T {
     let json: JsonType
     do {
-      if stream.streamStatus == .NotOpen {
+      if stream.streamStatus == .notOpen {
         stream.open()
       }
-      json = try NSJSONSerialization.JSONObjectWithStream(stream, options: options) as! JsonType
+      json = try JSONSerialization.jsonObject(with: stream, options: options) as! JsonType
     } catch let e {
-      throw Error.Other(e)
+      throw Error.other(e)
     }
     if let json = json as? T {
       return json
     }
-    throw Error.UnexpectedType(exp: T.self, json: json)
+    throw Error.unexpectedType(exp: T.self, json: json)
   }
 
   @warn_unused_result
-  static func fromPath<T: JsonType>(path: _String, options: NSJSONReadingOptions = []) throws -> T {
-    var data: NSData
+  static func fromPath<T: JsonType>(_ path: _String, options: JSONSerialization.ReadingOptions = []) throws -> T {
+    var data: Data
     do {
-      data = try NSData(contentsOfFile: path, options: [.DataReadingUncached])
-    } catch let e { throw Error.Path(path, e) }
+      data = try Data(contentsOf: URL(fileURLWithPath: path), options: [.dataReadingUncached])
+    } catch let e { throw Error.path(path, e) }
     return try fromData(data, options: options)
   }
 }

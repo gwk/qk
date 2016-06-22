@@ -95,10 +95,6 @@
 		ECD7CAF61D19F1330025E4D2 /* Dir.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD7CA6D1D19F1330025E4D2 /* Dir.swift */; };
 		ECD7CAF71D19F1330025E4D2 /* dispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD7CA6E1D19F1330025E4D2 /* dispatch.swift */; };
 		ECD7CAF81D19F1330025E4D2 /* dispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD7CA6E1D19F1330025E4D2 /* dispatch.swift */; };
-		ECD7CAF91D19F1330025E4D2 /* DispatchFileModes.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD7CA6F1D19F1330025E4D2 /* DispatchFileModes.swift */; };
-		ECD7CAFA1D19F1330025E4D2 /* DispatchFileModes.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD7CA6F1D19F1330025E4D2 /* DispatchFileModes.swift */; };
-		ECD7CAFB1D19F1330025E4D2 /* DispatchQOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD7CA701D19F1330025E4D2 /* DispatchQOS.swift */; };
-		ECD7CAFC1D19F1330025E4D2 /* DispatchQOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD7CA701D19F1330025E4D2 /* DispatchQOS.swift */; };
 		ECD7CAFD1D19F1330025E4D2 /* DispatchSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD7CA711D19F1330025E4D2 /* DispatchSource.swift */; };
 		ECD7CAFE1D19F1330025E4D2 /* DispatchSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD7CA711D19F1330025E4D2 /* DispatchSource.swift */; };
 		ECD7CAFF1D19F1330025E4D2 /* DispatchTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD7CA721D19F1330025E4D2 /* DispatchTime.swift */; };
@@ -388,8 +384,6 @@
 		ECD7CA6C1D19F1330025E4D2 /* DictOfSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictOfSet.swift; sourceTree = "<group>"; };
 		ECD7CA6D1D19F1330025E4D2 /* Dir.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dir.swift; sourceTree = "<group>"; };
 		ECD7CA6E1D19F1330025E4D2 /* dispatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = dispatch.swift; sourceTree = "<group>"; };
-		ECD7CA6F1D19F1330025E4D2 /* DispatchFileModes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DispatchFileModes.swift; sourceTree = "<group>"; };
-		ECD7CA701D19F1330025E4D2 /* DispatchQOS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DispatchQOS.swift; sourceTree = "<group>"; };
 		ECD7CA711D19F1330025E4D2 /* DispatchSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DispatchSource.swift; sourceTree = "<group>"; };
 		ECD7CA721D19F1330025E4D2 /* DispatchTime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DispatchTime.swift; sourceTree = "<group>"; };
 		ECD7CA731D19F1330025E4D2 /* DuplicateErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DuplicateErrors.swift; sourceTree = "<group>"; };
@@ -456,7 +450,6 @@
 		ECD7CAB41D19F1330025E4D2 /* Image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Image.h; sourceTree = "<group>"; };
 		ECD7CAB51D19F1330025E4D2 /* Image.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Image.m; sourceTree = "<group>"; };
 		ECD7CAB61D19F1330025E4D2 /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
-		ECD7CAB71D19F1330025E4D2 /* img.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = img.h; sourceTree = "<group>"; };
 		ECD7CAB81D19F1330025E4D2 /* img.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = img.swift; sourceTree = "<group>"; };
 		ECD7CAB91D19F1330025E4D2 /* PixFmt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PixFmt.swift; sourceTree = "<group>"; };
 		ECD7CABB1D19F1330025E4D2 /* gl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = gl.swift; sourceTree = "<group>"; };
@@ -516,6 +509,7 @@
 		ECD7CBD91D19F16B0025E4D2 /* UISearchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UISearchBar.swift; sourceTree = "<group>"; };
 		ECD7CBDA1D19F16B0025E4D2 /* UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		ECD7CBDB1D19F16B0025E4D2 /* UIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
+		ECD7CBFA1D1A3A430025E4D2 /* bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bridge.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -575,6 +569,7 @@
 			children = (
 				EC49BD041B7511AC00660AF0 /* AppDelegate.swift */,
 				EC49BD061B7511AC00660AF0 /* Assets.xcassets */,
+				ECD7CBFA1D1A3A430025E4D2 /* bridge.h */,
 				EC5B21A91BC5BB7400A7D5A9 /* main.swift */,
 				EC49BD0B1B7511AC00660AF0 /* qk-mac-test-info.plist */,
 			);
@@ -671,8 +666,6 @@
 				ECD7CA6C1D19F1330025E4D2 /* DictOfSet.swift */,
 				ECD7CA6D1D19F1330025E4D2 /* Dir.swift */,
 				ECD7CA6E1D19F1330025E4D2 /* dispatch.swift */,
-				ECD7CA6F1D19F1330025E4D2 /* DispatchFileModes.swift */,
-				ECD7CA701D19F1330025E4D2 /* DispatchQOS.swift */,
 				ECD7CA711D19F1330025E4D2 /* DispatchSource.swift */,
 				ECD7CA721D19F1330025E4D2 /* DispatchTime.swift */,
 				ECD7CA731D19F1330025E4D2 /* DuplicateErrors.swift */,
@@ -767,7 +760,6 @@
 				ECD7CAB41D19F1330025E4D2 /* Image.h */,
 				ECD7CAB51D19F1330025E4D2 /* Image.m */,
 				ECD7CAB61D19F1330025E4D2 /* Image.swift */,
-				ECD7CAB71D19F1330025E4D2 /* img.h */,
 				ECD7CAB81D19F1330025E4D2 /* img.swift */,
 				ECD7CAB91D19F1330025E4D2 /* PixFmt.swift */,
 			);
@@ -952,6 +944,7 @@
 				TargetAttributes = {
 					EC49BD011B7511AC00660AF0 = {
 						CreatedOnToolsVersion = 7.0;
+						LastSwiftMigration = 0800;
 					};
 					ECBBE3681B5FE5D300DEA686 = {
 						CreatedOnToolsVersion = 7.0;
@@ -1039,7 +1032,6 @@
 				ECD7CB0C1D19F1330025E4D2 /* func.swift in Sources */,
 				ECD7CBB21D19F1330025E4D2 /* SKTexture.swift in Sources */,
 				ECD7CA531D19EFA00025E4D2 /* Flt.swift in Sources */,
-				ECD7CAFC1D19F1330025E4D2 /* DispatchQOS.swift in Sources */,
 				ECD7CB421D19F1330025E4D2 /* OutputStream.swift in Sources */,
 				EC5B21AA1BC5BB7400A7D5A9 /* main.swift in Sources */,
 				ECD7CB4E1D19F1330025E4D2 /* Resource.swift in Sources */,
@@ -1092,7 +1084,6 @@
 				ECD7CB4A1D19F1330025E4D2 /* Random.swift in Sources */,
 				ECD7CBBA1D19F15C0025E4D2 /* NSEvent-keyCodes.swift in Sources */,
 				ECD7CADA1D19F1330025E4D2 /* ArithmeticFloat.swift in Sources */,
-				ECD7CAFA1D19F1330025E4D2 /* DispatchFileModes.swift in Sources */,
 				ECD7CA3F1D19EFA00025E4D2 /* CGVector.swift in Sources */,
 				ECD7CB961D19F1330025E4D2 /* GLView.swift in Sources */,
 				ECD7CB4C1D19F1330025E4D2 /* Ref.swift in Sources */,
@@ -1190,7 +1181,6 @@
 				ECD7CBE31D19F16B0025E4D2 /* QKUISegmentedControl.swift in Sources */,
 				ECD7CBB11D19F1330025E4D2 /* SKTexture.swift in Sources */,
 				ECD7CA521D19EFA00025E4D2 /* Flt.swift in Sources */,
-				ECD7CAFB1D19F1330025E4D2 /* DispatchQOS.swift in Sources */,
 				ECD7CBDD1D19F16B0025E4D2 /* QKLabeledSwitch.swift in Sources */,
 				ECD7CB411D19F1330025E4D2 /* OutputStream.swift in Sources */,
 				EC456BCC1B5FE76C00126CFD /* ViewController.swift in Sources */,
@@ -1246,7 +1236,6 @@
 				ECD7CB8D1D19F1330025E4D2 /* GLTextAtlas.swift in Sources */,
 				ECD7CB491D19F1330025E4D2 /* Random.swift in Sources */,
 				ECD7CAD91D19F1330025E4D2 /* ArithmeticFloat.swift in Sources */,
-				ECD7CAF91D19F1330025E4D2 /* DispatchFileModes.swift in Sources */,
 				ECD7CA3E1D19EFA00025E4D2 /* CGVector.swift in Sources */,
 				ECD7CB951D19F1330025E4D2 /* GLView.swift in Sources */,
 				ECD7CB4B1D19F1330025E4D2 /* Ref.swift in Sources */,
@@ -1375,11 +1364,22 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = "test/qk-mac-test/qk-mac-info.plist";
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include,
+					/usr/local/include/freetype2,
+				);
+				INFOPLIST_FILE = "test/qk-mac-test/qk-mac-test-info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				OTHER_LDFLAGS = (
+					"-lpng",
+					"-lfreetype",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "gwk.qk-mac-test";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "test/qk-mac-test/bridge.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -1388,12 +1388,23 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = "test/qk-mac-test/qk-mac-info.plist";
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include,
+					/usr/local/include/freetype2,
+				);
+				INFOPLIST_FILE = "test/qk-mac-test/qk-mac-test-info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				OTHER_LDFLAGS = (
+					"-lpng",
+					"-lfreetype",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "gwk.qk-mac-test";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "test/qk-mac-test/bridge.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

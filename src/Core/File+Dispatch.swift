@@ -6,29 +6,29 @@ import Dispatch
 extension File {
 
   @warn_unused_result
-  func createDispatchSource(modes: DispatchFileModes, queue: DispatchQueue = dispatchMainQueue,
+  func createDispatchSource(_ modes: DispatchSource.FileSystemEvent, queue: DispatchQueue = dispatchMainQueue,
     registerFn: Action? = nil, cancelFn: Action? = nil, eventFn: Action) -> DispatchSource {
-      let source = dispatch_source_create(DISPATCH_SOURCE_TYPE_VNODE, _dispatchSourceHandle, modes.rawValue, queue)!
+      let source = DispatchSource.fileSystemObject(fileDescriptor: _dispatchSourceHandle, eventMask: modes, queue: queue)
       if let rf = registerFn {
-        dispatch_source_set_registration_handler(source, rf)
+        source.setRegistrationHandler(handler: rf)
       }
       // the cancel handler retains the file to prevent a race condition
       // where the file descriptor gets reused but the source is not yet canceled.
       // see the documentation for dispatch_source_set_cancel_handler.
       let _self = self
       if let cf = cancelFn {
-        dispatch_source_set_cancel_handler(source) {
+        source.setCancelHandler {
           [_self] in
-          _self // no-op.
+          _self
           cf()
         }
       } else {
-        dispatch_source_set_cancel_handler(source) {
+        source.setCancelHandler {
           [_self] in
           _self
         }
       }
-      dispatch_source_set_event_handler(source, eventFn)
-      return source
+      source.setEventHandler(handler: eventFn)
+      return source as! DispatchSource // TODO: improve signature.
   }
 }

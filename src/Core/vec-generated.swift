@@ -48,7 +48,7 @@ extension V2S : VecType2, FloatVecType, Equatable, CustomStringConvertible, Json
   }
   init(jsonArray: JsonArray) throws {
     if jsonArray.count > 2 {
-      throw Json.Error.ExcessEl(index: 2, exp: V2S.self, json: jsonArray.raw)
+      throw Json.Error.excessEl(index: 2, exp: V2S.self, json: jsonArray.raw)
     }
     self.init(try jsonArray.el(0).conv() as F32, try jsonArray.el(1).conv() as F32)
   }
@@ -81,9 +81,9 @@ extension V2S : VecType2, FloatVecType, Equatable, CustomStringConvertible, Json
   var toU8Pixel: VU8Type { return VU8Type(U8(clamp(x * 255, min: 0, max: 255)), U8(clamp(y * 255, min: 0, max: 255))) }
   var heading: Scalar { return atan2(y, x) }
 
-  func dot(b: V2S) -> Scalar { return (x * b.x) + (y * b.y) }
-  func angle(b: V2S) -> Scalar { return acos(self.dot(b) / (self.len * b.len)) }
-  func lerp(b: V2S, _ t: Scalar) -> V2S { return self * (1 - t) + b * t }
+  func dot(_ b: V2S) -> Scalar { return (x * b.x) + (y * b.y) }
+  func angle(_ b: V2S) -> Scalar { return acos(self.dot(b) / (self.len * b.len)) }
+  func lerp(_ b: V2S, _ t: Scalar) -> V2S { return self * (1 - t) + b * t }
 
 }
 
@@ -145,7 +145,7 @@ extension V2D : VecType2, FloatVecType, Equatable, CustomStringConvertible, Json
   }
   init(jsonArray: JsonArray) throws {
     if jsonArray.count > 2 {
-      throw Json.Error.ExcessEl(index: 2, exp: V2D.self, json: jsonArray.raw)
+      throw Json.Error.excessEl(index: 2, exp: V2D.self, json: jsonArray.raw)
     }
     self.init(try jsonArray.el(0).conv() as F64, try jsonArray.el(1).conv() as F64)
   }
@@ -178,9 +178,9 @@ extension V2D : VecType2, FloatVecType, Equatable, CustomStringConvertible, Json
   var toU8Pixel: VU8Type { return VU8Type(U8(clamp(x * 255, min: 0, max: 255)), U8(clamp(y * 255, min: 0, max: 255))) }
   var heading: Scalar { return atan2(y, x) }
 
-  func dot(b: V2D) -> Scalar { return (x * b.x) + (y * b.y) }
-  func angle(b: V2D) -> Scalar { return acos(self.dot(b) / (self.len * b.len)) }
-  func lerp(b: V2D, _ t: Scalar) -> V2D { return self * (1 - t) + b * t }
+  func dot(_ b: V2D) -> Scalar { return (x * b.x) + (y * b.y) }
+  func angle(_ b: V2D) -> Scalar { return acos(self.dot(b) / (self.len * b.len)) }
+  func lerp(_ b: V2D, _ t: Scalar) -> V2D { return self * (1 - t) + b * t }
 
 }
 
@@ -247,7 +247,7 @@ public struct V2I : VecType2, IntVecType, Equatable, CustomStringConvertible, Js
   }
   init(jsonArray: JsonArray) throws {
     if jsonArray.count > 2 {
-      throw Json.Error.ExcessEl(index: 2, exp: V2I.self, json: jsonArray.raw)
+      throw Json.Error.excessEl(index: 2, exp: V2I.self, json: jsonArray.raw)
     }
     self.init(try jsonArray.el(0).conv() as Int, try jsonArray.el(1).conv() as Int)
   }
@@ -333,7 +333,7 @@ public struct V2U8 : VecType2, IntVecType, Equatable, CustomStringConvertible, J
   }
   init(jsonArray: JsonArray) throws {
     if jsonArray.count > 2 {
-      throw Json.Error.ExcessEl(index: 2, exp: V2U8.self, json: jsonArray.raw)
+      throw Json.Error.excessEl(index: 2, exp: V2U8.self, json: jsonArray.raw)
     }
     self.init(try jsonArray.el(0).conv() as U8, try jsonArray.el(1).conv() as U8)
   }
@@ -405,7 +405,7 @@ extension V3S : VecType3, FloatVecType, Equatable, CustomStringConvertible, Json
   }
   init(jsonArray: JsonArray) throws {
     if jsonArray.count > 3 {
-      throw Json.Error.ExcessEl(index: 3, exp: V3S.self, json: jsonArray.raw)
+      throw Json.Error.excessEl(index: 3, exp: V3S.self, json: jsonArray.raw)
     }
     self.init(try jsonArray.el(0).conv() as F32, try jsonArray.el(1).conv() as F32, try jsonArray.el(2).conv() as F32)
   }
@@ -443,11 +443,11 @@ extension V3S : VecType3, FloatVecType, Equatable, CustomStringConvertible, Json
   var toU8Pixel: VU8Type { return VU8Type(U8(clamp(x * 255, min: 0, max: 255)), U8(clamp(y * 255, min: 0, max: 255)), U8(clamp(z * 255, min: 0, max: 255))) }
   var heading: Scalar { return atan2(y, x) }
 
-  func dot(b: V3S) -> Scalar { return (x * b.x) + (y * b.y) + (z * b.z) }
-  func angle(b: V3S) -> Scalar { return acos(self.dot(b) / (self.len * b.len)) }
-  func lerp(b: V3S, _ t: Scalar) -> V3S { return self * (1 - t) + b * t }
+  func dot(_ b: V3S) -> Scalar { return (x * b.x) + (y * b.y) + (z * b.z) }
+  func angle(_ b: V3S) -> Scalar { return acos(self.dot(b) / (self.len * b.len)) }
+  func lerp(_ b: V3S, _ t: Scalar) -> V3S { return self * (1 - t) + b * t }
 
-  func cross(b: V3S) -> V3S { return V3S(
+  func cross(_ b: V3S) -> V3S { return V3S(
   y * b.z - z * b.y,
   z * b.x - x * b.z,
   x * b.y - y * b.x
@@ -504,7 +504,7 @@ extension V3D : VecType3, FloatVecType, Equatable, CustomStringConvertible, Json
   }
   init(jsonArray: JsonArray) throws {
     if jsonArray.count > 3 {
-      throw Json.Error.ExcessEl(index: 3, exp: V3D.self, json: jsonArray.raw)
+      throw Json.Error.excessEl(index: 3, exp: V3D.self, json: jsonArray.raw)
     }
     self.init(try jsonArray.el(0).conv() as F64, try jsonArray.el(1).conv() as F64, try jsonArray.el(2).conv() as F64)
   }
@@ -542,11 +542,11 @@ extension V3D : VecType3, FloatVecType, Equatable, CustomStringConvertible, Json
   var toU8Pixel: VU8Type { return VU8Type(U8(clamp(x * 255, min: 0, max: 255)), U8(clamp(y * 255, min: 0, max: 255)), U8(clamp(z * 255, min: 0, max: 255))) }
   var heading: Scalar { return atan2(y, x) }
 
-  func dot(b: V3D) -> Scalar { return (x * b.x) + (y * b.y) + (z * b.z) }
-  func angle(b: V3D) -> Scalar { return acos(self.dot(b) / (self.len * b.len)) }
-  func lerp(b: V3D, _ t: Scalar) -> V3D { return self * (1 - t) + b * t }
+  func dot(_ b: V3D) -> Scalar { return (x * b.x) + (y * b.y) + (z * b.z) }
+  func angle(_ b: V3D) -> Scalar { return acos(self.dot(b) / (self.len * b.len)) }
+  func lerp(_ b: V3D, _ t: Scalar) -> V3D { return self * (1 - t) + b * t }
 
-  func cross(b: V3D) -> V3D { return V3D(
+  func cross(_ b: V3D) -> V3D { return V3D(
   y * b.z - z * b.y,
   z * b.x - x * b.z,
   x * b.y - y * b.x
@@ -610,7 +610,7 @@ public struct V3I : VecType3, IntVecType, Equatable, CustomStringConvertible, Js
   }
   init(jsonArray: JsonArray) throws {
     if jsonArray.count > 3 {
-      throw Json.Error.ExcessEl(index: 3, exp: V3I.self, json: jsonArray.raw)
+      throw Json.Error.excessEl(index: 3, exp: V3I.self, json: jsonArray.raw)
     }
     self.init(try jsonArray.el(0).conv() as Int, try jsonArray.el(1).conv() as Int, try jsonArray.el(2).conv() as Int)
   }
@@ -694,7 +694,7 @@ public struct V3U8 : VecType3, IntVecType, Equatable, CustomStringConvertible, J
   }
   init(jsonArray: JsonArray) throws {
     if jsonArray.count > 3 {
-      throw Json.Error.ExcessEl(index: 3, exp: V3U8.self, json: jsonArray.raw)
+      throw Json.Error.excessEl(index: 3, exp: V3U8.self, json: jsonArray.raw)
     }
     self.init(try jsonArray.el(0).conv() as U8, try jsonArray.el(1).conv() as U8, try jsonArray.el(2).conv() as U8)
   }
@@ -759,7 +759,7 @@ extension V4S : VecType4, FloatVecType, Equatable, CustomStringConvertible, Json
   }
   init(jsonArray: JsonArray) throws {
     if jsonArray.count > 4 {
-      throw Json.Error.ExcessEl(index: 4, exp: V4S.self, json: jsonArray.raw)
+      throw Json.Error.excessEl(index: 4, exp: V4S.self, json: jsonArray.raw)
     }
     self.init(try jsonArray.el(0).conv() as F32, try jsonArray.el(1).conv() as F32, try jsonArray.el(2).conv() as F32, try jsonArray.el(3).conv() as F32)
   }
@@ -802,11 +802,11 @@ extension V4S : VecType4, FloatVecType, Equatable, CustomStringConvertible, Json
   var toU8Pixel: VU8Type { return VU8Type(U8(clamp(x * 255, min: 0, max: 255)), U8(clamp(y * 255, min: 0, max: 255)), U8(clamp(z * 255, min: 0, max: 255)), U8(clamp(w * 255, min: 0, max: 255))) }
   var heading: Scalar { return atan2(y, x) }
 
-  func dot(b: V4S) -> Scalar { return (x * b.x) + (y * b.y) + (z * b.z) + (w * b.w) }
-  func angle(b: V4S) -> Scalar { return acos(self.dot(b) / (self.len * b.len)) }
-  func lerp(b: V4S, _ t: Scalar) -> V4S { return self * (1 - t) + b * t }
+  func dot(_ b: V4S) -> Scalar { return (x * b.x) + (y * b.y) + (z * b.z) + (w * b.w) }
+  func angle(_ b: V4S) -> Scalar { return acos(self.dot(b) / (self.len * b.len)) }
+  func lerp(_ b: V4S, _ t: Scalar) -> V4S { return self * (1 - t) + b * t }
 
-  func cross(b: V4S) -> V4S { return V4S(
+  func cross(_ b: V4S) -> V4S { return V4S(
   y * b.z - z * b.y,
   z * b.x - x * b.z,
   x * b.y - y * b.x,
@@ -852,7 +852,7 @@ extension V4D : VecType4, FloatVecType, Equatable, CustomStringConvertible, Json
   }
   init(jsonArray: JsonArray) throws {
     if jsonArray.count > 4 {
-      throw Json.Error.ExcessEl(index: 4, exp: V4D.self, json: jsonArray.raw)
+      throw Json.Error.excessEl(index: 4, exp: V4D.self, json: jsonArray.raw)
     }
     self.init(try jsonArray.el(0).conv() as F64, try jsonArray.el(1).conv() as F64, try jsonArray.el(2).conv() as F64, try jsonArray.el(3).conv() as F64)
   }
@@ -895,11 +895,11 @@ extension V4D : VecType4, FloatVecType, Equatable, CustomStringConvertible, Json
   var toU8Pixel: VU8Type { return VU8Type(U8(clamp(x * 255, min: 0, max: 255)), U8(clamp(y * 255, min: 0, max: 255)), U8(clamp(z * 255, min: 0, max: 255)), U8(clamp(w * 255, min: 0, max: 255))) }
   var heading: Scalar { return atan2(y, x) }
 
-  func dot(b: V4D) -> Scalar { return (x * b.x) + (y * b.y) + (z * b.z) + (w * b.w) }
-  func angle(b: V4D) -> Scalar { return acos(self.dot(b) / (self.len * b.len)) }
-  func lerp(b: V4D, _ t: Scalar) -> V4D { return self * (1 - t) + b * t }
+  func dot(_ b: V4D) -> Scalar { return (x * b.x) + (y * b.y) + (z * b.z) + (w * b.w) }
+  func angle(_ b: V4D) -> Scalar { return acos(self.dot(b) / (self.len * b.len)) }
+  func lerp(_ b: V4D, _ t: Scalar) -> V4D { return self * (1 - t) + b * t }
 
-  func cross(b: V4D) -> V4D { return V4D(
+  func cross(_ b: V4D) -> V4D { return V4D(
   y * b.z - z * b.y,
   z * b.x - x * b.z,
   x * b.y - y * b.x,
@@ -954,7 +954,7 @@ public struct V4I : VecType4, IntVecType, Equatable, CustomStringConvertible, Js
   }
   init(jsonArray: JsonArray) throws {
     if jsonArray.count > 4 {
-      throw Json.Error.ExcessEl(index: 4, exp: V4I.self, json: jsonArray.raw)
+      throw Json.Error.excessEl(index: 4, exp: V4I.self, json: jsonArray.raw)
     }
     self.init(try jsonArray.el(0).conv() as Int, try jsonArray.el(1).conv() as Int, try jsonArray.el(2).conv() as Int, try jsonArray.el(3).conv() as Int)
   }
@@ -1033,7 +1033,7 @@ public struct V4U8 : VecType4, IntVecType, Equatable, CustomStringConvertible, J
   }
   init(jsonArray: JsonArray) throws {
     if jsonArray.count > 4 {
-      throw Json.Error.ExcessEl(index: 4, exp: V4U8.self, json: jsonArray.raw)
+      throw Json.Error.excessEl(index: 4, exp: V4U8.self, json: jsonArray.raw)
     }
     self.init(try jsonArray.el(0).conv() as U8, try jsonArray.el(1).conv() as U8, try jsonArray.el(2).conv() as U8, try jsonArray.el(3).conv() as U8)
   }

@@ -37,32 +37,32 @@ extension CRView {
   
   // layout operand properties.
   
-  var c_l: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Left, ay: .NotAnAttribute) }
-  var c_r: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Right, ay: .NotAnAttribute) }
-  var c_t: QKLayoutOperand { return QKLayoutOperand(v: self, ax:  .NotAnAttribute, ay: .Top) }
-  var c_b: QKLayoutOperand { return QKLayoutOperand(v: self, ax:  .NotAnAttribute, ay: .Bottom) }
+  var c_l: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .left, ay: .notAnAttribute) }
+  var c_r: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .right, ay: .notAnAttribute) }
+  var c_t: QKLayoutOperand { return QKLayoutOperand(v: self, ax:  .notAnAttribute, ay: .top) }
+  var c_b: QKLayoutOperand { return QKLayoutOperand(v: self, ax:  .notAnAttribute, ay: .bottom) }
   
-  var c_x: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .CenterX, ay: .NotAnAttribute) }
-  var c_y: QKLayoutOperand { return QKLayoutOperand(v: self, ax:  .NotAnAttribute, ay: .CenterY) }
+  var c_x: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .centerX, ay: .notAnAttribute) }
+  var c_y: QKLayoutOperand { return QKLayoutOperand(v: self, ax:  .notAnAttribute, ay: .centerY) }
   
-  var c_lt: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Left, ay: .Top) }
-  var c_ly: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Left, ay: .CenterY) }
-  var c_lb: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Left, ay: .Bottom) }
-  var c_xt: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .CenterX, ay: .Top) }
-  var c_xy: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .CenterX, ay: .CenterY) }
-  var c_xb: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .CenterX, ay: .Bottom) }
-  var c_rt: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Right, ay: .Top) }
-  var c_ry: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Right, ay: .CenterY) }
-  var c_rb: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Right, ay: .Bottom) }
+  var c_lt: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .left, ay: .top) }
+  var c_ly: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .left, ay: .centerY) }
+  var c_lb: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .left, ay: .bottom) }
+  var c_xt: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .centerX, ay: .top) }
+  var c_xy: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .centerX, ay: .centerY) }
+  var c_xb: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .centerX, ay: .bottom) }
+  var c_rt: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .right, ay: .top) }
+  var c_ry: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .right, ay: .centerY) }
+  var c_rb: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .right, ay: .bottom) }
   
-  var c_lead: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Leading, ay:  .NotAnAttribute) }
-  var c_trail: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Trailing, ay: .NotAnAttribute) }
+  var c_lead: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .leading, ay:  .notAnAttribute) }
+  var c_trail: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .trailing, ay: .notAnAttribute) }
   
-  var c_w: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Width, ay: .NotAnAttribute) }
-  var c_h: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .NotAnAttribute, ay: .Height) }
-  var c_wh: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Width, ay: .Height) }
+  var c_w: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .width, ay: .notAnAttribute) }
+  var c_h: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .notAnAttribute, ay: .height) }
+  var c_wh: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .width, ay: .height) }
   
-  var c_base: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .Baseline, ay: .NotAnAttribute) }
+  var c_base: QKLayoutOperand { return QKLayoutOperand(v: self, ax: .lastBaseline, ay: .notAnAttribute) }
   
   var c_usesARMask: Bool {
     // abbreviated, crossplatform property.
@@ -97,7 +97,7 @@ protocol QKLayoutConstraining {
   // allows for constraints and format strings to be specified in the same variadic call;
   // this is syntactically convenient, and also allows for simultaneous activation of all constraints,
   // which is more performant according to the comments around NSLayoutConstraint.activateConstraints.
-  func constraintArray(views: [CRView], metrics: [String: NSNumber], opts: NSLayoutFormatOptions) -> [NSLayoutConstraint]
+  func constraintArray(_ views: [CRView], metrics: [String: NSNumber], opts: NSLayoutFormatOptions) -> [NSLayoutConstraint]
 }
 
 
@@ -111,9 +111,9 @@ extension NSLayoutConstraint: QKLayoutConstraining {
   convenience init(rel: NSLayoutRelation, l: QKLayoutOperand, r: QKLayoutOperand?, m: CGPoint, c: CGPoint, p: LOP, useLX: Bool) {
     // convenience constructor for QKLayoutRel; create a constraint from either ax or ay of left side.
     let la = (useLX ? l.ax : l.ay)
-    assert(la != .NotAnAttribute)
+    assert(la != .notAnAttribute)
     var rv: CRView? = nil
-    var ra = NSLayoutAttribute.NotAnAttribute
+    var ra = NSLayoutAttribute.notAnAttribute
     let sm = useLX ? m.x : m.y
     let sc = useLX ? c.x : c.y
     if let r = r {
@@ -127,31 +127,31 @@ extension NSLayoutConstraint: QKLayoutConstraining {
     priority = p
   }
   
-  func constraintArray(views: [CRView], metrics: [String: NSNumber], opts: NSLayoutFormatOptions) -> [NSLayoutConstraint] {
+  func constraintArray(_ views: [CRView], metrics: [String: NSNumber], opts: NSLayoutFormatOptions) -> [NSLayoutConstraint] {
     // this is only useful for passing a manually constructed constraint as an argument to constrain().
     return [self] // ignore all the format-related arguments.
   }
   
-  class func eq(l: QKLayoutOperand, _ r: QKLayoutOperand? = nil, m: Flt = 1, c: Flt = 0, p: LOP = LOPReq) -> NSLayoutConstraint {
+  class func eq(_ l: QKLayoutOperand, _ r: QKLayoutOperand? = nil, m: Flt = 1, c: Flt = 0, p: LOP = LOPReq) -> NSLayoutConstraint {
     // normally, the global functions below are used to construct one or two constraints at a time.
     // however, in the case where we want a handle on a particlur constraint for subsequent modification (e.g. for animation),
     // then use this function to construct exactly one constraint.
     assert(l.componentCount == 1)
-    return NSLayoutConstraint(rel: NSLayoutRelation.Equal, l: l, r: r, m: CGPoint(m, m), c: CGPoint(c, c), p: p, useLX: l.ax.isSome)
+    return NSLayoutConstraint(rel: NSLayoutRelation.equal, l: l, r: r, m: CGPoint(m, m), c: CGPoint(c, c), p: p, useLX: l.ax.isSome)
   }
 }
 
 
 extension String: QKLayoutConstraining {
   
-  func constraintArray(views: [CRView], metrics: [String: NSNumber], opts: NSLayoutFormatOptions) -> [NSLayoutConstraint] {
+  func constraintArray(_ views: [CRView], metrics: [String: NSNumber], opts: NSLayoutFormatOptions) -> [NSLayoutConstraint] {
     let viewDict = views.mapToDict { ($0.name, $0) }
     #if DEBUG // only use the wrapper method for debug.
       let m = NSLayoutConstraint.constraintsAndCatchWithVisualFormat
       #else
-      let m = NSLayoutConstraint.constraintsWithVisualFormat
+      let m = NSLayoutConstraint.constraints(withVisualFormat:options:metrics:views:)
     #endif
-    return m(self, options: opts, metrics: metrics, views: viewDict) as [NSLayoutConstraint]
+    return m(withVisualFormat: self, options: opts, metrics: metrics, views: viewDict) as [NSLayoutConstraint]
   }
 }
 
@@ -172,7 +172,7 @@ struct QKLayoutRel: QKLayoutConstraining {
   let c: CGPoint
   let p: LOP
   
-  func constraintArray(views: [CRView], metrics: [String: NSNumber], opts: NSLayoutFormatOptions) -> [NSLayoutConstraint] {
+  func constraintArray(_ views: [CRView], metrics: [String: NSNumber], opts: NSLayoutFormatOptions) -> [NSLayoutConstraint] {
     // ignores all the format-related arguments and constructs one or two constraints from the operands.
     //var leftCount = 0
     //var rightCount = 0
@@ -191,17 +191,17 @@ struct QKLayoutRel: QKLayoutConstraining {
   }
 }
 
-func c_eq(l: QKLayoutOperand, _ r: QKLayoutOperand? = nil, m: CGPoint = CGPoint(1, 1), c: CGPoint = CGPoint(0, 0), p: LOP = LOPReq) -> QKLayoutRel {
+func c_eq(_ l: QKLayoutOperand, _ r: QKLayoutOperand? = nil, m: CGPoint = CGPoint(1, 1), c: CGPoint = CGPoint(0, 0), p: LOP = LOPReq) -> QKLayoutRel {
   // construct an equality relation between two operands with vector m and c.
-  return QKLayoutRel(rel: .Equal, l: l, r: r, m: m, c: c, p: p)
+  return QKLayoutRel(rel: .equal, l: l, r: r, m: m, c: c, p: p)
 }
 
-func c_eq(l: QKLayoutOperand, _ r: QKLayoutOperand? = nil, m: Flt, c: Flt = 0, p: LOP = LOPReq) -> QKLayoutRel {
+func c_eq(_ l: QKLayoutOperand, _ r: QKLayoutOperand? = nil, m: Flt, c: Flt = 0, p: LOP = LOPReq) -> QKLayoutRel {
   // construct an equality relation between two operands with scalar m and optional c; m is required to disambiguate from the vector variant.
   return c_eq(l, r, m: CGPoint(m, m), c: CGPoint(c, c), p: p)
 }
 
-func c_eq(l: QKLayoutOperand, _ r: QKLayoutOperand? = nil, c: Flt, p: LOP = LOPReq) -> QKLayoutRel {
+func c_eq(_ l: QKLayoutOperand, _ r: QKLayoutOperand? = nil, c: Flt, p: LOP = LOPReq) -> QKLayoutRel {
   // construct an equality relation between two operands with scalar c; this variant is required to disambiguate from the vector variant.
   return c_eq(l, r, m: CGPoint(1, 1), c: CGPoint(c, c), p: p)
 }
@@ -211,23 +211,23 @@ func c_eq(l: QKLayoutOperand, _ r: QKLayoutOperand? = nil, c: Flt, p: LOP = LOPR
 
 // MARK: constrain variants
 
-func constrain(views: [CRView], metrics: [String: NSNumber] = [:], opts: NSLayoutFormatOptions = NSLayoutFormatOptions(rawValue: 0), constraints: [QKLayoutConstraining]) {
+func constrain(_ views: [CRView], metrics: [String: NSNumber] = [:], opts: NSLayoutFormatOptions = NSLayoutFormatOptions(rawValue: 0), constraints: [QKLayoutConstraining]) {
   // main variant.
   for v in views {
     v.c_usesARMask = false
   }
   var allConstraints: [NSLayoutConstraint] = []
   for c in constraints {
-    allConstraints.appendContentsOf(c.constraintArray(views, metrics: metrics, opts: opts))
+    allConstraints.append(contentsOf: c.constraintArray(views, metrics: metrics, opts: opts))
   }
   #if DEBUG
     NSLayoutConstraint.activateAndCatchConstraints(allConstraints)
     #else
-    NSLayoutConstraint.activateConstraints(allConstraints)
+    NSLayoutConstraint.activate(allConstraints)
   #endif
 }
 
-func constrain(views: [CRView], metrics: [String: NSNumber] = [:], opts: NSLayoutFormatOptions = NSLayoutFormatOptions(rawValue: 0), _ constraints: QKLayoutConstraining...) {
+func constrain(_ views: [CRView], metrics: [String: NSNumber] = [:], opts: NSLayoutFormatOptions = NSLayoutFormatOptions(rawValue: 0), _ constraints: QKLayoutConstraining...) {
   // variadic variant.
   constrain(views, metrics: metrics, opts: opts, constraints: constraints)
 }

@@ -3,40 +3,22 @@
 import Foundation
 
 
-extension NSCalendarUnit {
+extension Calendar.Unit {
 
-  static var preciseToDay: NSCalendarUnit {
-    return NSCalendarUnit(rawValue: 0
-      | NSCalendarUnit.Era.rawValue
-      | NSCalendarUnit.Year.rawValue
-      | NSCalendarUnit.Month.rawValue
-      | NSCalendarUnit.Day.rawValue)
+  static var preciseToDay: Calendar.Unit {
+    return [.era, .year, .month, .day]
   }
 
-  static var precise: NSCalendarUnit {
-    return NSCalendarUnit(rawValue: 0
-      | NSCalendarUnit.Era.rawValue
-      | NSCalendarUnit.Year.rawValue
-      | NSCalendarUnit.Month.rawValue
-      | NSCalendarUnit.Day.rawValue
-      | NSCalendarUnit.Hour.rawValue
-      | NSCalendarUnit.Minute.rawValue
-      | NSCalendarUnit.Second.rawValue
-      | NSCalendarUnit.Nanosecond.rawValue)
+  static var precise: Calendar.Unit {
+    return [.era, .year, .month, .day, .hour, .minute, .second, .nanosecond]
   }
 
-  static var timeOfDay: NSCalendarUnit {
-    return NSCalendarUnit(rawValue: 0
-      | NSCalendarUnit.Hour.rawValue
-      | NSCalendarUnit.Minute.rawValue
-      | NSCalendarUnit.Second.rawValue
-      | NSCalendarUnit.Nanosecond.rawValue)
+  static var timeOfDay: Calendar.Unit {
+    return [.hour, .minute, .second, .nanosecond]
   }
 
-  static var dayAndWeekday: NSCalendarUnit {
-    return NSCalendarUnit(rawValue: 0
-      | NSCalendarUnit.Day.rawValue
-      | NSCalendarUnit.Weekday.rawValue)
+  static var dayAndWeekday: Calendar.Unit {
+    return [.day, .weekday]
   }
 }
 

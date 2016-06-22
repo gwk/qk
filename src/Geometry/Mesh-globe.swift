@@ -5,7 +5,7 @@ import Foundation
 
 extension Mesh {
 
-  class func globe(texInfo texInfo: (triW: Flt, triH: Flt, vSpace: Flt)? = nil) -> Mesh {
+  class func globe(texInfo: (triW: Flt, triH: Flt, vSpace: Flt)? = nil) -> Mesh {
     // returns a globe with vertex radius of 1.
     // the globe is essentially an icosahedron, but differs from Mesh.icosahedron as follows:
     // - globe has "polar" vertices that are positioned at the -y and +y axes.
@@ -111,7 +111,7 @@ extension Mesh {
       mesh.segments.append(Seg(st1, nt0))
     }
     mesh.segments.append(Seg(10, 16))
-    mesh.segments.sortInPlace()
+    mesh.segments.sort()
     mesh.addTrianglesFromSegments()
     return mesh
   }

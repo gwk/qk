@@ -4,9 +4,9 @@ import SceneKit
 
 
 enum GeomKind {
-  case Point
-  case Seg
-  case Tri
+  case point
+  case seg
+  case tri
 }
 
 class Mesh {
@@ -69,7 +69,7 @@ class Mesh {
     }
   }
 
-  func addAllSegmentsLessThan(len: Flt) {
+  func addAllSegmentsLessThan(_ len: Flt) {
     for (i, a) in positions.enumerated() {
       for j in (i + 1)..<positions.count {
         let b = positions[j]
@@ -112,19 +112,19 @@ class Mesh {
     }
   }
 
-  func addSeg(a: V3, _ b: V3) {
+  func addSeg(_ a: V3, _ b: V3) {
     let i = positions.count
-    positions.appendContentsOf([a, b])
+    positions.append(contentsOf: [a, b])
     segments.append(Seg(i, i + 1))
   }
   
-  func addQuad(a: V3, _ b: V3, _ c: V3, _ d: V3) {
+  func addQuad(_ a: V3, _ b: V3, _ c: V3, _ d: V3) {
     let i = positions.count
-    positions.appendContentsOf([a, b, c, d])
-    triangles.appendContentsOf([Tri(i, i + 1, i + 2), Tri(i, i + 2, i + 3)])
+    positions.append(contentsOf: [a, b, c, d])
+    triangles.append(contentsOf: [Tri(i, i + 1, i + 2), Tri(i, i + 2, i + 3)])
   }
   
-  func geometry(kind: GeomKind = .Tri) -> SCNGeometry {
+  func geometry(_ kind: GeomKind = .tri) -> SCNGeometry {
     
     let len = positions.count
 
@@ -202,7 +202,7 @@ class Mesh {
     var sources: [SCNGeometrySource] = []
     
     sources.append(SCNGeometrySource(
-      data: d,
+      data: d as Data,
       semantic: SCNGeometrySourceSemanticVertex,
       vectorCount: len,
       floatComponents: true,
@@ -213,7 +213,7 @@ class Mesh {
 
     if !normals.isEmpty {
       sources.append(SCNGeometrySource(
-        data: d,
+        data: d as Data,
         semantic: SCNGeometrySourceSemanticNormal,
         vectorCount: len,
         floatComponents: true,
@@ -224,7 +224,7 @@ class Mesh {
     }
     if !colors.isEmpty {
       sources.append(SCNGeometrySource(
-        data: d,
+        data: d as Data,
         semantic: SCNGeometrySourceSemanticColor,
         vectorCount: len,
         floatComponents: true,
@@ -235,7 +235,7 @@ class Mesh {
     }
     if !texture0s.isEmpty {
       sources.append(SCNGeometrySource(
-        data: d,
+        data: d as Data,
         semantic: SCNGeometrySourceSemanticTexcoord,
         vectorCount: len,
         floatComponents: true,
@@ -248,15 +248,15 @@ class Mesh {
     let element: SCNGeometryElement
     let isSmall = (positions.count <= Int(U16.max))
     switch kind {
-    case GeomKind.Point:
+    case GeomKind.point:
       element = isSmall
         ? SCNGeometryElement(points: points.map { U16($0) })
         : SCNGeometryElement(points: points.map { U32($0) })
-    case GeomKind.Seg:
+    case GeomKind.seg:
       element = isSmall
         ? SCNGeometryElement(segments: segments.map { Seg<U16>($0) })
         : SCNGeometryElement(segments: segments.map { Seg<U32>($0) })
-    case GeomKind.Tri:
+    case GeomKind.tri:
       element = isSmall
         ? SCNGeometryElement(triangles: triangles.map { Tri<U16>($0) })
         : SCNGeometryElement(triangles: triangles.map { Tri<U32>($0) })

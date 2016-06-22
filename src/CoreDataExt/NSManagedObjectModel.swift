@@ -7,19 +7,19 @@ extension NSAttributeType: CustomStringConvertible {
 
   public var description: String {
     switch self {
-    case .UndefinedAttributeType: return "Undefined"
-    case .Integer16AttributeType: return "Integer16"
-    case .Integer32AttributeType: return "Integer32"
-    case .Integer64AttributeType: return "Integer64"
-    case .DecimalAttributeType: return "Decimal"
-    case .DoubleAttributeType: return "Double"
-    case .FloatAttributeType: return "Float"
-    case .StringAttributeType: return "String"
-    case .BooleanAttributeType: return "Boolean"
-    case .DateAttributeType: return "Date"
-    case .BinaryDataAttributeType: return "BinaryData"
-    case .TransformableAttributeType: return "Transformable"
-    case .ObjectIDAttributeType: return "ObjectID"
+    case .undefinedAttributeType: return "Undefined"
+    case .integer16AttributeType: return "Integer16"
+    case .integer32AttributeType: return "Integer32"
+    case .integer64AttributeType: return "Integer64"
+    case .decimalAttributeType: return "Decimal"
+    case .doubleAttributeType: return "Double"
+    case .floatAttributeType: return "Float"
+    case .stringAttributeType: return "String"
+    case .booleanAttributeType: return "Boolean"
+    case .dateAttributeType: return "Date"
+    case .binaryDataAttributeType: return "BinaryData"
+    case .transformableAttributeType: return "Transformable"
+    case .objectIDAttributeType: return "ObjectID"
     }
   }
 }
@@ -39,24 +39,24 @@ extension NSAttributeDescription {
 
   var valTypeName: String? {
     switch attributeType {
-    case .Integer16AttributeType: return "Int"
-    case .Integer32AttributeType: return "Int"
-    case .Integer64AttributeType: return "Int"
-    case .DoubleAttributeType: return "Double"
-    case .FloatAttributeType: return "Float"
-    case .BooleanAttributeType: return "Boolean"
+    case .integer16AttributeType: return "Int"
+    case .integer32AttributeType: return "Int"
+    case .integer64AttributeType: return "Int"
+    case .doubleAttributeType: return "Double"
+    case .floatAttributeType: return "Float"
+    case .booleanAttributeType: return "Boolean"
     default: return nil
     }
   }
 
   var valAccessorName: String? {
     switch attributeType {
-    case .Integer16AttributeType: return "integer"
-    case .Integer32AttributeType: return "integer"
-    case .Integer64AttributeType: return "integer"
-    case .DoubleAttributeType: return "double"
-    case .FloatAttributeType: return "float"
-    case .BooleanAttributeType: return "bool"
+    case .integer16AttributeType: return "integer"
+    case .integer32AttributeType: return "integer"
+    case .integer64AttributeType: return "integer"
+    case .doubleAttributeType: return "double"
+    case .floatAttributeType: return "float"
+    case .booleanAttributeType: return "bool"
     default: return nil
     }
   }
@@ -66,8 +66,8 @@ extension NSAttributeDescription {
 extension NSRelationshipDescription {
 
   var typeName: String {
-    if toMany {
-      return ordered ? "NSOrderedSet" : "NSSet"
+    if isToMany {
+      return isOrdered ? "NSOrderedSet" : "NSSet"
     } else {
       return (destinationEntity?.managedObjectClassName).or("MISSING_DESTINATION")
     }
@@ -119,7 +119,7 @@ extension NSEntityDescription {
 extension NSManagedObjectModel {
 
   convenience init?(path: String) {
-    self.init(contentsOfURL: NSURL(string: path)!)
+    self.init(contentsOf: URL(string: path)!)
   }
 }
 

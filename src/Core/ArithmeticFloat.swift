@@ -7,7 +7,7 @@ typealias F32 = Float
 typealias F64 = Double
 
 
-protocol ArithmeticFloat: ArithmeticProtocol, FloatingPointType {
+protocol ArithmeticFloat: ArithmeticProtocol, FloatingPoint {
   var sqr: Self { get }
   var sqrt: Self { get }
   var ceil: Self { get }
@@ -17,15 +17,15 @@ protocol ArithmeticFloat: ArithmeticProtocol, FloatingPointType {
 
 
 // wrappers around float/double math functions so that we can use overloading properly.
-func sqrt_f(f: Float) -> Float { return sqrtf(f) }
-func ceil_f(f: Float) -> Float { return ceilf(f) }
-func floor_f(f: Float) -> Float { return floorf(f) }
-func round_f(f: Float) -> Float { return roundf(f) }
+func sqrt_f(_ f: Float) -> Float { return sqrtf(f) }
+func ceil_f(_ f: Float) -> Float { return ceilf(f) }
+func floor_f(_ f: Float) -> Float { return floorf(f) }
+func round_f(_ f: Float) -> Float { return roundf(f) }
 
-func sqrt_f(d: Double) -> Double { return sqrt(d) }
-func ceil_f(d: Double) -> Double { return ceil(d) }
-func floor_f(d: Double) -> Double { return floor(d) }
-func round_f(d: Double) -> Double { return round(d) }
+func sqrt_f(_ d: Double) -> Double { return sqrt(d) }
+func ceil_f(_ d: Double) -> Double { return ceil(d) }
+func floor_f(_ d: Double) -> Double { return floor(d) }
+func round_f(_ d: Double) -> Double { return round(d) }
 
 extension Float: ArithmeticFloat {
   var sqr: Float { return self * self }

@@ -8,12 +8,12 @@
 
 
 enum EventKind {
-  case KD
-  case KU
-  case FC
-  case MD
-  case MU
-  case MM
+  case kd
+  case ku
+  case fc
+  case md
+  case mu
+  case mm
 }
 
 
@@ -21,23 +21,23 @@ class QKResponder: CRResponder {
   //var handlers: [EventKind -> (CREvent, CRView) -> ()] = []
 
   #if os(OSX)
-  override func keyDown(e: CREvent) {
+  override func keyDown(_ e: CREvent) {
     print("QKResponder keyDown: \(e)")
   }
   
-  override func keyUp(e: CREvent) {
+  override func keyUp(_ e: CREvent) {
     print("QKResponder keyUp: \(e)")
   }
   
-  override func flagsChanged(e: CREvent) {
+  override func flagsChanged(_ e: CREvent) {
     print("QKResponder flagsChanged: \(e)")
   }
   
-  override func mouseDown(e: CREvent) {
+  override func mouseDown(_ e: CREvent) {
     print("QKResponder mouseDown: \(e)")
   }
   
-  override func mouseUp(e: CREvent) {
+  override func mouseUp(_ e: CREvent) {
     print("QKResponder mouseUp: \(e)")
   }
   #endif

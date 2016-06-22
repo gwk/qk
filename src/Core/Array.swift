@@ -12,15 +12,15 @@ extension Array: DefaultInitializable {
     self.reserveCapacity(capacity)
   }
 
-  init<S: SequenceType where S.Generator.Element == Generator.Element>(join sequences: S...) {
+  init<S: Sequence where S.Iterator.Element == Iterator.Element>(join sequences: S...) {
     self = []
     for s in sequences {
-      appendContentsOf(s)
+      append(contentsOf: s)
     }
   }
 
   @warn_unused_result
-  func optEl(index: Int) -> Element? {
+  func optEl(_ index: Int) -> Element? {
     if index >= 0 && index < count {
       return self[index]
     } else {
@@ -28,7 +28,7 @@ extension Array: DefaultInitializable {
     }
   }
 
-  mutating func removeBySwappingLast(index: Int) -> Element {
+  mutating func removeBySwappingLast(_ index: Int) -> Element {
     let last = self.removeLast()
     if index != count {
       let val = self[index]
@@ -39,7 +39,7 @@ extension Array: DefaultInitializable {
     }
   }
 
-  mutating func permuteInPlace(random: Random) {
+  mutating func permuteInPlace(_ random: Random) {
     if isEmpty { return }
     let c = count
     for i in 1..<c {
@@ -51,13 +51,13 @@ extension Array: DefaultInitializable {
   }
 
   @warn_unused_result
-  func permute(random: Random) -> Array {
+  func permute(_ random: Random) -> Array {
     var a = self
     a.permuteInPlace(random)
     return a
   }
 
-  func randomElement(random: Random) -> Element {
+  func randomElement(_ random: Random) -> Element {
     return self[random.int(count)]
   }
 }

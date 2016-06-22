@@ -5,6 +5,6 @@ import Foundation
 
 extension NSMutableData {
 
-  func append<T>(el: T) { var el = el; appendBytes(&el, length: sizeof(T)) }
+  func append<T>(_ el: T) { var el = el; self.append(&el, length: sizeof(T)) }
 }
 

@@ -14,15 +14,15 @@ class File: CustomStringConvertible {
   typealias Stats = Darwin.stat
   typealias Perms = mode_t
 
-  enum Error: ErrorType {
-    case ChangePerms(path: String, perms: Perms)
-    case Copy(from: String, to: String)
-    case Open(path: String, msg: String)
-    case Read(path: String, offset: Int, len: Int)
-    case ReadMalloc(path: String, len: Int)
-    case Seek(path: String, pos: Int)
-    case Stat(path: String, msg: String)
-    case Utf8Decode(path: String)
+  enum Error: ErrorProtocol {
+    case changePerms(path: String, perms: Perms)
+    case copy(from: String, to: String)
+    case open(path: String, msg: String)
+    case read(path: String, offset: Int, len: Int)
+    case readMalloc(path: String, len: Int)
+    case seek(path: String, pos: Int)
+    case stat(path: String, msg: String)
+    case utf8Decode(path: String)
   }
 
   let path: String
@@ -39,14 +39,14 @@ class File: CustomStringConvertible {
   }
 
   @warn_unused_result
-  class func openDescriptor(path: String, mode: CInt, create: Perms? = nil) throws -> Descriptor {
+  class func openDescriptor(_ path: String, mode: CInt, create: Perms? = nil) throws -> Descriptor {
     var descriptor: Descriptor
     if let perms = create {
       descriptor = Darwin.open(path, mode | O_CREAT, perms)
     } else {
       descriptor = Darwin.open(path, mode)
     }
-    guard descriptor >= 0 else { throw Error.Open(path: path, msg: stringForCurrentError()) }
+    guard descriptor >= 0 else { throw Error.open(path: path, msg: stringForCurrentError()) }
     return descriptor
   }
 
@@ -58,21 +58,21 @@ class File: CustomStringConvertible {
     return "\(self.dynamicType)(path:'\(path)', descriptor: \(descriptor))"
   }
 
-  var _dispatchSourceHandle: Uns {
+  var _dispatchSourceHandle: Descriptor {
     // note: this is a purposeful leak of the private descriptor so that File+Dispatch can be defined as an extension.
-    return Uns(descriptor)
+    return descriptor
   }
 
   @warn_unused_result
   func stats() throws -> Stats {
     var stats = Darwin.stat()
     let res = Darwin.fstat(descriptor, &stats)
-    guard res == 0 else { throw Error.Stat(path: path, msg: stringForCurrentError()) }
+    guard res == 0 else { throw Error.stat(path: path, msg: stringForCurrentError()) }
     return stats
   }
 
-  func seekAbs(pos: Int) throws {
-    guard Darwin.lseek(descriptor, off_t(pos), SEEK_SET) == 0 else { throw Error.Seek(path: path, pos: pos) }
+  func seekAbs(_ pos: Int) throws {
+    guard Darwin.lseek(descriptor, off_t(pos), SEEK_SET) == 0 else { throw Error.seek(path: path, pos: pos) }
   }
 
   func rewind() throws {
@@ -88,11 +88,11 @@ class File: CustomStringConvertible {
     return true
   }
 
-  static func changePerms(path: String, _ perms: Perms) throws {
-    guard Darwin.chmod(path, perms) == 0 else { throw Error.ChangePerms(path: path, perms: perms) }
+  static func changePerms(_ path: String, _ perms: Perms) throws {
+    guard Darwin.chmod(path, perms) == 0 else { throw Error.changePerms(path: path, perms: perms) }
   }
 
-  func copy(fromPath fromPath: String, toPath: String, create: Perms? = nil) throws {
+  func copy(fromPath: String, toPath: String, create: Perms? = nil) throws {
     try InFile(path: fromPath).copyTo(OutFile(path: toPath, create: create))
   }
 }
@@ -107,9 +107,9 @@ class InFile: File {
   @warn_unused_result
   func len() throws -> Int { return try Int(stats().st_size) }
   
-  func readAbs(offset offset: Int, len: Int, ptr: UnsafeMutablePointer<Void>) throws -> Int {
+  func readAbs(offset: Int, len: Int, ptr: UnsafeMutablePointer<Void>) throws -> Int {
     let len_act = Darwin.pread(Int32(descriptor), ptr, len, off_t(offset))
-    guard len_act >= 0 else { throw Error.Read(path: path, offset: offset, len: len) }
+    guard len_act >= 0 else { throw Error.read(path: path, offset: offset, len: len) }
     return len_act
   }
   
@@ -118,57 +118,57 @@ class InFile: File {
     let len = try self.len()
     let bufferLen = len + 1
     let buffer = malloc(bufferLen)
-    guard buffer != nil else { throw Error.ReadMalloc(path: path, len: len) }
-    let len_act = try readAbs(offset: 0, len: len, ptr: buffer)
-    guard len_act == len else { throw Error.Read(path: path, offset: 0, len: len) }
-    let charBuffer = unsafeBitCast(buffer, UnsafeMutablePointer<CChar>.self)
+    guard buffer != nil else { throw Error.readMalloc(path: path, len: len) }
+    let len_act = try readAbs(offset: 0, len: len, ptr: buffer!)
+    guard len_act == len else { throw Error.read(path: path, offset: 0, len: len) }
+    let charBuffer = unsafeBitCast(buffer, to: UnsafeMutablePointer<CChar>.self)
     charBuffer[len] = 0 // null terminator.
     let s = String(validatingUTF8: charBuffer)
     free(buffer)
-    guard let res = s else { throw Error.Utf8Decode(path: path) }
+    guard let res = s else { throw Error.utf8Decode(path: path) }
     return res
   }
   
-  func copyTo(outFile: OutFile) throws {
+  func copyTo(_ outFile: OutFile) throws {
     let attrs: Int32 = COPYFILE_ACL|COPYFILE_STAT|COPYFILE_XATTR|COPYFILE_DATA
     guard Darwin.fcopyfile(self.descriptor, outFile.descriptor, nil, copyfile_flags_t(attrs)) == 0 else {
-      throw Error.Copy(from: path, to: outFile.path)
+      throw Error.copy(from: path, to: outFile.path)
     }
   }
 
   @warn_unused_result
-  static func readText(path: String) throws -> String {
+  static func readText(_ path: String) throws -> String {
     let f = try InFile(path: path)
     return try f.readText()
   }
 
   @warn_unused_result
-  static func readTextOrFail(path: String) throws -> String {
+  static func readTextOrFail(_ path: String) throws -> String {
     let f = try InFile(path: path)
     return try f.readText()
   }
 }
 
 
-class OutFile: File, OutputStreamType {
+class OutFile: File, OutputStream {
   
   convenience init(path: String, create: Perms? = nil) throws {
     self.init(path: path, descriptor: try File.openDescriptor(path, mode: O_WRONLY | O_TRUNC, create: create))
   }
 
-  func write(string: String) {
+  func write(_ string: String) {
     string.nulTerminatedUTF8.withUnsafeBufferPointer {
       (buffer: UnsafeBufferPointer<UTF8.CodeUnit>) -> () in
         Darwin.write(descriptor, buffer.baseAddress, buffer.count - 1) // do not write null terminator.
     }
   }
 
-  func writeL(string: String) {
+  func writeL(_ string: String) {
     write(string)
     write("\n")
   }
   
-  func setPerms(perms: Perms) {
+  func setPerms(_ perms: Perms) {
     if Darwin.fchmod(descriptor, perms) != 0 {
       fail("setPerms(\(perms)) failed: \(stringForCurrentError()); '\(path)'")
     }
@@ -181,17 +181,17 @@ var std_out = OutFile(path: "std_out", descriptor: STDOUT_FILENO)
 var std_err = OutFile(path: "std_err", descriptor: STDERR_FILENO)
 
 
-func out<T>(item: T)  { print(item, separator: "", terminator: "", toStream: &std_out) }
-func outL<T>(item: T) { print(item, separator: "", terminator: "\n", toStream: &std_out) }
+func out<T>(_ item: T)  { print(item, separator: "", terminator: "", to: &std_out) }
+func outL<T>(_ item: T) { print(item, separator: "", terminator: "\n", to: &std_out) }
 
-func err<T>(item: T)  { print(item, separator: "", terminator: "", toStream: &std_err) }
-func errL<T>(item: T) { print(item, separator: "", terminator: "\n", toStream: &std_err) }
+func err<T>(_ item: T)  { print(item, separator: "", terminator: "", to: &std_err) }
+func errL<T>(_ item: T) { print(item, separator: "", terminator: "\n", to: &std_err) }
 
-func errSL(items: Any...) {
+func errSL(_ items: Any...) {
   std_err.write(items, sep: " ", end: "\n")
 }
 
-func warn(items: Any...) {
+func warn(_ items: Any...) {
   err("WARNING: ")
   std_err.write(items, sep: " ", end: "\n")
 }

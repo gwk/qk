@@ -16,13 +16,13 @@ class Index<T: Hashable> {
     return vals.count
   }
   
-  func val(i: Int) -> T { return vals[i] }
+  func val(_ i: Int) -> T { return vals[i] }
   
   @warn_unused_result
-  func index(val: T) -> Int? { return indexes[val] }
+  func index(_ val: T) -> Int? { return indexes[val] }
   
   @warn_unused_result
-  func reg(val: T) -> Int {
+  func reg(_ val: T) -> Int {
     let oi = indexes[val]
     if let i = oi {
       return i

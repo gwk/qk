@@ -14,7 +14,7 @@ var GLTextView_dflt_prog: GLProgram! = nil
 func GLTextView_setup() {
   assert(GLTextView_dflt_prog == nil)
     
-  let vert = GLShader(kind: .Vert, name: "GLTextView_dflt_vert", sources: [
+  let vert = GLShader(kind: .vert, name: "GLTextView_dflt_vert", sources: [
     "attribute vec2 glPos;",
     "attribute vec2 texPos;",
     "varying vec2 texPosF;",
@@ -25,7 +25,7 @@ func GLTextView_setup() {
     "}"
     ])
   
-  let frag = GLShader(kind: .Frag, name: "GLTextView_dflt_frag", sources: [
+  let frag = GLShader(kind: .frag, name: "GLTextView_dflt_frag", sources: [
     "uniform mediump vec4 color;",
     "uniform mediump sampler2D tex;",
     "varying vec2 texPosF;",
@@ -80,7 +80,7 @@ class GLTextView: View {
     }
   }
   
-  func atlasPage(pxPerPt: F32) -> GLTextPage {
+  func atlasPage(_ pxPerPt: F32) -> GLTextPage {
     return atlas.page(fontSize, pxPerPt: pxPerPt)
   }
   
@@ -89,7 +89,7 @@ class GLTextView: View {
     
   }
   
-  override func render(pxPerPt: F32, screenSizePt: V2S, offset: V2S) {
+  override func render(_ pxPerPt: F32, screenSizePt: V2S, offset: V2S) {
     let page = atlasPage(pxPerPt) // all page metrics are in px units, so we do all layout in screenPxSpace.
     let metrics = page.metrics
     let maxAdv = round(F32(metrics.maxAdv) * kern)
@@ -133,7 +133,7 @@ class GLTextView: View {
         let v2 = Vertex(V2S(ge.x, go.y), V2S(te.x, to.y))
         let v3 = Vertex(ge, te)
         // ccw triangles; v2 and v3 are repeated due to shared edge.
-        verts.appendContentsOf([v0, v1, v2, v1, v3, v2])
+        verts.append(contentsOf: [v0, v1, v2, v1, v3, v2])
         pos.x += F32(g.adv)
       } else { // missing glyph
         pos.x += maxAdv

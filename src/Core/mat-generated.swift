@@ -14,7 +14,7 @@ extension M2S {
   var r1: V2S { return V2S(self[0, 1], self[1, 1]) }
   static let zero = M2S(0)
   static let ident = M2S(1)
-  static func scale(x: F32, y: F32) -> M2S { return M2S(diagonal: V2S(x, y)) }
+  static func scale(_ x: F32, y: F32) -> M2S { return M2S(diagonal: V2S(x, y)) }
 
 }
 
@@ -27,7 +27,7 @@ extension M2D {
   var r1: V2D { return V2D(self[0, 1], self[1, 1]) }
   static let zero = M2D(0)
   static let ident = M2D(1)
-  static func scale(x: F64, y: F64) -> M2D { return M2D(diagonal: V2D(x, y)) }
+  static func scale(_ x: F64, y: F64) -> M2D { return M2D(diagonal: V2D(x, y)) }
 
 }
 
@@ -42,27 +42,27 @@ extension M3S {
   var r2: V3S { return V3S(self[0, 2], self[1, 2], self[2, 2]) }
   static let zero = M3S(0)
   static let ident = M3S(1)
-  static func scale(x: F32, y: F32, z: F32) -> M3S { return M3S(diagonal: V3S(x, y, z)) }
+  static func scale(_ x: F32, y: F32, z: F32) -> M3S { return M3S(diagonal: V3S(x, y, z)) }
 
-  static func rotX(theta: F32) -> M3S { return M3S([
+  static func rotX(_ theta: F32) -> M3S { return M3S([
     V3S(          1,           0,           0),
     V3S(          0,  cos(theta),  sin(theta)),
     V3S(          0, -sin(theta),  cos(theta))
   ])}
 
-  static func rotY(theta: F32) -> M3S { return M3S([
+  static func rotY(_ theta: F32) -> M3S { return M3S([
     V3S( cos(theta),           0, -sin(theta)),
     V3S(          0,           1,           0),
     V3S( sin(theta),           0,  cos(theta))
   ])}
 
-  static func rotZ(theta: F32) -> M3S { return M3S([
+  static func rotZ(_ theta: F32) -> M3S { return M3S([
     V3S( cos(theta),  sin(theta),           0),
     V3S(-sin(theta),  cos(theta),           0),
     V3S(          0,           0,           1)
   ])}
 
-  static func rot(theta theta: F32, norm: V3S) -> M3S {
+  static func rot(theta: F32, norm: V3S) -> M3S {
     if !theta.isNormal { return ident }
     let _cos = cos(theta)
     let _cosp = 1 - _cos
@@ -73,7 +73,7 @@ extension M3S {
       V3S(_cosp * norm.x * norm.z + norm.y * _sin, _cosp * norm.y * norm.z - norm.x * _sin, _cos + _cosp * norm.z * norm.z)
   ])}
 
-  static func rot(a: V3S, _ b: V3S) -> M3S {
+  static func rot(_ a: V3S, _ b: V3S) -> M3S {
     return rot(theta: a.angle(b), norm: a.cross(b).norm)
   }
 
@@ -90,27 +90,27 @@ extension M3D {
   var r2: V3D { return V3D(self[0, 2], self[1, 2], self[2, 2]) }
   static let zero = M3D(0)
   static let ident = M3D(1)
-  static func scale(x: F64, y: F64, z: F64) -> M3D { return M3D(diagonal: V3D(x, y, z)) }
+  static func scale(_ x: F64, y: F64, z: F64) -> M3D { return M3D(diagonal: V3D(x, y, z)) }
 
-  static func rotX(theta: F64) -> M3D { return M3D([
+  static func rotX(_ theta: F64) -> M3D { return M3D([
     V3D(          1,           0,           0),
     V3D(          0,  cos(theta),  sin(theta)),
     V3D(          0, -sin(theta),  cos(theta))
   ])}
 
-  static func rotY(theta: F64) -> M3D { return M3D([
+  static func rotY(_ theta: F64) -> M3D { return M3D([
     V3D( cos(theta),           0, -sin(theta)),
     V3D(          0,           1,           0),
     V3D( sin(theta),           0,  cos(theta))
   ])}
 
-  static func rotZ(theta: F64) -> M3D { return M3D([
+  static func rotZ(_ theta: F64) -> M3D { return M3D([
     V3D( cos(theta),  sin(theta),           0),
     V3D(-sin(theta),  cos(theta),           0),
     V3D(          0,           0,           1)
   ])}
 
-  static func rot(theta theta: F64, norm: V3D) -> M3D {
+  static func rot(theta: F64, norm: V3D) -> M3D {
     if !theta.isNormal { return ident }
     let _cos = cos(theta)
     let _cosp = 1 - _cos
@@ -121,7 +121,7 @@ extension M3D {
       V3D(_cosp * norm.x * norm.z + norm.y * _sin, _cosp * norm.y * norm.z - norm.x * _sin, _cos + _cosp * norm.z * norm.z)
   ])}
 
-  static func rot(a: V3D, _ b: V3D) -> M3D {
+  static func rot(_ a: V3D, _ b: V3D) -> M3D {
     return rot(theta: a.angle(b), norm: a.cross(b).norm)
   }
 
@@ -140,30 +140,30 @@ extension M4S {
   var r3: V4S { return V4S(self[0, 3], self[1, 3], self[2, 3], self[3, 3]) }
   static let zero = M4S(0)
   static let ident = M4S(1)
-  static func scale(x: F32, y: F32, z: F32, w: F32) -> M4S { return M4S(diagonal: V4S(x, y, z, w)) }
+  static func scale(_ x: F32, y: F32, z: F32, w: F32) -> M4S { return M4S(diagonal: V4S(x, y, z, w)) }
 
-  static func rotX(theta: F32) -> M4S { return M4S([
+  static func rotX(_ theta: F32) -> M4S { return M4S([
     V4S(          1,           0,           0,           0),
     V4S(          0,  cos(theta),  sin(theta),           0),
     V4S(          0, -sin(theta),  cos(theta),           0),
     V4S(          0,           0,           0,           1)
   ])}
 
-  static func rotY(theta: F32) -> M4S { return M4S([
+  static func rotY(_ theta: F32) -> M4S { return M4S([
     V4S( cos(theta),           0, -sin(theta),           0),
     V4S(          0,           1,           0,           0),
     V4S( sin(theta),           0,  cos(theta),           0),
     V4S(          0,           0,           0,           1)
   ])}
 
-  static func rotZ(theta: F32) -> M4S { return M4S([
+  static func rotZ(_ theta: F32) -> M4S { return M4S([
     V4S( cos(theta),  sin(theta),           0,           0),
     V4S(-sin(theta),  cos(theta),           0,           0),
     V4S(          0,           0,           1,           0),
     V4S(          0,           0,           0,           1)
   ])}
 
-  static func rot(theta theta: F32, norm: V4S) -> M4S {
+  static func rot(theta: F32, norm: V4S) -> M4S {
     if !theta.isNormal { return ident }
     let _cos = cos(theta)
     let _cosp = 1 - _cos
@@ -175,7 +175,7 @@ extension M4S {
       V4S(0, 0, 0, 1)
   ])}
 
-  static func rot(a: V4S, _ b: V4S) -> M4S {
+  static func rot(_ a: V4S, _ b: V4S) -> M4S {
     return rot(theta: a.angle(b), norm: a.cross(b).norm)
   }
 
@@ -194,30 +194,30 @@ extension M4D {
   var r3: V4D { return V4D(self[0, 3], self[1, 3], self[2, 3], self[3, 3]) }
   static let zero = M4D(0)
   static let ident = M4D(1)
-  static func scale(x: F64, y: F64, z: F64, w: F64) -> M4D { return M4D(diagonal: V4D(x, y, z, w)) }
+  static func scale(_ x: F64, y: F64, z: F64, w: F64) -> M4D { return M4D(diagonal: V4D(x, y, z, w)) }
 
-  static func rotX(theta: F64) -> M4D { return M4D([
+  static func rotX(_ theta: F64) -> M4D { return M4D([
     V4D(          1,           0,           0,           0),
     V4D(          0,  cos(theta),  sin(theta),           0),
     V4D(          0, -sin(theta),  cos(theta),           0),
     V4D(          0,           0,           0,           1)
   ])}
 
-  static func rotY(theta: F64) -> M4D { return M4D([
+  static func rotY(_ theta: F64) -> M4D { return M4D([
     V4D( cos(theta),           0, -sin(theta),           0),
     V4D(          0,           1,           0,           0),
     V4D( sin(theta),           0,  cos(theta),           0),
     V4D(          0,           0,           0,           1)
   ])}
 
-  static func rotZ(theta: F64) -> M4D { return M4D([
+  static func rotZ(_ theta: F64) -> M4D { return M4D([
     V4D( cos(theta),  sin(theta),           0,           0),
     V4D(-sin(theta),  cos(theta),           0,           0),
     V4D(          0,           0,           1,           0),
     V4D(          0,           0,           0,           1)
   ])}
 
-  static func rot(theta theta: F64, norm: V4D) -> M4D {
+  static func rot(theta: F64, norm: V4D) -> M4D {
     if !theta.isNormal { return ident }
     let _cos = cos(theta)
     let _cosp = 1 - _cos
@@ -229,7 +229,7 @@ extension M4D {
       V4D(0, 0, 0, 1)
   ])}
 
-  static func rot(a: V4D, _ b: V4D) -> M4D {
+  static func rot(_ a: V4D, _ b: V4D) -> M4D {
     return rot(theta: a.angle(b), norm: a.cross(b).norm)
   }
 

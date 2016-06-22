@@ -4,11 +4,11 @@ import Foundation
 
 
 func assertMainThread() {
-  assert(NSThread.isMainThread())
+  assert(Thread.isMainThread())
 }
 
 func assertChildThread() {
-  assert(!NSThread.isMainThread())
+  assert(!Thread.isMainThread())
 }
 
-extension NSThread {}
+extension Foundation.Thread {}

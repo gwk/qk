@@ -1,14 +1,14 @@
 // © 2015 George King. Permission to use this file is granted in license-qk.txt.
 
 
-enum Chain<Element>: GeneratorType, SequenceType, ArrayLiteralConvertible {
+enum Chain<Element>: IteratorProtocol, Sequence, ArrayLiteralConvertible {
 
   case end
   indirect case link(Element, Chain)
   
-  init<C: CollectionType where C.Generator.Element == Element, C.Index: BidirectionalIndexType>(_ collection: C) {
+  init<C: Collection where C.Iterator.Element == Element, C.Index: Comparable>(_ collection: C) {
     var c: Chain<Element> = .end
-    for e in collection.reverse() {
+    for e in collection.reversed() {
       c = .link(e, c)
     }
     self = c
@@ -18,7 +18,7 @@ enum Chain<Element>: GeneratorType, SequenceType, ArrayLiteralConvertible {
     self.init(elements)
   }
 
-  func generate() -> Chain {
+  func makeIterator() -> Chain {
     return self
   }
 

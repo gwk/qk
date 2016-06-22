@@ -6,6 +6,6 @@ import SceneKit
 extension SCNScene {
 
   func togglePaused() {
-    paused = !paused
+    isPaused = !isPaused
   }
 }

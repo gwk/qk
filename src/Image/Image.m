@@ -3,12 +3,11 @@
 #import <png.h>
 #import <zlib.h>
 #import "Image.h"
-#import "core.h"
 
 
 void logPngVersionInfo() {
-  errFL("libpng compiled: %s; using: %s; zlib compiled: %s; using: %s",
-        PNG_LIBPNG_VER_STRING, png_libpng_ver, ZLIB_VERSION, "unknwon");
+  fprintf(stderr, "libpng compiled: %s; using: %s; zlib compiled: %s; using: %s",
+          PNG_LIBPNG_VER_STRING, png_libpng_ver, ZLIB_VERSION, "unknwon");
 }
 
 
@@ -125,9 +124,8 @@ void* imgDataFromPngReadPtr(png_structp readPtr,
   }
   
   size_t l =  rowsLength * h;
-  data = (png_bytep)malloc_safe(l);
-  row_pointers = (png_bytepp)malloc_safe(h * sizeof(png_bytep));
-  
+  data = (png_bytep)malloc(l);
+  row_pointers = (png_bytepp)malloc(h * sizeof(png_bytep));
   // fill out row_pointers.
   const BOOL flip = YES; // make data layout match OpenGL texturing expectations.
   for (int i = 0; i < h; i++) {

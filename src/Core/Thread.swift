@@ -6,7 +6,7 @@ import Foundation
 let processorCount = sysconf(_SC_NPROCESSORS_CONF)
 
 
-class Thread: NSThread {
+class Thread: Foundation.Thread {
   
   let action: Action
   
@@ -23,7 +23,7 @@ class Thread: NSThread {
 
 
 @warn_unused_result
-func spawnThread(name: String, action: Action) -> Thread {
+func spawnThread(_ name: String, action: Action) -> Thread {
   let thread = Thread(name: name, action: action)
   thread.start()
   return thread

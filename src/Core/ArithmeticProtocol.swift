@@ -39,35 +39,35 @@ extension U32: ArithmeticProtocol {}
 extension U64: ArithmeticProtocol {}
 
 @warn_unused_result
-func clamp<T: ArithmeticProtocol>(a: T, min: T, max: T) -> T {
+func clamp<T: ArithmeticProtocol>(_ a: T, min: T, max: T) -> T {
   if a < min { return min }
   if a > max { return max }
   return a
 }
 
 @warn_unused_result
-func sign<T: ArithmeticProtocol>(b: Bool) -> T {
+func sign<T: ArithmeticProtocol>(_ b: Bool) -> T {
   return b ? 1 : -1
 }
 
 @warn_unused_result
-func sign<T: ArithmeticProtocol>(x: T) -> T {
+func sign<T: ArithmeticProtocol>(_ x: T) -> T {
   if x < 0 { return -1 }
   if x > 0 { return 1 }
   return 0
 }
 
 
-extension SequenceType where Generator.Element: ArithmeticProtocol {
+extension Sequence where Iterator.Element: ArithmeticProtocol {
 
   @warn_unused_result
-  func sum() -> Generator.Element {
-    return reduce(0) { (accum: Generator.Element, item: Generator.Element) in return accum + item }
+  func sum() -> Iterator.Element {
+    return reduce(0) { (accum: Iterator.Element, item: Iterator.Element) in return accum + item }
   }
 
   @warn_unused_result
-  func prod() -> Generator.Element {
-    return reduce(1) { (accum: Generator.Element, item: Generator.Element) in return accum * item }
+  func prod() -> Iterator.Element {
+    return reduce(1) { (accum: Iterator.Element, item: Iterator.Element) in return accum * item }
   }
 }
 

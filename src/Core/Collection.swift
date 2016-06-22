@@ -1,31 +1,31 @@
 // © 2015 George King. Permission to use this file is granted in license-qk.txt.
 
 
-extension CollectionType where Generator.Element : Equatable {
+extension Collection where Iterator.Element : Equatable {
 
   var range: Range<Index> { return startIndex..<endIndex }
 
   @warn_unused_result
-  func has<C: CollectionType where C.Generator.Element == Generator.Element>(query: C, atIndex: Index) -> Bool {
+  func has<C: Collection where C.Iterator.Element == Iterator.Element>(_ query: C, atIndex: Index) -> Bool {
     var i = atIndex
     for e in query {
       if i == endIndex || e != self[i] {
         return false
       }
-      i = i.successor()
+      i = index(after: i)
     }
     return true
   }
 
   @warn_unused_result
-  func part(range: Range<Index>) -> (SubSequenceType, SubSequenceType) {
-    let ra = startIndex..<range.startIndex
-    let rb = range.endIndex..<endIndex
+  func part(_ range: Range<Index>) -> (SubSequence, SubSequence) {
+    let ra = startIndex..<range.lowerBound
+    let rb = range.upperBound..<endIndex
     return (self[ra], self[rb])
   }
 
   @warn_unused_result
-  func part(separator: Self, start: Index? = nil, end: Index? = nil) -> (SubSequenceType, SubSequenceType)? {
+  func part(_ separator: Self, start: Index? = nil, end: Index? = nil) -> (SubSequence, SubSequence)? {
     if let range = rangeOf(separator, start: start, end: end) {
       return part(range)
     }
@@ -33,7 +33,7 @@ extension CollectionType where Generator.Element : Equatable {
   }
 
   @warn_unused_result
-  func rangeOf<C: CollectionType where C.Generator.Element == Generator.Element>(query: C, start: Index? = nil, end: Index? = nil) -> Range<Index>? {
+  func rangeOf<C: Collection where C.Iterator.Element == Iterator.Element>(_ query: C, start: Index? = nil, end: Index? = nil) -> Range<Index>? {
     var i = start.or(startIndex)
     let e = end.or(endIndex)
     while i != e {
@@ -47,26 +47,26 @@ extension CollectionType where Generator.Element : Equatable {
           found = false
           break
         }
-        j = j.successor()
+        j = index(after: j)
       }
       if found { // all characters matched.
         return i..<j
       }
-      i = i.successor()
+      i = index(after: i)
     }
     return nil
   }
   
   @warn_unused_result
-  func split<C: CollectionType where C.Generator.Element == Generator.Element>(sub sub: C, maxSplit: Int = Int.max, allowEmptySlices: Bool = false) -> [Self.SubSequenceType] {
-    var result: [Self.SubSequenceType] = []
+  func split<C: Collection where C.Iterator.Element == Iterator.Element>(sub: C, maxSplit: Int = Int.max, allowEmptySlices: Bool = false) -> [Self.SubSequence] {
+    var result: [Self.SubSequence] = []
     var prev = startIndex
     var range = rangeOf(sub)
     while let r = range {
-      if allowEmptySlices || prev != r.startIndex {
-        result.append(self[prev..<r.startIndex])
+      if allowEmptySlices || prev != r.lowerBound {
+        result.append(self[prev..<r.lowerBound])
       }
-      prev = r.endIndex
+      prev = r.upperBound
       range = rangeOf(sub, start: prev)
       if result.count == maxSplit {
         break
@@ -80,10 +80,10 @@ extension CollectionType where Generator.Element : Equatable {
 }
 
 
-extension CollectionType where Generator.Element: Comparable {
+extension Collection where Iterator.Element: Comparable {
 
   var isSorted: Bool {
-    var prev: Generator.Element? = nil
+    var prev: Iterator.Element? = nil
     for el in self {
       if let prev = prev {
         if !(prev < el) {
@@ -97,8 +97,8 @@ extension CollectionType where Generator.Element: Comparable {
 }
 
 
-func zipExact<C0: CollectionType, C1: CollectionType where C0.Index.Distance == C1.Index.Distance>(c0: C0, _ c1: C1) ->
-  Zip2SequenceType<C0, C1> {
+func zipExact<C0: Collection, C1: Collection where C0.IndexDistance == C1.IndexDistance>(_ c0: C0, _ c1: C1) ->
+  Zip2Sequence<C0, C1> {
   assert(c0.count == c1.count)
   return zip(c0, c1)
 }

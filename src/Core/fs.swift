@@ -3,7 +3,7 @@
 import Darwin
 
 
-func renameFileAtPath(fromPath: String, toPath: String) {
+func renameFileAtPath(_ fromPath: String, toPath: String) {
   if Darwin.rename(fromPath, toPath) != 0 {
     fail("rename(\(fromPath), \(toPath)) failed: \(stringForCurrentError())")
   }

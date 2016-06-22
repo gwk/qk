@@ -19,7 +19,7 @@ extension JsonArrayInitable {
 extension JsonType {
   func asArray() throws -> JsonArray {
     guard let a = self as? NSArray else {
-      throw Json.Error.UnexpectedType(exp: JsonArray.self, json: self)
+      throw Json.Error.unexpectedType(exp: JsonArray.self, json: self)
     }
     return JsonArray(raw: a)
   }
@@ -38,16 +38,16 @@ struct JsonArray: JsonInitable {
   init(json: JsonType) throws {
     if let raw = json as? NSArray {
       self.init(raw: raw)
-    } else { throw Json.Error.UnexpectedType(exp: NSArray.self, json: json) }
+    } else { throw Json.Error.unexpectedType(exp: NSArray.self, json: json) }
   }
 
   init(anyJson: JsonType) { // for non-array input, create an array of one element.
     self.init(raw: (anyJson as? NSArray).or(NSArray(object: anyJson)))
   }
 
-  init(data: NSData) throws { self.init(raw: try Json.fromData(data)) }
+  init(data: Data) throws { self.init(raw: try Json.fromData(data)) }
 
-  init(stream: NSInputStream) throws { self.init(raw: try Json.fromStream(stream)) }
+  init(stream: InputStream) throws { self.init(raw: try Json.fromStream(stream)) }
 
   init(path: String) throws { self.init(raw: try Json.fromPath(path)) }
 
@@ -58,27 +58,28 @@ struct JsonArray: JsonInitable {
   }
 
   @warn_unused_result
-  func el(index: Int) throws -> JsonType {
-    if index >= count { throw Json.Error.MissingEl(index: index, json: raw) }
+  func el(_ index: Int) throws -> JsonType {
+    if index >= count { throw Json.Error.missingEl(index: index, json: raw) }
     return raw[index] as! JsonType
   }
 
+  /* TODO
   @warn_unused_result
-  func convEls<T: JsonInitable>(start start: Int = 0, end: Int? = nil) throws -> [T] {
+  func convEls<T: JsonInitable>(start: Int = 0, end: Int? = nil) throws -> [T] {
     let range = start..<end.or(raw.count)
     return try raw[range].map { try T.init(json: $0 as! JsonType) }
   }
 
   @warn_unused_result
-  func convArrays<T: JsonArrayInitable>(start start: Int = 0, end: Int? = nil) throws -> [T] {
+  func convArrays<T: JsonArrayInitable>(start: Int = 0, end: Int? = nil) throws -> [T] {
     let range = start..<end.or(raw.count)
     return try raw[range].map { try T.init(jsonArray: try JsonArray(json: $0 as! JsonType)) }
   }
 
   @warn_unused_result
-  func convDicts<T: JsonDictInitable>(start start: Int = 0, end: Int? = nil) throws -> [T] {
+  func convDicts<T: JsonDictInitable>(start: Int = 0, end: Int? = nil) throws -> [T] {
     let range = start..<end.or(raw.count)
     return try raw[range].map { try T.init(jsonDict: try JsonDict(json: $0 as! JsonType)) }
   }
-
+ */
 }

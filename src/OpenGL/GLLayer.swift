@@ -4,7 +4,7 @@ import QuartzCore
 
 #if os(OSX)
   typealias CRGLLayer = CAOpenGLLayer
-  #else
+#else
   typealias CRGLLayer = CAEAGLLayer
 #endif
 
@@ -12,28 +12,28 @@ import QuartzCore
 typealias GLRenderFn = (contentsScale: F32, size: V2S, time: Time) -> ()
 typealias GLEventFn = (GLEvent) -> ()
 
-  
+
 class GLLayer: CRGLLayer {
 
   required init?(coder: NSCoder) { fatalError() }
-  
+
   override init() { super.init() } // layer gets instantiated for us on iOS, so we must defer initialization to setup().
 
   var drawableSize = V2S()
   var needsInitialLayerTime = true
   var initialLayerTime: Time = 0
   var prevLayerTime: Time = 0
-  
-  var pixFmt: PixFmt = .None {
-    willSet { assert(pixFmt == .None, "GLLayer: altering the pixFmt is not yet supported") }
+
+  var pixFmt: PixFmt = .none {
+    willSet { assert(pixFmt == .none, "GLLayer: altering the pixFmt is not yet supported") }
   }
-  
+
   var render: GLRenderFn = { (contentsScale, size, time) in () } {
     didSet {}
   }
-  
+
   var handleEvent: GLEventFn = { (event) in () }
-  
+
   #if os(iOS)
   var context: EAGLContext!
   var frameBuffer: GLuint = 0
@@ -41,12 +41,12 @@ class GLLayer: CRGLLayer {
   var depthBuffer: GLuint = 0
   var displayLink: CADisplayLink!
   #endif
-  
-  func setup(pixFmt: PixFmt) {
+
+  func setup(_ pixFmt: PixFmt) {
     self.pixFmt = pixFmt
-    opaque = true
+    isOpaque = true
     opacity = 1
-    asynchronous = false
+    isAsynchronous = false
     #if os(iOS)
       context = EAGLContext(API: kEAGLRenderingAPIOpenGLES2)
       check(context != nil)
@@ -58,12 +58,12 @@ class GLLayer: CRGLLayer {
         kEAGLDrawablePropertyColorFormat : NSNumber(kEAGLColorFormatRGBA8)]
     #endif
   }
-  
+
   #if os(OSX)
-  
+
   // CAOpenGLLayer.
-  
-  override func copyCGLPixelFormatForDisplayMask(mask: U32) -> CGLPixelFormatObj {
+
+  override func copyCGLPixelFormat(forDisplayMask mask: U32) -> CGLPixelFormatObj {
     typealias PFA = CGLPixelFormatAttribute
     var attrs: [PFA] = []
     attrs.append(kCGLPFADoubleBuffer)
@@ -87,57 +87,57 @@ class GLLayer: CRGLLayer {
     }
     //kCGLPFAAcceleratedCompute.
     attrs.append(PFA(0)) // null terminator
-    
-    var pf: CGLPixelFormatObj = nil
+
+    var pf: CGLPixelFormatObj? = nil
     var virtualScreenCount: GLint = -1
     let e = CGLChoosePixelFormat(attrs, &pf, &virtualScreenCount)
     if e.rawValue != kCGLNoError.rawValue {
       print("CGL error creating pixel format (will fall back to default): \(e)")
-      return super.copyCGLPixelFormatForDisplayMask(mask)
+      return super.copyCGLPixelFormat(forDisplayMask: mask)
     }
     //describeFormat(pf, virtualScreen: 0)
-    return pf
+    return pf!
   }
-  
-  override func releaseCGLPixelFormat(pf: CGLPixelFormatObj) {
+
+  override func releaseCGLPixelFormat(_ pf: CGLPixelFormatObj) {
     print(#function)
     super.releaseCGLPixelFormat(pf)
   }
-  
-  override func copyCGLContextForPixelFormat(pixelFormat: CGLPixelFormatObj) -> CGLContextObj {
-    return super.copyCGLContextForPixelFormat(pixelFormat)
+
+  override func copyCGLContext(forPixelFormat pixelFormat: CGLPixelFormatObj) -> CGLContextObj {
+    return super.copyCGLContext(forPixelFormat: pixelFormat)
   }
 
-  override func releaseCGLContext(ctx: CGLContextObj) {
+  override func releaseCGLContext(_ ctx: CGLContextObj) {
     print(#function)
     super.releaseCGLContext(ctx)
   }
-  
-  override func canDrawInCGLContext(ctx: CGLContextObj, pixelFormat: CGLPixelFormatObj, forLayerTime layerTime: Time,
-    displayTime: UnsafePointer<CVTimeStamp>) -> Bool {
-      return true
+
+  override func canDraw(incglContext ctx: CGLContextObj, pixelFormat pf: CGLPixelFormatObj, forLayerTime t: CFTimeInterval,
+                        displayTime ts: UnsafePointer<CVTimeStamp>?) -> Bool {
+    return true
   }
-  
-  override func drawInCGLContext(ctx: CGLContextObj, pixelFormat: CGLPixelFormatObj, forLayerTime layerTime: Time,
-    displayTime: UnsafePointer<CVTimeStamp>) {
-      assert(CGLGetCurrentContext() == ctx)
-      if needsInitialLayerTime {
-        needsInitialLayerTime = false
-        initialLayerTime = layerTime
-        prevLayerTime = layerTime
-      }
-      handleEvent(.Tick(GLTick(time: layerTime)))
-      render(contentsScale: F32(contentsScale), size: V2S(bounds.size), time: layerTime)
+
+  override func draw(incglContext ctx: CGLContextObj, pixelFormat: CGLPixelFormatObj, forLayerTime layerTime: CFTimeInterval,
+                     displayTime: UnsafePointer<CVTimeStamp>?) {
+    assert(CGLGetCurrentContext() == ctx)
+    if needsInitialLayerTime {
+      needsInitialLayerTime = false
+      initialLayerTime = layerTime
       prevLayerTime = layerTime
-      // according to the header comments, we should call super to flush correctly.
-      super.drawInCGLContext(ctx, pixelFormat: pixelFormat, forLayerTime: layerTime, displayTime:displayTime)
+    }
+    handleEvent(.tick(GLTick(time: layerTime)))
+    render(contentsScale: F32(contentsScale), size: V2S(bounds.size), time: layerTime)
+    prevLayerTime = layerTime
+    // according to the header comments, we should call super to flush correctly.
+    super.draw(incglContext: ctx, pixelFormat: pixelFormat, forLayerTime: layerTime, displayTime:displayTime)
   }
-  
+
   // GLLayer.
-  
-  func describeFormat(format: CGLPixelFormatObj, virtualScreen: GLint) {
+
+  func describeFormat(_ format: CGLPixelFormatObj, virtualScreen: GLint) {
     print("pixel format: \(format)");
-    func desc(attr: CGLPixelFormatAttribute, name: String) {
+    func desc(_ attr: CGLPixelFormatAttribute, name: String) {
       var val: GLint = 0
       let e = CGLDescribePixelFormat(format, virtualScreen, attr, &val)
       if e.rawValue != kCGLNoError.rawValue {
@@ -172,7 +172,7 @@ class GLLayer: CRGLLayer {
     desc(kCGLPFAVirtualScreenCount, name: "VirtualScreenCount")
     print("")
   }
-
+  
   #else // iOS
   
   // TODO: implement asynchronous with an internal CADisplayLink.

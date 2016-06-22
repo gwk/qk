@@ -27,26 +27,26 @@ func GLTexture_getMaxSize() -> I32 {
 
 enum GLTexTarget: GLenum {
   #if os(OSX)
-  case Rect = 0x0DE1 // GL_TEXTURE_2D.
-  case CubeMap = 0x8513 // GL_TEXTURE_CUBE_MAP.
+  case rect = 0x0DE1 // GL_TEXTURE_2D.
+  case cubeMap = 0x8513 // GL_TEXTURE_CUBE_MAP.
   #else
   #endif
 }
 
 enum GLTexFmt: GLenum {
   #if os(OSX)
-  case A = 0x1906     // GL_ALPHA.
-  case L = 0x1903     // GL_RED; GL_LUMINANCE is deprecated.
-  case LA = 0x190A    // GL_RG; GL_LUMINANCE_ALPHA is deprecated.
-  case RGB = 0x1907   // GL_RGB.
-  case RGBA = 0x1908  // GL_RGBA.
+  case a = 0x1906     // GL_ALPHA.
+  case l = 0x1903     // GL_RED; GL_LUMINANCE is deprecated.
+  case la = 0x190A    // GL_RG; GL_LUMINANCE_ALPHA is deprecated.
+  case rgb = 0x1907   // GL_RGB.
+  case rgba = 0x1908  // GL_RGBA.
   #else
   #endif
 }
 
 enum GLDataType: GLenum {
   #if os(OSX)
-  case U8 = 0x1401 // GL_UNSIGNED_BYTE.
+  case u8 = 0x1401 // GL_UNSIGNED_BYTE.
   #else
   #endif
 }
@@ -54,7 +54,7 @@ enum GLDataType: GLenum {
 class GLTexture {
   let handle: GLHandle
   var target: GLTexTarget
-  var fmt: GLTexFmt = .RGBA
+  var fmt: GLTexFmt = .rgba
   var w: Int = 0
   var h: Int = 0
   
@@ -63,7 +63,7 @@ class GLTexture {
     glAssert()
   }
   
-  init(target: GLTexTarget = .Rect) {
+  init(target: GLTexTarget = .rect) {
     self.target = target
     var _handle: GLHandle = 0
     glGenTextures(1, &_handle)
@@ -71,13 +71,13 @@ class GLTexture {
     handle = _handle
   }
   
-  convenience init(target: GLTexTarget = .Rect, w: Int, h: Int, fmt: GLTexFmt, dataFmt: GLTexFmt, dataType: GLDataType,
+  convenience init(target: GLTexTarget = .rect, w: Int, h: Int, fmt: GLTexFmt, dataFmt: GLTexFmt, dataType: GLDataType,
     data: UnsafePointer<Void>) {
       self.init(target: target)
       update(w: w, h: h, fmt: fmt, dataFmt: dataFmt, dataType: dataType, data: data)
   }
   
-  func update(w w: Int, h: Int, fmt: GLTexFmt, dataFmt: GLTexFmt, dataType: GLDataType, data: UnsafePointer<Void>) {
+  func update(w: Int, h: Int, fmt: GLTexFmt, dataFmt: GLTexFmt, dataType: GLDataType, data: UnsafePointer<Void>) {
     GLTexture_getMaxSize()
     //check(w <= maxSize && h <= maxSize, "GLTexture exceeds maxSize (\(maxSize)): w: \(w); h: \(h)")
     self.w = w
@@ -93,7 +93,7 @@ class GLTexture {
     setFilter(GLenum(GL_LINEAR)) // choose smooth results over performance as default.
   }
     
-  func setMinFilter(filter: GLenum) {
+  func setMinFilter(_ filter: GLenum) {
     bind() // does texture need to be bound when this is called?
     assert(
       filter == GLenum(GL_NEAREST) ||
@@ -107,7 +107,7 @@ class GLTexture {
     glAssert()
   }
   
-  func setMagFilter(filter: GLenum) {
+  func setMagFilter(_ filter: GLenum) {
     bind() // does texture need to be bound when this is called?
     assert(filter == GLenum(GL_NEAREST) || filter == GLenum(GL_LINEAR),
       "bad texture filter parameter: \(filter)")
@@ -115,14 +115,14 @@ class GLTexture {
     glAssert()
   }
   
-  func setFilter(filter: GLenum) {
+  func setFilter(_ filter: GLenum) {
     setMinFilter(filter)
     let mag_filter = (filter == GLenum(GL_NEAREST) || filter == GLenum(GL_NEAREST_MIPMAP_NEAREST))
     ? GLenum(GL_NEAREST) : GLenum(GL_LINEAR)
     setMagFilter(mag_filter)
   }
   
-  func setWrap(wrap: GLenum, axis: GLenum) {
+  func setWrap(_ wrap: GLenum, axis: GLenum) {
     bind() // does texture need to be bound when this is called?
     assert(wrap == GLenum(GL_CLAMP_TO_EDGE) || wrap == GLenum(GL_MIRRORED_REPEAT) || wrap == GLenum(GL_REPEAT),
       "bad texture wrap parameter: \(wrap)")
@@ -132,7 +132,7 @@ class GLTexture {
     glAssert()
   }
   
-  func setWrap(wrap: GLenum) {
+  func setWrap(_ wrap: GLenum) {
     setWrap(wrap, axis: GLenum(GL_TEXTURE_WRAP_S))
     setWrap(wrap, axis: GLenum(GL_TEXTURE_WRAP_T))
   }

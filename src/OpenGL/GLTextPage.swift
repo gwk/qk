@@ -62,7 +62,7 @@ struct GLTextPage: CustomStringConvertible {
     }
     w = ((w + 7) >> 3) << 3 // round up to nearest word; seems to be required by OpenGL.
     self.size = V2I(w, rows * strike.metrics.maxGlyphHeight)
-    var img = [U8](count: Int(size.x * size.y), repeatedValue: 0)
+    var img = [U8](repeating: 0, count: Int(size.x * size.y))
     for (sg, g) in zip(strike.glyphs, glyphs) {
       // TODO: factor out copy?
       for y in 0..<g.size.y {
@@ -84,9 +84,9 @@ struct GLTextPage: CustomStringConvertible {
     // allocate texture.
     tex = GLTexture()
     tex.update(w: Int(size.x), h: Int(size.y),
-      fmt: .L,
-      dataFmt: .L,
-      dataType: .U8,
+      fmt: .l,
+      dataFmt: .l,
+      dataType: .u8,
       data: img)
     
     #if false
@@ -97,7 +97,7 @@ struct GLTextPage: CustomStringConvertible {
     #endif
   }
   
-  func glyph(char: Character) -> GLGlyph? {
+  func glyph(_ char: Character) -> GLGlyph? {
     if let i = chars.index(char) {
       return glyphs[i]
     } else {

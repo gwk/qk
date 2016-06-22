@@ -9,5 +9,5 @@
 
 extension NSLayoutAttribute {
   
-  var isSome: Bool { return self != .NotAnAttribute }
+  var isSome: Bool { return self != .notAnAttribute }
 }

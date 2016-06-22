@@ -11,15 +11,15 @@
 
 extension CRColor {
   
-  class var clear: CRColor  { return self.clearColor(); }
-  class var w: CRColor     { return self.whiteColor(); }
-  class var k: CRColor     { return self.blackColor(); }
-  class var r: CRColor     { return self.redColor(); }
-  class var g: CRColor     { return self.greenColor(); }
-  class var b: CRColor     { return self.blueColor(); }
-  class var c: CRColor     { return self.cyanColor(); }
-  class var m: CRColor     { return self.magentaColor(); }
-  class var y: CRColor     { return self.yellowColor(); }
+  class var clear: CRColor  { return self.clear(); }
+  class var w: CRColor     { return self.white(); }
+  class var k: CRColor     { return self.black(); }
+  class var r: CRColor     { return self.red(); }
+  class var g: CRColor     { return self.green(); }
+  class var b: CRColor     { return self.blue(); }
+  class var c: CRColor     { return self.cyan(); }
+  class var m: CRColor     { return self.magenta(); }
+  class var y: CRColor     { return self.yellow(); }
 
   convenience init(_ r: CGFloat, _ g: CGFloat, _ b: CGFloat, _ a: CGFloat = 1) {
     self.init(red: r, green: g, blue: b, alpha: a)

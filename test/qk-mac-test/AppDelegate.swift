@@ -12,14 +12,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
   override init() {}
 
-  func applicationDidFinishLaunching(note: NSNotification) {
+  func applicationDidFinishLaunching(_ note: Notification) {
 
-    let processInfo = NSProcessInfo.processInfo()
+    let processInfo = ProcessInfo.processInfo()
 
     // menu bar.
     let quitItem = NSMenuItem(
       title: "Quit " + processInfo.processName,
-      action: Selector("terminate:"),
+      action: #selector(NSApplication.terminate(_:)),
       keyEquivalent:"q")
 
     let appMenu = NSMenu()
@@ -31,7 +31,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let menuBar = NSMenu()
     menuBar.addItem(appMenuBarItem)
 
-    let app = NSApplication.sharedApplication()
+    let app = NSApplication.shared()
     app.mainMenu = menuBar
 
     viewController = NSViewController()

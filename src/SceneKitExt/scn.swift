@@ -8,11 +8,11 @@ public typealias V3 = SCNVector3
 public typealias V4 = SCNVector4
 
 
-func getCtx(renderer: SCNSceneRenderer) -> CRGLContext {
-  return unsafeBitCast(renderer.context, CRGLContext.self)
+func getCtx(_ renderer: SCNSceneRenderer) -> CRGLContext {
+  return unsafeBitCast(renderer.context, to: CRGLContext.self)
 }
 
-func enableCtx(renderer: SCNSceneRenderer) {
+func enableCtx(_ renderer: SCNSceneRenderer) {
   glContextEnable(getCtx(renderer))
 }
 

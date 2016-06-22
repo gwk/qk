@@ -8,12 +8,12 @@
 
 
 enum GLInputType: GLenum, CustomStringConvertible {
-  case F = 0x1406 // GL_FLOAT
-  case V2 = 0x8B50 // GL_FLOAT_VEC2
-  case V3 = 0x8B51 // GL_FLOAT_VEC3
-  case V4 = 0x8B52 // GL_FLOAT_VEC4
-  case I = 0x1404 // GL_INT
-  case Sampler2 = 0x8B5E // GL_SAMPLER_2D
+  case f = 0x1406 // GL_FLOAT
+  case v2 = 0x8B50 // GL_FLOAT_VEC2
+  case v3 = 0x8B51 // GL_FLOAT_VEC3
+  case v4 = 0x8B52 // GL_FLOAT_VEC4
+  case i = 0x1404 // GL_INT
+  case sampler2 = 0x8B5E // GL_SAMPLER_2D
   //GL_INT_VEC2
   //GL_INT_VEC3
   //GL_INT_VEC4
@@ -23,19 +23,19 @@ enum GLInputType: GLenum, CustomStringConvertible {
   
   var description: String {
     switch self {
-    case F: return "F"
-    case V2: return "V2"
-    case V3: return "V3"
-    case V4: return "V4"
-    case I: return "I"
-    case Sampler2: return "Sampler2"
+    case f: return "F"
+    case v2: return "V2"
+    case v3: return "V3"
+    case v4: return "V4"
+    case i: return "I"
+    case sampler2: return "Sampler2"
     }
   }
   
   var compType: GLenum {
     switch self {
-    case F, V2, V3, V4: return GLenum(GL_FLOAT)
-    case I: return GLenum(GL_INT)
+    case f, v2, v3, v4: return GLenum(GL_FLOAT)
+    case i: return GLenum(GL_INT)
     default: fatalError("no comp type for GLInputType: \(self)")
     }
   }
@@ -62,7 +62,7 @@ class GLProgram {
     glAssert()
   }
   
-  func getPar(par: GLenum) -> GLint {
+  func getPar(_ par: GLenum) -> GLint {
     var val: GLint = 0 // returned if error occurs
     glGetProgramiv(handle, par, &val)
     glAssert()
@@ -71,11 +71,11 @@ class GLProgram {
   
   var infoLog: String {
     let len = Int(getPar(GLenum(GL_INFO_LOG_LENGTH)))
-    var info = [GLchar](count: len, repeatedValue: 0)
+    var info = [GLchar](repeating: 0, count: len)
     var lenActual: GLsizei = 0
     glGetProgramInfoLog(handle, GLsizei(len), &lenActual, &info)
     glAssert()
-    return String(UTF8String:info)!
+    return String(validatingUTF8:info)!
   }
   
   class func maxVertexAttributes() -> Int {
@@ -84,7 +84,7 @@ class GLProgram {
     return Int(val)
   }
 
-  func addInput(name: String, isAttr: Bool, loc: GLint, type: GLenum, size: GLsizei) {
+  func addInput(_ name: String, isAttr: Bool, loc: GLint, type: GLenum, size: GLsizei) {
     assert(loc != -1,"no location for shader input: \(name)")
     let inputType = GLInputType(rawValue: type)
     assert(inputType != nil, "bad input type: 0x\(Int(type).hex)")
@@ -95,7 +95,7 @@ class GLProgram {
   }
   
   
-  func link(shaders: [GLShader]) {
+  func link(_ shaders: [GLShader]) {
     // detach old shaders.
     for s in self.shaders {
       glDetachShader(handle, s.handle)
@@ -125,7 +125,7 @@ class GLProgram {
     var attrCount: GLint = -1
     glGetProgramiv(handle, GLenum(GL_ACTIVE_ATTRIBUTES), &attrCount)
     glAssert()
-    var nameBuffer = Array<GLchar>(count: 256, repeatedValue: 0)
+    var nameBuffer = Array<GLchar>(repeating: 0, count: 256)
     
     for i in 0..<GLuint(uniformCount) {
       var count = GLsizei(-1)
@@ -133,7 +133,7 @@ class GLProgram {
       var type = GLenum(0)
       glGetActiveUniform(handle, i, GLsizei(nameBuffer.count), &count, &size, &type, &nameBuffer)
       glAssert()
-      let name = String(UTF8String: nameBuffer)!
+      let name = String(validatingUTF8: nameBuffer)!
       let loc = glGetUniformLocation(handle, name)
       glAssert()
       addInput(name, isAttr: false, loc: loc, type: type, size: size)
@@ -144,7 +144,7 @@ class GLProgram {
       var type = GLenum(0)
       glGetActiveAttrib(handle, i, GLsizei(nameBuffer.count), &count, &size, &type, &nameBuffer)
       glAssert()
-      let name = String(UTF8String: nameBuffer)!
+      let name = String(validatingUTF8: nameBuffer)!
       let loc = glGetAttribLocation(handle, name)
       glAssert()
       addInput(name, isAttr: true, loc: loc, type: type, size: size)
@@ -174,14 +174,14 @@ class GLProgram {
     // <lines for fragment shader>
     self.init()
     let source = String(lines: sources)
-    func error(msg: String) {
+    func error(_ msg: String) {
       let lines = String(lines: source.numberedLines)
       fatalError("GLProgram: invalid composite .shdr file: \(msg)\nsource:\n\(lines)\n")
     }
     if let (common, specifics) = source.part("\nvert:\n") {
       if let (vert, frag) = specifics.part("\nfrag:\n") {
-        let v = GLShader(kind: .Vert, name: name + ":vert", sources: [common, vert])
-        let f = GLShader(kind: .Frag, name: name + ":frag", sources: [common, frag])
+        let v = GLShader(kind: .vert, name: name + ":vert", sources: [common, vert])
+        let f = GLShader(kind: .frag, name: name + ":frag", sources: [common, frag])
         self.link([v, f])
       } else {
         error("missing '\\nfrag:\\n' separator line")
@@ -192,7 +192,7 @@ class GLProgram {
   }
   
   
-  func inputLoc(name: String, isAttr: Bool, type: GLInputType, size: Int) -> GLint {
+  func inputLoc(_ name: String, isAttr: Bool, type: GLInputType, size: Int) -> GLint {
     // GLSL will optimize out unused uniforms/attrs, which is annyoing during development and debugging.
     // to mitigate this, unrecognized uniforms/attrs will get the special -1 location when first queried;
     // print error once then subsequently ignore.
@@ -219,43 +219,43 @@ class GLProgram {
     }
   }
   
-  func bindUniform(name: String, f: F32) {
-    let loc = inputLoc(name, isAttr: false, type: .F, size: 1)
+  func bindUniform(_ name: String, f: F32) {
+    let loc = inputLoc(name, isAttr: false, type: .f, size: 1)
     if loc == -1 { return }
     glUniform1f(loc, f)
     glAssert()
   }
   
-  func bindUniform(name: String, v2: V2S) {
-    let loc = inputLoc(name, isAttr: false, type: .V2, size: 1)
+  func bindUniform(_ name: String, v2: V2S) {
+    let loc = inputLoc(name, isAttr: false, type: .v2, size: 1)
     if loc == -1 { return }
     glUniform2f(loc, v2.x, v2.y)
     glAssert()
   }
 
-  func bindUniform(name: String, v3: V3S) {
-    let loc = inputLoc(name, isAttr: false, type: .V3, size: 1)
+  func bindUniform(_ name: String, v3: V3S) {
+    let loc = inputLoc(name, isAttr: false, type: .v3, size: 1)
     if loc == -1 { return }
     glUniform3f(loc, v3.x, v3.y, v3.z)
     glAssert()
   }
   
-  func bindUniform(name: String, v4: V4S) {
-    let loc = inputLoc(name, isAttr: false, type: .V4, size: 1)
+  func bindUniform(_ name: String, v4: V4S) {
+    let loc = inputLoc(name, isAttr: false, type: .v4, size: 1)
     if loc == -1 { return }
     glUniform4f(loc, v4.x, v4.y, v4.z, v4.w)
     glAssert()
   }
   
-  func bindUniform(name: String, i: Int) {
-    let loc = inputLoc(name, isAttr: false, type: .I, size: 1)
+  func bindUniform(_ name: String, i: Int) {
+    let loc = inputLoc(name, isAttr: false, type: .i, size: 1)
     if loc == -1 { return }
     glUniform1i(loc, GLint(i))
     glAssert()
   }
   
-  func bindUniform(name: String, tex: GLTexture, unit: Int) {
-    let loc = inputLoc(name, isAttr: false, type: .Sampler2, size: 1)
+  func bindUniform(_ name: String, tex: GLTexture, unit: Int) {
+    let loc = inputLoc(name, isAttr: false, type: .sampler2, size: 1)
     if loc == -1 { return }
     // NOTE: this addition assumes that the unit enums are consecutive.
     glActiveTexture(GLenum(GL_TEXTURE0 + unit))
@@ -265,7 +265,7 @@ class GLProgram {
     glAssert()
   }
   
-  func bindAttr(name: String, size: Int, type: GLInputType, normalize: Bool, stride: Int, ptr: UnsafePointer<Void>) {
+  func bindAttr(_ name: String, size: Int, type: GLInputType, normalize: Bool, stride: Int, ptr: UnsafePointer<Void>) {
     let loc = inputLoc(name, isAttr: true, type: type, size: 1)
     if loc == -1 { return } // known missing name.
     let n = GLboolean(normalize ? GL_TRUE : GL_FALSE)
@@ -273,20 +273,20 @@ class GLProgram {
     glAssert()
   }
   
-  func bindAttr(name: String, stride: Int, F32 p: UnsafePointer<Void>, offset: Int) {
-    bindAttr(name, size: 1, type: .F, normalize: false, stride: stride, ptr: p + offset)
+  func bindAttr(_ name: String, stride: Int, F32 p: UnsafePointer<Void>, offset: Int) {
+    bindAttr(name, size: 1, type: .f, normalize: false, stride: stride, ptr: p + offset)
   }
   
-  func bindAttr(name: String, stride: Int, V2S p: UnsafePointer<Void>, offset: Int) {
-    bindAttr(name, size: 2, type: .V2, normalize: false, stride: stride, ptr: p + offset)
+  func bindAttr(_ name: String, stride: Int, V2S p: UnsafePointer<Void>, offset: Int) {
+    bindAttr(name, size: 2, type: .v2, normalize: false, stride: stride, ptr: p + offset)
   }
   
-  func bindAttr(name: String, stride: Int, V3S p: UnsafePointer<Void>, offset: Int) {
-    bindAttr(name, size: 3, type: .V3, normalize: false, stride: stride, ptr: p + offset)
+  func bindAttr(_ name: String, stride: Int, V3S p: UnsafePointer<Void>, offset: Int) {
+    bindAttr(name, size: 3, type: .v3, normalize: false, stride: stride, ptr: p + offset)
   }
   
-  func bindAttr(name: String, stride: Int, V4S p: UnsafePointer<Void>, offset: Int) {
-    bindAttr(name, size: 4, type: .V4, normalize: false, stride: stride, ptr: p + offset)
+  func bindAttr(_ name: String, stride: Int, V4S p: UnsafePointer<Void>, offset: Int) {
+    bindAttr(name, size: 4, type: .v4, normalize: false, stride: stride, ptr: p + offset)
   }
   
 }

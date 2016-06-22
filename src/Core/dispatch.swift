@@ -3,36 +3,31 @@
 import Dispatch
 
 
-typealias DispatchQueue = dispatch_queue_t
-
-let dispatchMainQueue: DispatchQueue = dispatch_get_main_queue()
+let dispatchMainQueue: DispatchQueue = DispatchQueue.main
 
 
 // MARK: async
 
-func async(queue: DispatchQueue = dispatchMainQueue, action: Action) {
-  dispatch_async(queue, action)
+func async(_ queue: DispatchQueue = dispatchMainQueue, action: Action) {
+  queue.async(execute: action)
 }
 
-func async(qos: DispatchQOS, action: Action) {
-  dispatch_async(qos.queue, action)
-}
 
-func async_after(delay: Time, queue: DispatchQueue = dispatchMainQueue, action: Action) {
+func async_after(_ delay: Time, queue: DispatchQueue = dispatchMainQueue, action: Action) {
   let nanoseconds = delay * 1000000000
-  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, I64(nanoseconds)), queue, action)
+  queue.after(when: DispatchTime.now() + Double(I64(nanoseconds)) / Double(NSEC_PER_SEC), execute: action)
 }
 
 // MARK: sync
 
-func sync(queue: DispatchQueue = dispatchMainQueue, action: Action) {
-  dispatch_sync(queue, action);
+func sync(_ queue: DispatchQueue = dispatchMainQueue, action: Action) {
+  queue.sync(execute: action);
 }
 
 
 // MARK: printing
 
-func outLLA(items: [String]) {
+func outLLA(_ items: [String]) {
   async() {
     for i in items {
       print(i)
@@ -40,4 +35,4 @@ func outLLA(items: [String]) {
   }
 }
 
-func outLLA(items: String...) { outLLA(items) }
+func outLLA(_ items: String...) { outLLA(items) }

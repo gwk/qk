@@ -1,7 +1,7 @@
 // © 2015 George King. Permission to use this file is granted in license-qk.txt.
 
 
-struct RotatedIndexIterator: SequenceType, GeneratorType {
+struct RotatedIndexIterator: Sequence, IteratorProtocol {
   typealias Element = Int
   let count: Int
   let start: Int

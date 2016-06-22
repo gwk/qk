@@ -3,47 +3,47 @@
 import Foundation
 
 
-let fileManager = NSFileManager.defaultManager()
+let fileManager = FileManager.default()
 
 
-func absolutePath(path: String) -> String? {
-  let cr = fileManager.fileSystemRepresentationWithPath(path)
+func absolutePath(_ path: String) -> String? {
+  let cr = fileManager.fileSystemRepresentation(withPath: path)
   let ca = realpath(cr, nil)
   if ca == nil {
     return nil
   }
-  let a = fileManager.stringWithFileSystemRepresentation(ca, length: Int(strlen(ca)))
+  let a = fileManager.string(withFileSystemRepresentation: ca!, length: Int(strlen(ca)))
   free(ca)
   return a
 }
 
-func isPathFileOrDir(path: String) -> Bool {
-  return fileManager.fileExistsAtPath(path)
+func isPathFileOrDir(_ path: String) -> Bool {
+  return fileManager.fileExists(atPath: path)
 }
 
-func isPathFile(path: String) -> Bool {
+func isPathFile(_ path: String) -> Bool {
   var isDir: ObjCBool = false
-  let exists = fileManager.fileExistsAtPath(path, isDirectory: &isDir)
+  let exists = fileManager.fileExists(atPath: path, isDirectory: &isDir)
   return exists && !isDir
 }
 
-func isPathDir(path: String) -> Bool {
+func isPathDir(_ path: String) -> Bool {
   var isDir: ObjCBool = false
-  let exists = fileManager.fileExistsAtPath(path, isDirectory: &isDir)
+  let exists = fileManager.fileExists(atPath: path, isDirectory: &isDir)
   return exists && isDir
 }
 
-func removeFileOrDir(path: String) throws {
-  try fileManager.removeItemAtPath(path)
+func removeFileOrDir(_ path: String) throws {
+  try fileManager.removeItem(atPath: path)
 }
 
-func createDir(path: String, intermediates: Bool = false) throws {
-  try fileManager.createDirectoryAtPath(path,
+func createDir(_ path: String, intermediates: Bool = false) throws {
+  try fileManager.createDirectory(atPath: path,
     withIntermediateDirectories: intermediates,
     attributes: nil)
 }
 
-func listDir(path: String) throws -> [String] {
-  return try fileManager.contentsOfDirectoryAtPath(path)
+func listDir(_ path: String) throws -> [String] {
+  return try fileManager.contentsOfDirectory(atPath: path)
 }
 

@@ -23,12 +23,12 @@ extension String {
   
   // MARK: paths
 
-  var pathExtDotRange: Range<Index>?    { return rangeOfString(".", options: .BackwardsSearch) }
-  var pathDirSlashRange: Range<Index>?  { return rangeOfString("/", options: .BackwardsSearch) }
+  var pathExtDotRange: Range<Index>?    { return range(of: ".", options: .backwardsSearch) }
+  var pathDirSlashRange: Range<Index>?  { return range(of: "/", options: .backwardsSearch) }
 
   var pathExt: String {
     if let r = pathExtDotRange {
-      return substringFromIndex(r.startIndex)
+      return substring(from: r.lowerBound)
     } else {
       return ""
     }
@@ -38,17 +38,17 @@ extension String {
     if let r = pathExtDotRange {
       // TODO: check that the range does not span a slash.
       // TODO: allow trailing slash.
-      return substringToIndex(r.startIndex)
+      return substring(to: r.lowerBound)
     } else {
       return self
     }
   }
   
   @warn_unused_result
-  func replacePathExt(ext: String) -> String {
+  func replacePathExt(_ ext: String) -> String {
     var pre: String
     if let r = pathExtDotRange {
-      pre = substringToIndex(r.endIndex)
+      pre = substring(to: r.upperBound)
     } else {
       pre = self + "."
     }
@@ -57,7 +57,7 @@ extension String {
 
   var pathDir: String {
     if let r = pathDirSlashRange {
-      return substringToIndex(r.startIndex)
+      return substring(to: r.lowerBound)
     } else {
       return ""
     }
@@ -65,7 +65,7 @@ extension String {
 
   var withoutPathDir: String {
     if let r = pathDirSlashRange {
-      return substringFromIndex(r.endIndex)
+      return substring(from: r.upperBound)
     } else {
       return self
     }
@@ -77,14 +77,14 @@ extension String {
   
   // MARK: urls
   
-  var fileUrl: NSURL? { return NSURL(fileURLWithPath: self, isDirectory: false) }
+  var fileUrl: URL? { return URL(fileURLWithPath: self, isDirectory: false) }
 
-  var dirUrl: NSURL? { return NSURL(fileURLWithPath: self, isDirectory: true) }
+  var dirUrl: URL? { return URL(fileURLWithPath: self, isDirectory: true) }
 
   // MARK: utilities
   
   @warn_unused_result
-  func contains(c: Character) -> Bool {
+  func contains(_ c: Character) -> Bool {
     for e in self.characters {
       if e == c {
         return true
@@ -94,12 +94,12 @@ extension String {
   }
   
   @warn_unused_result
-  func has(query: String, atIndex: Index) -> Bool {
+  func has(_ query: String, atIndex: Index) -> Bool {
     return characters.has(query.characters, atIndex: atIndex)
   }
 
   @warn_unused_result
-  func beforeSuffix(suffix: String) -> String? {
+  func beforeSuffix(_ suffix: String) -> String? {
     if hasSuffix(suffix) {
       return String(self.characters.dropLast(suffix.characters.count))
     } else {
@@ -108,7 +108,7 @@ extension String {
   }
 
   @warn_unused_result
-  func mapChars(transform: (Character) -> Character) -> String {
+  func mapChars(_ transform: (Character) -> Character) -> String {
     var s = ""
     for c in self.characters {
       s.append(transform(c))
@@ -117,21 +117,21 @@ extension String {
   }
   
   @warn_unused_result
-  func mapChars(transform: (Character) -> String) -> String {
+  func mapChars(_ transform: (Character) -> String) -> String {
     var s = ""
     for c in self.characters {
-      s.appendContentsOf(transform(c))
+      s.append(transform(c))
     }
     return s
   }
   
   @warn_unused_result
-  func replace(query: Character, with: Character) -> String {
+  func replace(_ query: Character, with: Character) -> String {
     return String(characters.replace(query, with: with))
   }
   
   @warn_unused_result
-  func replace(query: String, with: String) -> String {
+  func replace(_ query: String, with: String) -> String {
     return String(characters.replace(query.characters, with: with.characters))
   }
   
@@ -172,11 +172,11 @@ extension String {
   // MARK: lines
   
   init(lines: [String]) {
-    self = lines.joinWithSeparator("\n")
+    self = lines.joined(separator: "\n")
   }
   
   init(lines: String...) {
-    self = lines.joinWithSeparator("\n")
+    self = lines.joined(separator: "\n")
   }
 
   var lineCount: Int {
@@ -190,12 +190,12 @@ extension String {
   }
 
   var lines: [String] {
-    let charLines = self.characters.split("\n", allowEmptySlices: true)
+    let charLines = self.characters.split(separator: "\n", omittingEmptySubsequences: false)
     return charLines.map { String($0) }
   }
   
   @warn_unused_result
-  func numberedLinesFrom(from: Int) -> [String] {
+  func numberedLinesFrom(_ from: Int) -> [String] {
     return lines.enumerated().map() { (i, line) in " \(line)" }
   }
   
@@ -209,21 +209,21 @@ extension String {
   
   // MARK: utf8
   
-  func asUtf8<R>(@noescape body: (UnsafeBufferPointer<UTF8.CodeUnit>) -> R) -> R {
+  func asUtf8<R>(_ body: @noescape (UnsafeBufferPointer<UTF8.CodeUnit>) -> R) -> R {
     return nulTerminatedUTF8.withUnsafeBufferPointer(body)
   }
   
-  func asUtf8<R>(@noescape body: (UnsafePointer<UTF8.CodeUnit>, Int) -> R) -> R {
+  func asUtf8<R>(_ body: @noescape (UnsafePointer<UTF8.CodeUnit>, Int) -> R) -> R {
     return asUtf8() {
       (bp: UnsafeBufferPointer<UTF8.CodeUnit>) -> R in
-      return body(bp.baseAddress, bp.count - 1) // subtract one to omit the null terminator.
+      return body(bp.baseAddress!, bp.count - 1) // subtract one to omit the null terminator.
     }
   }
   
   // MARK: partition
   
   @warn_unused_result
-  func part(sep: String) -> (String, String)? {
+  func part(_ sep: String) -> (String, String)? {
     if let (a, b) = characters.part(sep.characters) {
       return (String(a), String(b))
     }
@@ -231,12 +231,14 @@ extension String {
   }
 
   @warn_unused_result
-  func split(separator: Character) -> [String] {
-    return characters.split(separator).map() { String($0) }
+  func split(_ separator: Character) -> [String] {
+    return characters.split(separator: separator).map() { String($0) }
   }
 
-  func split(sub sub: String) -> [String] {
-    return characters.split(sub: sub.characters).map() { String($0) }
+  /* TODO
+  func split(sub: String) -> [String] {
+    return characters.split(separator: sub.characters).map() { String($0) }
   }
+ */
 }
 

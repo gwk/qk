@@ -18,13 +18,13 @@
 extension CRFlex {
 
   #if os(OSX)
-  static var N: CRFlex { return ViewNotSizable }
-  static var W: CRFlex { return ViewWidthSizable }
-  static var H: CRFlex { return ViewHeightSizable }
-  static var L: CRFlex { return ViewMinXMargin }
-  static var R: CRFlex { return ViewMaxXMargin }
-  static var T: CRFlex { return ViewMinYMargin }
-  static var B: CRFlex { return ViewMaxYMargin }
+  static var N: CRFlex { return NSAutoresizingMaskOptions() }
+  static var W: CRFlex { return viewWidthSizable }
+  static var H: CRFlex { return viewHeightSizable }
+  static var L: CRFlex { return viewMinXMargin }
+  static var R: CRFlex { return viewMaxXMargin }
+  static var T: CRFlex { return viewMinYMargin }
+  static var B: CRFlex { return viewMaxYMargin }
   #else
   static var N: CRFlex { return None }
   static var W: CRFlex { return FlexibleWidth }
@@ -67,7 +67,7 @@ extension CRView {
     helpInit(name: name, parent: parent, flex: flex)
   }
   
-  func helpInit(name name: String?, parent: CRView?, flex: CRFlex?) {
+  func helpInit(name: String?, parent: CRView?, flex: CRFlex?) {
     if let name = name {
       self.name = name
     }
@@ -79,7 +79,7 @@ extension CRView {
     }
   }
   
-  func addSubviews(subviews: CRView...) {
+  func addSubviews(_ subviews: CRView...) {
     for v in subviews {
       addSubview(v)
     }
@@ -109,7 +109,7 @@ extension CRView {
     }
   }
 
-  func describeTree(depth: Int = 0) {
+  func describeTree(_ depth: Int = 0) {
     err(String(repeating: Character(" "), count: depth))
     errL(description)
   }
@@ -179,14 +179,14 @@ extension CRView {
   var huggingH: CRPriority {
     get {
       #if os(OSX)
-        return contentHuggingPriorityForOrientation(.Horizontal)
+        return contentHuggingPriority(for: .horizontal)
         #else
         return contentHuggingPriorityForAxis(.Horizontal)
       #endif
     }
     set {
       #if os(OSX)
-        return setContentHuggingPriority(huggingH, forOrientation: .Horizontal)
+        return setContentHuggingPriority(huggingH, for: .horizontal)
         #else
         return setContentHuggingPriority(huggingH, forAxis: .Horizontal)
       #endif
@@ -196,14 +196,14 @@ extension CRView {
   var huggingV: CRPriority {
     get {
       #if os(OSX)
-        return contentHuggingPriorityForOrientation(.Vertical)
+        return contentHuggingPriority(for: .vertical)
         #else
         return contentHuggingPriorityForAxis(.Vertical)
       #endif
     }
     set {
       #if os(OSX)
-        return setContentHuggingPriority(huggingV, forOrientation: .Vertical)
+        return setContentHuggingPriority(huggingV, for: .vertical)
         #else
         return setContentHuggingPriority(huggingV, forAxis: .Vertical)
       #endif
@@ -213,14 +213,14 @@ extension CRView {
   var compressionH: CRPriority {
     get {
       #if os(OSX)
-        return contentCompressionResistancePriorityForOrientation(.Horizontal)
+        return contentCompressionResistancePriority(for: .horizontal)
         #else
         return contentCompressionResistancePriorityForAxis(.Horizontal)
       #endif
     }
     set {
       #if os(OSX)
-        return setContentCompressionResistancePriority(compressionH, forOrientation: .Horizontal)
+        return setContentCompressionResistancePriority(compressionH, for: .horizontal)
         #else
         return setContentCompressionResistancePriority(compressionH, forAxis: .Horizontal)
       #endif
@@ -230,14 +230,14 @@ extension CRView {
   var compressionV: CRPriority {
     get {
       #if os(OSX)
-        return contentCompressionResistancePriorityForOrientation(.Vertical)
+        return contentCompressionResistancePriority(for: .vertical)
         #else
         return contentCompressionResistancePriorityForAxis(.Vertical)
       #endif
     }
     set {
       #if os(OSX)
-        return setContentCompressionResistancePriority(compressionV, forOrientation: .Vertical)
+        return setContentCompressionResistancePriority(compressionV, for: .vertical)
         #else
         return setContentCompressionResistancePriority(compressionV, forAxis: .Vertical)
       #endif

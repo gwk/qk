@@ -6,23 +6,23 @@ import SceneKit
 
 extension SCNGeometryElement {
 
-  convenience init<I: IntegerType>(points: [I]) {
-    self.init(data: NSData(bytes: points, length: points.count * sizeof(I)),
-              primitiveType: .Point,
+  convenience init<I: Integer>(points: [I]) {
+    self.init(data: Data(bytes: UnsafePointer<UInt8>(points), count: points.count * sizeof(I)),
+              primitiveType: .point,
               primitiveCount: points.count,
               bytesPerIndex: sizeof(I))
   }
 
-  convenience init<I: IntegerType>(segments: [Seg<I>]) {
-    self.init(data: NSData(bytes: segments, length: segments.count * sizeof(Seg<I>)),
-              primitiveType: .Line,
+  convenience init<I: Integer>(segments: [Seg<I>]) {
+    self.init(data: Data(bytes: UnsafePointer<UInt8>(segments), count: segments.count * sizeof(Seg<I>)),
+              primitiveType: .line,
               primitiveCount: segments.count,
               bytesPerIndex: sizeof(I))
   }
 
-  convenience init<I: IntegerType>(triangles: [Tri<I>]) {
-    self.init(data: NSData(bytes: triangles, length: triangles.count * sizeof(Tri<I>)),
-              primitiveType: .Triangles,
+  convenience init<I: Integer>(triangles: [Tri<I>]) {
+    self.init(data: Data(bytes: UnsafePointer<UInt8>(triangles), count: triangles.count * sizeof(Tri<I>)),
+              primitiveType: .triangles,
               primitiveCount: triangles.count,
               bytesPerIndex: sizeof(I))
   }

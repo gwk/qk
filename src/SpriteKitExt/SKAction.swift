@@ -5,8 +5,8 @@ import SpriteKit
 
 extension SKAction {
 
-  class func runNodeBlock<Node: SKNode>(block: (Node)->()) -> SKAction {
-    return SKAction.customActionWithDuration(0) {
+  class func runNodeBlock<Node: SKNode>(_ block: (Node)->()) -> SKAction {
+    return SKAction.customAction(withDuration: 0) {
       (node: SKNode, elapsedTime: CGFloat) in
       if let node = node as? Node {
         block(node)
@@ -16,20 +16,20 @@ extension SKAction {
     }
   }
 
-  func delay(duration: Time) -> SKAction { return SKAction.sequence([SKAction.waitForDuration(duration), self]) }
+  func delay(_ duration: Time) -> SKAction { return SKAction.sequence([SKAction.wait(forDuration: duration), self]) }
 
-  func repeated(count: Int) -> SKAction { return SKAction.repeatAction(self, count: count) }
+  func repeated(_ count: Int) -> SKAction { return SKAction.repeat(self, count: count) }
 
-  var forever: SKAction { return SKAction.repeatActionForever(self) }
+  var forever: SKAction { return SKAction.repeatForever(self) }
 
-  class func showTexts(texts: [String], durationPerItem: Time) -> SKAction {
+  class func showTexts(_ texts: [String], durationPerItem: Time) -> SKAction {
     var actions: [SKAction] = [SKAction.unhide()]
     for text in texts {
       actions.append(SKAction.runNodeBlock {
         (node: SKLabelNode) in
         node.text = text
       })
-      actions.append(SKAction.waitForDuration(durationPerItem))
+      actions.append(SKAction.wait(forDuration: durationPerItem))
     }
     actions.append(SKAction.hide())
     return SKAction.sequence(actions)

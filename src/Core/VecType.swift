@@ -3,7 +3,7 @@
 
 protocol VecType: Equatable, CustomStringConvertible {
   associatedtype Scalar: ArithmeticProtocol
-  associatedtype FloatType: ArithmeticFloatType
+  associatedtype FloatType: ArithmeticFloat
   associatedtype VSType
   associatedtype VDType
   
@@ -22,7 +22,7 @@ protocol VecType: Equatable, CustomStringConvertible {
 
 extension VecType {
   var len: FloatType { return sqrLen.sqrt }
-  func dist(b: Self) -> FloatType { return (b - self).len }
+  func dist(_ b: Self) -> FloatType { return (b - self).len }
 }
 
 protocol VecType2: VecType {
@@ -49,9 +49,9 @@ protocol VecType4: VecType {
 protocol FloatVecType: VecType {
   var norm: Self { get }
   var clampToUnit: Self { get }
-  func dist(b: Self) -> Scalar
-  func dot(b: Self) -> Scalar
-  func angle(b: Self) -> Scalar
+  func dist(_ b: Self) -> Scalar
+  func dot(_ b: Self) -> Scalar
+  func angle(_ b: Self) -> Scalar
 }
 
 protocol IntVecType: VecType {

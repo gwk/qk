@@ -3,7 +3,7 @@
 import Foundation
 
 
-struct Tri<I: IntegerType where I: IntegerInitable>: CustomStringConvertible {
+struct Tri<I: Integer where I: IntegerInitable>: CustomStringConvertible {
   var a, b, c: I
   
   init(_ a: I, _ b: I, _ c: I) {
@@ -23,7 +23,7 @@ struct Tri<I: IntegerType where I: IntegerInitable>: CustomStringConvertible {
 }
 
 
-struct Seg<I: IntegerType where I: IntegerInitable, I: Comparable>: CustomStringConvertible, Comparable {
+struct Seg<I: Integer where I: IntegerInitable, I: Comparable>: CustomStringConvertible, Comparable {
   var a, b: I
 
   init(_ a: I, _ b: I) {
@@ -71,7 +71,7 @@ struct Adj {
 }
 
 
-func EulerEdgeCount(vertexCount: Int, faceCount: Int) -> Int {
+func EulerEdgeCount(_ vertexCount: Int, faceCount: Int) -> Int {
   return vertexCount + faceCount - 2
 }
 

@@ -6,7 +6,7 @@ import Foundation
 
 typealias Flt = CGFloat
 
-extension Flt: ArithmeticFloatType {
+extension Flt: ArithmeticFloat {
   var sqr: Flt { return self * self }
   var sqrt: Flt { return Flt(native.sqrt) }
   var ceil: Flt { return Flt(native.ceil) }
@@ -21,19 +21,19 @@ extension Flt: JsonInitable {
     } else if let s = json as? NSString {
       if let n = NativeType(s as String) {
         self = Flt(n)
-      } else { throw Json.Error.Conversion(exp: Flt.self, json: json) }
-    } else { throw Json.Error.UnexpectedType(exp: Flt.self, json: json) }
+      } else { throw Json.Error.conversion(exp: Flt.self, json: json) }
+    } else { throw Json.Error.unexpectedType(exp: Flt.self, json: json) }
   }
 }
 
 extension Random {
   @warn_unused_result
-  func flt(max: Flt) -> Flt {
+  func flt(_ max: Flt) -> Flt {
     return Flt(f64(F64(max)))
   }
 
   @warn_unused_result
-  func flt(min min: Flt, max: Flt) -> Flt {
+  func flt(min: Flt, max: Flt) -> Flt {
     return Flt(f64(min: F64(min), max: F64(max)))
   }
 

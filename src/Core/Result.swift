@@ -2,6 +2,6 @@
 
 
 enum Result<T, U> {
-  case Ok(T)
-  case Alt(U)
+  case ok(T)
+  case alt(U)
 }

@@ -16,12 +16,12 @@ extension SKNode {
   }
 
 
-  func add<T: SKNode>(child: T) -> T {
+  func add<T: SKNode>(_ child: T) -> T {
     addChild(child)
     return child
   }
 
-  func addChildren(children: [SKNode]) {
+  func addChildren(_ children: [SKNode]) {
     for c in children {
       addChild(c)
     }

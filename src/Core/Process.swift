@@ -5,7 +5,7 @@ import Foundation
 
 extension Process {
 
-  static let environment: [String:String] = NSProcessInfo.processInfo().environment as [String:String]
+  static let environment: [String:String] = ProcessInfo.processInfo().environment as [String:String]
 
-  @noreturn static func exit(code: Int) { Darwin.exit(Int32(code)) }
+  @noreturn static func exit(_ code: Int) { Darwin.exit(Int32(code)) }
 }

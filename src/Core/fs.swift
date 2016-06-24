@@ -5,6 +5,6 @@ import Darwin
 
 func renameFileAtPath(_ fromPath: String, toPath: String) {
   if Darwin.rename(fromPath, toPath) != 0 {
-    fail("rename(\(fromPath), \(toPath)) failed: \(stringForCurrentError())")
+    fail("rename(\(fromPath), \(toPath)) failed: \(stringForCurrentError())") // TODO: throw. 
   }
 }

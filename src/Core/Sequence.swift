@@ -14,6 +14,27 @@ extension Sequence {
     return d
   }
 
+  func groupSorted(predicate: (l: Generator.Element, r: Generator.Element) -> Bool) -> [[Generator.Element]] {
+    var generator = generate()
+    guard let first = generator.next() else { return [] }
+    var groups: [[Generator.Element]] = []
+    var group: [Generator.Element] = [first]
+    var prev = first
+    while let el = generator.next() {
+      if predicate(l: prev, r: el) { // same group.
+        group.append(el)
+      } else {
+        groups.append(group)
+        group = [el]
+      }
+      prev = el
+    }
+    if !group.isEmpty {
+      groups.append(group)
+    }
+    return groups
+  }
+
   @warn_unused_result
   func filterMap<E>(transform: @noescape (Iterator.Element) throws -> E?) rethrows -> [E] {
     var a: [E] = []
